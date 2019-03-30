@@ -1,0 +1,1 @@
+deno example/app.ts -A
