@@ -1,5 +1,5 @@
 import { serve } from "package.ts";
-import { Area, RouteMeta, Controller, view } from "lib/models.ts";
+import { Area, RouteMeta, Controller, textView } from "lib/models.ts";
 
 interface AppSettings {
   area: Area;
@@ -49,6 +49,6 @@ export class App {
     });
   }
   private notFoundAction(){
-    return view('Not found', 404);
+    return textView('Not found', 404);
   }
 }

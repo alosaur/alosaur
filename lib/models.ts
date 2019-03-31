@@ -1,4 +1,4 @@
-export function view(text: string, status: number = 200) {
+export function textView(text: string, status: number = 200) {
   return {
     body: new TextEncoder().encode(text),
     status

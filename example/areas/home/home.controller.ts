@@ -1,4 +1,4 @@
-import { Method, Controller, view } from "../../../lib/models.ts";
+import { Method, Controller, textView } from "../../../lib/models.ts";
 
 export class BaseController extends Controller {
   constructor() {
@@ -17,9 +17,9 @@ export class BaseController extends Controller {
   ];
 
   hello() {
-    return view('Hello world');
+    return textView('Hello world');
   }
   up() {
-    return view('Up');
+    return textView('Up');
   }
 }
