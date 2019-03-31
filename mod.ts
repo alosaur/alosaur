@@ -8,6 +8,7 @@ export class App {
   private routes: RouteMeta[] = [];
   constructor(settings: AppSettings) {
     const controllers: Controller[] = settings.area.getControllers();
+    
     this.registerControllers(settings.area, controllers);
   }
 
@@ -23,6 +24,8 @@ export class App {
     this.routes.push(route);
   }
   private findRouteAction(method: string, url: string): Function {
+    console.log(url);
+    console.log(this.routes);
     const route = this.routes.find(r => {
       return r.method.toString() === method && r.route === new URL(url, '/').pathname;
     });
@@ -37,7 +40,7 @@ export class App {
       controller.routes.forEach(route => {
         if(area.route && area.route !== ""){
           const newroute: RouteMeta = {
-            route: `${area.route}/${route.route}`,
+            route: `${area.route}${route.route}`,
             action: route.action,
             method: route.method
           };

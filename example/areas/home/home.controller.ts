@@ -4,16 +4,22 @@ export class BaseController extends Controller {
   constructor() {
     super();
   }
-  routes = [{
-    method: Method.GET,
-    route: '/',
-    action: this.hello
-  },
-  {
-    method: Method.GET,
-    route: '/up',
-    action: this.up
-  }
+  routes = [
+    {
+      method: Method.GET,
+      route: '',
+      action: this.hello
+    },
+    {
+      method: Method.GET,
+      route: '/',
+      action: this.hello
+    },
+    {
+      method: Method.GET,
+      route: '/up',
+      action: this.up
+    }
   ];
 
   hello() {
