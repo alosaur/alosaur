@@ -3,8 +3,8 @@ import { Area, Controller } from "../../../lib/models.ts";
 
 export class HomeArea implements Area {
   route: '';
-  controllers: [];
   getControllers(): Controller[] {
-    return [new BaseController()];
+    const contr = new BaseController();
+    return [contr];
   };
 }

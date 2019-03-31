@@ -22,9 +22,8 @@ export enum Method {
 export interface Middleware {
 
 }
-export interface Area {
+export abstract class Area {
   route: string;
-  controllers: Controller[];
   midlwares?: Middleware[];
   getControllers: Function; 
 }

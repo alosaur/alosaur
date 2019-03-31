@@ -6,11 +6,20 @@ export class BaseController extends Controller {
   }
   routes = [{
     method: Method.GET,
-    route: '',
-    action: this.action
-  }];
+    route: '/',
+    action: this.hello
+  },
+  {
+    method: Method.GET,
+    route: '/up',
+    action: this.up
+  }
+  ];
 
-  action() {
+  hello() {
     return view('Hello world');
+  }
+  up() {
+    return view('Up');
   }
 }
