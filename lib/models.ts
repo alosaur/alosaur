@@ -1,4 +1,8 @@
-export function textView(text: string, status: number = 200) {
+interface Responce {
+  body: Uint8Array;
+  status: number;
+}
+export function textView(text: string, status: number = 200): Responce {
   return {
     body: new TextEncoder().encode(text),
     status

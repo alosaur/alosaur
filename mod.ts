@@ -24,7 +24,7 @@ export class App {
   }
   private findRouteAction(method: string, url: string): Function {
     const route = this.routes.find(r => {
-      return r.method.toString() === method && r.route === url;
+      return r.method.toString() === method && r.route === new URL(url, '/').pathname;
     });
     if(route) {
       return route.action;
