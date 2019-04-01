@@ -1,9 +1,6 @@
-import { Method, Controller, textView } from "../../../lib/models.ts";
+import { Method, Controller, textView, FromQuery } from "../../../lib/models.ts";
 
 export class BaseController extends Controller {
-  constructor() {
-    super();
-  }
   routes = [
     {
       method: Method.GET,
@@ -21,11 +18,15 @@ export class BaseController extends Controller {
       action: this.up
     }
   ];
+  constructor() {
+    super();
+    FromQuery(this.routes[2].action, 'test');
+  }
 
   hello() {
     return textView('Hello world');
   }
-  up() {
-    return textView('Up');
+  up(test: string) {
+    return textView(test);
   }
 }
