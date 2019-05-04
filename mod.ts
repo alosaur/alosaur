@@ -1,5 +1,5 @@
-import { serve } from "package.ts";
-import { Area, RouteMeta, Controller, textView } from "lib/models.ts";
+import { serve } from "./package.ts";
+import { Area, RouteMeta, Controller, textView } from "./lib/models.ts";
 
 interface AppSettings {
   area: Area;
