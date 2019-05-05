@@ -1,1 +1,1 @@
-deno run -A --config ./lib/tsconfig.lib.json example/app.ts
+deno run -A --config ./src/tsconfig.lib.json example/app.ts
