@@ -30,7 +30,7 @@ export * from "./renderer/content.ts";
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve } from "./package.ts";
-
+import { content } from "./renderer/content.ts";
 
 const global = {};
 
@@ -99,6 +99,6 @@ export class App {
     }
     
     private notFoundAction(){
-        return textView('Not found', 404);
+        return content('Not found', 404);
     }
   }
