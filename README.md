@@ -1,5 +1,5 @@
 # alosaur
-alosaur - deno framework 🦖
+alosaur - deno web framework 🦖
 ---
 
 # TODO
