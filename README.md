@@ -14,4 +14,5 @@ alosaur - deno web framework 🦖
 * [ ] Add validators
 * [ ] Add example with wasm
 * [ ] Add example with sql drivers
+* [ ] Add benchmarks
 * [ ] Add docs and more examples ;)
