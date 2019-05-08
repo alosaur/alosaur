@@ -10,6 +10,8 @@ export * from "./decorator/Patch.ts";
 export * from "./decorator/Post.ts";
 export * from "./decorator/Put.ts";
 
+// Http errors
+
 export * from "./http-error/HttpError.ts";
 export * from "./http-error/InternalServerError.ts";
 export * from "./http-error/BadRequestError.ts";
@@ -19,18 +21,11 @@ export * from "./http-error/MethodNotAllowedError.ts";
 export * from "./http-error/NotFoundError.ts";
 export * from "./http-error/UnauthorizedError.ts";
 
-// TODO: move to html view utils
-export interface Responce {
-    body: Uint8Array;
-    status: number;
-    headers?: Headers;
-}
-export function textView(text: string, status: number = 200): Responce {
-    return {
-      body: new TextEncoder().encode(text),
-      status
-    }
-}
+// Models
+export * from "./models/responce.ts";
+
+// Renderer
+export * from "./renderer/content.ts";
 
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
