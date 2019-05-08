@@ -25,12 +25,12 @@ export * from "./http-error/UnauthorizedError.ts";
 export * from "./models/responce.ts";
 
 // Renderer
-export * from "./renderer/content.ts";
+export * from "./renderer/Content.ts";
 
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve } from "./package.ts";
-import { content } from "./renderer/content.ts";
+import { Content } from "./renderer/Content.ts";
 
 const global = {};
 
@@ -99,6 +99,6 @@ export class App {
     }
     
     private notFoundAction(){
-        return content('Not found', 404);
+        return Content('Not found', 404);
     }
   }
