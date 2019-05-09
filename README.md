@@ -12,6 +12,7 @@ alosaur - deno web framework 🦖
 * [ ] Add DI
 * [ ] Add std exception filters
 * [ ] Add validators
+* [ ] Add microservice connector with wasm
 * [ ] Add example with wasm
 * [ ] Add example with sql drivers
 * [ ] Add benchmarks
