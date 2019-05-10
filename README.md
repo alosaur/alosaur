@@ -4,7 +4,7 @@ alosaur - deno web framework 🦖
 
 # TODO
 
-* [ ] Add template parser view
+* [x] Add template parser view
 * [ ] Add return value JSON
 * [ ] Add decorators for controller action 
 * * [x] `@QueryParam`
