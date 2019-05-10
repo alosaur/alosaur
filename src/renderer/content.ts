@@ -2,7 +2,6 @@ import { Responce } from "../models/responce.ts";
 import { contentType } from "https://deno.land/x/std/media_types/mod.ts";
 export function Content(result: string | Object, status: number = 200): Responce {
     let body;
-    let type;
     const headers = new Headers();
 
     switch (typeof result) {
