@@ -6,7 +6,15 @@ alosaur - deno web framework 🦖
 
 * [ ] Add template parser view
 * [ ] Add return value JSON
-* [ ] Add decorators for controller action `@FromCookie, @FromHeaders, @FromBody, @FromQuery`
+* [ ] Add decorators for controller action 
+* * [x] `@QueryParam`
+* * [ ] `@QueryParams` all query params to object
+* * [ ] `@Param` one param from url, ex: `/:id`
+* * [ ] `@Body`
+* * [ ] `@Header`
+* * [ ] `@Headers`
+* * [ ] `@Cookie`
+* * [ ] `@Cookies`
 * [ ] Add middlewars
 * [ ] Add websockets
 * [ ] Add DI
