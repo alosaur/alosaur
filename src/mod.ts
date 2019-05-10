@@ -58,27 +58,54 @@ export class App {
       const s = serve(`${host}:${port}`);
       console.log(`Server start in ${host}:${port}`);
       for await (const req of s) {
-        const action = this.findRouteAction(req.method, req.url);
-        req.respond(action());
+        // TODO: Move to route utils
+        const route = this.findRouteAction(req.method, req.url);
+
+        // TODO: Move to route utils
+        const queryParams = this.findSearchParams(req.url);
+        const args = [];
+        if(queryParams){
+          const querys = route.params.filter(el => el.type === 'query');
+          querys.forEach(query => {
+            if(queryParams.has(query.name)){
+              args.push(queryParams.get(query.name));
+            }
+          });
+        }
+        req.respond(route.func(...args));
       }
     }
     private addRoute(route: any) {
       this.routes.push(route);
     }
-    private findRouteAction(method: string, url: string): Function {
+    // TODO: Move to route utils
+    private findSearchParams(url: string): URLSearchParams{
+      if(url == null) return null;
+      const searchs = url.split('?')[1];
+      if(searchs == null) return null;
+      return new URLSearchParams(searchs);
+    }
+    // TODO: Move to route utils
+    private findRouteAction(method: string, url: string): {func:Function; params: any[]} {
       const route = this.routes.find(r => {
         return r.method.toString() === method && r.route === new URL(url, '/').pathname;
       });
       if(route) {
-        return route.action;
+        return {
+          func: route.action,
+          params: route.params
+        };
       } else {
-        return this.notFoundAction;
+        return {
+          func: this.notFoundAction,
+          params: []
+        }
       }
     }
     private registerControllers(controllers: any[] = []) {
         controllers.forEach(controller => {
-
             const actions = getMetadataArgsStorage().actions.filter(action => action.target === controller.target);
+            const params = getMetadataArgsStorage().params.filter(param => param.target === controller.target);
             // TODO: if obj not in classes
             const obj = new controller.target();
             this.classes.push(obj);
@@ -89,7 +116,8 @@ export class App {
                 const metaRoute = {
                     route: `${controller.route}${action.route}`,
                     action: obj[action.method],
-                    method: action.type
+                    method: action.type,
+                    params: params.filter(param => param.method === action.method)
                   };
                 console.log(`register route: `, metaRoute.route);
                 this.addRoute(metaRoute);

@@ -11,4 +11,9 @@ export class MetadataArgsStorage {
    * Registered actions.
    */
   actions: any[] = [];
+  
+  /**
+   * Registered params.
+   */
+  params: any[] = [];
 }

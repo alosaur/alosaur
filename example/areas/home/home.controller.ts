@@ -1,11 +1,12 @@
 import { Controller, Content } from "../../../src/mod.ts";
 import { Get } from '../../../src/decorator/Get.ts';
+import { QueryParam } from '../../../src/decorator/QueryParam.ts';
 
 @Controller('/home')
 export class HomeController {
   @Get('/text')
-  text() {
-    return Content("Hello world");
+  text(@QueryParam('name') name: string) {
+    return Content(`Hello world, ${name}`);
   }
   @Get('/json')
   json() {

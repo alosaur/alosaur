@@ -13,5 +13,4 @@ export class BadRequestError extends HttpError {
         if (message)
             this.message = message;
     }
-
 }
