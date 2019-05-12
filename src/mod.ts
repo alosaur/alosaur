@@ -31,7 +31,8 @@ export * from "./renderer/Content.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve } from "./package.ts";
 import { Content } from "./renderer/Content.ts";
-
+import { getAction } from "./route/get-action.ts";
+import { getActionParams } from "./route/get-action-params.ts";
 const global = {};
 
 export function getMetadataArgsStorage(): MetadataArgsStorage {
@@ -58,51 +59,15 @@ export class App {
       const s = serve(`${host}:${port}`);
       console.log(`Server start in ${host}:${port}`);
       for await (const req of s) {
-        // TODO: Move to route utils
-        const route = this.findRouteAction(req.method, req.url);
-
-        // TODO: Move to route utils
-        const queryParams = this.findSearchParams(req.url);
-        const args = [];
-        if(queryParams){
-          const querys = route.params.filter(el => el.type === 'query')
-                                     .sort((a,b)=> a.index - b.index);
-          querys.forEach(query => {
-            if(queryParams.has(query.name)){
-              args.push(queryParams.get(query.name));
-            }
-          });
-        }
+        const route = getAction(this.routes, req.method, req.url);
+        const args = getActionParams(req.url, route);
         req.respond(route.func(...args));
       }
     }
     private addRoute(route: any) {
       this.routes.push(route);
     }
-    // TODO: Move to route utils
-    private findSearchParams(url: string): URLSearchParams{
-      if(url == null) return null;
-      const searchs = url.split('?')[1];
-      if(searchs == null) return null;
-      return new URLSearchParams(searchs);
-    }
-    // TODO: Move to route utils
-    private findRouteAction(method: string, url: string): {func:Function; params: any[]} {
-      const route = this.routes.find(r => {
-        return r.method.toString() === method && r.route === new URL(url, '/').pathname;
-      });
-      if(route) {
-        return {
-          func: route.action,
-          params: route.params
-        };
-      } else {
-        return {
-          func: this.notFoundAction,
-          params: []
-        }
-      }
-    }
+
     private registerControllers(controllers: any[] = []) {
         controllers.forEach(controller => {
             const actions = getMetadataArgsStorage().actions.filter(action => action.target === controller.target);
@@ -127,7 +92,5 @@ export class App {
         });
     }
     
-    private notFoundAction(){
-        return Content('Not found', 404);
-    }
+    
   }
