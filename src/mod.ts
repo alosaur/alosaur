@@ -65,7 +65,8 @@ export class App {
         const queryParams = this.findSearchParams(req.url);
         const args = [];
         if(queryParams){
-          const querys = route.params.filter(el => el.type === 'query');
+          const querys = route.params.filter(el => el.type === 'query')
+                                     .sort((a,b)=> a.index - b.index);
           querys.forEach(query => {
             if(queryParams.has(query.name)){
               args.push(queryParams.get(query.name));
