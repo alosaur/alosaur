@@ -1,6 +1,5 @@
-import { Responce } from "../models/responce.ts";
-import { contentType } from "https://deno.land/x/std/media_types/mod.ts";
-export function Content(result: string | Object, status: number = 200): Responce {
+import { contentType, Response } from "../package.ts";
+export function Content(result: string | Object, status: number = 200): Response {
     let body;
     const headers = new Headers();
 

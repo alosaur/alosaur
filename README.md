@@ -11,10 +11,9 @@ alosaur - deno web framework 🦖
 * * [ ] `@QueryParams` all query params to object
 * * [ ] `@Param` one param from url, ex: `/:id`
 * * [ ] `@Body`
-* * [ ] `@Header`
-* * [ ] `@Headers`
 * * [x] `@Cookie`
-* * [ ] `@Cookies`
+* * [x] `@Req`
+* * [x] `@Res`
 * [ ] Add middlewars
 * [ ] Add websockets
 * [ ] Add DI
