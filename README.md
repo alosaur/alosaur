@@ -13,7 +13,7 @@ alosaur - deno web framework 🦖
 * * [ ] `@Body`
 * * [ ] `@Header`
 * * [ ] `@Headers`
-* * [ ] `@Cookie`
+* * [x] `@Cookie`
 * * [ ] `@Cookies`
 * [ ] Add middlewars
 * [ ] Add websockets

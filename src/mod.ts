@@ -27,10 +27,20 @@ export * from "./models/responce.ts";
 // Renderer
 export * from "./renderer/Content.ts";
 
+// Decorators
+export * from "./decorator/Area.ts";
+export * from "./decorator/Controller.ts";
+export * from "./decorator/Get.ts";
+export * from "./decorator/Post.ts";
+export * from "./decorator/Patch.ts";
+export * from "./decorator/Put.ts";
+
+// Action decorators
+export * from "./decorator/Cookie.ts";
+export * from "./decorator/QueryParam.ts";
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve } from "./package.ts";
-import { Content } from "./renderer/Content.ts";
 import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 const global = {};
@@ -60,7 +70,7 @@ export class App {
       console.log(`Server start in ${host}:${port}`);
       for await (const req of s) {
         const route = getAction(this.routes, req.method, req.url);
-        const args = getActionParams(req.url, route);
+        const args = getActionParams(req, route);
         req.respond(route.func(...args));
       }
     }

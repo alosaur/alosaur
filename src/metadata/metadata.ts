@@ -4,6 +4,10 @@ import { ControllerMetadataArgs } from './controller.ts';
 */
 export class MetadataArgsStorage {
   /**
+   * Register areas
+   */
+  areas: any[] = [];
+  /**
    * Registered controller metadata args.
    */
   controllers: ControllerMetadataArgs[] = [];
