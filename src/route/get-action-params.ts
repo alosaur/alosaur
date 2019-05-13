@@ -5,9 +5,7 @@ export function getActionParams(url, route): string[] {
     const querys = route.params.filter(el => el.type === 'query')
                                .sort((a, b) => a.index - b.index);
     querys.forEach(query => {
-      if (queryParams.has(query.name)) {
         args.push(queryParams.get(query.name));
-      }
     });
   }
   return args;
