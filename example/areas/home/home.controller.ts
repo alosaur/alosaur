@@ -15,7 +15,15 @@ export class HomeController {
     return Content(`Hello world, ${name} ${test} ${username}`);
   }
   @Get('/json')
-  json(@Req() request: ServerRequest, @Res() response: Response, @QueryParam('name') name: string,) {
+  json(@Req() request: ServerRequest, @Res() response: Response, @QueryParam('name') name: string) {
     return Content(response);
+  }
+  @Get('/test')
+  gerTests() {
+    return Content('test');
+  }
+  @Get('/test/:id')
+  gerTestOne() {
+    return Content('id');
   }
 }
