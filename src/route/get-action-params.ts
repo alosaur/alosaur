@@ -1,12 +1,13 @@
-import { getCookies } from '../package.ts';
+import { getCookies, ServerRequest } from '../package.ts';
 
-export function getActionParams(req, res, route): string[] {
-  // TODO: only links
+export async function getActionParams(req: ServerRequest, res, route): Promise<string[]> {
   const args = [];
+  // const body 
   const queryParams = findSearchParams(req.url);
   const cookies = getCookies(req) || {};
   const params = route.params.sort((a, b) => a.index - b.index);
-  params.forEach(param => {
+  for (let i = 0; i < params.length; i++) {
+    const param = params[i];
     switch (param.type) {
       case 'query':
         if(queryParams){
@@ -18,6 +19,16 @@ export function getActionParams(req, res, route): string[] {
       case 'cookie':
         args.push(cookies[param.name]);
         break;
+      case 'body':
+        // TODO: if content type json, form, etc...
+        let body = await req.body();
+        const bodyString = new TextDecoder("utf-8").decode(body);
+        try {
+          body = JSON.parse(bodyString);
+        } catch (error) {
+        }
+        args.push(body);
+        break;
       case 'request':
         args.push(req);
         break;
@@ -28,8 +39,8 @@ export function getActionParams(req, res, route): string[] {
         args.push(null);
         break;
     }
-  });
-  return args;
+  }
+  return new Promise(res => res(args));
 }
 function findSearchParams(url: string): URLSearchParams {
   if (url == null) return null;

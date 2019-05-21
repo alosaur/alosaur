@@ -35,6 +35,7 @@ export * from "./decorator/Put.ts";
 // Action decorators
 export * from "./decorator/Cookie.ts";
 export * from "./decorator/QueryParam.ts";
+export * from "./decorator/Body.ts";
 export * from "./decorator/Req.ts";
 export * from "./decorator/Res.ts";
 
@@ -74,7 +75,7 @@ export class App {
       for await (const req of s) {
         const res: Response = {};
         const route = getAction(this.routes, req.method, req.url);
-        const args = getActionParams(req, res, route);
+        const args = await getActionParams(req, res, route);
         req.respond(route.func(...args));
       }
     }
