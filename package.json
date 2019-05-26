@@ -1,0 +1,33 @@
+{
+  "name": "alosaur",
+  "version": "0.0.0",
+  "description": "alosaur - deno web framework 🦖 ---",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irustm/alosaur.git"
+  },
+  "keywords": [
+    "alosaur",
+    "Deno",
+    "web",
+    "framework"
+  ],
+  "author": "irustm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irustm/alosaur/issues"
+  },
+  "homepage": "https://github.com/irustm/alosaur#readme",
+  "devDependencies": {
+    "typescript": "^3.4.5",
+    "typescript-deno-plugin": "^1.2.4"
+  }
+}

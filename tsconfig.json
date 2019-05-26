@@ -12,23 +12,9 @@
     "resolveJsonModule": true,
     "plugins": [
       {
-        "name": "deno_ls_plugin"
+        "name": "typescript-deno-plugin"
       }
     ],
     "target": "esnext",
-    "paths": {
-      "deno": [
-        "../../../../../.deno/deno.d.ts"
-      ],
-      "https://*": [
-        "../../../../../.deno/deps/https/*"
-      ],
-      "http://*": [
-        "../../../../../.deno/deps/http/*"
-      ]
-    }
-  },
-  "include": [
-    "./**/*.ts"
-  ]
+  }
 }
