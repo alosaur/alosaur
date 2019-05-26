@@ -12,7 +12,7 @@ export function getAction(routes: any[], method: string, url: string): {func:Fun
   ,[]);
   
   /// '/home/test/:id/test' => \/home\/test\/[A-Za-z1-9]{1,}\/test
-  const getRouteParamPatern = route => route.replace(/\/\:[A-Za-z1-9]{1,}/ig, '/[A-Za-z1-9]{1,}').replace(/\//g, '\\/');
+  const getRouteParamPatern = route => route.replace(/\/\:[^/]{1,}/ig, '/[^/]{1,}').replace(/\//g, '\\/');
 
   let route = null;
   const routeParams = {};
