@@ -84,6 +84,10 @@ export class App {
     }
 
     private registerControllers(controllers: any[] = []) {
+
+        // TODO: add two route Map (with route params / exact match)
+        // example: new Map(); key = route, value = object
+
         controllers.forEach(controller => {
             const actions = getMetadataArgsStorage().actions.filter(action => action.target === controller.target);
             const params = getMetadataArgsStorage().params.filter(param => param.target === controller.target);
@@ -92,7 +96,7 @@ export class App {
             this.classes.push(obj);
             
             console.log(`register Controller: `, obj.name || obj.constructor.name);
-
+            
             actions.forEach(action => {
                 const metaRoute = {
                     route: `${controller.route}${action.route}`,
@@ -106,6 +110,4 @@ export class App {
            
         });
     }
-    
-    
   }

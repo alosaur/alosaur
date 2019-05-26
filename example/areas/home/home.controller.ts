@@ -6,6 +6,7 @@ import { Req } from '../../../src/decorator/Req.ts';
 import { Res } from '../../../src/decorator/Res.ts';
 import { Post } from '../../../src/decorator/Post.ts';
 import { Body } from '../../../src/decorator/Body.ts';
+import { Param } from '../../../src/decorator/Param.ts';
 
 @Controller('/home')
 export class HomeController {
@@ -25,8 +26,16 @@ export class HomeController {
     return Content('test');
   }
   @Get('/test/:id')
-  gerTestOne() {
-    return Content('id');
+  gerParamId(@Param('id') id) {
+    return Content(id);
+  }
+  @Get('/test/:id/:name')
+  gerParamIdName(@Param('id') id, @Param('name') name) {
+    return Content(`${id} ${name}`);
+  }
+  @Get('/test/:id/:name/detail')
+  gerParamIdNameDetail(@Param('id') id, @Param('name') name) {
+    return Content(`${id} ${name} detail`);
   }
   @Post('/post')
   post(@Body() body, @QueryParam('name') name: string) {

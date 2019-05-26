@@ -1,6 +1,14 @@
 import { getCookies, ServerRequest } from '../package.ts';
 
-export async function getActionParams(req: ServerRequest, res, route): Promise<string[]> {
+export async function getActionParams(
+  req: ServerRequest,
+  res: any,
+  route: {
+    func: Function;
+    params: any[],
+    routeParams?: Object}
+  ): Promise<string[]> {
+
   const args = [];
   // const body 
   const queryParams = findSearchParams(req.url);
@@ -35,6 +43,13 @@ export async function getActionParams(req: ServerRequest, res, route): Promise<s
       case 'response':
         args.push(res);
         break;
+      case 'route-param':
+          if(route.routeParams){
+            args.push(route.routeParams[param.name]);
+          } else {
+            args.push(null);
+          }
+          break;
       default:
         args.push(null);
         break;

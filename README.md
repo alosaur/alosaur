@@ -9,7 +9,7 @@ alosaur - deno web framework 🦖
 * [ ] Add decorators for controller action 
 * * [x] `@QueryParam`
 * * [ ] `@QueryParams` all query params to object
-* * [ ] `@Param` one param from url, ex: `/:id`
+* * [x] `@Param` one param from url, ex: `/:id`
 * * [x] `@Body`
 * * [x] `@Cookie`
 * * [x] `@Req`
