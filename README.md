@@ -7,7 +7,7 @@ alosaur - deno web framework 🦖
 * [ ] Add template parser view
 * [x] Add return value JSON
 * * [x] `@QueryParam`
-* * [x] `@Param` one param from url, ex: `/:id`
+* * [x] `@Param` param from url: `/:id`
 * * [x] `@Body`
 * * [x] `@Cookie`
 * * [x] `@Req`
