@@ -31,6 +31,7 @@ export * from "./decorator/Get.ts";
 export * from "./decorator/Post.ts";
 export * from "./decorator/Patch.ts";
 export * from "./decorator/Put.ts";
+export * from "./decorator/Delete.ts";
 
 // Action decorators
 export * from "./decorator/Cookie.ts";
