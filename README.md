@@ -16,7 +16,7 @@ alosaur - deno web framework 🦖
 * * [x] `@Res`
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
 * [ ] Add middleware
-* [ ] Add static routes
+* [ ] Add serve static files in AppSettings
 * [ ] Add websockets
 * [ ] Add DI
 * [ ] Add std exception filters
