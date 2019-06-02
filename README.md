@@ -22,8 +22,6 @@ alosaur - deno web framework 🦖
 * [ ] Add std exception filters
 * [ ] Add validators
 * [ ] Add microservice connector with wasm
-* [ ] Add example with wasm
-* [ ] Add example with sql drivers
 * [ ] Add benchmarks
 * [ ] Add docs and more examples ;)
 
@@ -34,3 +32,8 @@ alosaur - deno web framework 🦖
 * [ ] Add CLI with schematics (alosaur/cli)
 * [ ] Add validator decorators
 * [ ] Add porting TypeORM to deno
+
+## Examples
+
+* [ ] Add example with wasm
+* [ ] Add example with sql drivers
