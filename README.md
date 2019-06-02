@@ -14,6 +14,7 @@ alosaur - deno web framework 🦖
 * * [x] `@Cookie`
 * * [x] `@Req`
 * * [x] `@Res`
+* * [ ] `@Cashe` cashe to actions {duration: number} number in ms
 * [ ] Add middleware
 * [ ] Add websockets
 * [ ] Add DI
