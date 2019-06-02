@@ -4,8 +4,6 @@
 
 export * from "./decorator/Controller.ts";;
 export * from "./decorator/Get.ts";
-export * from "./decorator/Head.ts";
-export * from "./decorator/JsonController.ts";
 export * from "./decorator/Patch.ts";
 export * from "./decorator/Post.ts";
 export * from "./decorator/Put.ts";
@@ -110,5 +108,5 @@ export class App {
             });
            
         });
-    }
   }
+}
