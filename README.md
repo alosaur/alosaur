@@ -32,3 +32,5 @@ alosaur - deno web framework 🦖
 
 * [ ] Add new angular template parser
 * [ ] Add CLI with schematics (alosaur/cli)
+* [ ] Add validators decorators
+* [ ] Add porting TypeORM to deno
