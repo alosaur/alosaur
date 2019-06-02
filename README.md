@@ -16,6 +16,7 @@ alosaur - deno web framework 🦖
 * * [x] `@Res`
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
 * [ ] Add middleware
+* [ ] Add static routes
 * [ ] Add websockets
 * [ ] Add DI
 * [ ] Add std exception filters
@@ -25,3 +26,9 @@ alosaur - deno web framework 🦖
 * [ ] Add example with sql drivers
 * [ ] Add benchmarks
 * [ ] Add docs and more examples ;)
+
+
+## Plugins & modules
+
+* [ ] Add new angular template parser
+* [ ] Add CLI with schematics (alosaur/cli)
