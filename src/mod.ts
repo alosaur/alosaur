@@ -49,64 +49,79 @@ import { getActionParams } from "./route/get-action-params.ts";
 const global = {};
 
 export function getMetadataArgsStorage(): MetadataArgsStorage {
-    if (!(global as any).routingControllersMetadataArgsStorage)
-        (global as any).routingControllersMetadataArgsStorage = new MetadataArgsStorage();
+  if (!(global as any).routingControllersMetadataArgsStorage)
+    (global as any).routingControllersMetadataArgsStorage = new MetadataArgsStorage();
 
-    return (global as any).routingControllersMetadataArgsStorage;
-}
-export interface AreaContr {
-    controllers:any[];
+  return (global as any).routingControllersMetadataArgsStorage;
 }
 
 export interface AppSettings {
-    area: AreaContr;
+  areas: Function[];
 }
 export class App {
-    private routes: any[] = [];
-    private classes: any[] = [];
-    constructor(settings: AppSettings) {
-      this.registerControllers(getMetadataArgsStorage().controllers);
-    }
-  
-    async listen(host: string = '0.0.0.0', port: number = 8000) {
-      const s = serve(`${host}:${port}`);
-      console.log(`Server start in ${host}:${port}`);
-      for await (const req of s) {
-        const res: Response = {};
-        const route = getAction(this.routes, req.method, req.url);
-        const args = await getActionParams(req, res, route);
-        req.respond(route.func(...args));
-      }
-    }
-    private addRoute(route: any) {
-      this.routes.push(route);
-    }
+  private routes: any[] = [];
+  private classes: any[] = [];
+  constructor(settings: AppSettings) {
+    const metadata = getMetadataArgsStorage();
+    this.registerAreas(metadata);
+    this.registerControllers(metadata.controllers);
+  }
 
-    private registerControllers(controllers: any[] = []) {
+  async listen(host: string = '0.0.0.0', port: number = 8000) {
+    const s = serve(`${host}:${port}`);
+    console.log(`Server start in ${host}:${port}`);
+    for await (const req of s) {
+      const res: Response = {};
+      const route = getAction(this.routes, req.method, req.url);
+      const args = await getActionParams(req, res, route);
+      req.respond(route.func(...args));
+    }
+  }
+  private addRoute(route: any) {
+    this.routes.push(route);
+  }
 
-        // TODO: add two route Map (with route params / exact match)
-        // example: new Map(); key = route, value = object
-
-        controllers.forEach(controller => {
-            const actions = getMetadataArgsStorage().actions.filter(action => action.target === controller.target);
-            const params = getMetadataArgsStorage().params.filter(param => param.target === controller.target);
-            // TODO: if obj not in classes
-            const obj = new controller.target();
-            this.classes.push(obj);
-            
-            console.log(`register Controller: `, obj.name || obj.constructor.name);
-            
-            actions.forEach(action => {
-                const metaRoute = {
-                    route: `${controller.route}${action.route}`,
-                    action: obj[action.method],
-                    method: action.type,
-                    params: params.filter(param => param.method === action.method)
-                  };
-                console.log(`register route: `, metaRoute.route);
-                this.addRoute(metaRoute);
-            });
-           
+  // Add area to controllers
+  private registerAreas(metadata: MetadataArgsStorage) {
+    metadata.controllers.map(c => {
+      if(c.area == null){
+        const area: any = metadata.areas.find(area => {
+          return !!area.controllers.find(areaController => areaController === c.target);
         });
+        c.area = area;
+      }
+      return c;
+    });
+  }
+
+  private registerControllers(controllers: any[] = []) {
+
+    // TODO: add two route Map (with route params / exact match)
+    // example: new Map(); key = route, value = object
+
+    controllers.forEach(controller => {
+      const actions = getMetadataArgsStorage().actions.filter(action => action.target === controller.target);
+      const params = getMetadataArgsStorage().params.filter(param => param.target === controller.target);
+      // TODO: if obj not in classes
+      const obj = new controller.target();
+      this.classes.push(obj);
+
+      console.log(`register Controller: `, obj.name || obj.constructor.name);
+      let areaRoute = ``;
+      if(controller.area.baseRoute){
+        areaRoute = controller.area.baseRoute
+      }
+      actions.forEach(action => {
+        const metaRoute = {
+          route: `${areaRoute}${controller.route}${action.route}`,
+          action: obj[action.method],
+          method: action.type,
+          params: params.filter(param => param.method === action.method)
+        };
+        console.log(`register route: `, metaRoute.route);
+        this.addRoute(metaRoute);
+      });
+
+    });
   }
 }

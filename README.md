@@ -6,6 +6,8 @@ alosaur - deno web framework 🦖
 
 * [ ] Add render views: [dejs](https://github.com/syumai/dejs), [angular parser]()
 * [x] Add return value JSON
+* Add decorators:
+* * [x] `@Area`
 * * [x] `@QueryParam`
 * * [x] `@Param` param from url: `/:id`
 * * [x] `@Body`

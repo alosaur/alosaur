@@ -1,3 +1,5 @@
+import { AreaMetadataArgs } from "./area.ts";
+
 export class ControllerMetadata {
   actions: [];
   target: Function;
@@ -13,6 +15,8 @@ export class ControllerMetadata {
  * Controller metadata used to storage information about registered controller.
  */
 export interface ControllerMetadataArgs {
+
+  area: AreaMetadataArgs;
 
   /**
    * Indicates object which is used by this controller.

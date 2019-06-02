@@ -1,11 +1,16 @@
 import { getMetadataArgsStorage } from "../mod.ts";
-
-export function Area(baseRoute?: string): Function {
+export interface AreaConfig {
+    baseRoute?: string;
+    // providers?: any[]; TODO: add DI
+    controllers?: Function[];
+}
+export function Area(config?: AreaConfig): Function {
     return function (object: Function) {
         getMetadataArgsStorage().areas.push({
             type: "area",
             target: object,
-            route: baseRoute
+            controllers: config.controllers,
+            baseRoute: config.baseRoute
         });
     };
 }
