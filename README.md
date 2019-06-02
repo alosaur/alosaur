@@ -14,7 +14,7 @@ alosaur - deno web framework 🦖
 * * [x] `@Cookie`
 * * [x] `@Req`
 * * [x] `@Res`
-* [ ] Add middlewars
+* [ ] Add middleware
 * [ ] Add websockets
 * [ ] Add DI
 * [ ] Add std exception filters
