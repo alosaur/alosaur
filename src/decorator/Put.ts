@@ -19,7 +19,7 @@ export function Put(route?: string): Function;
 export function Put(route?: string|RegExp): Function {
     return function (object: Object, methodName: string) {
         getMetadataArgsStorage().actions.push({
-            type: "put",
+            type: "PUT",
             target: object.constructor,
             method: methodName,
             route: route

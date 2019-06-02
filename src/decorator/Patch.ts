@@ -19,7 +19,7 @@ export function Patch(route?: string): Function;
 export function Patch(route?: string|RegExp): Function {
     return function (object: Object, methodName: string) {
         getMetadataArgsStorage().actions.push({
-            type: "patch",
+            type: "PATCH",
             target: object.constructor,
             method: methodName,
             route: route
