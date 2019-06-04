@@ -3,7 +3,7 @@ import { MidlwareTarget } from '../../src/models/middlware-target.ts';
 
 @Middlware(new RegExp('/'))
 export class Log implements MidlwareTarget {
-    num: Date;
+    date: Date;
     onPreRequest(request: any, responce: any) {
         return new Promise((res,rej) => {
             this.num = new Date();
@@ -12,7 +12,7 @@ export class Log implements MidlwareTarget {
     }
     onPostRequest(request: any, responce: any) {
         return new Promise((resolve,rej) => {
-            console.log(new Date().getTime() - this.num.getTime());
+            console.log(new Date().getTime() - this.date.getTime());
             resolve();
         });
     }
