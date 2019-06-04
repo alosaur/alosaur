@@ -6,7 +6,7 @@ export class Log implements MidlwareTarget {
     date: Date;
     onPreRequest(request: any, responce: any) {
         return new Promise((res,rej) => {
-            this.num = new Date();
+            this.date = new Date();
             res();
         });
     }
