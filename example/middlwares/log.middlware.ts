@@ -1,8 +1,8 @@
 import { Middlware } from '../../src/decorator/Middlware.ts';
-import { MidlwareTarget } from '../../src/models/middlware-target.ts';
+import { MiddlwareTarget } from '../../src/models/middlware-target.ts';
 
 @Middlware(new RegExp('/'))
-export class Log implements MidlwareTarget {
+export class Log implements MiddlwareTarget {
     date: Date;
     onPreRequest(request: any, responce: any) {
         return new Promise((res,rej) => {
