@@ -14,8 +14,11 @@ alosaur - deno web framework 🦖
 * * [x] `@Cookie`
 * * [x] `@Req`
 * * [x] `@Res`
+* * [x] `@Res`
+* * [x] `@Middleware with regex route`
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
-* [ ] Add middleware
+* [x] Add middleware
+* [ ] Add static middleware (example: app.useStatic)
 * [ ] Add serve static files in AppSettings
 * [ ] Add websockets
 * [ ] Add DI

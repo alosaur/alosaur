@@ -57,14 +57,16 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
 
 export interface AppSettings {
   areas: Function[];
+  middlewares?: Function[];
 }
 export class App {
   private routes: any[] = [];
   private classes: any[] = [];
+  private metadata: MetadataArgsStorage;
   constructor(settings: AppSettings) {
-    const metadata = getMetadataArgsStorage();
-    this.registerAreas(metadata);
-    this.registerControllers(metadata.controllers);
+    this.metadata = getMetadataArgsStorage();
+    this.registerAreas(this.metadata);
+    this.registerControllers(this.metadata.controllers);
   }
 
   async listen(host: string = '0.0.0.0', port: number = 8000) {
@@ -72,11 +74,26 @@ export class App {
     console.log(`Server start in ${host}:${port}`);
     for await (const req of s) {
       const res: Response = {};
+
+      // Get middlewares in request
+      const middlewares = this.metadata.middlewares.filter(m => m.route.test(req.url));
+      for (const middleware of middlewares) {
+        await middleware.target.onPreRequest(req, res);
+      }
+      
       const route = getAction(this.routes, req.method, req.url);
       const args = await getActionParams(req, res, route);
-      req.respond(route.func(...args));
+
+      const result = await route.func(...args);
+
+      for (const middleware of middlewares) {
+        await middleware.target.onPostRequest(req, result);
+      }
+
+      req.respond(result);
     }
   }
+
   private addRoute(route: any) {
     this.routes.push(route);
   }

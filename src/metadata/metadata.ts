@@ -1,11 +1,16 @@
 import { ControllerMetadataArgs } from './controller.ts';
 import { AreaMetadataArgs } from './area.ts';
+import { MiddlewareMetadataArgs } from './middleware.ts';
 /**
 * Storage all metadatas read from decorators.
 */
 export class MetadataArgsStorage {
   /**
-   * Register areas
+   * Registered middlewares
+   */
+  middlewares: MiddlewareMetadataArgs[] = [];
+  /*
+   * Registered areas
    */
   areas: AreaMetadataArgs[] = [];
   /**
