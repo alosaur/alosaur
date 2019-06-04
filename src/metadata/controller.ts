@@ -16,7 +16,7 @@ export class ControllerMetadata {
  */
 export interface ControllerMetadataArgs {
 
-  area: AreaMetadataArgs;
+  area?: AreaMetadataArgs;
 
   /**
    * Indicates object which is used by this controller.
