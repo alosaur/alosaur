@@ -21,7 +21,7 @@ alosaur - deno web framework 🦖
 * [ ] Add static middleware (example: app.useStatic)
 * [ ] Add serve static files in AppSettings
 * [ ] Add websockets
-* [ ] Add DI
+* [x] Add DI
 * [ ] Add std exception filters
 * [ ] Add validators
 * [ ] Add microservice connector with wasm

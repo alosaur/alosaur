@@ -41,6 +41,8 @@ export * from "./decorator/Res.ts";
 // Http exports
 export { Response, ServerRequest } from "./package.ts";
 
+// DI
+export * from "./injection/index.ts";
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve, Response } from "./package.ts";
