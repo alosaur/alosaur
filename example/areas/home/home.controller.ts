@@ -1,4 +1,9 @@
-import { Controller, Content, Response, ServerRequest } from "../../../src/mod.ts";
+import {
+  Controller,
+  Content,
+  Response,
+  ServerRequest
+} from '../../../src/mod.ts';
 import { Get } from '../../../src/decorator/Get.ts';
 import { QueryParam } from '../../../src/decorator/QueryParam.ts';
 import { Cookie } from '../../../src/decorator/Cookie.ts';
@@ -8,17 +13,24 @@ import { Post } from '../../../src/decorator/Post.ts';
 import { Body } from '../../../src/decorator/Body.ts';
 import { Param } from '../../../src/decorator/Param.ts';
 
+
 @Controller('/home')
 export class HomeController {
+  constructor() {}
   @Get('/text')
-  text(@QueryParam('name') name: string,
-       @QueryParam('test') test: string,
-       @Cookie('username') username: string  
-       ) {
+  text(
+    @QueryParam('name') name: string,
+    @QueryParam('test') test: string,
+    @Cookie('username') username: string
+  ) {
     return Content(`Hello world, ${name} ${test} ${username}`);
   }
   @Get('/json')
-  json(@Req() request: ServerRequest, @Res() response: Response, @QueryParam('name') name: string) {
+  json(
+    @Req() request: ServerRequest,
+    @Res() response: Response,
+    @QueryParam('name') name: string
+  ) {
     return Content(response);
   }
   @Get('/test')

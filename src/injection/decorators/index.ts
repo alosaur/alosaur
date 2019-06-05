@@ -1,5 +1,5 @@
-export {default as autoInjectable} from "./auto-injectable.ts";
-export {default as inject} from "./inject.ts";
-export {default as injectable} from "./injectable.ts";
-export {default as registry} from "./registry.ts";
-export {default as singleton} from "./singleton.ts";
+export {default as AutoInjectable} from "./auto-injectable.ts";
+export {default as Inject} from "./inject.ts";
+export {default as Injectable} from "./injectable.ts";
+export {default as Registry} from "./registry.ts";
+export {default as Singleton} from "./singleton.ts";
