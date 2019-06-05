@@ -1,5 +1,5 @@
-import { Middlware } from '../../src/decorator/Middlware.ts';
-import { MiddlwareTarget } from '../../src/models/middlware-target.ts';
+import { Middlware } from '../../../src/decorator/Middlware.ts';
+import { MiddlwareTarget } from '../../../src/models/middlware-target.ts';
 
 @Middlware(new RegExp('/'))
 export class Log implements MiddlwareTarget {

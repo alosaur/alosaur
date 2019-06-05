@@ -48,6 +48,7 @@ import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve, Response } from "./package.ts";
 import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
+import { typeInfo } from './injection/dependency-container.ts';
 const global = {};
 
 export function getMetadataArgsStorage(): MetadataArgsStorage {
@@ -122,7 +123,7 @@ export class App {
       const actions = getMetadataArgsStorage().actions.filter(action => action.target === controller.target);
       const params = getMetadataArgsStorage().params.filter(param => param.target === controller.target);
       // TODO: if obj not in classes
-      const obj = new controller.target();
+      const obj = new controller.target(...typeInfo.get(controller.target));
       this.classes.push(obj);
 
       console.log(`register Controller: `, obj.name || obj.constructor.name);

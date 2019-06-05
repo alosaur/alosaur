@@ -1,5 +1,5 @@
-import { Controller, Content, Response, ServerRequest } from "../../../src/mod.ts";
-import { Get } from '../../../src/decorator/Get.ts';
+import { Controller, Content } from "../../../../src/mod.ts";
+import { Get } from '../../../../src/decorator/Get.ts';
 
 @Controller('/info')
 export class InfoController {
