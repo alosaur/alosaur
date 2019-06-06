@@ -40,3 +40,4 @@ alosaur - deno web framework 🦖
 
 * [ ] Add example with wasm
 * [ ] Add example with sql drivers
+* [ ] Add basic example in Docker container 
