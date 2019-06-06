@@ -14,7 +14,6 @@ alosaur - deno web framework 🦖
 * * [x] `@Cookie`
 * * [x] `@Req`
 * * [x] `@Res`
-* * [x] `@Res`
 * * [x] `@Middleware` with regex route
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
 * [x] Add middleware
