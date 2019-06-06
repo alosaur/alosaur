@@ -18,8 +18,7 @@ alosaur - deno web framework 🦖
 * * [x] `@Middleware` with regex route
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
 * [x] Add middleware
-* [ ] Add static middleware (example: app.useStatic)
-* [ ] Add serve static files in AppSettings
+* [x] Add static middleware (example: app.useStatic)
 * [ ] Add websockets
 * [x] Add DI
 * [ ] Add std exception filters
