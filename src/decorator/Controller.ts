@@ -12,7 +12,6 @@ import { typeInfo } from '../injection/dependency-container.ts';
 export function Controller(baseRoute?: string): Function {
     return function (object: any) {
         typeInfo.set(object, getParamInfo(object));
-        container.resolve(object);
         getMetadataArgsStorage().controllers.push({
             type: "default",
             target: object,

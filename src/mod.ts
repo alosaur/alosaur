@@ -46,9 +46,9 @@ export * from "./injection/index.ts";
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve, Response } from "./package.ts";
-import { getAction } from "./route/get-action.ts";
+import { getAction, notFoundAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
-import { typeInfo } from './injection/dependency-container.ts';
+import { container } from './injection/index.ts';
 const global = {};
 
 export function getMetadataArgsStorage(): MetadataArgsStorage {
@@ -80,15 +80,25 @@ export class App {
 
       // Get middlewares in request
       const middlewares = this.metadata.middlewares.filter(m => m.route.test(req.url));
+
+      // Resolve every pre middleware
       for (const middleware of middlewares) {
         await middleware.target.onPreRequest(req, res);
       }
       
-      const route = getAction(this.routes, req.method, req.url);
-      const args = await getActionParams(req, res, route);
+      const action = getAction(this.routes, req.method, req.url);
 
-      const result = await route.func(...args);
+      if(action === null){
+        req.respond(notFoundAction());
+      }
 
+      // Get arguments in this action
+      const args = await getActionParams(req, res, action);
+      
+      // Get Action result
+      const result = await action.target[action.actionName](...args);
+      
+      // Resolve every post middleware
       for (const middleware of middlewares) {
         await middleware.target.onPostRequest(req, result);
       }
@@ -122,11 +132,13 @@ export class App {
     controllers.forEach(controller => {
       const actions = getMetadataArgsStorage().actions.filter(action => action.target === controller.target);
       const params = getMetadataArgsStorage().params.filter(param => param.target === controller.target);
+      
       // TODO: if obj not in classes
-      const obj = new controller.target(...typeInfo.get(controller.target));
+      // resolve from DI
+      const obj = container.resolve(controller.target);
       this.classes.push(obj);
 
-      console.log(`register Controller: `, obj.name || obj.constructor.name);
+      console.log(`register Controller: `, controller.target.name || controller.target.constructor.name);
       let areaRoute = ``;
       if(controller.area.baseRoute){
         areaRoute = controller.area.baseRoute
@@ -134,14 +146,14 @@ export class App {
       actions.forEach(action => {
         const metaRoute = {
           route: `${areaRoute}${controller.route}${action.route}`,
-          action: obj[action.method],
+          target: obj,
+          action: action.method,
           method: action.type,
           params: params.filter(param => param.method === action.method)
         };
         console.log(`register route: `, metaRoute.route);
         this.addRoute(metaRoute);
       });
-
     });
   }
 }

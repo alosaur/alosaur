@@ -4,7 +4,7 @@ export async function getActionParams(
   req: ServerRequest,
   res: any,
   route: {
-    func: Function;
+    actionName: string;
     params: any[],
     routeParams?: Object}
   ): Promise<string[]> {

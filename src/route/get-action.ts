@@ -1,6 +1,6 @@
 import { Content } from "../renderer/Content.ts";
 
-export function getAction(routes: any[], method: string, url: string): {func:Function; params: any[], routeParams?: Object} {
+export function getAction(routes: any[], method: string, url: string): {actionName: string; params: any[], routeParams?: Object, target?: any, } {
   const pathname =  new URL(url, '/').pathname;
   
   /// '/home/test/:id/test' => [{i: 3, el: "id"}]
@@ -37,18 +37,15 @@ export function getAction(routes: any[], method: string, url: string): {func:Fun
   
   if(route) {
     return {
-      func: route.action,
+      target: route.target,
+      actionName: route.action,
       params: route.params,
       routeParams
     };
-  } else {
-    return {
-      func: notFoundAction,
-      params: []
-    }
   }
+  return null;
 }
 
-function notFoundAction(){
+export function notFoundAction(){
   return Content('Not found', 404);
 }
