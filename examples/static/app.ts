@@ -22,7 +22,7 @@ const app = new App({
 app.useStatic({
     root: `${Deno.cwd()}/examples/static/www`,
     index: "index.html",
-    baseRoute: '/www/'
+    baseRoute: '/www/' // or undefined for default route /
 });
 app.listen();
 

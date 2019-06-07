@@ -201,7 +201,9 @@ export class App {
       return filePath ? true : false;
     } catch (error) {
       // TODO: exception
-      console.warn(error);
+      if (this.staticConfig.baseRoute) {
+        console.warn(error);
+      }
       return null;
     }
   }
