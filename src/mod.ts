@@ -21,6 +21,7 @@ export * from './http-error/UnauthorizedError.ts';
 
 // Renderer
 export * from './renderer/Content.ts';
+export * from './renderer/View.ts';
 
 // Decorators
 export * from './decorator/Area.ts';
@@ -44,6 +45,9 @@ export { Response, ServerRequest } from './package.ts';
 // DI
 export * from './injection/index.ts';
 
+// Interfaces
+export * from './models/view-render-config.ts';
+
 import { MetadataArgsStorage } from './metadata/metadata.ts';
 import { serve, Response } from './package.ts';
 import { getAction, notFoundAction } from './route/get-action.ts';
@@ -51,6 +55,7 @@ import { getActionParams } from './route/get-action-params.ts';
 import { container } from './injection/index.ts';
 import { send } from './static/send.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
+import { ViewRenderConfig } from './models/view-render-config.ts';
 
 const global = {};
 
@@ -61,6 +66,9 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
   return (global as any).routingControllersMetadataArgsStorage;
 }
 
+export function getViewRenderConfig(): ViewRenderConfig{
+  return (global as any).viewRenderConfig;
+}
 export interface AppSettings {
   areas: Function[];
   middlewares?: Function[];
@@ -70,6 +78,7 @@ export class App {
   private classes: any[] = [];
   private metadata: MetadataArgsStorage;
   private staticConfig: StaticFilesConfig;
+  private viewRenderConfig: ViewRenderConfig;
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
     this.registerAreas(this.metadata);
@@ -119,6 +128,10 @@ export class App {
 
   public useStatic(config: StaticFilesConfig) {
     this.staticConfig = config;
+  }
+  public useViewRender(config: ViewRenderConfig) {
+    this.viewRenderConfig = config;
+    (global as any).viewRenderConfig = config;
   }
 
   private addRoute(route: any) {

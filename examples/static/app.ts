@@ -13,7 +13,6 @@ export class HomeController {
 })
 export class HomeArea {
 }
-console.log(Deno.cwd());
 
 const app = new App({
   areas: [HomeArea]
