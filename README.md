@@ -18,6 +18,12 @@ alosaur - deno web framework 🦖
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
 * [x] Add middleware
 * [x] Add static middleware (example: app.useStatic)
+* [ ] Add CORS middleware 
+```ts
+app.useCors(builder => builder.WithOrigins("http://localhost:64592")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod());
+```
 * [ ] Add websockets
 * [x] Add DI
 * [ ] Add std exception filters
