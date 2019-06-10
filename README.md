@@ -20,7 +20,7 @@ alosaur - deno web framework 🦖
 * [x] Add static middleware (example: app.useStatic)
 * [ ] Add CORS middleware 
 ```ts
-app.useCors(builder => builder.WithOrigins("http://localhost:64592")
+app.useCors(builder => builder.WithOrigins("http://localhost:8000")
                             .AllowAnyHeader()
                             .AllowAnyMethod());
 ```
