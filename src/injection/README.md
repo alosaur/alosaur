@@ -5,16 +5,16 @@ constructor injection. [TSyringe](https://github.com/microsoft/tsyringe)
 
 - [Installation](#installation)
 - [API](#api)
-  - [injectable()](#injectable)
-  - [singleton()](#singleton)
-  - [autoInjectable()](#autoinjectable)
-  - [inject()](#inject)
+  - [Injectable()](#injectable)
+  - [Singleton()](#singleton)
+  - [AutoInjectable()](#autoinjectable)
+  - [Inject()](#inject)
 - [Full Examples](#full-examples)
 - [Contributing](#contributing)
 
 ## API
 
-### injectable()
+### Injectable()
 
 Class decorator factory that allows the class' dependencies to be injected at
 runtime.
@@ -22,9 +22,9 @@ runtime.
 #### Usage
 
 ```typescript
-import {injectable} from "https://deno.land/x/alosaur/mod.ts";
+import {Injectable} from "https://deno.land/x/alosaur/mod.ts";
 
-@injectable()
+@Injectable()
 class Foo {
   constructor(private database: Database) {}
 }
@@ -36,7 +36,7 @@ import {Foo} from "./foo";
 const instance = container.resolve(Foo);
 ```
 
-### singleton()
+### Singleton()
 
 Class decorator factory that registers the class as a singleton within the
 global container.
@@ -44,9 +44,9 @@ global container.
 #### Usage
 
 ```typescript
-import {singleton} from "https://deno.land/x/alosaur/mod.ts";
+import {Singleton} from "https://deno.land/x/alosaur/mod.ts";
 
-@singleton()
+@Singleton()
 class Foo {
   constructor() {}
 }
@@ -58,7 +58,7 @@ import {Foo} from "./foo";
 const instance = container.resolve(Foo);
 ```
 
-### autoInjectable()
+### AutoInjectable()
 
 Class decorator factory that replaces the decorated class' constructor with
 a parameterless constructor that has dependencies auto-resolved.
@@ -68,9 +68,9 @@ a parameterless constructor that has dependencies auto-resolved.
 #### Usage
 
 ```typescript
-import {autoInjectable} from "https://deno.land/x/alosaur/mod.ts";
+import {AutoInjectable} from "https://deno.land/x/alosaur/mod.ts";
 
-@autoInjectable()
+@AutoInjectable()
 class Foo {
   constructor(private database?: Database) {}
 }
@@ -84,7 +84,7 @@ const instance = new Foo();
 Notice how in order to allow the use of the empty constructor `new Foo()`, we
 need to make the parameters optional, e.g. `database?: Database`
 
-### inject()
+### Inject()
 
 Parameter decorator factory that allows for interface and other non-class
 information to be stored in the constructor's metadata
@@ -92,15 +92,15 @@ information to be stored in the constructor's metadata
 #### Usage
 
 ```typescript
-import {injectable, inject} from "https://deno.land/x/alosaur/mod.ts";
+import {Injectable, Inject} from "https://deno.land/x/alosaur/mod.ts";
 
 interface Database {
   // ...
 }
 
-@injectable()
+@Injectable()
 class Foo {
-  constructor(@inject("Database") private database?: Database) {}
+  constructor(@Inject("Database") private database?: Database) {}
 }
 ```
 
@@ -119,9 +119,9 @@ export class Foo {}
 ```typescript
 // Bar.ts
 import {Foo} from "./Foo";
-import {injectable} from "https://deno.land/x/alosaur/mod.ts";
+import {Injectable} from "https://deno.land/x/alosaur/mod.ts";
 
-@injectable()
+@Injectable()
 export class Bar {
   constructor(public myFoo: Foo) {}
 }
@@ -139,7 +139,7 @@ const myBar = container.resolve(Bar);
 ### Example with interfaces
 
 Interfaces don't have type information at runtime, so we need to decorate them
-with `@inject(...)` so the container knows how to resolve them.
+with `@Inject(...)` so the container knows how to resolve them.
 
 ```typescript
 // SuperService.ts
@@ -158,11 +158,11 @@ export class TestService implements SuperService {
 
 ```typescript
 // Client.ts
-import {injectable, inject} from "https://deno.land/x/alosaur/mod.ts";
+import {Injectable, Inject} from "https://deno.land/x/alosaur/mod.ts";
 
-@injectable()
+@Injectable()
 export class Client {
-  constructor(@inject("SuperService") private service: SuperService) {}
+  constructor(@Inject("SuperService") private service: SuperService) {}
 }
 ```
 
