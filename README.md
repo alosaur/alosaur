@@ -46,6 +46,6 @@ app.useCors(builder => builder.WithOrigins("http://localhost:8000")
 * [x] Add di example
 * [x] Add static serve example
 * [x] Add dejs view render example
+* [x] Add example with sql drivers (postgres)
 * [ ] Add example with wasm
-* [ ] Add example with sql drivers
 * [ ] Add basic example in Docker container 
