@@ -36,6 +36,9 @@ export * from './decorator/Res.ts';
 // Http exports
 export { Response, ServerRequest } from './package.ts';
 
+// Standart middlwares
+export { CorsBuilder } from './middlewares/cors-builder.ts';
+
 // DI
 export * from './injection/index.ts';
 
@@ -50,6 +53,7 @@ import { container } from './injection/index.ts';
 import { send } from './static/send.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
+import { CorsBuilder } from './middlewares/cors-builder.ts';
 
 const global = {};
 
@@ -60,7 +64,7 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
   return (global as any).routingControllersMetadataArgsStorage;
 }
 
-export function getViewRenderConfig(): ViewRenderConfig{
+export function getViewRenderConfig(): ViewRenderConfig {
   return (global as any).viewRenderConfig;
 }
 export interface AppSettings {
@@ -126,6 +130,13 @@ export class App {
   public useViewRender(config: ViewRenderConfig) {
     this.viewRenderConfig = config;
     (global as any).viewRenderConfig = config;
+  }
+  public useCors(builder: CorsBuilder) {
+    this.metadata.middlewares.push({
+      type: 'middleware',
+      target: builder,
+      route: /\//
+    });
   }
 
   private addRoute(route: any) {

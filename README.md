@@ -15,15 +15,11 @@ alosaur - deno web framework 🦖
 * * [x] `@Req`
 * * [x] `@Res`
 * * [x] `@Middleware` with regex route
+* * [ ] `@EnableCors` for actions with custom policy: [(example)](https://docs.microsoft.com/ru-ru/aspnet/core/security/cors?view=aspnetcore-2.2#enable-cors-with-attributes)
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
 * [x] Add middleware
 * [x] Add static middleware (example: app.useStatic)
-* [ ] Add CORS middleware 
-```ts
-app.useCors(builder => builder.WithOrigins("http://localhost:8000")
-                            .AllowAnyHeader()
-                            .AllowAnyMethod());
-```
+* [x] Add CORS middleware
 * [ ] Add websockets
 * [x] Add DI
 * [ ] Add std exception filters
