@@ -2,7 +2,8 @@ import {
   Controller,
   Content,
   Response,
-  ServerRequest
+  ServerRequest,
+  ForbiddenError
 } from '../../../../src/mod.ts';
 import { Get } from '../../../../src/decorator/Get.ts';
 import { QueryParam } from '../../../../src/decorator/QueryParam.ts';
@@ -33,6 +34,14 @@ export class HomeController {
   ) {
     return Content(response);
   }
+
+
+  @Get('/error')
+  error(){
+    throw new ForbiddenError('error');
+  }
+
+
   @Get('/test')
   gerTests() {
     return Content('test');

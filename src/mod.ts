@@ -54,6 +54,7 @@ import { send } from './static/send.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
 import { CorsBuilder } from './middlewares/cors-builder.ts';
+import { Content } from './renderer/Content.ts';
 
 const global = {};
 
@@ -87,6 +88,7 @@ export class App {
     const s = serve(`${host}:${port}`);
     console.log(`Server start in ${host}:${port}`);
     for await (const req of s) {
+      try {
       const res: Response = {};
       res.headers = new Headers();
       if (await this.getStaticFile(req, res)) {
@@ -120,6 +122,9 @@ export class App {
 
           req.respond(result);
         }
+      }
+      } catch (error) {
+          req.respond(Content(error, error.httpCode || 500));
       }
     }
   }
