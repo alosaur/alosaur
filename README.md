@@ -23,7 +23,7 @@ alosaur - deno web framework 🦖
 * [x] Add DI
 * [x] Add std exceptions
 * [ ] Add websockets
-* [ ] Add validators
+* [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
 * [ ] Add benchmarks
 * [ ] Add docs and more examples ;)
