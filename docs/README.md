@@ -1,6 +1,8 @@
-## Controller
+## Simple example:
 
+Controller:
 ```typescript
+
 import { Controller, Content, Get } from 'https://deno.land/x/alosaur/mod.ts'
 
 @Controller('/home')
@@ -14,4 +16,27 @@ export class HomeController {
     return Content({"text":"test"});
   }
 }
+```
+
+Area:
+```ts
+// Area without route params
+@Area({
+  controllers: [HomeController]
+})
+export class HomeArea {
+}
+
+```
+
+
+Main app:
+```ts
+
+const app = new App({
+  areas: [HomeArea]
+});
+
+app.listen();
+
 ```
