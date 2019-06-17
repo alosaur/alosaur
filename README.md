@@ -1,5 +1,58 @@
 # alosaur
 alosaur - deno web framework 🦖
+
+Main:
+
+- **Area** or **Module** 
+- **Controller**
+- **Middlware** - prerequest and postrequest.
+- **Decorators** - for query, cookie, parametrs, routes and etc.
+- **Dependency Injection** - for all controllers by default from `microsoft/TSyringe`
+
+---
+## Simple example:
+
+Controller:
+```typescript
+
+import { Controller, Content, Get } from 'https://deno.land/x/alosaur/mod.ts'
+
+@Controller('/home')
+export class HomeController {
+  @Get('/text')
+  text() {
+    return Content("Hello world");
+  }
+  @Get('/json')
+  json() {
+    return Content({"text":"test"});
+  }
+}
+```
+
+Area:
+```ts
+// Area without route params
+@Area({
+  controllers: [HomeController]
+})
+export class HomeArea {
+}
+
+```
+
+
+Main app:
+```ts
+
+const app = new App({
+  areas: [HomeArea]
+});
+
+app.listen();
+
+```
+
 ---
 
 # TODO
