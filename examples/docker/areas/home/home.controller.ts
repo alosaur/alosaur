@@ -3,16 +3,16 @@ import {
   Content,
   Response,
   ServerRequest,
-  ForbiddenError
-} from '../../../../src/mod.ts';
-import { Get } from '../../../../src/decorator/Get.ts';
-import { QueryParam } from '../../../../src/decorator/QueryParam.ts';
-import { Cookie } from '../../../../src/decorator/Cookie.ts';
-import { Req } from '../../../../src/decorator/Req.ts';
-import { Res } from '../../../../src/decorator/Res.ts';
-import { Post } from '../../../../src/decorator/Post.ts';
-import { Body } from '../../../../src/decorator/Body.ts';
-import { Param } from '../../../../src/decorator/Param.ts';
+  ForbiddenError,
+  Get,
+  QueryParam,
+  Cookie,
+  Req,
+  Res,
+  Post,
+  Body,
+  Param
+} from 'https://deno.land/x/alosaur/mod.ts';
 
 
 @Controller('/home')

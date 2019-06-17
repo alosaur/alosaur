@@ -1,4 +1,4 @@
-import { Area } from "../../../../src/mod.ts";
+import { Area } from "https://deno.land/x/alosaur/mod.ts";
 import { InfoController } from "./info.controller.ts";
 @Area({
   baseRoute: '/test',

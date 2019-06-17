@@ -1,4 +1,4 @@
-import { Middlware } from '../../../src/decorator/Middlware.ts';
+import { Middlware } from 'https://deno.land/x/alosaur/mod.ts';
 import { MiddlwareTarget } from '../../../src/models/middlware-target.ts';
 
 @Middlware(new RegExp('/'))
