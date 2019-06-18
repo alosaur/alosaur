@@ -78,15 +78,16 @@ export class App {
   private metadata: MetadataArgsStorage;
   private staticConfig: StaticFilesConfig;
   private viewRenderConfig: ViewRenderConfig;
+
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
     this.registerAreas(this.metadata);
     this.registerControllers(this.metadata.controllers);
   }
 
-  async listen(host: string = '0.0.0.0', port: number = 8000) {
-    const s = serve(`${host}:${port}`);
-    console.log(`Server start in ${host}:${port}`);
+  async listen(address: string = '0.0.0.0:8000') {
+    const s = serve(address);
+    console.log(`Server start in ${address}`);
     for await (const req of s) {
       try {
       const res: Response = {};
