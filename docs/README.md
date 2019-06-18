@@ -1,4 +1,4 @@
-# DOCS
+# Documentations
 
 # Application examples
 
