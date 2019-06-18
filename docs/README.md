@@ -1,3 +1,5 @@
+# DOCS
+
 # Application examples
 
 - [Basic](/examples/basic) - crud exapmle with 2 areas.
