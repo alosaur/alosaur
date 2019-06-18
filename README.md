@@ -1,11 +1,11 @@
 # alosaur
-alosaur - deno web framework 🦖
 
-Main:
+alosaur - deno web framework 🦖 like Nestjs, ASP.NET MVC.
 
-- **Area** or **Module** 
-- **Controller**
-- **Middlware** - prerequest and postrequest.
+
+- **Area** - these are the modules of your application.
+- **Controller** - are responsible for controlling the flow of the application execution.
+- **Middlware** - provide a convenient mechanism for filtering HTTP requests entering your application.
 - **Decorators** - for query, cookie, parametrs, routes and etc.
 - **Dependency Injection** - for all controllers by default from `microsoft/TSyringe`
 
