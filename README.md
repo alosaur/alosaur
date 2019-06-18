@@ -10,7 +10,7 @@ alosaur - deno web framework 🦖 like Nestjs, ASP.NET MVC.
 - **Dependency Injection** - for all controllers by default from `microsoft/TSyringe`
 
 
-**[DOCS]**(/docs)
+**[DOCS](/docs)**
 
 ---
 ## Simple example:
