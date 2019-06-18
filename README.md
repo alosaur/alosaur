@@ -1,6 +1,6 @@
-# alosaur
+# Alosaur 🦖
 
-alosaur - deno web framework 🦖 like Nestjs, ASP.NET MVC.
+Alosaur - deno web framework 🦖 like Nestjs, ASP.NET MVC.
 
 
 - **Area** - these are the modules of your application.
