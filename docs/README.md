@@ -12,7 +12,6 @@
 
 ## Simple example:
 
-Controller:
 ```typescript
 import { 
   Controller,
