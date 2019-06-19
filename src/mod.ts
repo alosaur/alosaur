@@ -54,7 +54,7 @@ import { send } from './static/send.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
 import { CorsBuilder } from './middlewares/cors-builder.ts';
-import { Content } from './renderer/Content.ts';
+import { Content } from './renderer/content.ts';
 
 const global = {};
 

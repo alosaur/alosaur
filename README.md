@@ -18,7 +18,7 @@ Alosaur - deno web framework 🦖 like Nestjs, ASP.NET MVC.
 Controller:
 ```typescript
 
-import { Controller, Content, Get } from 'https://deno.land/x/alosaur/mod.ts'
+import { Controller, Content, Get } from 'https://deno.land/x/alosaur/src/mod.ts'
 
 @Controller('/home')
 export class HomeController {
