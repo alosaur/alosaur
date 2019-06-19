@@ -14,8 +14,8 @@ export * from './http-error/NotFoundError.ts';
 export * from './http-error/UnauthorizedError.ts';
 
 // Renderer
-export * from './renderer/Content.ts';
-export * from './renderer/View.ts';
+export * from './renderer/content.ts';
+export * from './renderer/view.ts';
 
 // Decorators
 export * from './decorator/Area.ts';
@@ -54,7 +54,7 @@ import { send } from './static/send.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
 import { CorsBuilder } from './middlewares/cors-builder.ts';
-import { Content } from './renderer/Content.ts';
+import { Content } from './renderer/content.ts';
 
 const global = {};
 
@@ -78,15 +78,16 @@ export class App {
   private metadata: MetadataArgsStorage;
   private staticConfig: StaticFilesConfig;
   private viewRenderConfig: ViewRenderConfig;
+
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
     this.registerAreas(this.metadata);
     this.registerControllers(this.metadata.controllers);
   }
 
-  async listen(host: string = '0.0.0.0', port: number = 8000) {
-    const s = serve(`${host}:${port}`);
-    console.log(`Server start in ${host}:${port}`);
+  async listen(address: string = '0.0.0.0:8000') {
+    const s = serve(address);
+    console.log(`Server start in ${address}`);
     for await (const req of s) {
       try {
       const res: Response = {};

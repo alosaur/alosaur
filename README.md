@@ -1,21 +1,29 @@
-# alosaur
-alosaur - deno web framework 🦖
+# Alosaur 🦖
 
-Main:
+Alosaur - deno web framework 🦖.
 
-- **Area** or **Module** 
-- **Controller**
-- **Middlware** - prerequest and postrequest.
+
+- **Area** - these are the modules of your application.
+- **Controller** - are responsible for controlling the flow of the application execution.
+- **Middlware** - provide a convenient mechanism for filtering HTTP requests entering your application.
 - **Decorators** - for query, cookie, parametrs, routes and etc.
-- **Dependency Injection** - for all controllers by default from `microsoft/TSyringe`
+- **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection))
+
+
+**[Documentation](/docs)**
 
 ---
 ## Simple example:
 
 Controller:
 ```typescript
-
-import { Controller, Content, Get } from 'https://deno.land/x/alosaur/mod.ts'
+import { 
+  Controller,
+  Content,
+  Get,
+  Area,
+  App,
+} from 'https://deno.land/x/alosaur/src/mod.ts'
 
 @Controller('/home')
 export class HomeController {
@@ -28,36 +36,42 @@ export class HomeController {
     return Content({"text":"test"});
   }
 }
-```
 
-Area:
-```ts
-// Area without route params
+// Declare module
 @Area({
   controllers: [HomeController]
 })
 export class HomeArea {
 }
 
-```
-
-
-Main app:
-```ts
-
+// Create alosaur application
 const app = new App({
   areas: [HomeArea]
 });
 
 app.listen();
-
 ```
+
+tsconfig.app.json:
+```json
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}
+```
+
+And run 
+
+`deno run -A --config ./src/tsconfig.app.json app.ts`
 
 ---
 
 # TODO
 
 * [x] Add render views: [dejs](https://github.com/syumai/dejs)
+(waiting this PR: [dejs#20](https://github.com/syumai/dejs/issues/21))
 * [x] Add return value JSON
 * Add decorators:
 * * [x] `@Area`
@@ -75,6 +89,7 @@ app.listen();
 * [x] Add CORS middleware
 * [x] Add DI
 * [x] Add std exceptions
+* [ ] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
 * [ ] Add websockets
 * [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
