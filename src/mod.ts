@@ -14,8 +14,8 @@ export * from './http-error/NotFoundError.ts';
 export * from './http-error/UnauthorizedError.ts';
 
 // Renderer
-export * from './renderer/Content.ts';
-export * from './renderer/View.ts';
+export * from './renderer/content.ts';
+export * from './renderer/view.ts';
 
 // Decorators
 export * from './decorator/Area.ts';
