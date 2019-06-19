@@ -45,7 +45,7 @@ export class HomeArea {
 ```
 
 
-Main app:
+app.ts:
 ```ts
 
 const app = new App({
@@ -55,6 +55,20 @@ const app = new App({
 app.listen();
 
 ```
+
+tsconfig.app.json:
+```json
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}
+```
+
+And run 
+
+`deno run -A --config ./src/tsconfig.app.json app.ts`
 
 ---
 
