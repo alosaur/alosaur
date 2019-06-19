@@ -32,6 +32,7 @@ export * from './decorator/QueryParam.ts';
 export * from './decorator/Body.ts';
 export * from './decorator/Req.ts';
 export * from './decorator/Res.ts';
+export * from './decorator/Param.ts';
 
 // Http exports
 export { Response, ServerRequest } from './package.ts';
