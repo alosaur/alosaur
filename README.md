@@ -1,6 +1,6 @@
 # Alosaur 🦖
 
-Alosaur - deno web framework 🦖 like Nestjs, ASP.NET MVC.
+Alosaur - deno web framework 🦖.
 
 
 - **Area** - these are the modules of your application.
@@ -36,11 +36,15 @@ export class HomeController {
     return Content({"text":"test"});
   }
 }
+
+// Declare module
 @Area({
   controllers: [HomeController]
 })
 export class HomeArea {
 }
+
+// Create alosaur application
 const app = new App({
   areas: [HomeArea]
 });
