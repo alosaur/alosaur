@@ -111,5 +111,5 @@ And run
 * [x] Add static serve example
 * [x] Add dejs view render example
 * [x] Add example with sql drivers (postgres)
+* [x] Add basic example in Docker container 
 * [ ] Add example with wasm
-* [ ] Add basic example in Docker container 
