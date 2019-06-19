@@ -17,8 +17,13 @@ Alosaur - deno web framework 🦖 like Nestjs, ASP.NET MVC.
 
 Controller:
 ```typescript
-
-import { Controller, Content, Get } from 'https://deno.land/x/alosaur/src/mod.ts'
+import { 
+  Controller,
+  Content,
+  Get,
+  Area,
+  App,
+} from 'https://deno.land/x/alosaur/src/mod.ts'
 
 @Controller('/home')
 export class HomeController {
@@ -31,29 +36,16 @@ export class HomeController {
     return Content({"text":"test"});
   }
 }
-```
-
-Area:
-```ts
-// Area without route params
 @Area({
   controllers: [HomeController]
 })
 export class HomeArea {
 }
-
-```
-
-
-app.ts:
-```ts
-
 const app = new App({
   areas: [HomeArea]
 });
 
 app.listen();
-
 ```
 
 tsconfig.app.json:
