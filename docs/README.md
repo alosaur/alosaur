@@ -2,7 +2,7 @@
 
 # Application examples
 
-- [Basic](/examples/basic) - crud exapmle with 2 areas.
+- [Basic](/examples/basic) - CRUD exapmle with 2 areas.
 - [Cors](/examples/cors) - enable cors for routes.
 - [Database](/examples/db) - example with repository service on [deno postgres driver](https://deno.land/x/postgres/mod.ts).
 - [View render](/examples/dejs) - example with **ejs** render for deno.
