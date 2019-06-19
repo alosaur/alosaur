@@ -1,0 +1,11 @@
+language: python
+
+variables:
+  DENO_VERSION: "v0.8.0"
+
+install:
+  - curl -L https://deno.land/x/install/install.sh | sh -s $(DENO_VERSION)
+  - export PATH="$HOME/.deno/bin:$PATH"
+
+script:
+  - deno run --allow-read src/test.ts

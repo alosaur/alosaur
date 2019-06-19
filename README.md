@@ -89,7 +89,7 @@ And run
 * [x] Add CORS middleware
 * [x] Add DI
 * [x] Add std exceptions
-* [ ] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
+* [x] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
 * [ ] Add websockets
 * [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
