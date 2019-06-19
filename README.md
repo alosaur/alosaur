@@ -71,6 +71,7 @@ And run
 # TODO
 
 * [x] Add render views: [dejs](https://github.com/syumai/dejs)
+(waiting this PR: [dejs#20](https://github.com/syumai/dejs/issues/21))
 * [x] Add return value JSON
 * Add decorators:
 * * [x] `@Area`
@@ -88,6 +89,7 @@ And run
 * [x] Add CORS middleware
 * [x] Add DI
 * [x] Add std exceptions
+* [ ] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
 * [ ] Add websockets
 * [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
