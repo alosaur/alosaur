@@ -7,7 +7,7 @@ Alosaur - deno web framework 🦖.
 - **Controller** - are responsible for controlling the flow of the application execution.
 - **Middlware** - provide a convenient mechanism for filtering HTTP requests entering your application.
 - **Decorators** - for query, cookie, parametrs, routes and etc.
-- **Dependency Injection** - for all controllers by default from `microsoft/TSyringe`
+- **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection))
 
 
 **[Documentation](/docs)**
