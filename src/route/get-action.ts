@@ -1,4 +1,4 @@
-import { Content } from "../renderer/Content.ts";
+import { Content } from "../renderer/content.ts";
 
 export function getAction(routes: any[], method: string, url: string): {actionName: string; params: any[], routeParams?: Object, target?: any, } {
   const pathname =  new URL(url, '/').pathname;
