@@ -12,7 +12,7 @@ import {
   Post,
   Body,
   Param
-} from 'https://deno.land/x/alosaur/mod.ts';
+} from 'https://deno.land/x/alosaur/src/mod.ts';
 
 
 @Controller('/home')
