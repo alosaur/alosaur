@@ -17,4 +17,4 @@ export {
 export { getCookies } from "https://deno.land/std@v0.9.0/http/cookie.ts";
 export { contentType } from "https://deno.land/std@v0.9.0/media_types/mod.ts";
 
-// export { renderFile } from "https://deno.land/x/dejs/dejs.ts";
+export { renderFile } from "https://deno.land/x/dejs/dejs.ts";

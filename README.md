@@ -72,7 +72,6 @@ And run
 # TODO
 
 * [x] Add render views: [dejs](https://github.com/syumai/dejs)
-(waiting this PR: [dejs#20](https://github.com/syumai/dejs/issues/21))
 * [x] Add return value JSON
 * Add decorators:
 * * [x] `@Area`
