@@ -112,4 +112,5 @@ And run
 * [x] Add dejs view render example
 * [x] Add example with sql drivers (postgres)
 * [x] Add basic example in Docker container 
+* [ ] Add websockets example
 * [ ] Add example with wasm
