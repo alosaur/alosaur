@@ -56,6 +56,7 @@ import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
 import { CorsBuilder } from './middlewares/cors-builder.ts';
 import { Content } from './renderer/content.ts';
+import { MetaRoute } from './models/meta-route.ts';
 
 const global = {};
 
@@ -74,7 +75,7 @@ export interface AppSettings {
   middlewares?: Function[];
 }
 export class App {
-  private routes: any[] = [];
+  private routes: MetaRoute[] = [];
   private classes: any[] = [];
   private metadata: MetadataArgsStorage;
   private staticConfig: StaticFilesConfig;
@@ -146,7 +147,7 @@ export class App {
     });
   }
 
-  private addRoute(route: any) {
+  private addRoute(route: MetaRoute) {
     this.routes.push(route);
   }
 
@@ -191,7 +192,7 @@ export class App {
         areaRoute = controller.area.baseRoute;
       }
       actions.forEach(action => {
-        const metaRoute = {
+        const metaRoute: MetaRoute = {
           route: `${areaRoute}${controller.route}${action.route}`,
           target: obj,
           action: action.method,

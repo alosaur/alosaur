@@ -1,6 +1,7 @@
 import { Content } from "../renderer/content.ts";
+import { MetaRoute } from "../models/meta-route.ts";
 
-export function getAction(routes: any[], method: string, url: string): {actionName: string; params: any[], routeParams?: Object, target?: any, } {
+export function getAction(routes: MetaRoute[], method: string, url: string): {actionName: string; params: any[], routeParams?: {[key:string]: any}, target?: any, } {
   const pathname =  new URL(url, '/').pathname;
   
   /// '/home/test/:id/test' => [{i: 3, el: "id"}]
