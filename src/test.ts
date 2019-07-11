@@ -8,7 +8,8 @@ import {
 import * as mod from "./mod.ts";
 
 // Future tests
-import  "./route/get-action.test.ts";
+import "./route/get-action.test.ts";
+import "./middlewares/cors-builder.test.ts";
 
 test(function testAlosaur() {
   assert(mod != null);
