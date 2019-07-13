@@ -94,6 +94,7 @@ And run
 * [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
 * [ ] Add benchmarks
+* [ ] Transfer to Alosaur github organization
 * [ ] Add docs and more examples ;)
 
 
