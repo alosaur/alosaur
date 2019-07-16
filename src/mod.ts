@@ -75,9 +75,9 @@ export interface AppSettings {
   middlewares?: Function[];
 }
 export class App {
-  private routes: MetaRoute[] = [];
   private classes: any[] = [];
   private metadata: MetadataArgsStorage;
+  private routes: MetaRoute[] = [];
   private staticConfig: StaticFilesConfig;
   private viewRenderConfig: ViewRenderConfig;
 
