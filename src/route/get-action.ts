@@ -13,7 +13,7 @@ export function getAction(routes: MetaRoute[], method: string, url: string): {ac
   ,[]);
   
   /// '/home/test/:id/test' => \/home\/test\/[A-Za-z1-9]{1,}\/test
-  const getRouteParamPatern = route => route.replace(/\/\:[^/]{1,}/ig, '/[^/]{1,}').replace(/\//g, '\\/');
+  const getRouteParamPattern = route => route.replace(/\/\:[^/]{1,}/ig, '/[^/]{1,}').replace(/\//g, '\\/');
 
   let route = null;
   const routeParams = {};
@@ -25,7 +25,7 @@ export function getAction(routes: MetaRoute[], method: string, url: string): {ac
   if (!route) {
     route = routes.filter(r => r.route.includes('/:') && r.method.toString() === method)
             .find(r => {
-              return new RegExp('^'+getRouteParamPatern(r.route)+'$').test(pathname);
+              return new RegExp('^'+getRouteParamPattern(r.route)+'$').test(pathname);
             });
     if(route) {
       const params = getRouteParams(route.route);
