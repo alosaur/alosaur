@@ -73,6 +73,7 @@ And run
 
 * [x] Add render views: [dejs](https://github.com/syumai/dejs)
 * [x] Add return value JSON
+
 * Add decorators:
 * * [x] `@Area`
 * * [x] `@QueryParam`
@@ -83,6 +84,7 @@ And run
 * * [x] `@Res`
 * * [x] `@Middleware` with regex route
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
+
 * [x] Add middleware
 * [x] Add static middleware (example: app.useStatic)
 * [x] Add CORS middleware
@@ -94,7 +96,7 @@ And run
 * [ ] Add microservice connector with wasm
 * [ ] Add benchmarks
 * [ ] Transfer to Alosaur github organization
-* [ ] Add docs and more examples ;)
+* [ ] Add docs and more examples
 
 
 ## Plugins & modules
@@ -112,5 +114,5 @@ And run
 * [x] Add dejs view render example
 * [x] Add example with sql drivers (postgres)
 * [x] Add basic example in Docker container 
-* [ ] Add websockets example
+* [ ] Add websockets example (waiting [deno_std#443](https://github.com/denoland/deno_std/pull/443))
 * [ ] Add example with wasm
