@@ -73,6 +73,7 @@ And run
 
 * [x] Add render views: [dejs](https://github.com/syumai/dejs)
 * [x] Add return value JSON
+
 * Add decorators:
 * * [x] `@Area`
 * * [x] `@QueryParam`
@@ -82,20 +83,20 @@ And run
 * * [x] `@Req`
 * * [x] `@Res`
 * * [x] `@Middleware` with regex route
-* * [ ] `@EnableCors` for actions with custom policy: [(example)](https://docs.microsoft.com/ru-ru/aspnet/core/security/cors?view=aspnetcore-2.2#enable-cors-with-attributes)
 * * [ ] `@Cache` Cache to actions {duration: number} number in ms
+
 * [x] Add middleware
 * [x] Add static middleware (example: app.useStatic)
 * [x] Add CORS middleware
 * [x] Add DI
 * [x] Add std exceptions
 * [x] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
-* [ ] Add websockets (waiting [deno_std#443](https://github.com/denoland/deno_std/pull/443))
+* [ ] Add WebSocket (waiting [deno_std#443](https://github.com/denoland/deno_std/pull/443))
 * [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
 * [ ] Add benchmarks
 * [ ] Transfer to Alosaur github organization
-* [ ] Add docs and more examples ;)
+* [ ] Add docs and more examples
 
 
 ## Plugins & modules
@@ -113,5 +114,5 @@ And run
 * [x] Add dejs view render example
 * [x] Add example with sql drivers (postgres)
 * [x] Add basic example in Docker container 
-* [ ] Add websockets example
+* [ ] Add websockets example (waiting [deno_std#443](https://github.com/denoland/deno_std/pull/443))
 * [ ] Add example with wasm
