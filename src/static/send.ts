@@ -5,6 +5,7 @@
 
 import { sep, parse, extname, basename } from '../package.ts';
 import { resolvePath } from './resolve-path.ts';
+// import { Response, ServerRequest } from '../../src/mod.ts';
 
 export function decodeComponent(text: string) {
   try {

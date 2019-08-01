@@ -12,7 +12,7 @@ export class HomeController {
   constructor(private service: FooService) {
   }
   @Get('/text')
-  text(@QueryParam('name') name: string,) {
+  text(@QueryParam('name') name: string) {
     return Content(`Hey! ${this.service.getName()}, ${name}`);
   }
 }

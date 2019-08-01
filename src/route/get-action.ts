@@ -1,7 +1,14 @@
 import { Content } from "../renderer/content.ts";
 import { MetaRoute } from "../models/meta-route.ts";
 
-export function getAction(routes: MetaRoute[], method: string, url: string): {actionName: string; params: any[], routeParams?: {[key:string]: any}, target?: any, } {
+interface FindedAction {
+  actionName: string;
+  params: any[],
+  routeParams?: {[key:string]: any},
+  target?: any
+}
+
+export function getAction(routes: MetaRoute[], method: string, url: string): FindedAction | null {
   const pathname =  new URL(url, '/').pathname;
   
   /// '/home/test/:id/test' => [{i: 3, el: "id"}]
