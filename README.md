@@ -91,7 +91,7 @@ And run
 * [x] Add DI
 * [x] Add std exceptions
 * [x] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
-* [ ] Add WebSocket (waiting [deno_std#441](https://github.com/denoland/deno_std/issue/441))
+* [ ] Add WebSocket
 * [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
 * [ ] Add benchmarks
@@ -114,5 +114,5 @@ And run
 * [x] Add dejs view render example
 * [x] Add example with sql drivers (postgres)
 * [x] Add basic example in Docker container 
-* [ ] Add websockets example (waiting [deno_std#441](https://github.com/denoland/deno_std/issue/443))
+* [ ] Add websockets example
 * [ ] Add example with wasm
