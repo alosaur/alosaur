@@ -1,6 +1,6 @@
 # Alosaur 🦖
 
-Alosaur - Deno web framework 🦖.
+Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 [![Build Status](https://travis-ci.com/alosaur/alosaur.svg?branch=master)](https://travis-ci.com/irustm/alosaur)
 
