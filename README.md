@@ -2,7 +2,7 @@
 
 Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
-[![Build Status](https://travis-ci.com/alosaur/alosaur.svg?branch=master)](https://travis-ci.com/irustm/alosaur)
+[![Build Status](https://travis-ci.com/alosaur/alosaur.svg?branch=master)](https://travis-ci.com/alosaur/alosaur)
 
 - **Area** - these are the modules of your application.
 - **Controller** - are responsible for controlling the flow of the application execution.
