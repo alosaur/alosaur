@@ -91,6 +91,7 @@ And run
 * [x] Add DI
 * [x] Add std exceptions
 * [x] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
+* [ ] Add GraphQl
 * [ ] Add WebSocket
 * [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
 * [ ] Add microservice connector with wasm
