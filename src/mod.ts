@@ -94,6 +94,7 @@ export class App {
       try {
       const res: Response = {};
       res.headers = new Headers();
+
       if (await this.getStaticFile(req, res)) {
         await req.respond(res);
       } else {
@@ -107,6 +108,8 @@ export class App {
           await middleware.target.onPreRequest(req, res);
         }
 
+        
+        
         const action = getAction(this.routes, req.method, req.url);
 
         if (action === null) {
@@ -217,7 +220,11 @@ export class App {
         return false;
       }
     }
-    const pathname = new URL(url, '/').pathname;
+    // TODO: use normal parsers
+    const host = "http://localhost"; // need for parse
+    const pathname =  new URL(host+url).pathname;
+
+
     try {
       const filePath = await send(
         { request: req, response: res },

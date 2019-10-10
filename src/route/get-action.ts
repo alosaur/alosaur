@@ -9,7 +9,10 @@ interface FindedAction {
 }
 
 export function getAction(routes: MetaRoute[], method: string, url: string): FindedAction | null {
-  const pathname =  new URL(url, '/').pathname;
+
+  // TODO: use normal parser
+  const host = "http://localhost"; // need for parse
+  const pathname =  new URL(host+url).pathname;
   
   /// '/home/test/:id/test' => [{i: 3, el: "id"}]
   const getRouteParams = route => route.split('/').reduce((acc, el, i) => 
