@@ -1,4 +1,4 @@
-export { test, runTests } from "https://deno.land/std@v0.24.0/testing/mod.ts";
+export { test, runTests } from "https://deno.land/std@v0.26.0/testing/mod.ts";
 
 export {
   assert,
@@ -6,4 +6,4 @@ export {
   assertStrictEq,
   assertThrows,
   assertThrowsAsync
-} from "https://deno.land/std@v0.24.0/testing/asserts.ts";
+} from "https://deno.land/std@v0.26.0/testing/asserts.ts";
