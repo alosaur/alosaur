@@ -1,4 +1,5 @@
 import { contentType, Response } from "../package.ts";
+
 export function Content(result: string | Object, status: number = 200): Response {
     let body;
     const headers = new Headers();

@@ -70,10 +70,12 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
 export function getViewRenderConfig(): ViewRenderConfig {
   return (global as any).viewRenderConfig;
 }
+
 export interface AppSettings {
   areas: Function[];
   middlewares?: Function[];
 }
+
 export class App {
   private classes: any[] = [];
   private metadata: MetadataArgsStorage;
@@ -220,10 +222,10 @@ export class App {
         return false;
       }
     }
+
     // TODO: use normal parsers
     const host = "http://localhost"; // need for parse
     const pathname =  new URL(host+url).pathname;
-
 
     try {
       const filePath = await send(
