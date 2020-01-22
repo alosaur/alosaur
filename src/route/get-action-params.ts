@@ -29,7 +29,7 @@ export async function getActionParams(
         break;
       case 'body':
         // TODO: if content type json, form, etc...
-        let body = await req.body();
+        let body = await Deno.readAll(req.body);
         const bodyString = new TextDecoder("utf-8").decode(body);
         try {
           body = JSON.parse(bodyString);
