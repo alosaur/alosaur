@@ -2,7 +2,7 @@ export {
   serve,
   ServerRequest,
   Response
-} from "https://deno.land/std@v0.27.0/http/server.ts";
+} from "https://deno.land/std@v0.28.0/http/server.ts";
 export {
   normalize,
   basename,
@@ -12,9 +12,9 @@ export {
   join,
   resolve,
   isAbsolute
-} from "https://deno.land/std@v0.27.0/path/mod.ts";
+} from "https://deno.land/std@v0.28.0/path/mod.ts";
 
-export { getCookies } from "https://deno.land/std@v0.27.0/http/cookie.ts";
-export { contentType } from "https://deno.land/std@v0.27.0/media_types/mod.ts";
+export { getCookies } from "https://deno.land/std@v0.28.0/http/cookie.ts";
+export { contentType } from "https://deno.land/std@v0.28.0/media_types/mod.ts";
 
 export { renderFile } from "https://deno.land/x/dejs@0.3.3/mod.ts";
