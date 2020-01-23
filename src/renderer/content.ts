@@ -1,5 +1,8 @@
 import { contentType, Response } from "../package.ts";
 
+/**
+ * Render json or string content
+ */
 export function Content(result: string | Object, status: number = 200): Response {
     let body;
     const headers = new Headers();
@@ -9,6 +12,7 @@ export function Content(result: string | Object, status: number = 200): Response
           headers.set("content-type", contentType("file.json"));
           body = new TextEncoder().encode(JSON.stringify(result));
         break;
+        
       default:
         headers.set("content-type", contentType("text/html"));
         body = new TextEncoder().encode(result);

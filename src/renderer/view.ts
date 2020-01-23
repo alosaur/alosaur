@@ -2,6 +2,12 @@ import { renderFile, contentType, Response } from '../package.ts';
 import { normalize } from '../package.ts';
 import { getViewRenderConfig } from '../mod.ts';
 
+/**
+ * Renders view with template with changed template render (default .ejs)
+ * @param templatePath 
+ * @param model 
+ * @param status 
+ */
 export async function View(templatePath: string, model: Object, status: number = 200): Promise<Response> {
     let body;
   
