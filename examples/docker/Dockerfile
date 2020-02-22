@@ -1,4 +1,4 @@
-FROM maxmcd/deno
+FROM maxmcd/deno:jessie-v0.34.0
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -7,4 +7,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD [ "deno", "run", "-A", "--config", "./tsconfig.app.json", "./app.ts" ]
+CMD [ "deno", "run", "-r", "-A", "--config", "./tsconfig.app.json", "./app.ts" ]
