@@ -47,19 +47,19 @@ export class HomeController {
     return Content('test');
   }
   @Get('/test/:id')
-  gerParamId(@Param('id') id) {
+  gerParamId(@Param('id') id: string) {
     return Content(id);
   }
   @Get('/test/:id/:name')
-  gerParamIdName(@Param('id') id, @Param('name') name) {
+  gerParamIdName(@Param('id') id: string, @Param('name') name: string) {
     return Content(`${id} ${name}`);
   }
   @Get('/test/:id/:name/detail')
-  gerParamIdNameDetail(@Param('id') id, @Param('name') name) {
+  gerParamIdNameDetail(@Param('id') id: string, @Param('name') name: string) {
     return Content(`${id} ${name} detail`);
   }
   @Post('/post')
-  post(@Body() body, @QueryParam('name') name: string) {
+  post(@Body() body: any, @QueryParam('name') name: string) {
     return Content(body);
   }
 }
