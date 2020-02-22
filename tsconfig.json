@@ -9,6 +9,9 @@
     "moduleResolution": "node",
     "noEmit": true,
     "pretty": true,
+    "alwaysStrict": false,
+    "strict": false,
+    "noImplicitAny": false,
     "resolveJsonModule": true,
     "plugins": [
       {

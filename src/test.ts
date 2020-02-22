@@ -1,11 +1,6 @@
-import {
-  assert,
-  assertEquals,
-  test,
-  runTests
-} from "./package_test.ts";
-
+import { assert, assertEquals } from "./package_test.ts";
 import * as mod from "./mod.ts";
+const { test, runTests } = Deno;
 
 // Future tests
 import "./route/get-action.test.ts";

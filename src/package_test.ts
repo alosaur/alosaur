@@ -1,5 +1,3 @@
-export { test, runTests } from "https://deno.land/std@v0.34.0/testing/mod.ts";
-
 export {
   assert,
   assertEquals,
