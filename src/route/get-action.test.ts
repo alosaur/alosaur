@@ -22,8 +22,10 @@ test(function testGetActions() {
   const actionName = getAction(routes, 'GET', '/test/name');
   const actionIdName = getAction(routes, 'GET', '/test/2/name');
 
-  assert(actionName.routeParams.name === "name");
-  assert(actionIdName.routeParams.id === "2"
+  assert(actionName && actionName.routeParams && actionName.routeParams.name === "name");
+  assert(actionIdName 
+      && actionIdName.routeParams
+      && actionIdName.routeParams.id === "2"
       && actionIdName.routeParams.name === "name");
 });
 
