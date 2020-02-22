@@ -8,6 +8,8 @@ interface FindedAction {
   target?: any
 }
 
+type ParserObject = {[key: string]: any};
+
 export function getAction(routes: MetaRoute[], method: string, url: string): FindedAction | null {
 
   // TODO: use normal parser
@@ -15,18 +17,22 @@ export function getAction(routes: MetaRoute[], method: string, url: string): Fin
   const pathname =  new URL(host+url).pathname;
   
   /// '/home/test/:id/test' => [{i: 3, el: "id"}]
-  const getRouteParams = route => route.split('/').reduce((acc, el, i) => 
-    {
-      /:[A-Za-z1-9]{1,}/.test(el) ? acc.push({i, el: el.replace(':','')}) : false;
-      return acc;
-    }
-  ,[]);
+  const getRouteParams: (route: string) =>  ParserObject[] = route => 
+    route.split('/').reduce((acc: ParserObject[], el, i) => 
+      {
+        if(/:[A-Za-z1-9]{1,}/.test(el)) {
+          const result: string = el.replace(':','');
+          acc.push({i, el: result})
+        };
+        return acc;
+      }
+    ,[]);
   
   /// '/home/test/:id/test' => \/home\/test\/[A-Za-z1-9]{1,}\/test
-  const getRouteParamPattern = route => route.replace(/\/\:[^/]{1,}/ig, '/[^/]{1,}').replace(/\//g, '\\/');
+  const getRouteParamPattern: (route: string) => string = route => route.replace(/\/\:[^/]{1,}/ig, '/[^/]{1,}').replace(/\//g, '\\/');
 
   let route = null;
-  const routeParams = {};
+  const routeParams: {[key:string]: any} = {};
   // exact match
   route = routes.find(r => {
     return r.method.toString() === method && r.route === pathname;

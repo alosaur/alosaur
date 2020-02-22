@@ -12,7 +12,7 @@ export async function View(templatePath: string, model: Object, status: number =
     let body;
   
     const headers = new Headers();
-    headers.set("content-type", contentType("text/html"));
+    headers.set("content-type", contentType("text/html") as string);
     const renderConfig = getViewRenderConfig();
     
     // if renderConfig.type === dejs

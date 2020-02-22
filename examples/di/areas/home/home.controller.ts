@@ -8,7 +8,7 @@ import { FooService } from '../../services/foo.service.ts';
 
 @Controller('/home')
 export class HomeController {
-  name: string;
+  name: string| undefined = undefined;
   constructor(private service: FooService) {
   }
   @Get('/text')

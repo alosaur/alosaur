@@ -1,4 +1,4 @@
-import "../reflect.ts";
+import { Reflect } from '../reflect.ts';
 import {INJECTION_TOKEN_METADATA_KEY} from "../reflection-helpers.ts";
 import InjectionToken from "../providers/injection-token.ts";
 

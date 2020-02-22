@@ -3,9 +3,13 @@
  * with the MIT license.
  */
 
-import { sep, parse, extname, basename } from '../package.ts';
+import { sep, parse, extname, basename, ServerRequest } from '../package.ts';
 import { resolvePath } from './resolve-path.ts';
-// import { Response, ServerRequest } from '../../src/mod.ts';
+
+// TODO move to library mode
+interface Response {
+  [key: string]: any;
+}
 
 export function decodeComponent(text: string) {
   try {
@@ -54,6 +58,11 @@ export interface SendOptions {
   extensions?: string[];
 }
 
+interface RequestResponce{
+  request: ServerRequest,
+  response: Response
+}
+
 function isHidden(root: string, path: string) {
   const pathArr = path.substr(root.length).split(sep);
   for (const segment of pathArr) {
@@ -79,7 +88,7 @@ function toUTCString(value: number): string {
 /** Asynchronously fulfill a response with a file from the local file
  * system. */
 export async function send(
-  { request, response },
+  { request, response }: RequestResponce,
   path: string,
   options: SendOptions = { root: '' }
 ): Promise<string | undefined> {
@@ -104,6 +113,10 @@ export async function send(
 
   if (!hidden && isHidden(root, path)) {
     return;
+  }
+
+  if(!response){
+    response = { headers: new Headers() };
   }
 
   let encodingExt = '';
@@ -149,13 +162,15 @@ export async function send(
         throw new Error(err.message); // 404
       }
     }
-    throw  new Error(err.message); // 500
+    throw new Error(err.message); // 500
   }
 
   response.headers.set('Content-Length', String(stats.len));
+
   if (!response.headers.has('Last-Modified') && stats.modified) {
     response.headers.set('Last-Modified', toUTCString(stats.modified));
   }
+
   if (!response.headers.has('Cache-Control')) {
     const directives = [`max-age=${(maxage / 1000) | 0}`];
     if (immutable) {
@@ -163,10 +178,12 @@ export async function send(
     }
     response.headers.set('Cache-Control', directives.join(','));
   }
-  if (!response.type) {
-    response.type =
-      encodingExt !== '' ? extname(basename(path, encodingExt)) : extname(path);
+
+  if (!response.headers.has('Content-type')) {
+    response.headers.set('Content-type',
+      encodingExt !== '' ? extname(basename(path, encodingExt)) : extname(path));
   }
+
   response.body = await Deno.readFile(path);
 
   return path;

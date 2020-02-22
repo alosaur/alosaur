@@ -1,3 +1,4 @@
+import { ObjectKeyAny } from '../mod.ts';
 /*! *****************************************************************************
 Copyright (C) Microsoft. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -12,7 +13,7 @@ MERCHANTABLITY OR NON-INFRINGEMENT.
 See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
-namespace Reflect {
+export namespace Reflect {
     // Metadata Proposal
     // https://rbuckton.github.io/reflect-metadata/
 
@@ -619,7 +620,7 @@ namespace Reflect {
       *
       */
     export declare function deleteMetadata(metadataKey: any, target: any, propertyKey: string | symbol): boolean;
-    declare var self;
+    declare var self: ObjectKeyAny;
     (function (this: any, factory: (exporter: <K extends keyof typeof Reflect>(key: K, value: typeof Reflect[K]) => void) => void) {
         const root = typeof global === "object" ? global :
             typeof self === "object" ? self :
@@ -684,9 +685,9 @@ namespace Reflect {
         // https://rbuckton.github.io/reflect-metadata/#ordinary-object-internal-methods-and-internal-slots
         const Metadata = new _WeakMap<any, Map<string | symbol | undefined, Map<any, any>>>();
 
-        function decorate(decorators: ClassDecorator[], target: Function): Function;
-        function decorate(decorators: (PropertyDecorator | MethodDecorator)[], target: any, propertyKey: string | symbol, attributes?: PropertyDescriptor | null): PropertyDescriptor | undefined;
-        function decorate(decorators: (PropertyDecorator | MethodDecorator)[], target: any, propertyKey: string | symbol, attributes: PropertyDescriptor): PropertyDescriptor;
+        // function decorate(decorators: ClassDecorator[], target: Function): Function;
+        // function decorate(decorators: (PropertyDecorator | MethodDecorator)[], target: any, propertyKey: string | symbol, attributes?: PropertyDescriptor | null): PropertyDescriptor | undefined;
+        // function decorate(decorators: (PropertyDecorator | MethodDecorator)[], target: any, propertyKey: string | symbol, attributes: PropertyDescriptor): PropertyDescriptor;
 
         /**
          * Applies a set of decorators to a property of a target object.
@@ -743,7 +744,7 @@ namespace Reflect {
             }
         }
 
-        exporter("decorate", decorate);
+        exporter("decorate", <any>decorate);
 
         // 4.1.2 Reflect.metadata(metadataKey, metadataValue)
         // https://rbuckton.github.io/reflect-metadata/#reflect.metadata

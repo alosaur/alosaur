@@ -26,10 +26,10 @@ export interface AreaMetadataArgs {
   /**
    * Base route for all controllers registered in this area.
    */
-  baseRoute: string;
+  baseRoute: string | undefined;
 
   /**
    * All controllers in area
    */
-  controllers: Function[];
+  controllers: Function[] | undefined;
 }

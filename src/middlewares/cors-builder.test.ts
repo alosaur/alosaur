@@ -1,6 +1,7 @@
-import { test, assert } from "../package_test.ts";
+import { assert } from "../package_test.ts";
 import { CorsBuilder } from "./cors-builder.ts";
 import { Response } from "../mod.ts";
+const { test } = Deno;
 
 test(function testCorsBuilder() {
   const builder = new CorsBuilder();

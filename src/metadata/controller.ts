@@ -8,6 +8,7 @@ export class ControllerMetadata {
   constructor(args: any) {
     this.target = args.target;
     this.route = args.route;
+    this.actions = args.actions;
   }
 }
 
@@ -26,7 +27,7 @@ export interface ControllerMetadataArgs {
   /**
    * Base route for all actions registered in this controller.
    */
-  route: string;
+  route: string | undefined;
   /**
    * Type, vase default
    */

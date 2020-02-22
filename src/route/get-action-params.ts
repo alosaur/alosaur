@@ -3,8 +3,10 @@ import { getCookies, ServerRequest } from '../package.ts';
 type Route = {
   actionName: string;
   params: any[], // TODO define type
-  routeParams?: Object
+  routeParams?: {[key: string]: any}
 }
+
+type ArgumentValue = any;
 
 /**
  * Gets action params for routes 
@@ -16,9 +18,9 @@ export async function getActionParams(
   req: ServerRequest,
   res: any,
   route: Route
-  ): Promise<string[]> {
+  ): Promise<ArgumentValue[]> {
 
-  const args = [];
+  const args: ArgumentValue[] = [];
   
   // const body 
   const queryParams = findSearchParams(req.url);
@@ -32,9 +34,13 @@ export async function getActionParams(
     switch (param.type) {
       case 'query':
         if(queryParams){
-          args.push(queryParams.get(param.name));
+          const paramsArgs = queryParams.get(param.name);
+
+          if(paramsArgs) {
+            args.push(paramsArgs)
+          }
         } else {
-          args.push(null);
+          args.push(undefined);
         }
         break;
 
@@ -65,24 +71,27 @@ export async function getActionParams(
           if(route.routeParams){
             args.push(route.routeParams[param.name]);
           } else {
-            args.push(null);
+            args.push(undefined);
           }
           break;
 
       default:
-        args.push(null);
+        args.push(undefined);
         break;
     }
   }
   return new Promise(res => res(args));
 }
 /**
- * Search query search params from full url
+ * Finds query search params from full url
  * @param url 
  */
-function findSearchParams(url: string): URLSearchParams {
-  if (url == null) return null;
+function findSearchParams(url: string): URLSearchParams | undefined {
+  if (url == undefined) return undefined;
+
   const searchs = url.split('?')[1];
-  if (searchs == null) return null;
+
+  if (searchs == undefined) return undefined;
+
   return new URLSearchParams(searchs);
 }

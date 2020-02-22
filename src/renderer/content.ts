@@ -9,12 +9,12 @@ export function Content(result: string | Object, status: number = 200): Response
 
     switch (typeof result) {
       case "object":
-          headers.set("content-type", contentType("file.json"));
+          headers.set("content-type", contentType("file.json") as string);
           body = new TextEncoder().encode(JSON.stringify(result));
         break;
         
       default:
-        headers.set("content-type", contentType("text/html"));
+        headers.set("content-type", contentType("text/html") as string);
         body = new TextEncoder().encode(result);
         break;
     }

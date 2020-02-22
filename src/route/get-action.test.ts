@@ -1,6 +1,7 @@
-import { test, assert } from "../package_test.ts";
+import { assert } from "../package_test.ts";
 import { getAction } from "./get-action.ts";
 import { MetaRoute } from "../models/meta-route.ts";
+const { test } = Deno;
 
 test(function testGetActions() {
   const routes: MetaRoute[] = [{

@@ -9,8 +9,8 @@ export function Area(config?: AreaConfig): Function {
         getMetadataArgsStorage().areas.push({
             type: "area",
             target: object,
-            controllers: config.controllers,
-            baseRoute: config.baseRoute
+            controllers: config && config.controllers,
+            baseRoute: config && config.baseRoute
         });
     };
 }

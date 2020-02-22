@@ -47,7 +47,7 @@ export * from './injection/index.ts';
 export * from './models/view-render-config.ts';
 
 import { MetadataArgsStorage } from './metadata/metadata.ts';
-import { serve, Response } from './package.ts';
+import { serve, Response, Server, ServerRequest } from './package.ts';
 import { getAction, notFoundAction } from './route/get-action.ts';
 import { getActionParams } from './route/get-action-params.ts';
 import { container } from './injection/index.ts';
@@ -58,7 +58,9 @@ import { CorsBuilder } from './middlewares/cors-builder.ts';
 import { Content } from './renderer/content.ts';
 import { MetaRoute } from './models/meta-route.ts';
 
-const global = {};
+export type ObjectKeyAny = {[key: string]: any};
+
+const global: ObjectKeyAny = {};
 
 export function getMetadataArgsStorage(): MetadataArgsStorage {
   if (!(global as any).routingControllersMetadataArgsStorage)
@@ -74,25 +76,34 @@ export function getViewRenderConfig(): ViewRenderConfig {
 export interface AppSettings {
   areas: Function[];
   middlewares?: Function[];
+  staticConfig?: StaticFilesConfig;
+  viewRenderConfig?: ViewRenderConfig;
 }
 
 export class App {
-  private classes: any[] = [];
+  private classes: ObjectKeyAny[] = [];
   private metadata: MetadataArgsStorage;
   private routes: MetaRoute[] = [];
-  private staticConfig: StaticFilesConfig;
-  private viewRenderConfig: ViewRenderConfig;
+  private staticConfig: StaticFilesConfig | undefined = undefined;
+  private viewRenderConfig: ViewRenderConfig | undefined = undefined;
 
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
     this.registerAreas(this.metadata);
     this.registerControllers(this.metadata.controllers);
+    
+    if(settings){
+      this.useStatic(settings.staticConfig);
+      this.useViewRender(settings.viewRenderConfig)
+    }
   }
 
   async listen(address: string = '0.0.0.0:8000') {
-    const s = serve(address);
+    const s: Server = serve(address);
+    
     console.log(`Server start in ${address}`);
     for await (const req of s) {
+      
       try {
       const res: Response = {};
       res.headers = new Headers();
@@ -137,13 +148,19 @@ export class App {
     }
   }
 
-  public useStatic(config: StaticFilesConfig) {
-    this.staticConfig = config;
+  public useStatic(config?: StaticFilesConfig) {
+    if(config && !this.staticConfig) {
+      this.staticConfig = config;
+    }
   }
-  public useViewRender(config: ViewRenderConfig) {
-    this.viewRenderConfig = config;
-    (global as any).viewRenderConfig = config;
+
+  public useViewRender(config?: ViewRenderConfig) {
+    if(config && !this.viewRenderConfig) {
+      this.viewRenderConfig = config;
+      (global as any).viewRenderConfig = config;
+    }
   }
+
   public useCors(builder: CorsBuilder) {
     this.metadata.middlewares.push({
       type: 'middleware',
@@ -158,16 +175,19 @@ export class App {
 
   // Add area to controllers
   private registerAreas(metadata: MetadataArgsStorage) {
-    metadata.controllers.map(c => {
-      if (c.area == null) {
+    metadata.controllers.map(controller => {
+      if (controller.area == null) {
         const area: any = metadata.areas.find(area => {
-          return !!area.controllers.find(
-            areaController => areaController === c.target
-          );
+          if(area.controllers) {
+              return !!area.controllers.find(
+                areaController => areaController === controller.target
+              );
+          }
+          return false;
         });
-        c.area = area;
+        controller.area = area;
       }
-      return c;
+      return controller;
     });
   }
 
@@ -185,7 +205,7 @@ export class App {
 
       // TODO: if obj not in classes
       // resolve from DI
-      const obj = container.resolve(controller.target);
+      const obj: ObjectKeyAny = container.resolve(controller.target);
       this.classes.push(obj);
 
       console.log(
@@ -209,13 +229,17 @@ export class App {
       });
     });
   }
-  private async getStaticFile(req, res) {
+
+  private async getStaticFile(req: ServerRequest, res: Response) {
     if (this.staticConfig == null) {
       return false;
     }
+
     let url = req.url;
+    
     if (this.staticConfig.baseRoute) {
       const regexUrl = new RegExp(`^${this.staticConfig.baseRoute}`);
+      
       if (regexUrl.test(req.url)) {
         url = req.url.replace(regexUrl, '/');
       } else {

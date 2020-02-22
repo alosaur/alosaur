@@ -1,4 +1,4 @@
-import './reflect.ts';
+import { Reflect } from './reflect.ts';
 import Dictionary from "./types/dictionary.ts";
 import constructor from "./types/constructor.ts";
 import InjectionToken from "./providers/injection-token.ts";

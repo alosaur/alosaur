@@ -5,7 +5,7 @@
  */
 export class HttpError extends Error {
 
-    httpCode: number;
+    httpCode: number | undefined = undefined;
 
     constructor(httpCode: number, message?: string) {
         super();

@@ -1,5 +1,6 @@
 export {
   serve,
+  Server,
   ServerRequest,
   ServerRequestBody,
   Response
