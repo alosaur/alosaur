@@ -157,10 +157,8 @@ export async function send(
       }
     }
   } catch (err) {
-    if (err instanceof Deno.DenoError) {
-      if (err.kind === Deno.ErrorKind.NotFound) {
+    if (err instanceof Deno.errors.NotFound) {
         throw new Error(err.message); // 404
-      }
     }
     throw new Error(err.message); // 500
   }
