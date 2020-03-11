@@ -1,7 +1,7 @@
 language: python
 
 variables:
-  DENO_VERSION: "v0.34.0"
+  DENO_VERSION: "v0.35.0"
 
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $(DENO_VERSION)
