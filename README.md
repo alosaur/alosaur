@@ -103,7 +103,7 @@ And run
 ## Plugins & modules
 
 * [ ] Add angular template parser
-* [ ] Add CLI with schematics (alosaur/cli)
+* [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics) 
 * [ ] Add validator decorators
 * [ ] Add porting TypeORM to deno
 
