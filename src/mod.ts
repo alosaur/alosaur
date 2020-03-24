@@ -48,7 +48,7 @@ export * from './models/view-render-config.ts';
 
 import { MetadataArgsStorage } from './metadata/metadata.ts';
 import { serve, Response, Server, ServerRequest } from './package.ts';
-import { getAction, notFoundAction } from './route/get-action.ts';
+import { getAction, notFoundAction, optionsAllowedAction } from './route/get-action.ts';
 import { getActionParams } from './route/get-action-params.ts';
 import { container } from './injection/index.ts';
 import { send } from './static/send.ts';
@@ -57,6 +57,8 @@ import { ViewRenderConfig } from './models/view-render-config.ts';
 import { CorsBuilder } from './middlewares/cors-builder.ts';
 import { Content } from './renderer/content.ts';
 import { MetaRoute } from './models/meta-route.ts';
+import { getPathNameFromUrl } from './route/route.utils.ts';
+import { routeExist } from './route/route-exist.ts';
 
 export type ObjectKeyAny = {[key: string]: any};
 
@@ -102,15 +104,28 @@ export class App {
     const s: Server = serve(address);
     
     console.log(`Server start in ${address}`);
+
     for await (const req of s) {
       
       try {
       const res: Response = {};
       res.headers = new Headers();
 
+      // try getting static file
       if (await this.getStaticFile(req, res)) {
         await req.respond(res);
+      }
+      
+      // try respond for OPTIONS request, TODO: allowed method
+      else if(req.method == "OPTIONS") {
+        if(routeExist(this.routes, req.url)){
+          req.respond(optionsAllowedAction())
+        } else {
+          req.respond(notFoundAction());
+        }
       } else {
+
+
         // Get middlewares in request
         const middlewares = this.metadata.middlewares.filter(m =>
           m.route.test(req.url)
@@ -120,8 +135,6 @@ export class App {
         for (const middleware of middlewares) {
           await middleware.target.onPreRequest(req, res);
         }
-
-        
         
         const action = getAction(this.routes, req.method, req.url);
 
@@ -247,17 +260,15 @@ export class App {
       }
     }
 
-    // TODO: use normal parsers
-    const host = "http://localhost"; // need for parse
-    const pathname =  new URL(host+url).pathname;
-
     try {
       const filePath = await send(
         { request: req, response: res },
-        pathname,
+        getPathNameFromUrl(url),
         this.staticConfig
       );
+
       return filePath ? true : false;
+    
     } catch (error) {
       // TODO: exception
       if (this.staticConfig.baseRoute) {

@@ -1,51 +1,28 @@
 import { Content } from "../renderer/content.ts";
 import { MetaRoute } from "../models/meta-route.ts";
+import { getPathNameFromUrl, getRouteFromFullPath, getRouteFromRegex, getRouteParams } from "./route.utils.ts";
 
-interface FindedAction {
+interface FondAction {
   actionName: string;
   params: any[],
   routeParams?: {[key:string]: any},
   target?: any
 }
 
-type ParserObject = {[key: string]: any};
-
-export function getAction(routes: MetaRoute[], method: string, url: string): FindedAction | null {
-
-  // TODO: use normal parser
-  const host = "http://localhost"; // need for parse
-  const pathname =  new URL(host+url).pathname;
-  
-  /// '/home/test/:id/test' => [{i: 3, el: "id"}]
-  const getRouteParams: (route: string) =>  ParserObject[] = route => 
-    route.split('/').reduce((acc: ParserObject[], el, i) => 
-      {
-        if(/:[A-Za-z1-9]{1,}/.test(el)) {
-          const result: string = el.replace(':','');
-          acc.push({i, el: result})
-        };
-        return acc;
-      }
-    ,[]);
-  
-  /// '/home/test/:id/test' => \/home\/test\/[A-Za-z1-9]{1,}\/test
-  const getRouteParamPattern: (route: string) => string = route => route.replace(/\/\:[^/]{1,}/ig, '/[^/]{1,}').replace(/\//g, '\\/');
-
-  let route = null;
+export function getAction(routes: MetaRoute[], method: string, url: string): FondAction | null {
+  const pathname: string = getPathNameFromUrl(url);
   const routeParams: {[key:string]: any} = {};
-  // exact match
-  route = routes.find(r => {
-    return r.method.toString() === method && r.route === pathname;
-  });
-  // regex match
+  
+  let route = getRouteFromFullPath(routes, pathname, method);
+
   if (!route) {
-    route = routes.filter(r => r.route.includes('/:') && r.method.toString() === method)
-            .find(r => {
-              return new RegExp('^'+getRouteParamPattern(r.route)+'$').test(pathname);
-            });
+    route = getRouteFromRegex(routes, pathname, method);
+
+    // gets route params from route
     if(route) {
       const params = getRouteParams(route.route);
       const routeMatch = pathname.split('/');
+    
       params.forEach(p => {
         routeParams[p.el] = routeMatch[p.i];
       });
@@ -63,6 +40,16 @@ export function getAction(routes: MetaRoute[], method: string, url: string): Fin
   return null;
 }
 
-export function notFoundAction(){
-  return Content('Not found', 404);
+export function notFoundAction() {
+  return Content('Not found', 404); // TODO: enum http status
+}
+
+export function optionsAllowedAction() {
+  const headers = new Headers();
+  headers.set("Allow", "*");
+
+  return {
+    status: 200, // TODO: enum http status
+    headers
+  }
 }
