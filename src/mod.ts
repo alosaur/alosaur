@@ -110,51 +110,53 @@ export class App {
       try {
       const res: Response = {};
       res.headers = new Headers();
+      let result: any;
+
+      // Get middlewares in request
+      const middlewares = this.metadata.middlewares.filter(m =>
+           m.route.test(req.url)
+      );
+      
+       // Resolve every pre middleware
+      for (const middleware of middlewares) {
+          await middleware.target.onPreRequest(req, res);
+      }
 
       // try getting static file
       if (await this.getStaticFile(req, res)) {
         await req.respond(res);
+        return;
       }
-      
+
       // try respond for OPTIONS request, TODO: allowed method
       else if(req.method == "OPTIONS") {
+
         if(routeExist(this.routes, req.url)){
-          req.respond(optionsAllowedAction())
+          result = optionsAllowedAction();
         } else {
-          req.respond(notFoundAction());
+          result = notFoundAction();
         }
       } else {
-
-
-        // Get middlewares in request
-        const middlewares = this.metadata.middlewares.filter(m =>
-          m.route.test(req.url)
-        );
-
-        // Resolve every pre middleware
-        for (const middleware of middlewares) {
-          await middleware.target.onPreRequest(req, res);
-        }
         
         const action = getAction(this.routes, req.method, req.url);
 
         if (action === null) {
-          req.respond(notFoundAction());
+          result = notFoundAction();
         } else {
-          // Get arguments in this action
-          const args = await getActionParams(req, res, action);
+            // Get arguments in this action
+            const args = await getActionParams(req, res, action);
 
-          // Get Action result
-          const result = await action.target[action.actionName](...args);
-
+            // Get Action result
+            result = await action.target[action.actionName](...args);
+          }
+        }
           // Resolve every post middleware
           for (const middleware of middlewares) {
             await middleware.target.onPostRequest(req, result);
           }
-
+          
           req.respond(result);
-        }
-      }
+
       } catch (error) {
           req.respond(Content(error, error.httpCode || 500));
       }

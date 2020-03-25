@@ -1,6 +1,8 @@
 import {
   Controller,
-  Content
+  Content,
+  Delete,
+  Put
 } from '../../../../src/mod.ts';
 import { Get } from '../../../../src/decorator/Get.ts';
 import { Post } from '../../../../src/decorator/Post.ts';
@@ -19,5 +21,15 @@ export class HomeController {
   @Post('/post')
   post(@Body() body: any) {
     return Content(body);
+  }
+
+  @Delete('/delete')
+  delete() {
+    return Content('ok');
+  }
+
+  @Put('/put')
+  put() {
+    return Content('ok');
   }
 }
