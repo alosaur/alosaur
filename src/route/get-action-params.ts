@@ -1,10 +1,5 @@
 import { getCookies, ServerRequest } from '../package.ts';
-
-type Route = {
-  actionName: string;
-  params: any[], // TODO define type
-  routeParams?: {[key: string]: any}
-}
+import { MetaRoute } from '../models/meta-route.ts';
 
 type ArgumentValue = any;
 
@@ -17,7 +12,7 @@ type ArgumentValue = any;
 export async function getActionParams(
   req: ServerRequest,
   res: any,
-  route: Route
+  route: MetaRoute
   ): Promise<ArgumentValue[]> {
 
   const args: ArgumentValue[] = [];
@@ -33,19 +28,20 @@ export async function getActionParams(
 
     switch (param.type) {
       case 'query':
-        if(queryParams){
+        if(queryParams && param.name){
           const paramsArgs = queryParams.get(param.name);
-
-          if(paramsArgs) {
-            args.push(paramsArgs)
-          }
+          args.push(paramsArgs ? paramsArgs : undefined);
         } else {
           args.push(undefined);
         }
         break;
 
       case 'cookie':
-        args.push(cookies[param.name]);
+        if(param.name){
+          args.push(cookies[param.name]);
+        } else {
+          args.push(undefined);
+        }
         break;
 
       case 'body':
@@ -68,7 +64,7 @@ export async function getActionParams(
         break;
 
       case 'route-param':
-          if(route.routeParams){
+          if(route.routeParams && param.name){
             args.push(route.routeParams[param.name]);
           } else {
             args.push(undefined);
@@ -80,7 +76,7 @@ export async function getActionParams(
         break;
     }
   }
-  return new Promise(res => res(args));
+  return new Promise(resolve => resolve(args));
 }
 /**
  * Finds query search params from full url

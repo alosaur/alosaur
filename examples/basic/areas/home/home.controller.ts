@@ -17,7 +17,7 @@ import { Param } from '../../../../src/decorator/Param.ts';
 
 @Controller('/home')
 export class HomeController {
-  constructor() {}
+
   @Get('/text')
   text(
     @QueryParam('name') name: string,
@@ -26,6 +26,7 @@ export class HomeController {
   ) {
     return Content(`Hello world, ${name} ${test} ${username}`);
   }
+
   @Get('/json')
   json(
     @Req() request: ServerRequest,
@@ -41,25 +42,32 @@ export class HomeController {
     throw new ForbiddenError('error');
   }
 
+  @Get('/query')
+  query(@QueryParam("a") a: string, @QueryParam("b") b: string, @QueryParam("c") c: string) {
+    return Content({ a, b, c });
+  }
 
   @Get('/test')
   gerTests() {
     return Content('test');
   }
   @Get('/test/:id')
-  gerParamId(@Param('id') id) {
+  gerParamId(@Param('id') id: string) {
     return Content(id);
   }
+
   @Get('/test/:id/:name')
-  gerParamIdName(@Param('id') id, @Param('name') name) {
+  gerParamIdName(@Param('id') id: string, @Param('name') name: string) {
     return Content(`${id} ${name}`);
   }
+
   @Get('/test/:id/:name/detail')
-  gerParamIdNameDetail(@Param('id') id, @Param('name') name) {
+  gerParamIdNameDetail(@Param('id') id: string, @Param('name') name: string) {
     return Content(`${id} ${name} detail`);
   }
+
   @Post('/post')
-  post(@Body() body, @QueryParam('name') name: string) {
+  post(@Body() body: any, @QueryParam('name') name: string) {
     return Content(body);
   }
 }

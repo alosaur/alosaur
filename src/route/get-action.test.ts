@@ -19,13 +19,13 @@ test(function testGetActions() {
     params: []
   }
 ];
-  const actionName = getAction(routes, 'GET', '/test/name');
-  const actionIdName = getAction(routes, 'GET', '/test/2/name');
+  const actionWithName = getAction(routes, 'GET', '/test/name');
+  const actionWithIdName = getAction(routes, 'GET', '/test/2/name');
 
-  assert(actionName && actionName.routeParams && actionName.routeParams.name === "name");
-  assert(actionIdName 
-      && actionIdName.routeParams
-      && actionIdName.routeParams.id === "2"
-      && actionIdName.routeParams.name === "name");
+  assert(actionWithName && actionWithName.routeParams && actionWithName.routeParams.name === "name");
+  assert(actionWithIdName 
+      && actionWithIdName.routeParams
+      && actionWithIdName.routeParams.id === "2"
+      && actionWithIdName.routeParams.name === "name");
 });
 

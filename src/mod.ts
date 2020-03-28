@@ -147,7 +147,7 @@ export class App {
             const args = await getActionParams(req, res, action);
 
             // Get Action result
-            result = await action.target[action.actionName](...args);
+            result = await action.target[action.action](...args);
           }
         }
           // Resolve every post middleware
@@ -227,10 +227,13 @@ export class App {
         `register Controller: `,
         controller.target.name || controller.target.constructor.name
       );
+      
       let areaRoute = ``;
+
       if (controller.area.baseRoute) {
         areaRoute = controller.area.baseRoute;
       }
+
       actions.forEach(action => {
         const metaRoute: MetaRoute = {
           route: `${areaRoute}${controller.route}${action.route}`,
@@ -239,6 +242,7 @@ export class App {
           method: action.type,
           params: params.filter(param => param.method === action.method)
         };
+        
         console.log(`register route: `, metaRoute.route);
         this.addRoute(metaRoute);
       });

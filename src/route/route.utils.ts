@@ -1,13 +1,13 @@
 import { MetaRoute } from "../models/meta-route.ts";
-type ParserObject = {[key: string]: any};
+import { RouteParam } from './route.models.ts';
 
 const allowedMethod = (routeMethod: string, requestMethod?: string): boolean => {
   return !requestMethod || routeMethod === requestMethod; 
 };
 
 /// '/home/test/:id/test' => [{i: 3, el: "id"}]
-export const getRouteParams: (route: string) =>  ParserObject[] = route => 
-    route.split('/').reduce((acc: ParserObject[], el, i) => 
+export const getRouteParams: (route: string) =>  RouteParam[] = route => 
+    route.split('/').reduce((acc: RouteParam[], el, i) => 
       {
         if(/:[A-Za-z1-9]{1,}/.test(el)) {
           const result: string = el.replace(':','');
@@ -27,7 +27,7 @@ export const getRouteFromRegex = (routes: MetaRoute[], pathname: string, method?
   });
 }
 
-export const getRouteFromFullPath = (routes: MetaRoute[], pathname: string, method?: string): any => {
+export const getRouteFromFullPath = (routes: MetaRoute[], pathname: string, method?: string): MetaRoute | undefined => {
   return routes.find(r => {
     return allowedMethod(r.method.toString(), method) && r.route === pathname;
   });

@@ -7,6 +7,7 @@ export class InfoController {
   text() {
     return Content(`Hello info1`);
   }
+
   @Get('/time')
   async time() {
     await delay(500);
@@ -16,7 +17,7 @@ export class InfoController {
 }
 
 
-function delay(duration): Promise<any> {
+function delay(duration: number): Promise<any> {
   return new Promise(function(resolve, reject){
     setTimeout(function(){
       resolve();
