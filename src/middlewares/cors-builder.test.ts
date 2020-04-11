@@ -5,12 +5,18 @@ const { test } = Deno;
 
 test(function testCorsBuilder() {
   const builder = new CorsBuilder();
-  const response: Response = { headers: new Headers()};
+  const response: Response = { headers: new Headers() };
 
-  builder.WithOrigins('http://localhost:8000').AllowAnyMethod();
+  builder
+    .WithOrigins('http://localhost:8000')
+    .WithMethods('PUT, OPTIONS')
+    .WithHeaders('X-Custom-Header, Upgrade-Insecure-Requests')
+    .AllowCredentials();
 
-  builder.onPostRequest({} as ServerRequest, response).then(()  => {
+  builder.onPostRequest({} as ServerRequest, response).then(() => {
     assert(response && response.headers && response.headers.get('Access-Control-Allow-Origin') === 'http://localhost:8000');
-    assert(response && response.headers && response.headers.get('Access-Control-Allow-Methods') === '*');
+    assert(response && response.headers && response.headers.get('Access-Control-Allow-Methods') === 'PUT, OPTIONS');
+    assert(response && response.headers && response.headers.get('Access-Control-Allow-Headers') === 'X-Custom-Header, Upgrade-Insecure-Requests');
+    assert(response && response.headers && response.headers.get('Access-Control-Allow-Credentials') === 'true');
   });
 });
