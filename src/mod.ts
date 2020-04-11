@@ -125,7 +125,7 @@ export class App {
       // try getting static file
       if (await this.getStaticFile(req, res)) {
         await req.respond(res);
-        return;
+        continue;
       }
 
       // try respond for OPTIONS request, TODO: allowed method
