@@ -1,0 +1,94 @@
+{
+    "openapi": "3.0.0",
+    "info": { "title": "Basic Application", "version": "1.0.0", "description": "Example Alosaur OpenApi generate" },
+    "paths": {
+        "/app/home/text": {
+            "get": {
+                "tags": ["/app"],
+                "responses": { "200": { "description": "" } },
+                "parameters": [
+                    { "name": "username", "in": "cookie", "schema": { "type": "string" } },
+                    { "name": "test", "in": "query", "schema": { "type": "string" } },
+                    { "name": "name", "in": "query", "schema": { "type": "string" } }
+                ]
+            }
+        },
+        "/app/home/json": {
+            "get": {
+                "tags": ["/app"],
+                "responses": { "200": { "description": "" } },
+                "parameters": [{ "name": "name", "in": "query", "schema": { "type": "string" } }]
+            }
+        },
+        "/app/home/error": {
+            "get": { "tags": ["/app"], "responses": { "200": { "description": "" } }, "parameters": [] }
+        },
+        "/app/home/query": {
+            "get": {
+                "tags": ["/app"],
+                "responses": { "200": { "description": "" } },
+                "parameters": [
+                    { "name": "c", "in": "query", "schema": { "type": "string" } },
+                    { "name": "b", "in": "query", "schema": { "type": "string" } },
+                    { "name": "a", "in": "query", "schema": { "type": "string" } }
+                ]
+            }
+        },
+        "/app/home/test": {
+            "get": { "tags": ["/app"], "responses": { "200": { "description": "" } }, "parameters": [] }
+        },
+        "/app/home/test/{id}": {
+            "get": {
+                "tags": ["/app"],
+                "responses": { "200": { "description": "" } },
+                "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }]
+            }
+        },
+        "/app/home/test/{id}/{name}": {
+            "get": {
+                "tags": ["/app"],
+                "responses": { "200": { "description": "" } },
+                "parameters": [
+                    { "name": "name", "required": true, "in": "path", "schema": { "type": "string" } },
+                    { "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }
+                ]
+            }
+        },
+        "/app/home/test/{id}/{name}/detail": {
+            "get": {
+                "tags": ["/app"],
+                "responses": { "200": { "description": "" } },
+                "parameters": [
+                    { "name": "name", "required": true, "in": "path", "schema": { "type": "string" } },
+                    { "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }
+                ]
+            }
+        },
+        "/app/home/post": {
+            "post": {
+                "tags": ["/app"],
+                "responses": { "200": { "description": "" } },
+                "parameters": [{ "name": "name", "in": "query", "schema": { "type": "string" } }]
+            }
+        },
+        "/test/info/text": {
+            "get": { "tags": ["/test"], "responses": { "200": { "description": "" } }, "parameters": [] }
+        },
+        "/test/info/time": {
+            "get": { "tags": ["/test"], "responses": { "200": { "description": "" } }, "parameters": [] }
+        }
+    },
+    "components": {
+        "schemas": {},
+        "responses": {},
+        "parameters": {},
+        "examples": {},
+        "requestBodies": {},
+        "headers": {},
+        "securitySchemes": {},
+        "links": {},
+        "callbacks": {}
+    },
+    "tags": [],
+    "servers": [{ "url": "http://localhost:8000", "description": "Local server" }]
+}

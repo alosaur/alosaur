@@ -1,11 +1,12 @@
-import { ParamArgs } from "../metadata/metadata.ts";
+import { ParamArgs } from '../metadata/metadata.ts';
 import { RouteParam } from '../route/route.models.ts';
 
-export interface MetaRoute{
-  route: string;
-  target: {[key: string]: any};
-  action: string;
-  method: string;
-  params: ParamArgs[];
-  routeParams?: {[key: string]: any};
+export interface MetaRoute {
+    baseRoute: string;
+    route: string;
+    target: { [key: string]: any };
+    action: string;
+    method: string;
+    params: ParamArgs[];
+    routeParams?: { [key: string]: any };
 }
