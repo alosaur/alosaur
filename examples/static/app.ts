@@ -11,8 +11,7 @@ export class HomeController {
 @Area({
   controllers: [HomeController]
 })
-export class HomeArea {
-}
+export class HomeArea {}
 
 const app = new App({
   areas: [HomeArea]

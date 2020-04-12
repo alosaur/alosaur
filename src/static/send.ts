@@ -3,7 +3,7 @@
  * with the MIT license.
  */
 
-import { sep, parse, extname, basename, ServerRequest } from '../package.ts';
+import { sep, parse, extname, basename, ServerRequest, contentType } from '../package.ts';
 import { resolvePath } from './resolve-path.ts';
 
 // TODO move to library mode
@@ -178,8 +178,9 @@ export async function send(
   }
 
   if (!response.headers.has('Content-type')) {
-    response.headers.set('Content-type',
-      encodingExt !== '' ? extname(basename(path, encodingExt)) : extname(path));
+    const type = contentType(encodingExt !== '' ? extname(basename(path, encodingExt)) : extname(path));
+
+    response.headers.set('Content-type', type);
   }
 
   response.body = await Deno.readFile(path);
