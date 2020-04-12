@@ -86,7 +86,7 @@ And run
 -   [x] Add DI
 -   [x] Add std exceptions
 -   [x] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
--   [x] Add OpenAPI v3 generator (see /examples/basic/aopenapi.ts)
+-   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
 -   [ ] Add OpenAPI type reference
 -   [ ] Add GraphQl
 -   [ ] Add WebSocket
