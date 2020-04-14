@@ -1,4 +1,4 @@
-FROM maxmcd/deno:jessie-v0.38.0
+FROM maxmcd/deno:jessie-v0.40.0
 
 # Create app directory
 WORKDIR /usr/src/app
