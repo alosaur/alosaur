@@ -45,14 +45,32 @@ export async function getActionParams(
         break;
 
       case 'body':
-        // TODO: if content type json, form, etc...
         let body = await Deno.readAll(req.body);
         const bodyString = new TextDecoder("utf-8").decode(body);
-        try {
-          body = JSON.parse(bodyString);
-        } catch (error) {
+        const contentType = req.headers.get("content-type");
+
+        switch (contentType) {
+          case "application/json":
+            try {
+              let json: Object = JSON.parse(bodyString);
+              args.push(json);
+            } catch (error) {
+              args.push(undefined);
+            }
+            break;
+
+          case "application/x-www-form-urlencoded":
+            // TODO: find out how to do that
+            args.push(body);
+            break;
+
+          // TODO: handle other content types (maybe get a list?)
+
+          default:
+            args.push(body);
+            break;
         }
-        args.push(body);
+
         break;
 
       case 'request':
