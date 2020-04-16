@@ -60,7 +60,7 @@ tsconfig.app.json:
 
 And run
 
-`deno run -A --config ./src/tsconfig.app.json app.ts`
+`deno run --allow-net --allow-read --config ./src/tsconfig.app.json app.ts`
 
 ---
 
