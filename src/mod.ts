@@ -88,6 +88,7 @@ export class App {
     private routes: MetaRoute[] = [];
     private staticConfig: StaticFilesConfig | undefined = undefined;
     private viewRenderConfig: ViewRenderConfig | undefined = undefined;
+    private server: Server | undefined = undefined;
 
     constructor(settings: AppSettings) {
         this.metadata = getMetadataArgsStorage();
@@ -100,12 +101,13 @@ export class App {
         }
     }
 
-    async listen(address: string = '0.0.0.0:8000') {
-        const s: Server = serve(address);
+    async listen(address: string = '0.0.0.0:8000'): Promise<Server> {
+        const server: Server = serve(address);
+        this.server = server;
 
         console.log(`Server start in ${address}`);
 
-        for await (const req of s) {
+        for await (const req of server) {
             try {
                 const res: Response = {};
                 res.headers = new Headers();
@@ -155,22 +157,32 @@ export class App {
                 req.respond(Content(error, error.httpCode || 500));
             }
         }
+
+        return server;
     }
 
-    public useStatic(config?: StaticFilesConfig) {
+    public close(): void {
+        if (this.server) {
+            this.server.close();
+        } else {
+            console.warn('Server is not listening');
+        }
+    }
+
+    public useStatic(config?: StaticFilesConfig): void {
         if (config && !this.staticConfig) {
             this.staticConfig = config;
         }
     }
 
-    public useViewRender(config?: ViewRenderConfig) {
+    public useViewRender(config?: ViewRenderConfig): void {
         if (config && !this.viewRenderConfig) {
             this.viewRenderConfig = config;
             (global as any).viewRenderConfig = config;
         }
     }
 
-    public useCors(builder: CorsBuilder) {
+    public useCors(builder: CorsBuilder): void {
         this.metadata.middlewares.push({
             type: 'middleware',
             target: builder,
