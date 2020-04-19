@@ -36,8 +36,6 @@ test({
         const r2 = await fetchWithClose('http://localhost:8000/home/text/');
         const r3 = await fetchWithClose('http://localhost:8000/');
 
-        console.log(r1);
-
         assertEquals(r1.status, 200);
         assertEquals(r2.status, 404);
         assertEquals(r3.status, 404);
@@ -55,7 +53,7 @@ test({
         app.listen();
 
         const response = await fetch('http://localhost:8000/home/text?name=john');
-        //const text = await response.text();
+        // const text = await response.text();
         // console.log(text);
 
         (response.body as any).close();
