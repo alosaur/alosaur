@@ -107,7 +107,7 @@ export class App {
         }
     }
 
-    async listen(address: string = '0.0.0.0:8000'): Promise<Server> {
+    async listen(address: string = ':8000'): Promise<Server> {
         const server: Server = serve(address);
         this.server = server;
 

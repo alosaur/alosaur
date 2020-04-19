@@ -8,4 +8,4 @@ install:
     - export PATH="$HOME/.deno/bin:$PATH"
 
 script:
-    - deno run --allow-read src/test.ts
+    - deno test -A --config ./src/tsconfig.lib.json
