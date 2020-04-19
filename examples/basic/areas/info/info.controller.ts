@@ -3,7 +3,7 @@ import { Get } from '../../../../src/decorator/Get.ts';
 
 @Controller('/info')
 export class InfoController {
-    @Get('/text')
+    @Get(/^\/?$/)
     text() {
         return Content(`Hello info1`);
     }

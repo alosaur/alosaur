@@ -1,7 +1,20 @@
 import { Content } from '../renderer/content.ts';
 import { MetaRoute } from '../models/meta-route.ts';
-import { getPathNameFromUrl, getRouteFromFullPath, getRouteFromRegex, getRouteParams } from './route.utils.ts';
+import {
+    getPathNameFromUrl,
+    getRouteFromFullPath,
+    getRouteWithRouteParams,
+    getRouteWithRegex,
+    getRouteParams,
+} from './route.utils.ts';
 
+// TODO
+//  Add 3 Map route for search:
+//  - full pathes
+//  - with route params (example: 'api/:param')
+//  - regex routes
+
+// Find action from routes
 export function getAction(routes: MetaRoute[], method: string, url: string): MetaRoute | null {
     const pathname: string = getPathNameFromUrl(url);
     const routeParams: { [key: string]: any } = {};
@@ -9,7 +22,11 @@ export function getAction(routes: MetaRoute[], method: string, url: string): Met
     let route = getRouteFromFullPath(routes, pathname, method);
 
     if (!route) {
-        route = getRouteFromRegex(routes, pathname, method);
+        route = getRouteWithRegex(routes, pathname, method);
+    }
+
+    if (!route) {
+        route = getRouteWithRouteParams(routes, pathname, method);
 
         // gets route params from route
         if (route) {
@@ -30,6 +47,7 @@ export function getAction(routes: MetaRoute[], method: string, url: string): Met
             routeParams,
         } as MetaRoute;
     }
+
     return null;
 }
 

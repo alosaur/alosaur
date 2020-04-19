@@ -31,9 +31,17 @@ export function registerControllers(
         }
 
         actions.forEach((action) => {
+            let fullRoute: string = `${areaRoute}${controller.route}`;
+            const regexpRoute: RegExp = action.route instanceof RegExp ? action.route : undefined;
+
+            if (!regexpRoute) {
+                fullRoute += action.route;
+            }
+
             const metaRoute: MetaRoute = {
                 baseRoute: areaRoute,
-                route: `${areaRoute}${controller.route}${action.route}`,
+                route: fullRoute,
+                regexpRoute,
                 target: obj,
                 action: action.method,
                 method: action.type,

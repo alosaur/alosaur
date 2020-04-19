@@ -1,12 +1,14 @@
-import { getPathNameFromUrl, getRouteFromFullPath, getRouteFromRegex } from "./route.utils.ts";
-import { MetaRoute } from "../models/meta-route.ts";
+import { getPathNameFromUrl, getRouteFromFullPath, getRouteWithRouteParams, getRouteWithRegex } from './route.utils.ts';
+import { MetaRoute } from '../models/meta-route.ts';
 
 export function routeExist(routes: MetaRoute[], url: string): boolean {
-  const pathname: string = getPathNameFromUrl(url);
-  
-  let route = getRouteFromFullPath(routes, pathname);
+    const pathname: string = getPathNameFromUrl(url);
 
-  if (!route) route = getRouteFromRegex(routes, pathname);
+    let route = getRouteFromFullPath(routes, pathname);
 
-  return !!route;
+    if (!route) route = getRouteWithRegex(routes, pathname);
+
+    if (!route) route = getRouteWithRouteParams(routes, pathname);
+
+    return !!route;
 }
