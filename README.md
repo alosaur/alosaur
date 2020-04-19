@@ -83,6 +83,7 @@ And run
 -   [x] Add middleware
 -   [x] Add static middleware (example: app.useStatic)
 -   [x] Add CORS middleware
+-   [x] Add SPA middleware
 -   [x] Add DI
 -   [x] Add std exceptions
 -   [x] Add CI with minimal tests. ([see this comment](https://github.com/denoland/registry/pull/100#pullrequestreview-251320999))
@@ -123,4 +124,46 @@ Generate openAPI file:
 ```
 deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
 
+```
+
+## Middlware
+
+You can create middlware and register it in area or all application layer.
+
+```ts
+@Middlware(new RegExp('/'))
+export class Log implements MiddlwareTarget {
+    date: Date = new Date();
+
+    onPreRequest(request: ServerRequest, responce: ServerResponse) {
+        return new Promise((resolve, reject) => {
+            this.date = new Date();
+            resolve();
+        });
+    }
+
+    onPostRequest(request: ServerRequest, responce: ServerResponse) {
+        return new Promise((resolve, reject) => {
+            console.log(new Date().getTime() - this.date.getTime());
+            resolve();
+        });
+    }
+}
+```
+
+Register in app settings
+
+```ts
+const settings: AppSettings = {
+    areas: [HomeArea, InfoArea],
+    middlewares: [Log],
+};
+```
+
+or in app
+
+```ts
+const app = new App(settings);
+
+app.use(/\//, new Log());
 ```

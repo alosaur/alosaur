@@ -46,3 +46,5 @@ export function optionsAllowedAction() {
         headers,
     };
 }
+
+export const notFoundActionResponce = notFoundAction();

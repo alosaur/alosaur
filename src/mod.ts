@@ -48,7 +48,7 @@ export * from './models/view-render-config.ts';
 
 import { MetadataArgsStorage } from './metadata/metadata.ts';
 import { serve, Response, Server } from './package.ts';
-import { getAction, notFoundAction, optionsAllowedAction } from './route/get-action.ts';
+import { getAction, notFoundActionResponce, optionsAllowedAction } from './route/get-action.ts';
 import { getActionParams } from './route/get-action-params.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
@@ -59,6 +59,7 @@ import { routeExist } from './route/route-exist.ts';
 import { registerAreas } from './utils/register-areas.ts';
 import { registerControllers } from './utils/register-controllers.ts';
 import { getStaticFile } from './utils/get-static-file.ts';
+import { MiddlwareTarget } from './models/middlware-target.ts';
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -73,6 +74,11 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
 
 export function getViewRenderConfig(): ViewRenderConfig {
     return (global as any).viewRenderConfig;
+}
+
+export interface ServerResponse extends Response {
+    headers: Headers;
+    immediately?: boolean; // Flag for optimization request, if immediately is "true" server try send respond after any action
 }
 
 export interface AppSettings {
@@ -109,8 +115,9 @@ export class App {
 
         for await (const req of server) {
             try {
-                const res: Response = {};
-                res.headers = new Headers();
+                const res: ServerResponse = {
+                    headers: new Headers(),
+                };
                 let result: any;
 
                 // Get middlewares in request
@@ -119,6 +126,11 @@ export class App {
                 // Resolve every pre middleware
                 for (const middleware of middlewares) {
                     await middleware.target.onPreRequest(req, res);
+                }
+
+                if (res.immediately) {
+                    await req.respond(res);
+                    continue;
                 }
 
                 // try getting static file
@@ -131,15 +143,11 @@ export class App {
                 else if (req.method == 'OPTIONS') {
                     if (routeExist(this.routes, req.url)) {
                         result = optionsAllowedAction();
-                    } else {
-                        result = notFoundAction();
                     }
                 } else {
                     const action = getAction(this.routes, req.method, req.url);
 
-                    if (action === null) {
-                        result = notFoundAction();
-                    } else {
+                    if (action !== null) {
                         // Get arguments in this action
                         const args = await getActionParams(req, res, action);
 
@@ -147,12 +155,23 @@ export class App {
                         result = await action.target[action.action](...args);
                     }
                 }
-                // Resolve every post middleware
-                for (const middleware of middlewares) {
-                    await middleware.target.onPostRequest(req, result);
+
+                if (res.immediately) {
+                    await req.respond(result);
+                    continue;
                 }
 
-                req.respond(result);
+                // Resolve every post middleware
+                for (const middleware of middlewares) {
+                    await middleware.target.onPostRequest(req, res, result);
+                }
+
+                if (res.immediately) {
+                    await req.respond(res);
+                    continue;
+                }
+
+                req.respond(result || notFoundActionResponce);
             } catch (error) {
                 req.respond(Content(error, error.httpCode || 500));
             }
@@ -182,11 +201,22 @@ export class App {
         }
     }
 
+    /**
+     * Deprecate
+     */
     public useCors(builder: CorsBuilder): void {
         this.metadata.middlewares.push({
             type: 'middleware',
             target: builder,
             route: /\//,
+        });
+    }
+
+    public use(route: RegExp, middlware: MiddlwareTarget): void {
+        this.metadata.middlewares.push({
+            type: 'middleware',
+            target: middlware,
+            route,
         });
     }
 }

@@ -6,14 +6,14 @@ export class Log implements MiddlwareTarget {
     date: Date = new Date();
 
     onPreRequest(request: any, responce: any) {
-        return new Promise((res,rej) => {
+        return new Promise((resolve, reject) => {
             this.date = new Date();
-            res();
+            resolve();
         });
     }
 
     onPostRequest(request: any, responce: any) {
-        return new Promise((resolve,rej) => {
+        return new Promise((resolve, reject) => {
             console.log(new Date().getTime() - this.date.getTime());
             resolve();
         });
