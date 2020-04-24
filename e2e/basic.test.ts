@@ -1,5 +1,5 @@
-import { assertEquals, assert } from '../src/package_test.ts';
-import { fetchWithClose, startServer, killServer } from './test.utils.ts';
+import { assertEquals } from '../src/package_test.ts';
+import { Server, serve } from '../src/package.ts';
 const { test } = Deno;
 
 
@@ -46,12 +46,8 @@ const { test } = Deno;
 //     },
 // });
 
-import { test, runIfMain } from "https://deno.land/std@v0.41.0/testing/mod.ts";
-import { assertEquals } from "https://deno.land/std@v0.41.0/testing/asserts.ts";
-import { serve, Server } from "https://deno.land/std@v0.41.0/http/server.ts";
-
 const encoder = new TextEncoder();
-let s: Server = undefined;
+let s: Server| undefined = undefined;
 
 async function createServer() {
   s = serve(":8080");
@@ -65,5 +61,5 @@ test(async function foo() {
 
   const res = await fetch("http://127.0.0.1:8080/hello");
   assertEquals(await res.text(), "/hello");
-  s.close();
+  s!.close();
 });
