@@ -9,7 +9,7 @@ const { test } = Deno;
 test({
     name: '[http] basic server should response 200, 404',
     async fn(): Promise<void> {
-        await startServer();
+        startServer();
 
         try {
             const r1 = await fetchWithClose('http://localhost/home/query-name');
@@ -30,7 +30,7 @@ test({
 test({
     name: '[http] basic server should response with query',
     async fn(): Promise<void> {
-        await startServer();
+        startServer();
 
         try {
             const response = await fetch('http://localhost/home/query-name?name=john');
