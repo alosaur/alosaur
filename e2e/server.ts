@@ -7,8 +7,10 @@ import { App, Area, Controller, Get, Content, QueryParam } from '../src/mod.ts';
 
 @Controller('/home')
 export class HomeController {
-    @Get('/text')
+    @Get('/query-name')
     text(@QueryParam('name') name: string) {
+        console.log(name);
+        
         return Content(`Hey! ${name}`);
     }
 }
