@@ -20,7 +20,7 @@ export async function startServer(): Promise<void> {
         "-A",
         "--config",
         "./src/tsconfig.lib.json",
-        "e2e/server.ts",
+        "./e2e/server.ts",
         ".",
       ],
       stdout: "piped",
