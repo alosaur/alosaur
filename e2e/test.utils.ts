@@ -21,7 +21,6 @@ export async function startServer(): Promise<void> {
         "--config",
         "./src/tsconfig.lib.json",
         "./e2e/server.ts",
-        ".",
       ],
       stdout: "piped",
       stderr: "inherit",
