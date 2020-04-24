@@ -1,4 +1,4 @@
-import { assert } from '../src/package_test.ts';
+import { assert, TextProtoReader, BufReader } from '../src/package_test.ts';
 
 /**
  * https://github.com/denoland/deno/issues/4735
@@ -20,14 +20,21 @@ export async function startServer(): Promise<void> {
         "-A",
         "--config",
         "./src/tsconfig.lib.json",
-        "e2e/server.ts",
-        ".",
+        "./e2e/server.ts",
       ],
       stdout: "piped",
       stderr: "inherit",
     });
     // Once server is ready it will write to its stdout.
     assert(server.stdout != null);
+
+    const r = new TextProtoReader(new BufReader(server.stdout));
+    let s = await r.readLine();
+
+    assert(s !== Deno.EOF && s.includes("Server start in"));
+
+    return Promise.resolve();
+
   }
 
 export function killServer(): void {
