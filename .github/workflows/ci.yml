@@ -12,7 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Alosaur test
-        uses: denolib/setup-deno@master
         with:
           deno-version: ${{ matrix.deno }}
       - run: deno test -A --config ./src/tsconfig.lib.json
