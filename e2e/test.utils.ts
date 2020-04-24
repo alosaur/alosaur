@@ -1,4 +1,5 @@
-import { assert, TextProtoReader, BufReader } from '../src/package_test.ts';
+import { assert } from '../src/package_test.ts';
+
 /**
  * https://github.com/denoland/deno/issues/4735
  */
@@ -12,6 +13,10 @@ export async function fetchWithClose(url: string): Promise<Response> {
 let server: Deno.Process;
 
 export async function startServer(): Promise<void> {
+
+    console.log(Deno.execPath());
+    
+
     server = Deno.run({
       cmd: [
         Deno.execPath(),
@@ -26,8 +31,6 @@ export async function startServer(): Promise<void> {
     });
     // Once server is ready it will write to its stdout.
     assert(server.stdout != null);
-    
-    // assert(s !== Deno.EOF && s.includes("Server start in"));
   }
 
 export function killServer(): void {
