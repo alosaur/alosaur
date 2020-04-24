@@ -6,4 +6,5 @@ import { AppSettings } from '../../src/mod.ts';
 export const settings: AppSettings = {
     areas: [HomeArea, InfoArea],
     middlewares: [Log],
+    logging: false
 };

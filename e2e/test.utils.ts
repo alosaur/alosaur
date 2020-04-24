@@ -12,7 +12,7 @@ export async function fetchWithClose(url: string): Promise<Response> {
 
 let server: Deno.Process;
 
-export async function startServer(): Promise<void> {
+export async function startServer(serverPath: string): Promise<void> {
     server = Deno.run({
       cmd: [
         Deno.execPath(),
@@ -20,7 +20,7 @@ export async function startServer(): Promise<void> {
         "-A",
         "--config",
         "./src/tsconfig.lib.json",
-        "./e2e/server.ts",
+        serverPath,
       ],
       stdout: "piped",
       stderr: "inherit",
@@ -40,4 +40,8 @@ export async function startServer(): Promise<void> {
 export function killServer(): void {
     server.close();
     server.stdout?.close();
+}
+
+export function itLog(s: string, firstIt = false): void {
+    firstIt ? console.log("\n" + s) : console.log(s);
 }

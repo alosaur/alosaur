@@ -1,4 +1,4 @@
-import { App, Area, Controller, Get, Content, QueryParam } from '../src/mod.ts';
+import { App, Area, Controller, Get, Content, QueryParam } from '../../src/mod.ts';
 
 
 /**

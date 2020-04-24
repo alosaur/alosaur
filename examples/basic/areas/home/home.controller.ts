@@ -63,7 +63,7 @@ export class HomeController {
 
   @Get('/test/:id/:name/detail')
   gerParamIdNameDetail(@Param('id') id: string, @Param('name') name: string) {
-    return Content(`${id} ${name} detail`);
+    return Content(`${id} ${name} this is details page`);
   }
 
   @Post('/post')
