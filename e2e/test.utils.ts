@@ -13,6 +13,10 @@ export async function fetchWithClose(url: string): Promise<Response> {
 let server: Deno.Process;
 
 export async function startServer(): Promise<void> {
+
+    console.log(Deno.execPath());
+    
+
     server = Deno.run({
       cmd: [
         Deno.execPath(),
