@@ -5,8 +5,10 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        deno: [0.41.0]
+    name: Deno ${{ matrix.deno }}
     steps:
       - uses: actions/checkout@master
-      - run: curl -fsSL https://deno.land/x/install/install.sh | sh -s v0.41.0
-      - run: export PATH="$HOME/.deno/bin:$PATH"
       - run: deno test -A --config ./src/tsconfig.lib.json
