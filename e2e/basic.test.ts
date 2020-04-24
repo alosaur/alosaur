@@ -1,5 +1,5 @@
-import { assertEquals, assert } from '../src/package_test.ts';
-import { fetchWithClose, startServer, killServer } from './test.utils.ts';
+import { assertEquals } from '../src/package_test.ts';
+import { startServer, fetchWithClose, killServer } from './test.utils.ts';
 const { test } = Deno;
 
 
@@ -12,9 +12,9 @@ test({
         await startServer();
 
         try {
-            const r1 = await fetchWithClose('http://localhost:8000/home/text');
-            const r2 = await fetchWithClose('http://localhost:8000/home/text/');
-            const r3 = await fetchWithClose('http://localhost:8000/');
+            const r1 = await fetchWithClose('http://127.0.0.1:8080/home/query-name');
+            const r2 = await fetchWithClose('http://127.0.0.1:8080/home/query-name/');
+            const r3 = await fetchWithClose('http://127.0.0.1:8080/');
     
             assertEquals(r1.status, 200);
             assertEquals(r2.status, 404);
@@ -33,7 +33,7 @@ test({
         await startServer();
 
         try {
-            const response = await fetch('http://localhost:8000/home/text?name=john');
+            const response = await fetch('http://127.0.0.1:8080/home/query-name?name=john');
             const text = await response.text();
     
             assertEquals(response.status, 200);

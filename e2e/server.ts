@@ -7,7 +7,7 @@ import { App, Area, Controller, Get, Content, QueryParam } from '../src/mod.ts';
 
 @Controller('/home')
 export class HomeController {
-    @Get('/text')
+    @Get('/query-name')
     text(@QueryParam('name') name: string) {
         return Content(`Hey! ${name}`);
     }
@@ -20,6 +20,7 @@ export class HomeArea {}
 
 const app = new App({
     areas: [HomeArea],
+    logging: false
 });
 
-app.listen();
+await app.listen("127.0.0.1:8080");
