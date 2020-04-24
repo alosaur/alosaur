@@ -26,8 +26,6 @@ export async function startServer(): Promise<void> {
     });
     // Once server is ready it will write to its stdout.
     assert(server.stdout != null);
-
-    return new Promise((resolve => setTimeout(() => resolve(), 10000)));
     
     // assert(s !== Deno.EOF && s.includes("Server start in"));
   }
