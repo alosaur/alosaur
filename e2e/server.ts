@@ -24,4 +24,4 @@ const app = new App({
     areas: [HomeArea],
 });
 
-app.listen("127.0.0.1:8000");
+app.listen(":80");
