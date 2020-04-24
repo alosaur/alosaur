@@ -46,9 +46,9 @@ const { test } = Deno;
 //     },
 // });
 
-import { test, runIfMain } from "https://deno.land/std@v0.27.0/testing/mod.ts";
-import { assertEquals } from "https://deno.land/std@v0.27.0/testing/asserts.ts";
-import { serve, Server } from "https://deno.land/std@v0.27.0/http/server.ts";
+import { test, runIfMain } from "https://deno.land/std@v0.41.0/testing/mod.ts";
+import { assertEquals } from "https://deno.land/std@v0.41.0/testing/asserts.ts";
+import { serve, Server } from "https://deno.land/std@v0.41.0/http/server.ts";
 
 const encoder = new TextEncoder();
 let s: Server = undefined;
