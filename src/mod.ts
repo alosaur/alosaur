@@ -86,6 +86,7 @@ export interface AppSettings {
     middlewares?: Function[];
     staticConfig?: StaticFilesConfig;
     viewRenderConfig?: ViewRenderConfig;
+    logging?: boolean;
 }
 
 export class App {
@@ -99,7 +100,7 @@ export class App {
     constructor(settings: AppSettings) {
         this.metadata = getMetadataArgsStorage();
         registerAreas(this.metadata);
-        registerControllers(this.metadata.controllers, this.classes, (route) => this.routes.push(route));
+        registerControllers(this.metadata.controllers, this.classes, (route) => this.routes.push(route), settings.logging);
 
         if (settings) {
             this.useStatic(settings.staticConfig);
