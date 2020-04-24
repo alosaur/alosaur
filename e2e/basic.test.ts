@@ -12,9 +12,9 @@ test({
         await startServer();
 
         try {
-            const r1 = await fetchWithClose('http://localhost/home/query-name');
-            const r2 = await fetchWithClose('http://localhost/home/query-name/');
-            const r3 = await fetchWithClose('http://localhost/');
+            const r1 = await fetchWithClose('http://127.0.0.1:8000/home/query-name');
+            const r2 = await fetchWithClose('http://127.0.0.1:8000/home/query-name/');
+            const r3 = await fetchWithClose('http://127.0.0.1:8000/');
     
             assertEquals(r1.status, 200);
             assertEquals(r2.status, 404);
@@ -33,7 +33,7 @@ test({
         await startServer();
 
         try {
-            const response = await fetch('http://localhost/home/query-name?name=john');
+            const response = await fetch('http://127.0.0.1:8000/home/query-name?name=john');
             const text = await response.text();
     
             assertEquals(response.status, 200);
