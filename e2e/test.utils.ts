@@ -26,13 +26,10 @@ export async function startServer(): Promise<void> {
     });
     // Once server is ready it will write to its stdout.
     assert(server.stdout != null);
-    const r = new TextProtoReader(new BufReader(server.stdout));
-    let s = await r.readLine();
+
+    return new Promise((resolve => setTimeout(() => resolve(), 10000)));
     
-    assert(s !== Deno.EOF && s.includes("Server start in"));
-    
-    return Promise.resolve();
-    
+    // assert(s !== Deno.EOF && s.includes("Server start in"));
   }
 
 export function killServer(): void {
