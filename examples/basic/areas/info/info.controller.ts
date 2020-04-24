@@ -5,7 +5,7 @@ import { Get } from '../../../../src/decorator/Get.ts';
 export class InfoController {
     @Get(/^\/?$/)
     text() {
-        return Content(`Hello info1`);
+        return Content(`Hello info`);
     }
 
     @Get('/time')

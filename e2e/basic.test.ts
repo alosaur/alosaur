@@ -111,3 +111,42 @@ test({
         }
     },
 });
+
+
+/**
+ * Test cases
+ */
+test({
+    name: '[http] basic server, requests to info controller',
+    async fn(): Promise<void> {
+        await startServer("./examples/basic/app.ts");
+        const baseUrl = "http://localhost:8000/test/info";
+
+        itLog("/test/info", true)
+
+        try {
+            // It
+            itLog("\t ''",);
+            
+            let response = await fetch(baseUrl);
+            let text = await response.text();
+    
+            assertEquals(response.status, 200);
+            assertEquals(text, "Hello info");
+
+
+            // It
+            itLog("\t '/'",);
+            
+            response = await fetch(baseUrl + '/');
+            text = await response.text();
+    
+            assertEquals(response.status, 200);
+            assertEquals(text, "Hello info");
+
+        }
+        finally {
+            killServer();
+        }
+    },
+});
