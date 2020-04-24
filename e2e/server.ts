@@ -24,4 +24,4 @@ const app = new App({
     areas: [HomeArea],
 });
 
-app.listen();
+app.listen("0.0.0.0:8000");
