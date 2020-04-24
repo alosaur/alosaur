@@ -22,6 +22,7 @@ export class HomeArea {}
 
 const app = new App({
     areas: [HomeArea],
+    logging: false
 });
 
 await app.listen("127.0.0.1:8080");
