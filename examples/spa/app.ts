@@ -16,6 +16,7 @@ export class HomeArea {}
 
 const app = new App({
     areas: [HomeArea],
+    logging: false
 });
 
 app.use(
