@@ -37,3 +37,24 @@ const app = new App({
 
 app.listen();
 ```
+
+
+## Set, get and delete cookie
+
+
+```ts
+  import { Cookie, setCookie, getCookies, delCookie } from "https://deno.land/std/http/cookie.ts";
+
+  ...
+  @Get('/view')
+  view(Res() response: ServerRequest, @Res() response: Response) {
+    const cookies = getCookies(request);
+    
+    const cookie: Cookie = { name: "Space", value: "Cat" };
+    setCookie(response, cookie);
+
+    delCookie(response, "deno");
+
+    return View(result);
+  }
+```
