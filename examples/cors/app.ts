@@ -9,7 +9,7 @@ app.useCors(
   new CorsBuilder()
       .WithOrigins('*')
       .AllowAnyMethod()
-      .AllowAnyHeaders()
+      .AllowAnyHeader()
 );
 
 app.listen();
