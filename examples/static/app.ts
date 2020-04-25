@@ -4,7 +4,7 @@ import { App, Area, Controller, Get, Content, QueryParam } from '../../src/mod.t
 export class HomeController {
   @Get('/text')
   text(@QueryParam('name') name: string) {
-    return Content(`Hey! ${name}`);
+    return `Hey! ${name}`;
   }
 }
 

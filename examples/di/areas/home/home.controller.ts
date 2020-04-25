@@ -10,6 +10,6 @@ export class HomeController {
 
   @Get('/text')
   text(@QueryParam('name') name: string) {
-    return Content(`Hey! ${this.service.getName()}, ${name}`);
+    return `Hey! ${this.service.getName()}, ${name}`;
   }
 }

@@ -15,21 +15,21 @@ export class HomeController {
 
   @Get('/text')
   text() {
-    return Content(`Hello world`);
+    return `Hello world`;
   }
 
   @Post('/post')
   post(@Body() body: any) {
-    return Content(body);
+    return body;
   }
 
   @Delete('/delete')
   delete() {
-    return Content('ok');
+    return 'ok';
   }
 
   @Put('/put')
   put() {
-    return Content('ok');
+    return 'ok';
   }
 }

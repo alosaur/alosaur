@@ -5,13 +5,13 @@ import { Get } from '../../../../src/decorator/Get.ts';
 export class InfoController {
     @Get(/^\/?$/)
     text() {
-        return Content(`Hello info`);
+        return `Hello info`;
     }
 
     @Get('/time')
     async time() {
         await delay(500);
-        return Content(`Hello info2`);
+        return `Hello info2`;
     }
 }
 

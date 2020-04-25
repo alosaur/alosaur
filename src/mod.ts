@@ -60,6 +60,8 @@ import { registerAreas } from './utils/register-areas.ts';
 import { registerControllers } from './utils/register-controllers.ts';
 import { getStaticFile } from './utils/get-static-file.ts';
 import { MiddlwareTarget } from './models/middlware-target.ts';
+import { getResponseFromActionResult } from './utils/get-response-from-action-result.ts';
+import Reader = Deno.Reader;
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -78,7 +80,14 @@ export function getViewRenderConfig(): ViewRenderConfig {
 
 export interface ServerResponse extends Response {
     headers: Headers;
+    status?: number;
+    body?: Uint8Array | Reader | string;
+    trailers?: () => Promise<Headers> | Headers;
     immediately?: boolean; // Flag for optimization request, if immediately is "true" server try send respond after any action
+}
+
+export interface RenderResult extends ServerResponse {
+    __isRenderResult: boolean;
 }
 
 export interface AppSettings {
@@ -119,7 +128,8 @@ export class App {
                 const res: ServerResponse = {
                     headers: new Headers(),
                 };
-                let result: any;
+
+                let result: RenderResult | ServerResponse | undefined;
 
                 // Get middlewares in request
                 const middlewares = this.metadata.middlewares.filter((m) => m.route.test(req.url));
@@ -153,12 +163,12 @@ export class App {
                         const args = await getActionParams(req, res, action);
 
                         // Get Action result
-                        result = await action.target[action.action](...args);
+                        result = getResponseFromActionResult(await action.target[action.action](...args), res.headers);
                     }
                 }
 
                 if (res.immediately) {
-                    await req.respond(result);
+                    await req.respond(result as ServerResponse);
                     continue;
                 }
 

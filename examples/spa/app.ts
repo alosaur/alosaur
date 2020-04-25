@@ -1,11 +1,11 @@
-import { App, Area, Controller, Get, Content, QueryParam } from '../../src/mod.ts';
+import { App, Area, Controller, Get, QueryParam } from '../../src/mod.ts';
 import { SpaBuilder } from '../../src/middlewares/spa-builder.ts';
 
 @Controller('/home')
 export class HomeController {
     @Get('/text')
     text(@QueryParam('name') name: string) {
-        return Content(`Hey! ${name}`);
+        return `Hey! ${name}`;
     }
 }
 

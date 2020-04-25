@@ -1,6 +1,5 @@
 import {
   Controller,
-  Content,
   Response,
   ServerRequest,
   ForbiddenError
@@ -24,7 +23,7 @@ export class HomeController {
     @QueryParam('test') test: string,
     @Cookie('username') username: string
   ) {
-    return Content(`Hello world, ${name} ${test} ${username}`);
+    return `Hello world, ${name} ${test} ${username}`;
   }
 
   @Get('/json')
@@ -33,7 +32,7 @@ export class HomeController {
     @Res() response: Response,
     @QueryParam('name') name: string
   ) {
-    return Content(response);
+    return response;
   }
 
 
@@ -44,30 +43,31 @@ export class HomeController {
 
   @Get('/query')
   query(@QueryParam("a") a: string, @QueryParam("b") b: string, @QueryParam("c") c: string) {
-    return Content({ a, b, c });
+    return { a, b, c };
   }
 
   @Get('/test')
   gerTests() {
-    return Content('test');
+    return 'test';
   }
+  
   @Get('/test/:id')
   gerParamId(@Param('id') id: string) {
-    return Content(id);
+    return id;
   }
 
   @Get('/test/:id/:name')
   gerParamIdName(@Param('id') id: string, @Param('name') name: string) {
-    return Content(`${id} ${name}`);
+    return `${id} ${name}`;
   }
 
   @Get('/test/:id/:name/detail')
   gerParamIdNameDetail(@Param('id') id: string, @Param('name') name: string) {
-    return Content(`${id} ${name} this is details page`);
+    return `${id} ${name} this is details page`;
   }
 
   @Post('/post')
   post(@Body() body: any, @QueryParam('name') name: string) {
-    return Content(body);
+    return body;
   }
 }

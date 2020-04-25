@@ -1,5 +1,6 @@
 import { Content } from '../renderer/content.ts';
 import { MetaRoute } from '../models/meta-route.ts';
+import { ServerResponse } from '../mod.ts';
 import {
     getPathNameFromUrl,
     getRouteFromFullPath,
@@ -55,7 +56,7 @@ export function notFoundAction() {
     return Content('Not found', 404); // TODO: enum http status
 }
 
-export function optionsAllowedAction() {
+export function optionsAllowedAction(): ServerResponse {
     const headers = new Headers();
     headers.set('Allow', '*');
 
