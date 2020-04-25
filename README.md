@@ -19,17 +19,17 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 Controller:
 
 ```typescript
-import { Controller, Content, Get, Area, App } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/src/mod.ts';
 
 @Controller('/home')
 export class HomeController {
     @Get('/text')
     text() {
-        return Content('Hello world');
+        return 'Hello world';
     }
     @Get('/json')
     json() {
-        return Content({ text: 'test' });
+        return { text: 'test' };
     }
 }
 
