@@ -47,7 +47,7 @@ app.listen();
 
   ...
   @Get('/view')
-  view(Res() response: ServerRequest, @Res() response: Response) {
+  view(Req() request: ServerRequest, @Res() response: Response) {
     const cookies = getCookies(request);
     
     const cookie: Cookie = { name: "Space", value: "Cat" };

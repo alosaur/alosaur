@@ -1,10 +1,23 @@
-import { App, Area, Controller, Get, Content, QueryParam } from '../../src/mod.ts';
+import { Cookie, setCookie, getCookies } from 'https://deno.land/std@v0.41.0/http/cookie.ts';
+import { Response } from "https://deno.land/std@v0.41.0/http/server.ts";
+import { App, Area, Controller, Get, Req, Res, ServerRequest } from '../../src/mod.ts';
+import { Redirect } from '../../src/renderer/redirect.ts';
 
 @Controller('/home')
 export class HomeController {
+  @Get("/")
+  default(@Res() response: Response) {
+    const cookie: Cookie = { name: "name", value: "Cat" };
+    setCookie(response, cookie);
+
+    return Redirect('/home/text');
+  }
+
   @Get('/text')
-  text(@QueryParam('name') name: string) {
-    return `Hey! ${name}`;
+  text(@Req() request: ServerRequest) {
+    const cookies = getCookies(request);
+    
+    return `Hey! ${cookies['name']}`;
   }
 }
 
