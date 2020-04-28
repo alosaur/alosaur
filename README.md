@@ -10,7 +10,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 -   **Decorators** - for query, cookie, parametrs, routes and etc.
 -   **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection))
 
-**[Documentation](/docs)**
+**[Documentation](https://github.com/alosaur/alosaur/tree/master/docs)**
 
 ---
 
