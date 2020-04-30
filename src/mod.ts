@@ -122,9 +122,7 @@ export class App {
         this.server = server;
 
         console.log(`Server start in ${address}`);
-        console.log(1231);
         for await (const req of server) {
-            console.log(1231);
             
             try {
                 const res: ServerResponse = {
