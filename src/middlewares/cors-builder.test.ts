@@ -13,7 +13,7 @@ test(function testCorsBuilder() {
     .WithHeaders('X-Custom-Header, Upgrade-Insecure-Requests')
     .AllowCredentials();
 
-  builder.onPostRequest({} as ServerRequest, response).then(() => {
+  builder.onPostRequest({} as ServerRequest, response, response).then(() => {
     assert(response && response.headers && response.headers.get('Access-Control-Allow-Origin') === 'http://localhost:8000');
     assert(response && response.headers && response.headers.get('Access-Control-Allow-Methods') === 'PUT, OPTIONS');
     assert(response && response.headers && response.headers.get('Access-Control-Allow-Headers') === 'X-Custom-Header, Upgrade-Insecure-Requests');
