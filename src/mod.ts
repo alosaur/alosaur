@@ -55,12 +55,12 @@ import { ViewRenderConfig } from './models/view-render-config.ts';
 import { CorsBuilder } from './middlewares/cors-builder.ts';
 import { Content } from './renderer/content.ts';
 import { MetaRoute } from './models/meta-route.ts';
-import { routeExist } from './route/route-exist.ts';
 import { registerAreas } from './utils/register-areas.ts';
 import { registerControllers } from './utils/register-controllers.ts';
 import { getStaticFile } from './utils/get-static-file.ts';
 import { MiddlwareTarget } from './models/middlware-target.ts';
-import { getResponseFromActionResult } from './utils/get-response-from-action-result.ts';
+// import { getResponseFromActionResult } from './utils/get-response-from-action-result.ts';
+
 import Reader = Deno.Reader;
 
 export type ObjectKeyAny = { [key: string]: any };
@@ -77,6 +77,26 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
 export function getViewRenderConfig(): ViewRenderConfig {
     return (global as any).viewRenderConfig;
 }
+
+export function getResponseFromActionResult(
+  value: RenderResult | any,
+  globalHeaders: Headers,
+): ServerResponse {
+  let responce: ServerResponse;
+
+  if ((value as RenderResult).__isRenderResult) {
+    responce = value;
+  } else {
+    responce = Content(value);
+  }
+
+  // merge headers
+  responce.headers = new Headers([...responce.headers, ...globalHeaders]);
+
+  delete (responce as RenderResult).__isRenderResult;
+  return responce;
+}
+
 
 export interface ServerResponse extends Response {
     headers: Headers;

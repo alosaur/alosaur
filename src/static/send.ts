@@ -4,7 +4,7 @@
  */
 
 import { sep, parse, extname, basename, ServerRequest, contentType } from '../package.ts';
-import { resolvePath } from './resolve-path.ts';
+import { isAbsolute, join, normalize, resolve } from "../package.ts";
 
 // TODO move to library mode
 interface Response {
@@ -186,4 +186,45 @@ export async function send(
   response.body = await Deno.readFile(path);
 
   return path;
+}
+
+
+// Moved from: 
+// import { resolvePath } from './resolve-path.ts';
+
+const UP_PATH_REGEXP = /(?:^|[\\/])\.\.(?:[\\/]|$)/;
+
+export function resolvePath(relativePath: string): string;
+export function resolvePath(rootPath: string, relativePath: string): string;
+export function resolvePath(rootPath: string, relativePath?: string): string {
+  let path = relativePath;
+  let root = rootPath;
+
+  // root is optional, similar to root.resolve
+  if (arguments.length === 1) {
+    path = rootPath;
+    root = Deno.cwd();
+  }
+
+  if (path == null) {
+    throw new TypeError("Argument relativePath is required.");
+  }
+
+  // containing NULL bytes is malicious
+  if (path.includes("\0")) {
+    throw new Error("Malicious Path");
+  }
+
+  // path should never be absolute
+  if (isAbsolute(path)) {
+    throw new Error("Malicious Path");
+  }
+
+  // path outside root
+  if (UP_PATH_REGEXP.test(normalize("." + sep + path))) {
+    throw new Error("403");
+  }
+
+  // join the relative path
+  return normalize(join(resolve(root), path));
 }
