@@ -31,7 +31,7 @@ export async function startServer(serverPath: string): Promise<void> {
     const r = new TextProtoReader(new BufReader(server.stdout));
     let s = await r.readLine();
 
-    assert(s !== Deno.EOF && s.includes("Server start in"));
+    assert(s !== null && s.includes("Server start in"));
 
     return Promise.resolve();
 

@@ -44,29 +44,38 @@ const req: ServerRequest = {
 
 const res: any = {};
 
-test(async function testGetActionParamsMultiQuery() {
-    req.url = '/home/test/testQuery?a=a&b=b&c=c';
-    const params = await getActionParams(req, res, route);
-
-    assert(params[0] === 'a');
-    assert(params[1] === 'b');
-    assert(params[2] === 'c');
+test({
+    name: 'testGetActionParamsMultiQuery',
+    async fn() {
+        req.url = '/home/test/testQuery?a=a&b=b&c=c';
+        const params = await getActionParams(req, res, route);
+    
+        assert(params[0] === 'a');
+        assert(params[1] === 'b');
+        assert(params[2] === 'c');
+    }
 });
 
-test(async function testGetActionParamsMultiQueryWithoutOneParam() {
-    req.url = '/home/test/testQuery?c=c&a=a';
-    const params = await getActionParams(req, res, route);
+test({
+    name: 'testGetActionParamsMultiQueryWithoutOneParam',
+    async fn() {
+        req.url = '/home/test/testQuery?c=c&a=a';
+        const params = await getActionParams(req, res, route);
 
-    assert(params[0] === 'a');
-    assert(params[1] === undefined);
-    assert(params[2] === 'c');
+        assert(params[0] === 'a');
+        assert(params[1] === undefined);
+        assert(params[2] === 'c')
+    }
 });
 
-test(async function testGetActionParamsMultiQueryWithOneParam() {
-    req.url = '/home/test/testQuery?c=c';
-    const params = await getActionParams(req, res, route);
+test({
+    name: 'testGetActionParamsMultiQueryWithOneParam',
+    async fn() {
+        req.url = '/home/test/testQuery?c=c';
+        const params = await getActionParams(req, res, route);
 
-    assert(params[0] === undefined);
-    assert(params[1] === undefined);
-    assert(params[2] === 'c');
+        assert(params[0] === undefined);
+        assert(params[1] === undefined);
+        assert(params[2] === 'c');
+    }
 });
