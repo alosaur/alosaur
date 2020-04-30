@@ -43,10 +43,10 @@ export class CorsBuilder implements MiddlwareTarget {
         });
     }
 
-    onPostRequest(request: ServerRequest, responce: Response, result: RenderResult): Promise<void> {
+    onPostRequest(request: ServerRequest, responce: Response, result?: RenderResult): Promise<void> {
         return new Promise((resolve, rej) => {
             this.headers.forEach((el, key) => {
-                if (result.headers) {
+                if (result && result.headers) {
                     result.headers.set(key, el);
                 }
             });
