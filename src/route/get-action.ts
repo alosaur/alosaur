@@ -56,14 +56,4 @@ export function notFoundAction() {
     return Content('Not found', 404); // TODO: enum http status
 }
 
-export function optionsAllowedAction(): ServerResponse {
-    const headers = new Headers();
-    headers.set('Allow', '*');
-
-    return {
-        status: 200, // TODO: enum http status
-        headers,
-    };
-}
-
 export const notFoundActionResponce = notFoundAction();

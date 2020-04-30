@@ -1,5 +1,5 @@
 import { MiddlwareTarget } from '../models/middlware-target.ts';
-import { Response, ServerRequest } from '../mod.ts';
+import { Response, ServerRequest, RenderResult, ServerResponse } from '../mod.ts';
 
 export class CorsBuilder implements MiddlwareTarget {
     private headers: Map<string, string>;
@@ -14,7 +14,7 @@ export class CorsBuilder implements MiddlwareTarget {
         this.allowAnyHeader = false;
     }
 
-    onPreRequest(request: ServerRequest, responce: Response): Promise<void> {
+    onPreRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
         return new Promise((resolve, reject) => {
             if (this.allowAnyOrigin) {
                 this.headers.set('Access-Control-Allow-Origin', request.headers.get('Origin') || '');
@@ -31,15 +31,23 @@ export class CorsBuilder implements MiddlwareTarget {
                     request.headers.get('Access-Control-Request-Headers') || '',
                 );
             }
+
+            if (request.method == 'OPTIONS') {
+                this.onPostRequest(request, response, response as RenderResult);
+
+                response.status = 200;
+                response.immediately = true;
+            }
+
             resolve();
         });
     }
 
-    onPostRequest(request: ServerRequest, responce: Response): Promise<void> {
+    onPostRequest(request: ServerRequest, responce: Response, result: RenderResult): Promise<void> {
         return new Promise((resolve, rej) => {
             this.headers.forEach((el, key) => {
-                if (responce.headers) {
-                    responce.headers.set(key, el);
+                if (result.headers) {
+                    result.headers.set(key, el);
                 }
             });
             resolve();

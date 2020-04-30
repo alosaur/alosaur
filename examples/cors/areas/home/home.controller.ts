@@ -1,6 +1,5 @@
 import {
   Controller,
-  Content,
   Delete,
   Put
 } from '../../../../src/mod.ts';

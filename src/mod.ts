@@ -48,7 +48,7 @@ export * from './models/view-render-config.ts';
 
 import { MetadataArgsStorage } from './metadata/metadata.ts';
 import { serve, Response, Server } from './package.ts';
-import { getAction, notFoundActionResponce, optionsAllowedAction } from './route/get-action.ts';
+import { getAction, notFoundActionResponce } from './route/get-action.ts';
 import { getActionParams } from './route/get-action-params.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
@@ -148,13 +148,6 @@ export class App {
                 if (await getStaticFile(req, res, this.staticConfig)) {
                     await req.respond(res);
                     continue;
-                }
-
-                // try respond for OPTIONS request, TODO: allowed method
-                else if (req.method == 'OPTIONS') {
-                    if (routeExist(this.routes, req.url)) {
-                        result = optionsAllowedAction();
-                    }
                 } else {
                     const action = getAction(this.routes, req.method, req.url);
 

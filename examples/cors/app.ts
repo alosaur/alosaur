@@ -7,7 +7,7 @@ const app = new App({
 
 app.useCors(
   new CorsBuilder()
-      .WithOrigins('*')
+      .AllowAnyOrigin()
       .AllowAnyMethod()
       .AllowAnyHeader()
 );
