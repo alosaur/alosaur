@@ -1,26 +1,29 @@
-import { App, Area, Controller, Get, QueryParam, View } from '../../src/mod.ts';
+import { renderFile } from 'https://deno.land/x/dejs@0.3.5/mod.ts';
+import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from '../../src/mod.ts';
+import { normalize } from '../../src/package';
 
 @Controller('')
 export class HomeController {
-  @Get('/')
-  text(@QueryParam('name') name: string) {
-    return View('main',{name});
-  }
+    @Get('/')
+    text(@QueryParam('name') name: string) {
+        return View('main', { name });
+    }
 }
 
 @Area({
-  controllers: [HomeController]
+    controllers: [HomeController],
 })
-export class HomeArea {
-}
-
+export class HomeArea {}
 
 const app = new App({
-  areas: [HomeArea]
+    areas: [HomeArea],
 });
-app.useViewRender({
-  type: 'dejs',
-  basePath: `${Deno.cwd()}/examples/dejs/views/`
-})
-app.listen();
 
+app.useViewRender({
+    type: 'dejs',
+    basePath: `${Deno.cwd()}/examples/dejs/views/`,
+    getBody: (path: string, model: Object, config: ViewRenderConfig) =>
+        renderFile(normalize(`${config.basePath}${path}.ejs`), model),
+});
+
+app.listen();
