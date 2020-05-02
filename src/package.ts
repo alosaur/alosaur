@@ -11,4 +11,4 @@ export {
 } from 'https://deno.land/std@v0.42.0/path/mod.ts';
 
 export { getCookies } from 'https://deno.land/std@v0.42.0/http/cookie.ts';
-export { contentType } from 'https://deno.land/x/media_types/mod.ts';
+export { contentType } from 'https://deno.land/x/media_types@v2.0.0/mod.ts';
