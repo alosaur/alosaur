@@ -1,39 +1,38 @@
-import { Cookie, setCookie, getCookies } from 'https://deno.land/std@v0.42.0/http/cookie.ts';
-import { Response } from "https://deno.land/std@v0.42.0/http/server.ts";
+import { Cookie, setCookie, getCookies } from 'https://deno.land/std@v1.0.0-rc1/http/cookie.ts';
+import { Response } from 'https://deno.land/std@v1.0.0-rc1/http/server.ts';
 import { App, Area, Controller, Get, Req, Res, ServerRequest } from '../../src/mod.ts';
 import { Redirect } from '../../src/renderer/redirect.ts';
 
 @Controller('/home')
 export class HomeController {
-  @Get("/")
-  default(@Res() response: Response) {
-    const cookie: Cookie = { name: "name", value: "Cat" };
-    setCookie(response, cookie);
+    @Get('/')
+    default(@Res() response: Response) {
+        const cookie: Cookie = { name: 'name', value: 'Cat' };
+        setCookie(response, cookie);
 
-    return Redirect('/home/text');
-  }
+        return Redirect('/home/text');
+    }
 
-  @Get('/text')
-  text(@Req() request: ServerRequest) {
-    const cookies = getCookies(request);
-    
-    return `Hey! ${cookies['name']}`;
-  }
+    @Get('/text')
+    text(@Req() request: ServerRequest) {
+        const cookies = getCookies(request);
+
+        return `Hey! ${cookies['name']}`;
+    }
 }
 
 @Area({
-  controllers: [HomeController]
+    controllers: [HomeController],
 })
 export class HomeArea {}
 
 const app = new App({
-  areas: [HomeArea]
+    areas: [HomeArea],
 });
 
 app.useStatic({
     root: `${Deno.cwd()}/examples/static/www`,
-    index: "index.html",
-    baseRoute: '/www/' // or undefined for default route /
+    index: 'index.html',
+    baseRoute: '/www/', // or undefined for default route /
 });
 app.listen();
-
