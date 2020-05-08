@@ -48,7 +48,7 @@ export * from './models/view-render-config.ts';
 
 import { MetadataArgsStorage } from './metadata/metadata.ts';
 import { serve, Response, Server } from './package.ts';
-import { getAction, notFoundActionResponce } from './route/get-action.ts';
+import { getAction, notFoundActionResponse } from './route/get-action.ts';
 import { getActionParams } from './route/get-action-params.ts';
 import { StaticFilesConfig } from './models/static-config.ts';
 import { ViewRenderConfig } from './models/view-render-config.ts';
@@ -82,19 +82,19 @@ export function getResponseFromActionResult(
   value: RenderResult | any,
   globalHeaders: Headers,
 ): ServerResponse {
-  let responce: ServerResponse;
+  let response: ServerResponse;
 
   if ((value as RenderResult).__isRenderResult) {
-    responce = value;
+    response = value;
   } else {
-    responce = Content(value);
+    response = Content(value);
   }
 
   // merge headers
-  responce.headers = new Headers([...responce.headers, ...globalHeaders]);
+  response.headers = new Headers([...response.headers, ...globalHeaders]);
 
-  delete (responce as RenderResult).__isRenderResult;
-  return responce;
+  delete (response as RenderResult).__isRenderResult;
+  return response;
 }
 
 
@@ -195,7 +195,7 @@ export class App {
                     continue;
                 }
 
-                req.respond(result || notFoundActionResponce);
+                req.respond(result || notFoundActionResponse);
             } catch (error) {
                 req.respond(Content(error, error.httpCode || 500));
             }

@@ -56,4 +56,4 @@ export function notFoundAction() {
     return Content('Not found', 404); // TODO: enum http status
 }
 
-export const notFoundActionResponce = notFoundAction();
+export const notFoundActionResponse = notFoundAction();
