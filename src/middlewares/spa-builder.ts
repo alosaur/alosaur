@@ -1,10 +1,10 @@
-import { MiddlwareTarget } from '../models/middlware-target.ts';
+import { MiddlewareTarget } from '../models/middleware-target.ts';
 import { ServerResponse, ServerRequest } from '../mod.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';
 import { send } from '../static/send.ts';
 import { getStaticFile } from '../utils/get-static-file.ts';
 
-export class SpaBuilder implements MiddlwareTarget {
+export class SpaBuilder implements MiddlewareTarget {
     constructor(private staticConfig: StaticFilesConfig) {}
 
     onPreRequest(request: ServerRequest, response: ServerResponse): Promise<void> {

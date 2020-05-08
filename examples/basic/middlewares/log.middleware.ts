@@ -1,8 +1,8 @@
-import { Middlware } from '../../../src/decorator/Middlware.ts';
-import { MiddlwareTarget } from '../../../src/models/middlware-target.ts';
+import { Middleware } from '../../../src/decorator/Middleware.ts';
+import { MiddlewareTarget } from '../../../src/models/middleware-target.ts';
 
-@Middlware(new RegExp('/'))
-export class Log implements MiddlwareTarget {
+@Middleware(new RegExp('/'))
+export class Log implements MiddlewareTarget {
     date: Date = new Date();
 
     onPreRequest(request: any, responce: any) {
