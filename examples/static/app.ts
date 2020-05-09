@@ -1,5 +1,5 @@
-import { Cookie, setCookie, getCookies } from 'https://deno.land/std@v1.0.0-rc1/http/cookie.ts';
-import { Response } from 'https://deno.land/std@v1.0.0-rc1/http/server.ts';
+import { Cookie, setCookie, getCookies } from 'https://deno.land/std@0.50.0/http/cookie.ts';
+import { Response } from 'https://deno.land/std@0.50.0/http/server.ts';
 import { App, Area, Controller, Get, Req, Res, ServerRequest } from '../../src/mod.ts';
 import { Redirect } from '../../src/renderer/redirect.ts';
 
