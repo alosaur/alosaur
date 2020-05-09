@@ -1,7 +1,7 @@
-import { MiddlwareTarget } from '../models/middlware-target.ts';
+import { MiddlewareTarget } from '../models/middleware-target.ts';
 import { Response, ServerRequest, RenderResult, ServerResponse } from '../mod.ts';
 
-export class CorsBuilder implements MiddlwareTarget {
+export class CorsBuilder implements MiddlewareTarget {
     private headers: Map<string, string>;
     private allowAnyOrigin: boolean;
     private allowAnyMethod: boolean;

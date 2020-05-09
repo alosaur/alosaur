@@ -6,7 +6,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 -   **Area** - these are the modules of your application.
 -   **Controller** - are responsible for controlling the flow of the application execution.
--   **Middlware** - provide a convenient mechanism for filtering HTTP requests entering your application.
+-   **Middleware** - provide a convenient mechanism for filtering HTTP requests entering your application.
 -   **Decorators** - for query, cookie, parametrs, routes and etc.
 -   **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection))
 
@@ -126,13 +126,13 @@ deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
 
 ```
 
-## Middlware
+## Middleware
 
-You can create middlware and register it in area or all application layer.
+You can create middleware and register it in area or all application layer.
 
 ```ts
-@Middlware(new RegExp('/'))
-export class Log implements MiddlwareTarget {
+@Middleware(new RegExp('/'))
+export class Log implements MiddlewareTarget {
     date: Date = new Date();
 
     onPreRequest(request: ServerRequest, responce: ServerResponse) {

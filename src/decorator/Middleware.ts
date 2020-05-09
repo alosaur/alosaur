@@ -1,6 +1,6 @@
 import { getMetadataArgsStorage } from "../mod.ts";
 
-export function Middlware(route: RegExp): Function {
+export function Middleware(route: RegExp): Function {
     return function (middleware: any) {
         getMetadataArgsStorage().middlewares.push({
             type: "middleware",

@@ -37,7 +37,7 @@ export * from './decorator/Param.ts';
 // Http exports
 export { Response, ServerRequest } from './package.ts';
 
-// Standart middlwares
+// Standart middlewares
 export { CorsBuilder } from './middlewares/cors-builder.ts';
 
 // DI
@@ -58,7 +58,7 @@ import { MetaRoute } from './models/meta-route.ts';
 import { registerAreas } from './utils/register-areas.ts';
 import { registerControllers } from './utils/register-controllers.ts';
 import { getStaticFile } from './utils/get-static-file.ts';
-import { MiddlwareTarget } from './models/middlware-target.ts';
+import { MiddlewareTarget } from './models/middleware-target.ts';
 // import { getResponseFromActionResult } from './utils/get-response-from-action-result.ts';
 
 import Reader = Deno.Reader;
@@ -236,10 +236,10 @@ export class App {
         });
     }
 
-    public use(route: RegExp, middlware: MiddlwareTarget): void {
+    public use(route: RegExp, middleware: MiddlewareTarget): void {
         this.metadata.middlewares.push({
             type: 'middleware',
-            target: middlware,
+            target: middleware,
             route,
         });
     }
