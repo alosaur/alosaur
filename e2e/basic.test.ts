@@ -189,6 +189,7 @@ test({
             assertEquals(response.status, 200);
             assertEquals(text, "");
 
+            // It
             itLog("\t '/'");
             response = await fetch(`${baseUrl}/`);
             text = await response.text();
