@@ -43,6 +43,10 @@ export function registerControllers(
                 fullRoute += action.route;
             }
 
+            if (fullRoute === "") {
+                fullRoute = "/";
+            }
+
             const metaRoute: MetaRoute = {
                 baseRoute: areaRoute,
                 route: fullRoute,
