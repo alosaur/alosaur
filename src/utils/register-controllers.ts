@@ -31,11 +31,20 @@ export function registerControllers(
         }
 
         actions.forEach((action) => {
-            let fullRoute: string = `${areaRoute}${controller.route}`;
+            let fullRoute: string = areaRoute;
+
+            if (controller.route) {
+                fullRoute += controller.route;
+            }
+
             const regexpRoute: RegExp = action.route instanceof RegExp ? action.route : undefined;
 
-            if (!regexpRoute) {
+            if (!regexpRoute && action.route) {
                 fullRoute += action.route;
+            }
+
+            if (fullRoute === "") {
+                fullRoute = "/";
             }
 
             const metaRoute: MetaRoute = {

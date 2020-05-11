@@ -150,3 +150,53 @@ test({
         }
     },
 });
+
+test({
+    name: '[http] basic server, request to health controller to test undefined controller and action route',
+    async fn(): Promise<void> {
+        await startServer("./examples/basic/app.ts");
+        const baseUrl = "http://localhost:8000/health";
+
+        itLog("/health", true);
+
+        try {
+            // It
+            itLog("\t ''");
+            const response = await fetch(baseUrl);
+            const json = await response.json();
+    
+            assertEquals(response.status, 200);
+            assertEquals(json.status, "pass");
+        } finally {
+            killServer();
+        }
+    },
+});
+
+test({
+    name: '[http] basic server, request to root controller to test empty full route',
+    async fn(): Promise<void> {
+        await startServer("./examples/basic/app.ts");
+        const baseUrl = "http://localhost:8000";
+
+        itLog("root ''", true);
+
+        try {
+            // It
+            itLog("\t ''");
+            let response = await fetch(baseUrl);
+            let text = await response.text();
+            assertEquals(response.status, 200);
+            assertEquals(text, "");
+
+            // It
+            itLog("\t '/'");
+            response = await fetch(`${baseUrl}/`);
+            text = await response.text();
+            assertEquals(response.status, 200);
+            assertEquals(text, "");
+        } finally {
+            killServer();
+        }
+    },
+})
