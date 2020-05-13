@@ -27,7 +27,7 @@
     },
     "homepage": "https://github.com/alosaur/alosaur#readme",
     "devDependencies": {
-        "typescript": "^3.4.5",
-        "typescript-deno-plugin": "^1.2.4"
+        "typescript": "^3.9.2",
+        "typescript-deno-plugin": "^1.23.1"
     }
 }
