@@ -1,7 +1,7 @@
 # TSyringe for alosaur
 
-A lightweight dependency Injectableion container for TypeScript/JavaScript for
-constructor Injectableion. [TSyringe](https://github.com/microsoft/tsyringe)
+A lightweight dependency Injection container for TypeScript/JavaScript for
+constructor Injection. [TSyringe](https://github.com/microsoft/tsyringe)
 
 <!-- TOC depthFrom:1 depthTo:3 -->
 
@@ -9,12 +9,12 @@ constructor Injectableion. [TSyringe](https://github.com/microsoft/tsyringe)
     -   [Decorators](#decorators)
         -   [Injectable()](#Injectable)
         -   [Singleton()](#Singleton)
-        -   [AutoInjectable()](#AutoInjectable)
-        -   [Injectable()](#Injectable)
-        -   [InjectableAll()](#Injectableall)
-        -   [Scoped()](#Scoped)
+        -   [AutoInjectable()](#autoInjectable)
+        -   [Inject()](#Inject)
+        -   [InjectAll()](#Injectall)
+        -   [scoped()](#scoped)
     -   [Container](#container)
-        -   [Injectableion Token](#Injectableion-token)
+        -   [Injection Token](#Injection-token)
         -   [Providers](#providers)
         -   [Register](#register)
         -   [Registry](#registry)
@@ -34,14 +34,14 @@ constructor Injectableion. [TSyringe](https://github.com/microsoft/tsyringe)
 
 # API
 
-TSyringe performs [Constructor Injectableion](https://en.wikipedia.org/wiki/Dependency_Injectableion#Constructor_Injectableion)
+TSyringe performs [Constructor Injection](https://en.wikipedia.org/wiki/Dependency_Injection#Constructor_Injection)
 on the constructors of decorated classes.
 
 ## Decorators
 
 ### Injectable()
 
-Class decorator factory that allows the class' dependencies to be Injectableed at
+Class decorator factory that allows the class' dependencies to be Injected at
 runtime. TSyringe relies on several decorators in order to collect metadata about classes
 to be instantiated.
 
@@ -110,7 +110,7 @@ const instance = new Foo();
 Notice how in order to allow the use of the empty constructor `new Foo()`, we
 need to make the parameters optional, e.g. `database?: Database`.
 
-### Injectable()
+### Inject()
 
 Parameter decorator factory that allows for interface and other non-class
 information to be stored in the constructor's metadata.
@@ -118,7 +118,7 @@ information to be stored in the constructor's metadata.
 #### Usage
 
 ```typescript
-import { Injectable, Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, Inject } from 'https://deno.land/x/alosaur/src/mod.ts';
 
 interface Database {
     // ...
@@ -126,34 +126,34 @@ interface Database {
 
 @Injectable()
 class Foo {
-    constructor(@Injectable('Database') private database?: Database) {}
+    constructor(@Inject('Database') private database?: Database) {}
 }
 ```
 
-### InjectableAll()
+### InjectAll()
 
 Parameter decorator for array parameters where the array contents will come from the container.
-It will Injectable an array using the specified Injectableion token to resolve the values.
+It will Inject an array using the specified Injection token to resolve the values.
 
 #### Usage
 
 ```typescript
-import { Injectable, InjectableAll } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, InjectAll } from 'https://deno.land/x/alosaur/src/mod.ts';
 
 @Injectable
 class Foo {}
 
 @Injectable
 class Bar {
-    constructor(@InjectableAll(Foo) fooArray: Foo[]) {
+    constructor(@InjectAll(Foo) fooArray: Foo[]) {
         // ...
     }
 }
 ```
 
-### Scoped()
+### scoped()
 
-Class decorator factory that registers the class as a Scoped dependency within the global container.
+Class decorator factory that registers the class as a scoped dependency within the global container.
 
 #### Available scopes
 
@@ -168,24 +168,24 @@ Class decorator factory that registers the class as a Scoped dependency within t
 #### Usage
 
 ```typescript
-@Scoped(Lifecycle.ContainerScoped)
+@scoped(Lifecycle.ContainerScoped)
 class Foo {}
 ```
 
 ## Container
 
 The general principle behind [Inversion of Control](https://en.wikipedia.org/wiki/Inversion_of_control) (IoC) containers
-is you give the container a _token_, and in exchange you get an instance/value. Our container automatically figures out the tokens most of the time, with 2 major exceptions, interfaces and non-class types, which require the `@Injectable()` decorator to be used on the constructor parameter to be Injectableed (see above).
+is you give the container a _token_, and in exchange you get an instance/value. Our container automatically figures out the tokens most of the time, with 2 major exceptions, interfaces and non-class types, which require the `@Inject()` decorator to be used on the constructor parameter to be Injected (see above).
 
 In order for your decorated classes to be used, they need to be registered with the container. Registrations take the
 form of a Token/Provider pair, so we need to take a brief diversion to discuss tokens and providers.
 
-### Injectableion Token
+### Injection Token
 
 A token may be either a string, a symbol, a class constructor, or a instance of [`DelayedConstructor`](#circular-dependencies).
 
 ```typescript
-type InjectableionToken<T = any> = constructor<T> | DelayedConstructor<T> | string | symbol;
+type InjectionToken<T = any> = constructor<T> | DelayedConstructor<T> | string | symbol;
 ```
 
 ### Providers
@@ -199,7 +199,7 @@ provider types:
 
 ```TypeScript
 {
-  token: InjectableionToken<T>;
+  token: InjectionToken<T>;
   useClass: constructor<T>;
 }
 ```
@@ -212,7 +212,7 @@ class provider where the token isn't the class itself).
 
 ```TypeScript
 {
-  token: InjectableionToken<T>;
+  token: InjectionToken<T>;
   useValue: T
 }
 ```
@@ -224,7 +224,7 @@ constants, or things that have a already been instantiated in a particular way.
 
 ```TypeScript
 {
-  token: InjectableionToken<T>;
+  token: InjectionToken<T>;
   useFactory: FactoryFunction<T>;
 }
 ```
@@ -274,8 +274,8 @@ import { predicateAwareClassFactory } from 'https://deno.land/x/alosaur/src/mod.
 
 ```TypeScript
 {
-  token: InjectableionToken<T>;
-  useToken: InjectableionToken<T>;
+  token: InjectionToken<T>;
+  useToken: InjectionToken<T>;
 }
 ```
 
@@ -398,7 +398,7 @@ test('something', () => {
 
 # Circular dependencies
 
-Sometimes you need to Injectable services that have cyclic dependencies between them. As an example:
+Sometimes you need to Inject services that have cyclic dependencies between them. As an example:
 
 ```typescript
 @Injectable()
@@ -419,7 +419,7 @@ container.resolve(Foo);
 ```
 
 ```
-Error: Cannot Injectable the dependency at position #0 of "Foo" constructor. Reason:
+Error: Cannot Inject the dependency at position #0 of "Foo" constructor. Reason:
     Attempted to construct an undefined constructor. Could mean a circular dependency problem. Try using `delay` function.
 ```
 
@@ -429,19 +429,19 @@ The best way to deal with this situation is to do some kind of refactor to avoid
 
 But when refactor is not an option you can use the `delay` function helper. The `delay` function wraps the constructor in an instance of `DelayedConstructor`.
 
-The _delayed constructor_ is a kind of special `InjectableionToken` that will eventually be evaluated to construct an intermediate proxy object wrapping a factory for the real object.
+The _delayed constructor_ is a kind of special `InjectionToken` that will eventually be evaluated to construct an intermediate proxy object wrapping a factory for the real object.
 
 When the proxy object is used for the first time it will construct a real object using this factory and any usage will be forwarded to the real object.
 
 ```typescript
 @Injectable()
 export class Foo {
-    constructor(@Injectable(delay(() => Bar)) public bar: Bar) {}
+    constructor(@Inject(delay(() => Bar)) public bar: Bar) {}
 }
 
 @Injectable()
 export class Bar {
-    constructor(@Injectable(delay(() => Foo)) public foo: Foo) {}
+    constructor(@Inject(delay(() => Foo)) public foo: Foo) {}
 }
 
 // construction of foo is possible
@@ -467,7 +467,7 @@ export interface IFoo {}
     },
 ])
 export class Foo implements IFoo {
-    constructor(@Injectable('IBar') public bar: IBar) {}
+    constructor(@Inject('IBar') public bar: IBar) {}
 }
 export interface IBar {}
 
@@ -479,7 +479,7 @@ export interface IBar {}
     },
 ])
 export class Bar implements IBar {
-    constructor(@Injectable('IFoo') public foo: IFoo) {}
+    constructor(@Inject('IFoo') public foo: IFoo) {}
 }
 ```
 
@@ -518,7 +518,7 @@ const myBar = container.resolve(Bar);
 ## Example with interfaces
 
 Interfaces don't have type information at runtime, so we need to decorate them
-with `@Injectable(...)` so the container knows how to resolve them.
+with `@Inject(...)` so the container knows how to resolve them.
 
 ```typescript
 // SuperService.ts
@@ -529,7 +529,7 @@ export interface SuperService {
 
 ```typescript
 // TestService.ts
-import { SuperService } from './SuperService.ts';
+import { SuperService } from './SuperService';
 export class TestService implements SuperService {
     //...
 }
@@ -537,11 +537,11 @@ export class TestService implements SuperService {
 
 ```typescript
 // Client.ts
-import { Injectable, Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, Inject } from 'https://deno.land/x/alosaur/src/mod.ts';
 
 @Injectable()
 export class Client {
-    constructor(@Injectable('SuperService') private service: SuperService) {}
+    constructor(@Inject('SuperService') private service: SuperService) {}
 }
 ```
 
