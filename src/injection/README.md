@@ -7,9 +7,9 @@ constructor Injectableion. [TSyringe](https://github.com/microsoft/tsyringe)
 
 -   [API](#api)
     -   [Decorators](#decorators)
-        -   [Injectableable()](#Injectableable)
+        -   [Injectable()](#Injectable)
         -   [Singleton()](#Singleton)
-        -   [AutoInjectableable()](#AutoInjectableable)
+        -   [AutoInjectable()](#AutoInjectable)
         -   [Injectable()](#Injectable)
         -   [InjectableAll()](#Injectableall)
         -   [Scoped()](#Scoped)
@@ -39,7 +39,7 @@ on the constructors of decorated classes.
 
 ## Decorators
 
-### Injectableable()
+### Injectable()
 
 Class decorator factory that allows the class' dependencies to be Injectableed at
 runtime. TSyringe relies on several decorators in order to collect metadata about classes
@@ -48,9 +48,9 @@ to be instantiated.
 #### Usage
 
 ```typescript
-import { Injectableable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
 
-@Injectableable()
+@Injectable()
 class Foo {
     constructor(private database: Database) {}
 }
@@ -84,7 +84,7 @@ import { Foo } from './foo.ts';
 const instance = container.resolve(Foo);
 ```
 
-### AutoInjectableable()
+### AutoInjectable()
 
 Class decorator factory that replaces the decorated class' constructor with
 a parameterless constructor that has dependencies auto-resolved.
@@ -94,9 +94,9 @@ a parameterless constructor that has dependencies auto-resolved.
 #### Usage
 
 ```typescript
-import { AutoInjectableable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { AutoInjectable } from 'https://deno.land/x/alosaur/src/mod.ts';
 
-@AutoInjectableable()
+@AutoInjectable()
 class Foo {
     constructor(private database?: Database) {}
 }
@@ -118,13 +118,13 @@ information to be stored in the constructor's metadata.
 #### Usage
 
 ```typescript
-import { Injectableable, Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
 
 interface Database {
     // ...
 }
 
-@Injectableable()
+@Injectable()
 class Foo {
     constructor(@Injectable('Database') private database?: Database) {}
 }
@@ -138,12 +138,12 @@ It will Injectable an array using the specified Injectableion token to resolve t
 #### Usage
 
 ```typescript
-import { Injectableable, InjectableAll } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, InjectableAll } from 'https://deno.land/x/alosaur/src/mod.ts';
 
-@Injectableable
+@Injectable
 class Foo {}
 
-@Injectableable
+@Injectable
 class Bar {
     constructor(@InjectableAll(Foo) fooArray: Foo[]) {
         // ...
@@ -313,7 +313,7 @@ This is useful when you want to [register multiple classes for the same token](#
 You can also use it to register and declare objects that wouldn't be imported by anything else,
 such as more classes annotated with `@registry` or that are otherwise responsible for registering objects.
 Lastly you might choose to use this to register 3rd party instances instead of the `container.register(...)` method.
-note: if you want this class to be `@Injectableable` you must put the decorator before `@registry`, this annotation is not
+note: if you want this class to be `@Injectable` you must put the decorator before `@registry`, this annotation is not
 required though.
 
 ### Resolution
@@ -333,9 +333,9 @@ You can also resolve all instances registered against a given token with `resolv
 ```typescript
 interface Bar {}
 
-@Injectableable()
+@Injectable()
 class Foo implements Bar {}
-@Injectableable()
+@Injectable()
 class Baz implements Bar {}
 
 @registry([
@@ -401,12 +401,12 @@ test('something', () => {
 Sometimes you need to Injectable services that have cyclic dependencies between them. As an example:
 
 ```typescript
-@Injectableable()
+@Injectable()
 export class Foo {
     constructor(public bar: Bar) {}
 }
 
-@Injectableable()
+@Injectable()
 export class Bar {
     constructor(public foo: Foo) {}
 }
@@ -434,12 +434,12 @@ The _delayed constructor_ is a kind of special `InjectableionToken` that will ev
 When the proxy object is used for the first time it will construct a real object using this factory and any usage will be forwarded to the real object.
 
 ```typescript
-@Injectableable()
+@Injectable()
 export class Foo {
     constructor(@Injectable(delay(() => Bar)) public bar: Bar) {}
 }
 
-@Injectableable()
+@Injectable()
 export class Bar {
     constructor(@Injectable(delay(() => Foo)) public foo: Foo) {}
 }
@@ -458,7 +458,7 @@ We can rest in the fact that a `DelayedConstructor` could be used in the same co
 ```typescript
 export interface IFoo {}
 
-@Injectableable()
+@Injectable()
 @registry([
     {
         token: 'IBar',
@@ -471,7 +471,7 @@ export class Foo implements IFoo {
 }
 export interface IBar {}
 
-@Injectableable()
+@Injectable()
 @registry([
     {
         token: 'IFoo',
@@ -498,9 +498,9 @@ export class Foo {}
 ```typescript
 // Bar.ts
 import { Foo } from './Foo';
-import { Injectableable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
 
-@Injectableable()
+@Injectable()
 export class Bar {
     constructor(public myFoo: Foo) {}
 }
@@ -537,9 +537,9 @@ export class TestService implements SuperService {
 
 ```typescript
 // Client.ts
-import { Injectableable, Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
 
-@Injectableable()
+@Injectable()
 export class Client {
     constructor(@Injectable('SuperService') private service: SuperService) {}
 }
