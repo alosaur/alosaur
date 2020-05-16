@@ -8,8 +8,8 @@ constructor Injectableion. [TSyringe](https://github.com/microsoft/tsyringe)
 -   [API](#api)
     -   [Decorators](#decorators)
         -   [Injectableable()](#Injectableable)
-        -   [singleton()](#singleton)
-        -   [autoInjectableable()](#autoInjectableable)
+        -   [Singleton()](#Singleton)
+        -   [AutoInjectableable()](#AutoInjectableable)
         -   [Injectable()](#Injectable)
         -   [InjectableAll()](#Injectableall)
         -   [Scoped()](#Scoped)
@@ -62,17 +62,17 @@ import { Foo } from './foo.ts';
 const instance = container.resolve(Foo);
 ```
 
-### singleton()
+### Singleton()
 
-Class decorator factory that registers the class as a singleton within the
+Class decorator factory that registers the class as a Singleton within the
 global container.
 
 #### Usage
 
 ```typescript
-import { singleton } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Singleton } from 'https://deno.land/x/alosaur/src/mod.ts';
 
-@singleton()
+@Singleton()
 class Foo {
     constructor() {}
 }
@@ -84,7 +84,7 @@ import { Foo } from './foo.ts';
 const instance = container.resolve(Foo);
 ```
 
-### autoInjectableable()
+### AutoInjectableable()
 
 Class decorator factory that replaces the decorated class' constructor with
 a parameterless constructor that has dependencies auto-resolved.
@@ -94,9 +94,9 @@ a parameterless constructor that has dependencies auto-resolved.
 #### Usage
 
 ```typescript
-import { autoInjectableable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { AutoInjectableable } from 'https://deno.land/x/alosaur/src/mod.ts';
 
-@autoInjectableable()
+@AutoInjectableable()
 class Foo {
     constructor(private database?: Database) {}
 }
@@ -162,7 +162,7 @@ Class decorator factory that registers the class as a Scoped dependency within t
         resolution chain
 -   ContainerScoped
     -   The dependency container will return the same instance each time a resolution for this dependency
-        is requested. This is similar to being a singleton, however if a child container is made, that child
+        is requested. This is similar to being a Singleton, however if a child container is made, that child
         container will resolve an instance unique to it.
 
 #### Usage
@@ -242,7 +242,7 @@ type FactoryFunction<T> = (dependencyContainer: DependencyContainer) => T;
 ##### instanceCachingFactory
 
 This factory is used to lazy construct an object and cache result, returning the single instance for each subsequent
-resolution. This is very similar to `@singleton()`
+resolution. This is very similar to `@Singleton()`
 
 ```typescript
 import { instanceCachingFactory } from 'https://deno.land/x/alosaur/src/mod.ts';
@@ -366,7 +366,7 @@ The `container.clearInstances()` method allows you to clear all previously creat
 
 ```typescript
 class Foo {}
-@singleton()
+@Singleton()
 class Bar {}
 
 const myFoo = new Foo();
@@ -384,7 +384,7 @@ Unlike with `container.reset()`, the registrations themselves are not cleared.
 This is especially useful for testing:
 
 ```typescript
-@singleton()
+@Singleton()
 class Foo {}
 
 beforeEach(() => {
@@ -392,7 +392,7 @@ beforeEach(() => {
 });
 
 test('something', () => {
-    container.resolve(Foo); // will be a new singleton instance in every test
+    container.resolve(Foo); // will be a new Singleton instance in every test
 });
 ```
 
