@@ -6,7 +6,7 @@ export default function predicateAwareClassFactory<T>(
   predicate: (dependencyContainer: DependencyContainer) => boolean,
   trueConstructor: constructor<T>,
   falseConstructor: constructor<T>,
-  useCaching = true
+  useCaching = true,
 ): FactoryFunction<T> {
   let instance: T;
   let previousPredicate: boolean;
