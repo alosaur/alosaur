@@ -66,7 +66,7 @@ And run
 
 # TODO
 
--   [x] Add render views: [dejs](https://github.com/syumai/dejs)
+-   [x] Add render views: [dejs](https://github.com/syumai/dejs) and [handlebars](https://github.com/alosaur/handlebars)
 -   [x] Add return value JSON
 
 -   Add decorators:
