@@ -91,7 +91,7 @@ And run
 -   [ ] Add OpenAPI type reference
 -   [ ] Add GraphQl
 -   [ ] Add WebSocket
--   [ ] Add validators example [class-validator](https://github.com/typestack/class-validator)
+-   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
 -   [ ] Add microservice connector with wasm
 -   [ ] Add benchmarks
 -   [x] Transfer to Alosaur github organization
@@ -166,4 +166,101 @@ or in app
 const app = new App(settings);
 
 app.use(/\//, new Log());
+```
+
+## Transformers and validators
+
+You can use different transformers
+
+For example `class-validator` and `class-transformer` for body
+
+post.model.ts:
+
+```ts
+import validator from "https://dev.jspm.io/class-validator@0.8.5";
+
+const { Length, Contains, IsInt, Min, Max, IsEmail, IsFQDN, IsDate } =
+  validator;
+
+export class PostModel {
+  @Length(10, 20)
+  title?: string;
+
+  @Contains("hello")
+  text?: string;
+
+  @IsInt()
+  @Min(0)
+  @Max(10)
+  rating?: number;
+
+  @IsEmail()
+  email?: string;
+}
+
+```
+
+app.ts
+```ts
+
+import validator from "https://dev.jspm.io/class-validator@0.8.5";
+import transformer from "https://dev.jspm.io/class-transformer@0.2.3";
+import { App, Area, Controller, Post, Body } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { PostModel } from './post.model.ts';
+
+const { validate } = validator;
+const { plainToClass } = transformer;
+
+// Create controller
+@Controller()
+export class HomeController {
+
+    @Post('/')
+    async post(@Body(PostModel) data: PostModel) {
+
+        return {
+            data,
+            errors: await validate(data)
+        }
+    }
+}
+
+// Declare controller in area
+@Area({
+    controllers: [HomeController],
+})
+export class HomeArea { }
+
+// Create app
+const app = new App({
+    areas: [HomeArea],
+});
+
+// added tranform function
+app.useTransform({
+    type: 'body', // parse body params
+    getTransform: (transform: any, body: any) => {
+        return plainToClass(transform, body);
+    }
+})
+
+// serve application
+app.listen();
+
+```
+
+You can also use just a function instead of a transformer.
+
+```ts
+function parser(body): ParsedObject {
+    // your code
+    return body;
+}
+
+...
+@Post('/')
+post(@Body(parser) data: ParsedObject) {
+
+}
+
 ```
