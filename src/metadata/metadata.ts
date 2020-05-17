@@ -1,14 +1,15 @@
-import { ControllerMetadataArgs } from './controller.ts';
-import { AreaMetadataArgs } from './area.ts';
-import { MiddlewareMetadataArgs } from './middleware.ts';
+import { ControllerMetadataArgs } from "./controller.ts";
+import { AreaMetadataArgs } from "./area.ts";
+import { MiddlewareMetadataArgs } from "./middleware.ts";
 
-export interface ParamArgs{
-  type: 'cookie' | 'response' | 'request' | 'query' | 'route-param' | 'body',
-  target: Object,
+export interface ParamArgs {
+  type: "cookie" | "response" | "request" | "query" | "route-param" | "body";
+  target: Object;
   method: string;
   // Index in finction
   index: number;
   name?: string;
+  transform?: any;
 }
 
 /**
@@ -31,7 +32,7 @@ export class MetadataArgsStorage {
    * Registered actions.
    */
   actions: any[] = [];
-  
+
   /**
    * Registered params.
    */
