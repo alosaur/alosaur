@@ -13,8 +13,21 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 **[Documentation](https://github.com/alosaur/alosaur/tree/master/docs)**
 
 ---
+## Examples
 
-## Simple example:
+- [Basic + OpenApiv3 Generator (Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
+- [CORS Middlware](https://github.com/alosaur/alosaur/tree/master/examples/cors)
+- [SPA Middlware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
+- [Static content Middlware](https://github.com/alosaur/alosaur/tree/master/examples/static)
+- [Database Postgres](https://github.com/alosaur/alosaur/tree/master/examples/db)
+- Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
+- [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/di)
+- [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
+- [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
+
+
+
+## Simple example
 
 Controller:
 
