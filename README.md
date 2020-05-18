@@ -168,6 +168,23 @@ const app = new App(settings);
 app.use(/\//, new Log());
 ```
 
+## Output action: Content, View, Redirect
+
+There are 3 ways of information output
+
+https://github.com/alosaur/alosaur/tree/master/src/renderer
+
+- **Content** similar `return {};` by default Status 200 OK
+- **View** uses with template engine, `return View("index", model);`
+- **Redirect** and **RedirectPermanent** status 301,302 `return Redirect('/to/page')`
+ 
+// action
+...
+return Content("Text or Model", 404); // return 404 status
+
+// or 
+return View("page", 404); // return 404 status
+
 ## Transformers and validators
 
 You can use different transformers
