@@ -21,7 +21,7 @@ export function registerControllers(
         classes.push(obj);
 
         if (logging) {
-            console.log(`register Controller: `, controller.target.name || controller.target.constructor.name);
+            console.log(`The "${ controller.target.name || controller.target.constructor.name }" controller has been registered.`);
         }
 
         let areaRoute = ``;
@@ -58,7 +58,7 @@ export function registerControllers(
             };
 
             if (logging) {
-                console.log(`register route: `, metaRoute.route);
+                console.log(`The "${ metaRoute.route }" route has been registered.`);
             }
 
             addToRoute(metaRoute);
