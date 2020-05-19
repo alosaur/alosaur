@@ -8,17 +8,17 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 -   **Controller** - are responsible for controlling the flow of the application execution.
 -   **Middleware** - provide a convenient mechanism for filtering HTTP requests entering your application.
 -   **Decorators** - for query, cookie, parametrs, routes and etc.
--   **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection))
+-   **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
 
 **[Documentation](https://github.com/alosaur/alosaur/tree/master/docs)**
 
 ---
 ## Examples
 
-- [Basic + OpenApiv3 Generator (Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
-- [CORS Middlware](https://github.com/alosaur/alosaur/tree/master/examples/cors)
-- [SPA Middlware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
-- [Static content Middlware](https://github.com/alosaur/alosaur/tree/master/examples/static)
+- [Basic + OpenAPI v3 generator (Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
+- [CORS middleware](https://github.com/alosaur/alosaur/tree/master/examples/cors)
+- [SPA middleware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
+- [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
 - [Database Postgres](https://github.com/alosaur/alosaur/tree/master/examples/db)
 - Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
 - [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/di)
@@ -79,7 +79,7 @@ And run
 
 # TODO
 
--   [x] Add render views: [dejs](https://github.com/syumai/dejs) and [handlebars](https://github.com/alosaur/handlebars)
+-   [x] Add render views: [Dejs](https://github.com/syumai/dejs) and [Handlebars](https://github.com/alosaur/handlebars)
 -   [x] Add return value JSON
 
 -   Add decorators:
@@ -91,7 +91,7 @@ And run
 -   -   [x] `@Req`
 -   -   [x] `@Res`
 -   -   [x] `@Middleware` with regex route
--   -   [ ] `@Cache` Cache to actions {duration: number} number in ms
+-   -   [ ] `@Cache` cache to actions {duration: number} number in ms
 
 -   [x] Add middleware
 -   [x] Add static middleware (example: app.useStatic)
@@ -112,27 +112,27 @@ And run
 
 ## Plugins & modules
 
--   [ ] Add angular template parser
+-   [ ] Add Angular template parser
 -   [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
 -   [ ] Add validator decorators
--   [ ] Add porting TypeORM to deno
+-   [ ] Add porting TypeORM to Deno
 
 ## Examples
 
 -   [x] Add basic example
--   [x] Add di example
+-   [x] Add DI example
 -   [x] Add static serve example
--   [x] Add dejs view render example
--   [x] Add example with sql drivers (postgres)
+-   [x] Add Dejs view render example
+-   [x] Add example with SQL drivers (Postgres)
 -   [x] Add basic example in Docker container
--   [ ] Add websockets example
--   [ ] Add example with wasm
+-   [ ] Add WebSockets example
+-   [ ] Add example with Wasm
 
 ## OpenAPI v3
 
 Example in `examples/basic/openapi.ts`
 
-Generate openAPI file:
+Generate OpenAPI file:
 
 ```
 deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
