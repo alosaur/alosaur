@@ -19,7 +19,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - [CORS middleware](https://github.com/alosaur/alosaur/tree/master/examples/cors)
 - [SPA middleware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
 - [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
-- [Database Postgres](https://github.com/alosaur/alosaur/tree/master/examples/db)
+- [Database PostgreSQL](https://github.com/alosaur/alosaur/tree/master/examples/db)
 - Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
 - [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
