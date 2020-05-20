@@ -102,17 +102,17 @@ And run
 -   [x] Add CI with minimal tests.
 -   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
 -   [ ] Add OpenAPI type reference
--   [ ] Add GraphQl
+-   [ ] Add GraphQL
 -   [ ] Add WebSocket
 -   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
--   [ ] Add microservice connector with wasm
+-   [ ] Add microservice connector with Wasm
 -   [ ] Add benchmarks
 -   [x] Transfer to Alosaur github organization
 -   [ ] Add docs and more examples
 
 ## Plugins & modules
 
--   [ ] Add Angular template parser
+-   [ ] Add [Angular](https://angular.io) template parser
 -   [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
 -   [ ] Add validator decorators
 -   [ ] Add porting TypeORM to Deno
@@ -123,7 +123,7 @@ And run
 -   [x] Add DI example
 -   [x] Add static serve example
 -   [x] Add Dejs view render example
--   [x] Add example with SQL drivers (Postgres)
+-   [x] Add example with SQL drivers (PostgreSQL)
 -   [x] Add basic example in Docker container
 -   [ ] Add WebSockets example
 -   [ ] Add example with Wasm
