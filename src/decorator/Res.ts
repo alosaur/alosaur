@@ -1,4 +1,5 @@
 import { getMetadataArgsStorage } from "../mod.ts";
+import { ParamType } from '../types/param.ts';
 
 /**
  * Injects a Response object to the controller action parameter.
@@ -7,7 +8,7 @@ import { getMetadataArgsStorage } from "../mod.ts";
 export function Res(): Function {
   return function (object: Object, methodName: string, index: number) {
       getMetadataArgsStorage().params.push({
-          type: "response",
+          type: ParamType.Response,
           target: object.constructor,
           method: methodName,
           index: index

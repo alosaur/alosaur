@@ -1,4 +1,4 @@
-import { MetaRoute } from '../models/meta-route.ts';
+import { RouteMetadata } from '../metadata/route.ts';
 import { RouteParam } from './route.models.ts';
 
 const allowedMethod = (routeMethod: string, requestMethod?: string): boolean => {
@@ -19,7 +19,7 @@ export const getRouteParams: (route: string) => RouteParam[] = (route) =>
 const getRouteParamPattern: (route: string) => string = (route) =>
     route.replace(/\/\:[^/]{1,}/gi, '/[^/]{1,}').replace(/\//g, '\\/');
 
-export const getRouteWithRouteParams = (routes: MetaRoute[], pathname: string, method?: string): any => {
+export const getRouteWithRouteParams = (routes: RouteMetadata[], pathname: string, method?: string): any => {
     return routes
         .filter((r) => r.route.includes('/:') && allowedMethod(r.method.toString(), method))
         .find((r) => {
@@ -27,13 +27,13 @@ export const getRouteWithRouteParams = (routes: MetaRoute[], pathname: string, m
         });
 };
 
-export const getRouteFromFullPath = (routes: MetaRoute[], pathname: string, method?: string): MetaRoute | undefined => {
+export const getRouteFromFullPath = (routes: RouteMetadata[], pathname: string, method?: string): RouteMetadata | undefined => {
     return routes.find((r) => {
         return allowedMethod(r.method.toString(), method) && r.route === pathname;
     });
 };
 
-export const getRouteWithRegex = (routes: MetaRoute[], pathname: string, method?: string): any => {
+export const getRouteWithRegex = (routes: RouteMetadata[], pathname: string, method?: string): any => {
     return routes
         .filter((r) => r.regexpRoute && allowedMethod(r.method.toString(), method))
         .find((r) => {

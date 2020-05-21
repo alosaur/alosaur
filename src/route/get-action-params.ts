@@ -1,5 +1,5 @@
 import { getCookies, ServerRequest } from "../package.ts";
-import { MetaRoute } from "../models/meta-route.ts";
+import { RouteMetadata } from "../metadata/route.ts";
 import { TransformConfigMap } from "../models/transform-config.ts";
 
 type ArgumentValue = any;
@@ -13,7 +13,7 @@ type ArgumentValue = any;
 export async function getActionParams(
   req: ServerRequest,
   res: any,
-  route: MetaRoute,
+  route: RouteMetadata,
   transformConfigMap?: TransformConfigMap,
 ): Promise<ArgumentValue[]> {
   const args: ArgumentValue[] = [];

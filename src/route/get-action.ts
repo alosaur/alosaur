@@ -1,5 +1,5 @@
 import { Content } from '../renderer/content.ts';
-import { MetaRoute } from '../models/meta-route.ts';
+import { RouteMetadata } from '../metadata/route.ts';
 import { ServerResponse } from '../mod.ts';
 import {
     getPathNameFromUrl,
@@ -16,7 +16,7 @@ import {
 //  - regex routes
 
 // Find action from routes
-export function getAction(routes: MetaRoute[], method: string, url: string): MetaRoute | null {
+export function getAction(routes: RouteMetadata[], method: string, url: string): RouteMetadata | null {
     const pathname: string = getPathNameFromUrl(url);
     const routeParams: { [key: string]: any } = {};
 
@@ -46,7 +46,7 @@ export function getAction(routes: MetaRoute[], method: string, url: string): Met
             action: route.action,
             params: route.params,
             routeParams,
-        } as MetaRoute;
+        } as RouteMetadata;
     }
 
     return null;

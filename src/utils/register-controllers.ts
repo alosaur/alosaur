@@ -1,11 +1,11 @@
 import { getMetadataArgsStorage, ObjectKeyAny } from '../mod.ts';
 import { container } from '../injection/index.ts';
-import { MetaRoute } from '../models/meta-route.ts';
+import { RouteMetadata } from '../metadata/route.ts';
 
 export function registerControllers(
     controllers: any[] = [],
     classes: ObjectKeyAny[] = [],
-    addToRoute: (route: MetaRoute) => void,
+    addToRoute: (route: RouteMetadata) => void,
     logging: boolean = true,
 ) {
     // TODO: add two route Map (with route params / exact match)
@@ -37,7 +37,7 @@ export function registerControllers(
                 fullRoute += controller.route;
             }
 
-            const regexpRoute: RegExp = action.route instanceof RegExp ? action.route : undefined;
+            const regexpRoute: RegExp | undefined = action.route instanceof RegExp ? action.route : undefined;
 
             if (!regexpRoute && action.route) {
                 fullRoute += action.route;
@@ -47,7 +47,7 @@ export function registerControllers(
                 fullRoute = "/";
             }
 
-            const metaRoute: MetaRoute = {
+            const metaRoute: RouteMetadata = {
                 baseRoute: areaRoute,
                 route: fullRoute,
                 regexpRoute,

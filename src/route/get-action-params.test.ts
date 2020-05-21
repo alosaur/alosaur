@@ -1,12 +1,13 @@
-import { MetaRoute } from '../models/meta-route.ts';
+import { RouteMetadata } from '../metadata/route.ts';
 import { getActionParams } from './get-action-params.ts';
 import { ServerRequest } from '../mod.ts';
 import { assert } from '../package_test.ts';
+import { ParamType } from '../types/param.ts';
 const { test } = Deno;
 
 const target = () => {};
 
-const route: MetaRoute = {
+const route: RouteMetadata = {
     baseRoute: '/home',
     route: '/home/test/testQuery',
     target: target,
@@ -14,21 +15,21 @@ const route: MetaRoute = {
     action: 'testQuery',
     params: [
         {
-            type: 'query',
+            type: ParamType.Query,
             target: target,
             method: 'GET',
             index: 0,
             name: 'a',
         },
         {
-            type: 'query',
+            type: ParamType.Query,
             target: target,
             method: 'GET',
             index: 1,
             name: 'b',
         },
         {
-            type: 'query',
+            type: ParamType.Query,
             target: target,
             method: 'GET',
             index: 2,

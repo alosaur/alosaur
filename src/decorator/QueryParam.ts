@@ -1,4 +1,5 @@
 import { getMetadataArgsStorage } from "../mod.ts";
+import { ParamType } from '../types/param.ts';
 
 /**
  * Injects a request's query parameter value to the controller action parameter.
@@ -7,7 +8,7 @@ import { getMetadataArgsStorage } from "../mod.ts";
 export function QueryParam(name: string): Function {
   return function (object: Object, methodName: string, index: number) {
       getMetadataArgsStorage().params.push({
-          type: "query",
+          type: ParamType.Query,
           target: object.constructor,
           method: methodName,
           index: index,

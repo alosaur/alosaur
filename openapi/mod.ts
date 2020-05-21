@@ -1,7 +1,7 @@
 import { getMetadataArgsStorage, ObjectKeyAny, AppSettings } from '../src/mod.ts';
 import { writeJsonSync } from 'https://deno.land/std/fs/mod.ts';
 
-import { MetaRoute } from '../src/models/meta-route.ts';
+import { RouteMetadata } from '../src/metadata/route.ts';
 import { MetadataArgsStorage } from '../src/metadata/metadata.ts';
 import { registerControllers } from '../src/utils/register-controllers.ts';
 import { registerAreas } from '../src/utils/register-areas.ts';
@@ -17,7 +17,7 @@ import * as oa from './builder/openapi-models.ts';
 export class AlosaurOpenApiBuilder {
     private classes: ObjectKeyAny[] = [];
     private metadata: MetadataArgsStorage;
-    private routes: MetaRoute[] = [];
+    private routes: RouteMetadata[] = [];
     private builder = new OpenApiBuilder();
 
     static create(settings: AppSettings): AlosaurOpenApiBuilder {
@@ -31,7 +31,7 @@ export class AlosaurOpenApiBuilder {
         registerControllers(
             this.metadata.controllers,
             this.classes,
-            (route: MetaRoute) => {
+            (route: RouteMetadata) => {
                 // '/app/home/test/:id/:name/detail' => '/app/home/test/{id}/{name}/detail'
                 const openApiRoute: string = route.route.replace(/:[A-Za-z1-9]+/g, (m) => `{${m.substr(1)}}`);
                 this.builder.addPath(openApiRoute, this.getPathItem(route));
@@ -53,7 +53,7 @@ export class AlosaurOpenApiBuilder {
         console.log(this.builder.getSpec());
     }
 
-    private getPathItem(route: MetaRoute): oa.PathItemObject {
+    private getPathItem(route: RouteMetadata): oa.PathItemObject {
         const operation: oa.OperationObject = {
             tags: [route.baseRoute],
             responses: {

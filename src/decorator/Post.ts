@@ -1,4 +1,5 @@
 import { getMetadataArgsStorage } from "../mod.ts";
+import { RequestMethod } from "../types/request-method.ts";
 
 /**
  * Registers an action to be executed when POST request comes on a given route.
@@ -19,7 +20,7 @@ export function Post(route?: string): Function;
 export function Post(route?: string|RegExp): Function {
     return function (object: Object, methodName: string) {
         getMetadataArgsStorage().actions.push({
-            type: "POST",
+            type: RequestMethod.Post,
             target: object.constructor,
             method: methodName,
             route: route

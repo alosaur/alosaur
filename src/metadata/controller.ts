@@ -1,17 +1,5 @@
 import { AreaMetadataArgs } from "./area.ts";
 
-export class ControllerMetadata {
-  actions: [];
-  target: Function;
-  route: string;
-
-  constructor(args: any) {
-    this.target = args.target;
-    this.route = args.route;
-    this.actions = args.actions;
-  }
-}
-
 /**
  * Controller metadata used to storage information about registered controller.
  */

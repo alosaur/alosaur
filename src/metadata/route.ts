@@ -1,13 +1,12 @@
-import { ParamArgs } from '../metadata/metadata.ts';
-import { RouteParam } from '../route/route.models.ts';
+import { ParamMetadataArgs } from './param.ts';
 
-export interface MetaRoute {
+export interface RouteMetadata {
     baseRoute: string;
     route: string;
     regexpRoute?: RegExp;
     target: { [key: string]: any };
     action: string;
     method: string;
-    params: ParamArgs[];
+    params: ParamMetadataArgs[];
     routeParams?: { [key: string]: any };
 }

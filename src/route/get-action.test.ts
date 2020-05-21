@@ -1,12 +1,12 @@
 import { assert } from '../package_test.ts';
 import { getAction } from './get-action.ts';
-import { MetaRoute } from '../models/meta-route.ts';
+import { RouteMetadata } from '../metadata/route.ts';
 const { test } = Deno;
 
 test({
     name: 'testGetActions',
     fn() {
-        const routes: MetaRoute[] = [
+        const routes: RouteMetadata[] = [
             {
                 baseRoute: '/test',
                 route: '/test/:id/:name',

@@ -54,7 +54,7 @@ import { StaticFilesConfig } from "./models/static-config.ts";
 import { ViewRenderConfig } from "./models/view-render-config.ts";
 import { CorsBuilder } from "./middlewares/cors-builder.ts";
 import { Content } from "./renderer/content.ts";
-import { MetaRoute } from "./models/meta-route.ts";
+import { RouteMetadata } from "./metadata/route.ts";
 import { registerAreas } from "./utils/register-areas.ts";
 import { registerControllers } from "./utils/register-controllers.ts";
 import { getStaticFile } from "./utils/get-static-file.ts";
@@ -126,7 +126,7 @@ export interface AppSettings {
 export class App {
   private classes: ObjectKeyAny[] = [];
   private metadata: MetadataArgsStorage;
-  private routes: MetaRoute[] = [];
+  private routes: RouteMetadata[] = [];
   private staticConfig: StaticFilesConfig | undefined = undefined;
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
   private transformConfigMap?: TransformConfigMap | undefined = undefined;
