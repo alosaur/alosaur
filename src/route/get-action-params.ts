@@ -127,7 +127,7 @@ export async function getActionParams(
  * Finds query search params from full url
  * @param url 
  */
-function findSearchParams(url: string): URLSearchParams | undefined {
+export function findSearchParams(url: string): URLSearchParams | undefined {
   if (url == undefined) return undefined;
 
   const searchs = url.split("?")[1];

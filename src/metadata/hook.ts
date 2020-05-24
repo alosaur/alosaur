@@ -16,7 +16,7 @@ export interface HookMetadataArgs {
   /**
    * Indicates object which is used by this hook.
    */
-  target: Function;
+  target: Object;
 
   /**
    * Type, default controller
@@ -24,7 +24,17 @@ export interface HookMetadataArgs {
   type: BusinessType;
 
   /**
+   * Action name of class, TODO(irustm): rename to action name
+   */
+  method: string;
+
+  /**
    * Instance of hook
    */
-  instance: HookTarget;
+  instance: HookTarget<any>;
+
+  /**
+   * Payload for hook instance
+   */
+  payload?: any
 }

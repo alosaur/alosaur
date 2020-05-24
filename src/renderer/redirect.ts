@@ -8,7 +8,7 @@ export function Redirect(url: string): RenderResult {
         status: 302,
         headers,
         __isRenderResult: true,
-      };
+    };
 }
 
 export function RedirectPermanent(url: string): RenderResult {

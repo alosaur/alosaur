@@ -40,6 +40,8 @@ test({
             itLog("\t /error");
 
             response = await fetch(baseUrl + '/error');
+            console.log(response);
+            
             json = await response.json();
 
             assertEquals(response.status, 403);

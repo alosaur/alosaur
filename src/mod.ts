@@ -47,7 +47,7 @@ export * from "./injection/index.ts";
 export * from "./models/view-render-config.ts";
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { serve, Response, Server } from "./package.ts";
+import { serve, Response, Server, ServerRequest } from "./package.ts";
 import { getAction, notFoundActionResponse } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
@@ -60,12 +60,14 @@ import { registerControllers } from "./utils/register-controllers.ts";
 import { getStaticFile } from "./utils/get-static-file.ts";
 import { MiddlewareTarget } from "./models/middleware-target.ts";
 // import { getResponseFromActionResult } from './utils/get-response-from-action-result.ts';
+import { getGroupedHooks } from './route/get-hooks.ts';
 import {
   TransformConfigMap,
   TransformConfig,
 } from "./models/transform-config.ts";
 
 import Reader = Deno.Reader;
+import { HookMetadataArgs } from "./metadata/hook.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -90,7 +92,7 @@ export function getResponseFromActionResult(
 ): ServerResponse {
   let response: ServerResponse;
 
-  if ((value as RenderResult).__isRenderResult) {
+  if (value && (value as RenderResult).__isRenderResult) {
     response = value;
   } else {
     response = Content(value);
@@ -103,12 +105,35 @@ export function getResponseFromActionResult(
   return response;
 }
 
+/**
+ * Run hooks function and return true if response is immediately
+ */
+async function resolvHooks(req: ServerRequest, res: ServerResponse, actionName: string, hooks?: HookMetadataArgs[], result?: any): Promise<boolean> {
+  if(hooks !== undefined && hooks.length > 0) {
+    for(const hook of hooks) {
+
+      const action: Function | undefined = (hook as any).instance[actionName];
+      
+      if(action !== undefined) {
+        (hook as any).instance[actionName](req, res, hook.payload, result);
+      }
+    }
+
+    if(res.immediately) {
+      await req.respond(res);
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export interface ServerResponse extends Response {
   headers: Headers;
   status?: number;
   body?: Uint8Array | Reader | string;
   trailers?: () => Promise<Headers> | Headers;
-  immediately?: boolean; // Flag for optimization request, if immediately is "true" server try send respond after any action
+  immediately?: boolean; // Flag for optimization request, if immediately is "true" server try send respond after any middleware, action, 
 }
 
 export interface RenderResult extends ServerResponse {
@@ -127,6 +152,7 @@ export class App {
   private classes: ObjectKeyAny[] = [];
   private metadata: MetadataArgsStorage;
   private routes: RouteMetadata[] = [];
+
   private staticConfig: StaticFilesConfig | undefined = undefined;
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
   private transformConfigMap?: TransformConfigMap | undefined = undefined;
@@ -135,6 +161,7 @@ export class App {
 
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
+    
     registerAreas(this.metadata);
     registerControllers(
       this.metadata.controllers,
@@ -185,6 +212,18 @@ export class App {
           const action = getAction(this.routes, req.method, req.url);
 
           if (action !== null) {
+            const { controllerHooks, actionHooks } = getGroupedHooks(this.metadata.hooks, action);
+            
+            // try resolve controller hooks
+            if (await resolvHooks(req, res, "onPreAction", controllerHooks)) {
+                continue;
+            }
+            
+            // try resolve action hooks
+            if (await resolvHooks(req, res, "onPreAction", actionHooks)) {
+                continue;
+            }
+
             // Get arguments in this action
             const args = await getActionParams(
               req,
@@ -193,11 +232,40 @@ export class App {
               this.transformConfigMap,
             );
 
+            let actionResult: any;
+
+            try {
+                actionResult = await action.target[action.action](...args);
+            } catch (error) {
+              if(controllerHooks!.length > 0 || actionHooks!.length > 0) {
+                // try resolve controller hooks
+                if (await resolvHooks(req, res, "onCatchAction", controllerHooks, error)) {
+                  continue;
+                }
+                
+                // try resolve action hooks
+                if (await resolvHooks(req, res, "onCatchAction", actionHooks, error)) {
+                  continue;
+                }
+              } else {
+                throw error; 
+              }
+            }
+           
             // Get Action result
             result = getResponseFromActionResult(
-              await action.target[action.action](...args),
+              actionResult,
               res.headers,
             );
+            
+            // try resolve controller hooks
+            if (await resolvHooks(req, res, "onPostAction", controllerHooks, result)) {
+              continue;
+            }
+          
+            if (await resolvHooks(req, res, "onPostAction", actionHooks, result)) {
+              continue;
+            }
           }
         }
 
