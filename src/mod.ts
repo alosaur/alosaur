@@ -105,6 +105,7 @@ export function getResponseFromActionResult(
   return response;
 }
 
+// TODO(irustm): move to hooks function
 /**
  * Run hooks function and return true if response is immediately
  */
@@ -126,6 +127,11 @@ async function resolvHooks(req: ServerRequest, res: ServerResponse, actionName: 
   }
 
   return false;
+}
+
+// TODO(irustm): move to hooks function
+function hasHooksAction(actionName: string, hooks?: HookMetadataArgs[]): boolean {
+  return !!(hooks && hooks.find(hook => (hook as any).instance[actionName] !== undefined));
 }
 
 export interface ServerResponse extends Response {
@@ -237,7 +243,8 @@ export class App {
             try {
                 actionResult = await action.target[action.action](...args);
             } catch (error) {
-              if(controllerHooks!.length > 0 || actionHooks!.length > 0) {
+
+              if(hasHooksAction("onCatchAction", controllerHooks) || hasHooksAction("onCatchAction", actionHooks)) {
                 // try resolve controller hooks
                 if (await resolvHooks(req, res, "onCatchAction", controllerHooks, error)) {
                   continue;

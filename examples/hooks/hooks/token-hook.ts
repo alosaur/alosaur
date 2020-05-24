@@ -23,7 +23,7 @@ export class TokenHook implements HookTarget<PayloadType> {
     }
   };
   
-  onPostAction(request: ServerRequest, response: ServerResponse, payload: PayloadType, result: any) {    
+  onPostAction(request: ServerRequest, response: ServerResponse, payload: PayloadType, result: any) {        
     const content = Content(this.foo.getName());
     response.body = content.body;
     response.immediately = true;
