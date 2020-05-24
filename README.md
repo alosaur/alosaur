@@ -91,6 +91,7 @@ And run
 -   -   [x] `@Req`
 -   -   [x] `@Res`
 -   -   [x] `@Middleware` with regex route
+-   -   [x] `@UseHook` for contoller and actions (WIP)
 -   -   [ ] `@Cache` cache to actions {duration: number} number in ms
 
 -   [x] Add middleware
@@ -102,6 +103,7 @@ And run
 -   [x] Add CI with minimal tests.
 -   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
 -   [ ] Add OpenAPI type reference
+-   [ ] Add Hooks example
 -   [ ] Add GraphQL
 -   [ ] Add WebSocket
 -   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
