@@ -2,12 +2,15 @@
 
 # Application examples
 
-- [Basic](/examples/basic) - CRUD example with 2 areas.
-- [Cors](/examples/cors) - enable cors for routes.
-- [Database](/examples/db) - example with repository service on [deno postgres driver](https://deno.land/x/postgres/mod.ts).
-- [View render](/examples/dejs) - example with **ejs** render for deno.
-- [Dependency Injection](/examples/di) - example with `microsoft/TSyringe`.
-- [Static content](/examples/static) - serve static files.
+- [Basic + OpenAPI v3 generator (Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
+- [CORS middleware](https://github.com/alosaur/alosaur/tree/master/examples/cors)
+- [SPA middleware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
+- [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
+- [Database PostgreSQL](https://github.com/alosaur/alosaur/tree/master/examples/db)
+- Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
+- [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
+- [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
+- [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 
 
 ## Simple example:
