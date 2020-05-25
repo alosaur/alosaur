@@ -21,7 +21,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
 - [Database PostgreSQL](https://github.com/alosaur/alosaur/tree/master/examples/db)
 - Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
-- [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/di)
+- [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 
