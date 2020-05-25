@@ -31,7 +31,7 @@ const handle = new Handlebars({
 });
 
 app.useViewRender({
-    type: 'dejs',
+    type: 'handlebars',
     basePath: viewPath,
     getBody: async (path: string, model: any, config: ViewRenderConfig) =>
         await handle.renderView(path, model),
