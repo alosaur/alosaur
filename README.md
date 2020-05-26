@@ -92,7 +92,7 @@ And run
 -   -   [x] `@Req`
 -   -   [x] `@Res`
 -   -   [x] `@Middleware` with regex route
--   -   [x] `@UseHook` for contoller and actions (WIP)
+-   -   [x] `@UseHook` for contoller and actions
 -   -   [ ] `@Cache` cache to actions {duration: number} number in ms
 
 -   [x] Add middleware
@@ -148,7 +148,7 @@ You can create middleware and register it in area or all application layer.
 
 ```ts
 @Middleware(new RegExp('/'))
-export class Log implements MiddlewareTarget {
+export class Log implements MiddlewareTarget<TState> {
     date: Date = new Date();
 
     onPreRequest(context: Context<TState>) {

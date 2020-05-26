@@ -3,7 +3,7 @@ import { MiddlewareTarget } from '../../../src/models/middleware-target.ts';
 import { Context } from '../../../src/models/context.ts';
 
 @Middleware(new RegExp('/'))
-export class Log implements MiddlewareTarget {
+export class Log implements MiddlewareTarget<unknown> {
     date: Date = new Date();
 
     onPreRequest(context: Context<unknown>) {
