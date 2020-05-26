@@ -6,7 +6,7 @@ export class Context<T> {
    public readonly request: Request;
    public readonly response: Response;
    
-   public state: T;
+   public state?: T;
 
    constructor(serverRequest: ServerRequest) {
      this.request = new Request(serverRequest);

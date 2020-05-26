@@ -1,4 +1,4 @@
-import { ServerRequest } from "../mod.ts";
+import { ServerRequest } from "../deps.ts";
 
 export class Request {
   public readonly url: string;
