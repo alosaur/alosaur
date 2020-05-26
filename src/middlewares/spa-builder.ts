@@ -1,27 +1,28 @@
 import { MiddlewareTarget } from '../models/middleware-target.ts';
-import { ServerResponse, ServerRequest } from '../mod.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';
 import { send } from '../static/send.ts';
 import { getStaticFile } from '../utils/get-static-file.ts';
+import { Context } from '../models/context.ts';
 
 export class SpaBuilder implements MiddlewareTarget {
     constructor(private staticConfig: StaticFilesConfig) {}
 
-    onPreRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
+    onPreRequest(context: Context): Promise<void> {
         return new Promise(async (resolve, reject) => {
-            if (await getStaticFile(request, response, this.staticConfig)) {
-                response.immediately = true;
+            
+            if (await getStaticFile(context, this.staticConfig)) {
+                context.response.setImmediately();
             }
 
             resolve();
         });
     }
 
-    onPostRequest(request: ServerRequest, response: ServerResponse, actionResult?: any): Promise<void> {
+    onPostRequest(context: Context): Promise<void> {
         return new Promise(async (resolve, reject) => {
-            if (actionResult === undefined && this.staticConfig.index && !hasUrlExtension(request.url)) {
-                if (await send({ request, response }, this.staticConfig.index, this.staticConfig)) {
-                    response.immediately = true;
+            if (context.response.result === undefined && this.staticConfig.index && !hasUrlExtension(context.request.url)) {                
+                if (await send({ request: context.request.serverRequest, response: context.response }, this.staticConfig.index, this.staticConfig)) {
+                    context.response.setImmediately();
                 }
             }
 

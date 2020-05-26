@@ -3,6 +3,7 @@ import { getActionParams } from './get-action-params.ts';
 import { ServerRequest } from '../mod.ts';
 import { assert } from '../package_test.ts';
 import { ParamType } from '../types/param.ts';
+import { Context } from '../models/context.ts';
 const { test } = Deno;
 
 const target = () => {};
@@ -38,18 +39,17 @@ const route: RouteMetadata = {
     ],
 };
 
-const req: ServerRequest = {
-    url: '/',
-    headers: new Headers(),
-} as ServerRequest;
 
-const res: any = {};
+
 
 test({
     name: 'testGetActionParamsMultiQuery',
     async fn() {
-        req.url = '/home/test/testQuery?a=a&b=b&c=c';
-        const params = await getActionParams(req, res, route);
+        const context = new Context({
+            url: '/home/test/testQuery?a=a&b=b&c=c',
+            headers: new Headers(),
+        } as ServerRequest);
+        const params = await getActionParams(context, route);
     
         assert(params[0] === 'a');
         assert(params[1] === 'b');
@@ -60,8 +60,11 @@ test({
 test({
     name: 'testGetActionParamsMultiQueryWithoutOneParam',
     async fn() {
-        req.url = '/home/test/testQuery?c=c&a=a';
-        const params = await getActionParams(req, res, route);
+        const context = new Context({
+            url: '/home/test/testQuery?c=c&a=a',
+            headers: new Headers(),
+        } as ServerRequest);
+        const params = await getActionParams(context, route);
 
         assert(params[0] === 'a');
         assert(params[1] === undefined);
@@ -72,8 +75,11 @@ test({
 test({
     name: 'testGetActionParamsMultiQueryWithOneParam',
     async fn() {
-        req.url = '/home/test/testQuery?c=c';
-        const params = await getActionParams(req, res, route);
+        const context = new Context({
+            url: '/home/test/testQuery?c=c',
+            headers: new Headers(),
+        } as ServerRequest);
+        const params = await getActionParams(context, route);
 
         assert(params[0] === undefined);
         assert(params[1] === undefined);

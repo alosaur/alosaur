@@ -1,6 +1,5 @@
 import {
   Controller,
-  Response,
   ServerRequest,
   ForbiddenError
 } from '../../../../src/mod.ts';
@@ -12,7 +11,7 @@ import { Res } from '../../../../src/decorator/Res.ts';
 import { Post } from '../../../../src/decorator/Post.ts';
 import { Body } from '../../../../src/decorator/Body.ts';
 import { Param } from '../../../../src/decorator/Param.ts';
-
+import { Response } from '../../../../src/models/response.ts';
 
 @Controller('/home')
 export class HomeController {
@@ -32,7 +31,7 @@ export class HomeController {
     @Res() response: Response,
     @QueryParam('name') name: string
   ) {
-    return response;
+    return response.getRaw();
   }
 
 

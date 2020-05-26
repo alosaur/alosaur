@@ -26,7 +26,6 @@ test({
             assertEquals(response.status, 200);
             assertEquals(text, "Hello world, john test undefined");
 
-
             // It
             itLog("\t /json");
 
