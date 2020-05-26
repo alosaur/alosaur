@@ -13,9 +13,6 @@ export * from "./src/middlewares/mod.ts";
 // DI
 export * from "./src/injection/index.ts";
 
-// Interfaces
-export * from "./src/models/view-render-config.ts";
-
 // Models
 export * from "./src/models/mod.ts";
 

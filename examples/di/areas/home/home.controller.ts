@@ -1,4 +1,4 @@
-import { Controller, Content, QueryParam } from '../../../../src/mod.ts';
+import { Controller, Content, QueryParam } from '../../../../mod.ts';
 import { Get } from '../../../../src/decorator/Get.ts';
 import { FooService } from '../../services/foo.service.ts';
 

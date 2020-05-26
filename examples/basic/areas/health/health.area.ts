@@ -1,4 +1,4 @@
-import { Area } from '../../../../src/mod.ts';
+import { Area } from '../../../../mod.ts';
 import { HealthController } from "./health.controller.ts";
 
 @Area({

@@ -1,5 +1,5 @@
 import { HomeArea } from "./areas/home/home.area.ts";
-import { App, CorsBuilder } from '../../src/mod.ts';
+import { App, CorsBuilder } from '../../mod.ts';
 
 const app = new App({
   areas: [HomeArea]

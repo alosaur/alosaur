@@ -6,3 +6,4 @@ export * from "./static-config.ts";
 export * from "./transform-config.ts";
 export * from "./view-render-config.ts";
 export * from "./middleware-target.ts"
+export * from "./app-settings.ts";

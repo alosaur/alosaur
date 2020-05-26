@@ -1,6 +1,6 @@
-// import { Area, Controller, Get, QueryParam } from '../../src/mod.ts';
+// import { Area, Controller, Get, QueryParam } from '../../mod.ts';
 import { HomeArea } from './areas/home.area.ts';
-import { App } from '../../src/mod.ts';
+import { App } from '../../mod.ts';
 
 // @Controller('/home')
 // export class HomeController {

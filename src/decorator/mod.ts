@@ -14,5 +14,5 @@ export * from "./Cookie.ts";
 export * from "./Body.ts";
 
 export * from "./UseHook.ts";
-export * from "./Middleware";
+export * from "./Middleware.ts";
 

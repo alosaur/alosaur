@@ -1,4 +1,4 @@
-import { Area, container } from "../../../../src/mod.ts";
+import { Area, container } from "../../../../mod.ts";
 import { HomeController } from "./home.controller.ts";
 
 @Area({
