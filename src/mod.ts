@@ -76,6 +76,8 @@ export class App<TState> {
   private staticConfig: StaticFilesConfig | undefined = undefined;
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
   private transformConfigMap?: TransformConfigMap | undefined = undefined;
+  private globalErrorHandler?: (ctx: Context<TState>, error: Error) => void;
+  
 
   private server: Server | undefined = undefined;
 
@@ -210,6 +212,21 @@ export class App<TState> {
         await req.respond(context.response.getMergedResult());
 
       } catch (error) {
+
+        if(this.globalErrorHandler) {
+          this.globalErrorHandler(context, error);
+
+          if (context.response.isImmediately()) {          
+            await req.respond(context.response.getMergedResult());
+            continue;
+          }
+        }
+
+        if (context.response.isImmediately()) {          
+          await req.respond(context.response.getMergedResult());
+          continue;
+        }
+
         await req.respond(Content(error, error.httpCode || 500));
       }
     }
@@ -247,8 +264,8 @@ export class App<TState> {
   }
 
   /**
-     * Deprecate
-     */
+  * Deprecate
+  */
   public useCors(builder: CorsBuilder<TState>): void {
     this.metadata.middlewares.push({
       type: "middleware",
@@ -263,5 +280,12 @@ export class App<TState> {
       target: middleware,
       route,
     });
+  }
+
+  /**
+   * Create one global error handler
+   */
+  public error(globalErrorHandler: (ctx: Context<TState>, error: Error) => void): void {
+    this.globalErrorHandler = globalErrorHandler;
   }
 }
