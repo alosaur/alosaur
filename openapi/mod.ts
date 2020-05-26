@@ -1,4 +1,5 @@
-import { getMetadataArgsStorage, ObjectKeyAny, AppSettings } from '../src/mod.ts';
+import { getMetadataArgsStorage, ObjectKeyAny } from '../src/mod.ts';
+import { AppSettings } from "../mod.ts";
 import { writeJsonSync } from 'https://deno.land/std/fs/mod.ts';
 
 import { RouteMetadata } from '../src/metadata/route.ts';
@@ -14,9 +15,9 @@ import * as oa from './builder/openapi-models.ts';
  */
 
 // Builder OpenAPI v3.0.0
-export class AlosaurOpenApiBuilder {
+export class AlosaurOpenApiBuilder<T> {
     private classes: ObjectKeyAny[] = [];
-    private metadata: MetadataArgsStorage;
+    private metadata: MetadataArgsStorage<T>;
     private routes: RouteMetadata[] = [];
     private builder = new OpenApiBuilder();
 

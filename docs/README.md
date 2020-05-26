@@ -16,7 +16,7 @@
 ## Simple example:
 
 ```typescript
-import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/src/mod.ts'
+import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/mod.ts'
 
 @Controller('/home')
 export class HomeController {

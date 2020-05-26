@@ -1,5 +1,5 @@
 import { HomeArea } from './areas/home.area.ts';
-import { App } from '../../src/mod.ts';
+import { App } from '../../mod.ts';
 import { Log } from './middleware/log.middleware.ts';
 
 const app = new App({

@@ -1,4 +1,4 @@
-import { App } from '../../src/mod.ts';
+import { App } from '../../mod.ts';
 import { settings } from './app-settings.ts';
 
 // create application

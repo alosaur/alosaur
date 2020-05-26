@@ -1,6 +1,4 @@
-import { Content } from '../renderer/content.ts';
 import { RouteMetadata } from '../metadata/route.ts';
-import { ServerResponse } from '../mod.ts';
 import {
     getPathNameFromUrl,
     getRouteFromFullPath,

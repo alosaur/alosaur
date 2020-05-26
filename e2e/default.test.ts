@@ -1,4 +1,4 @@
-import { assertEquals } from '../src/package_test.ts';
+import { assertEquals } from '../src/deps_test.ts';
 import { startServer, fetchWithClose, killServer } from './test.utils.ts';
 const { test } = Deno;
 

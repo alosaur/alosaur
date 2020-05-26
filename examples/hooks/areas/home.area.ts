@@ -1,4 +1,4 @@
-import { Area, Controller, Get, Res } from '../../../src/mod.ts';
+import { Area, Controller, Get, Res } from '../../../mod.ts';
 import { UseHook } from '../../../src/decorator/UseHook.ts';
 import { BadRequestError } from '../../../src/http-error/BadRequestError.ts';
 

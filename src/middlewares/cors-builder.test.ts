@@ -1,4 +1,4 @@
-import { assert } from '../package_test.ts';
+import { assert } from '../deps_test.ts';
 import { CorsBuilder } from './cors-builder.ts';
 import { Context } from '../models/context.ts';
 const { test } = Deno;

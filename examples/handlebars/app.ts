@@ -1,5 +1,5 @@
 import { Handlebars } from "https://deno.land/x/handlebars@v0.2.2/mod.ts";
-import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from '../../src/mod.ts';
+import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from '../../mod.ts';
 
 @Controller('')
 export class HomeController {

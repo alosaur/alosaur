@@ -1,4 +1,4 @@
-import { App, Area, Controller, Get, QueryParam } from '../../src/mod.ts';
+import { App, Area, Controller, Get, QueryParam } from '../../mod.ts';
 import { SpaBuilder } from '../../src/middlewares/spa-builder.ts';
 
 @Controller('/home')

@@ -1,4 +1,4 @@
-import { Area, Controller, Get, Content, QueryParam } from '../../../src/mod.ts';
+import { Area, Controller, Get, Content, QueryParam } from '../../../mod.ts';
 
 @Controller('/home')
 export class HomeController {

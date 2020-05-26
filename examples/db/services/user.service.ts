@@ -1,5 +1,5 @@
 import { Database } from '../database.ts';
-import { Injectable } from '../../../src/mod.ts';
+import { Injectable } from '../../../mod.ts';
 
 export interface User{
   name: string;

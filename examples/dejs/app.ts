@@ -1,5 +1,5 @@
 import { renderFile } from 'https://deno.land/x/dejs@0.3.5/mod.ts';
-import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from '../../src/mod.ts';
+import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from '../../mod.ts';
 import { normalize } from '../../src/package';
 
 @Controller('')

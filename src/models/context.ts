@@ -1,6 +1,6 @@
 import { Request } from './request.ts';
 import { Response } from './response.ts';
-import { ServerRequest } from '../mod.ts';
+import { ServerRequest } from '../deps.ts';
 
 export class Context<T> {
    public readonly request: Request;

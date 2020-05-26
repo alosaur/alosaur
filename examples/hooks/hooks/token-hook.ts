@@ -1,5 +1,4 @@
 import { HookTarget } from "../../../src/models/hook.ts";
-import { ServerRequest, ServerResponse } from "../../../src/mod.ts";
 import { Singleton } from '../../../src/injection/decorators/index.ts';
 import { FooService } from '../services/foo.service.ts';
 import { findSearchParams } from '../../../src/route/get-action-params.ts';
