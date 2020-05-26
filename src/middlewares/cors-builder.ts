@@ -1,7 +1,7 @@
 import { MiddlewareTarget } from '../models/middleware-target.ts';
 import { Context } from '../models/context.ts';
 
-export class CorsBuilder implements MiddlewareTarget {
+export class CorsBuilder<T> implements MiddlewareTarget<T> {
     private headers: Map<string, string>;
     private allowAnyOrigin: boolean;
     private allowAnyMethod: boolean;
@@ -14,7 +14,7 @@ export class CorsBuilder implements MiddlewareTarget {
         this.allowAnyHeader = false;
     }
 
-    onPreRequest(context: Context): Promise<void> {
+    onPreRequest(context: Context<T>): Promise<void> {
         return new Promise((resolve, reject) => {
             if (this.allowAnyOrigin) {
                 this.headers.set('Access-Control-Allow-Origin', context.request.headers.get('Origin') || '');
@@ -43,7 +43,7 @@ export class CorsBuilder implements MiddlewareTarget {
         });
     }
 
-    onPostRequest(context: Context): Promise<void> {
+    onPostRequest(context: Context<T>): Promise<void> {
         return new Promise((resolve, rej) => {
             this.headers.forEach((el, key) => {
                 context.response.headers.set(key, el);

@@ -1,6 +1,6 @@
 import { Context } from './context.ts';
 
-export interface MiddlewareTarget {
-    onPreRequest(context: Context): void;
-    onPostRequest(context: Context): void;
+export interface MiddlewareTarget<TState> {
+    onPreRequest(context: Context<TState>): void;
+    onPostRequest(context: Context<TState>): void;
 }

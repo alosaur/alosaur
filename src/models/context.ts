@@ -2,9 +2,11 @@ import { Request } from './request.ts';
 import { Response } from './response.ts';
 import { ServerRequest } from '../mod.ts';
 
-export class Context {
+export class Context<T> {
    public readonly request: Request;
    public readonly response: Response;
+   
+   public state?: T;
 
    constructor(serverRequest: ServerRequest) {
      this.request = new Request(serverRequest);

@@ -7,7 +7,7 @@ import { HookTarget } from '../models/hook.ts';
 /**
  * Hook metadata used to storage information about registered hooks.
  */
-export interface HookMetadataArgs {
+export interface HookMetadataArgs<TState,TPayload> {
 
   area?: AreaMetadataArgs;
   controller?: ControllerMetadataArgs;
@@ -31,7 +31,7 @@ export interface HookMetadataArgs {
   /**
    * Instance of hook
    */
-  instance: HookTarget<any>;
+  instance: HookTarget<TState,TPayload>;
 
   /**
    * Payload for hook instance

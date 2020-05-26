@@ -10,8 +10,8 @@ type ArgumentValue = any;
  * @param context 
  * @param route 
  */
-export async function getActionParams(
-  context: Context,
+export async function getActionParams<T>(
+  context: Context<T>,
   route: RouteMetadata,
   transformConfigMap?: TransformConfigMap,
 ): Promise<ArgumentValue[]> {

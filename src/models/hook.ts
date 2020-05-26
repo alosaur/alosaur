@@ -1,7 +1,7 @@
 import { Context } from './context.ts';
 
-export interface HookTarget<T> {
-    onPreAction?(context: Context, payload: T): void;
-    onPostAction?(context: Context, payload: T): void;
-    onCatchAction?(context: Context, payload: T): void; 
+export interface HookTarget<TState,TPayload> {
+    onPreAction?(context: Context<TState>, payload: TPayload): void;
+    onPostAction?(context: Context<TState>, payload: TPayload): void;
+    onCatchAction?(context: Context<TState>, payload: TPayload): void; 
 }

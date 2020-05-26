@@ -59,7 +59,6 @@ import { registerAreas } from "./utils/register-areas.ts";
 import { registerControllers } from "./utils/register-controllers.ts";
 import { getStaticFile } from "./utils/get-static-file.ts";
 import { MiddlewareTarget } from "./models/middleware-target.ts";
-// import { getResponseFromActionResult } from './utils/get-response-from-action-result.ts';
 import { getGroupedHooks } from './route/get-hooks.ts';
 import {
   TransformConfigMap,
@@ -75,7 +74,7 @@ export type ObjectKeyAny = { [key: string]: any };
 
 const global: ObjectKeyAny = {};
 
-export function getMetadataArgsStorage(): MetadataArgsStorage {
+export function getMetadataArgsStorage<TState>(): MetadataArgsStorage<TState> {
   if (!(global as any).routingControllersMetadataArgsStorage) {
     (global as any).routingControllersMetadataArgsStorage =
       new MetadataArgsStorage();
@@ -92,7 +91,7 @@ export function getViewRenderConfig(): ViewRenderConfig {
 /**
  * Run hooks function and return true if response is immediately
  */
-async function resolvHooks(context: Context, actionName: string, hooks?: HookMetadataArgs[]): Promise<boolean> {
+async function resolvHooks<TState,TPayload>(context: Context<TState>, actionName: string, hooks?: HookMetadataArgs<TState,TPayload>[]): Promise<boolean> {
   if(hooks !== undefined && hooks.length > 0) {
     for(const hook of hooks) {
 
@@ -113,7 +112,7 @@ async function resolvHooks(context: Context, actionName: string, hooks?: HookMet
 }
 
 // TODO(irustm): move to hooks function
-function hasHooksAction(actionName: string, hooks?: HookMetadataArgs[]): boolean {
+function hasHooksAction<TState,TPayload>(actionName: string, hooks?: HookMetadataArgs<TState,TPayload>[]): boolean {
   return !!(hooks && hooks.find(hook => (hook as any).instance[actionName] !== undefined));
 }
 
@@ -133,9 +132,9 @@ export interface AppSettings {
   logging?: boolean;
 }
 
-export class App {
+export class App<TState> {
   private classes: ObjectKeyAny[] = [];
-  private metadata: MetadataArgsStorage;
+  private metadata: MetadataArgsStorage<TState>;
   private routes: RouteMetadata[] = [];
 
   private staticConfig: StaticFilesConfig | undefined = undefined;
@@ -167,7 +166,7 @@ export class App {
 
     console.log(`Server start in ${address}`);
     for await (const req of server) {
-      const context = new Context(req);
+      const context = new Context<TState>(req);
       try {
         // Get middlewares in request
         const middlewares = this.metadata.middlewares.filter((m) =>
@@ -314,7 +313,7 @@ export class App {
   /**
      * Deprecate
      */
-  public useCors(builder: CorsBuilder): void {
+  public useCors(builder: CorsBuilder<TState>): void {
     this.metadata.middlewares.push({
       type: "middleware",
       target: builder,
@@ -322,7 +321,7 @@ export class App {
     });
   }
 
-  public use(route: RegExp, middleware: MiddlewareTarget): void {
+  public use(route: RegExp, middleware: MiddlewareTarget<TState>): void {
     this.metadata.middlewares.push({
       type: "middleware",
       target: middleware,

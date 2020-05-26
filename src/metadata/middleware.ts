@@ -13,7 +13,7 @@ export class MiddlewareMetadata {
   /**
    * Middleware metadata used to storage information.
    */
-  export interface MiddlewareMetadataArgs {
+  export interface MiddlewareMetadataArgs<TState> {
     /**
     * Type, vase default
     */
@@ -21,7 +21,7 @@ export class MiddlewareMetadata {
     /**
      * Indicates object which is used by this Middleware.
      */
-    target: MiddlewareTarget;
+    target: MiddlewareTarget<TState>;
   
     /**
      * Route for all controllers registered in this Middleware.

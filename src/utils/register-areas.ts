@@ -1,7 +1,7 @@
 import { MetadataArgsStorage } from '../metadata/metadata.ts';
 
 // Add area to controllers
-export function registerAreas(metadata: MetadataArgsStorage) {
+export function registerAreas<TState>(metadata: MetadataArgsStorage<TState>) {
   metadata.controllers.map((controller) => {
     if (controller.area == null) {
       const area: any = metadata.areas.find((area) => {

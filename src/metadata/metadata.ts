@@ -8,11 +8,11 @@ import { HookMetadataArgs } from './hook.ts';
 /**
 * Storage all metadatas read from decorators.
 */
-export class MetadataArgsStorage {
+export class MetadataArgsStorage<TState> {
   /**
    * Registered middlewares
    */
-  middlewares: MiddlewareMetadataArgs[] = [];
+  middlewares: MiddlewareMetadataArgs<TState>[] = [];
   
   /*
    * Registered areas
@@ -37,5 +37,5 @@ export class MetadataArgsStorage {
     /**
    * Registered params.
    */
-  hooks: HookMetadataArgs[] = [];
+  hooks: HookMetadataArgs<TState,any>[] = [];
 }

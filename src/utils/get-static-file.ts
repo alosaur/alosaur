@@ -3,7 +3,7 @@ import { send } from '../static/send.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';
 import { Context } from '../models/context.ts';
 
-export async function getStaticFile(context: Context, staticConfig?: StaticFilesConfig) {
+export async function getStaticFile<T>(context: Context<T>, staticConfig?: StaticFilesConfig) {
     if (staticConfig == null) {
         return false;
     }
