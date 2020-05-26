@@ -4,10 +4,10 @@ import { send } from '../static/send.ts';
 import { getStaticFile } from '../utils/get-static-file.ts';
 import { Context } from '../models/context.ts';
 
-export class SpaBuilder implements MiddlewareTarget {
+export class SpaBuilder<TState> implements MiddlewareTarget<TState> {
     constructor(private staticConfig: StaticFilesConfig) {}
 
-    onPreRequest(context: Context): Promise<void> {
+    onPreRequest(context: Context<TState>): Promise<void> {
         return new Promise(async (resolve, reject) => {
             
             if (await getStaticFile(context, this.staticConfig)) {
@@ -18,7 +18,7 @@ export class SpaBuilder implements MiddlewareTarget {
         });
     }
 
-    onPostRequest(context: Context): Promise<void> {
+    onPostRequest(context: Context<TState>): Promise<void> {
         return new Promise(async (resolve, reject) => {
             if (context.response.result === undefined && this.staticConfig.index && !hasUrlExtension(context.request.url)) {                
                 if (await send({ request: context.request.serverRequest, response: context.response }, this.staticConfig.index, this.staticConfig)) {
