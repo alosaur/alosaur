@@ -104,7 +104,7 @@ async function resolvHooks(context: Context, actionName: string, hooks?: HookMet
     }
 
     if(context.response.isImmediately()) {
-      await context.request.serverRequest.respond(context.response.getRaw());
+      await context.request.serverRequest.respond(context.response.getMergedResult());
       return true;
     }
   }
@@ -225,6 +225,16 @@ export class App {
                   continue;
                 }
               } else {
+                // Resolve every post middleware if error not cathed
+                for (const middleware of middlewares) {
+                  await middleware.target.onPostRequest(context);
+                }
+
+                if (context.response.isImmediately()) {          
+                  await req.respond(context.response.getMergedResult());
+                  continue;
+                }
+
                 throw error; 
               }
             }

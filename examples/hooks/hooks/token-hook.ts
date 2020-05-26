@@ -18,18 +18,12 @@ export class TokenHook implements HookTarget<PayloadType> {
     const queryParams = findSearchParams(context.request.url);
     
     if(queryParams == undefined || queryParams.get('token') !== payload) {
-      const result = Content({error: {token: false}}, 403);
-      context.response.body = result.body;
-      context.response.status = result.status;
+      context.response.result = Content({error: {token: false}}, 403);
       context.response.setImmediately();
-      // TODO(irustm) fix problem with next middlware if hook not immediately
     }
   };
   
   onPostAction(context: Context, payload: PayloadType) {        
-    const content = Content(this.foo.getName());
-    context.response.body = content.body;
-    context.response.setImmediately();
-    // TODO(irustm) fix problem with next middlware if hook not immediately
+    context.response.result = Content(this.foo.getName());
   };
 }

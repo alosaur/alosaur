@@ -15,12 +15,6 @@ export class CatchHook implements HookTarget<PayloadType> {
     const error = context.response.error as HttpError;
 
     (error as any)['description'] = "This description from catch hook";
-    const content = Content(error, error.httpCode || 500);
-    
-    context.response.body = content.body;
-    context.response.status = content.status;
-    context.response.setImmediately();
-
-    // TODO(irustm) fix problem with next middlware if hook not immediately
+    context.response.result = Content(error, error.httpCode || 500);
   };
 }
