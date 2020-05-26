@@ -118,8 +118,6 @@ And run
 
 -   [ ] Add [Angular](https://angular.io) template parser
 -   [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
--   [ ] Add validator decorators
--   [ ] Add porting TypeORM to Deno
 
 ## Examples
 
