@@ -1,26 +1,25 @@
-import { getCookies, ServerRequest } from "../package.ts";
+import { getCookies } from "../package.ts";
 import { RouteMetadata } from "../metadata/route.ts";
 import { TransformConfigMap } from "../models/transform-config.ts";
+import { Context } from "../models/context.ts";
 
 type ArgumentValue = any;
 
 /**
  * Gets action params for routes 
- * @param req 
- * @param res 
+ * @param context 
  * @param route 
  */
 export async function getActionParams(
-  req: ServerRequest,
-  res: any,
+  context: Context,
   route: RouteMetadata,
   transformConfigMap?: TransformConfigMap,
 ): Promise<ArgumentValue[]> {
   const args: ArgumentValue[] = [];
 
   // const body
-  const queryParams = findSearchParams(req.url);
-  const cookies = getCookies(req) || {};
+  const queryParams = findSearchParams(context.request.url);
+  const cookies = getCookies(context.request.serverRequest) || {};
   const params = route.params.sort((a, b) => a.index - b.index);
 
   // fill params to resolve
@@ -46,9 +45,9 @@ export async function getActionParams(
         break;
 
       case "body":
-        let body = await Deno.readAll(req.body);
+        let body = await Deno.readAll(context.request.serverRequest.body);
         const bodyString = new TextDecoder("utf-8").decode(body);
-        const contentType = req.headers.get("content-type");
+        const contentType = context.request.serverRequest.headers.get("content-type");
 
         switch (contentType) {
           case "application/json":
@@ -101,11 +100,11 @@ export async function getActionParams(
         break;
 
       case "request":
-        args.push(req);
+        args.push(context.request);
         break;
 
       case "response":
-        args.push(res);
+        args.push(context.response);
         break;
 
       case "route-param":

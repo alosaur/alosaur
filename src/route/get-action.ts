@@ -51,9 +51,3 @@ export function getAction(routes: RouteMetadata[], method: string, url: string):
 
     return null;
 }
-
-export function notFoundAction() {
-    return Content('Not found', 404); // TODO: enum http status
-}
-
-export const notFoundActionResponse = notFoundAction();

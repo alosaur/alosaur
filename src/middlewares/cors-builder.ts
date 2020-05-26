@@ -1,5 +1,5 @@
 import { MiddlewareTarget } from '../models/middleware-target.ts';
-import { Response, ServerRequest, RenderResult, ServerResponse } from '../mod.ts';
+import { Context } from '../models/context.ts';
 
 export class CorsBuilder implements MiddlewareTarget {
     private headers: Map<string, string>;
@@ -14,41 +14,39 @@ export class CorsBuilder implements MiddlewareTarget {
         this.allowAnyHeader = false;
     }
 
-    onPreRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
+    onPreRequest(context: Context): Promise<void> {
         return new Promise((resolve, reject) => {
             if (this.allowAnyOrigin) {
-                this.headers.set('Access-Control-Allow-Origin', request.headers.get('Origin') || '');
+                this.headers.set('Access-Control-Allow-Origin', context.request.headers.get('Origin') || '');
             }
             if (this.allowAnyMethod) {
                 this.headers.set(
                     'Access-Control-Allow-Methods',
-                    request.headers.get('Access-Control-Request-Method') || '',
+                    context.request.headers.get('Access-Control-Request-Method') || '',
                 );
             }
             if (this.allowAnyHeader) {
                 this.headers.set(
                     'Access-Control-Allow-Headers',
-                    request.headers.get('Access-Control-Request-Headers') || '',
+                    context.request.headers.get('Access-Control-Request-Headers') || '',
                 );
             }
 
-            if (request.method == 'OPTIONS') {
-                this.onPostRequest(request, response, response as RenderResult);
+            if (context.request.method == 'OPTIONS') {
+                this.onPostRequest(context);
 
-                response.status = 200;
-                response.immediately = true;
+                context.response.status = 200;
+                context.response.setImmediately();
             }
 
             resolve();
         });
     }
 
-    onPostRequest(request: ServerRequest, responce: Response, result?: RenderResult): Promise<void> {
+    onPostRequest(context: Context): Promise<void> {
         return new Promise((resolve, rej) => {
             this.headers.forEach((el, key) => {
-                if (result && result.headers) {
-                    result.headers.set(key, el);
-                }
+                context.response.headers.set(key, el);
             });
             resolve();
         });

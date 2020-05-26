@@ -1,7 +1,7 @@
-import { ServerResponse, ServerRequest } from '../mod.ts';
+import { Context } from './context.ts';
 
 export interface HookTarget<T> {
-    onPreAction?(request: ServerRequest, response: ServerResponse, payload: T): void;
-    onPostAction?(request: ServerRequest, response: ServerResponse, payload: T, result?: any): void;
-    onCatchAction?(request: ServerRequest, response: ServerResponse, payload: T, error?: any): void; 
+    onPreAction?(context: Context, payload: T): void;
+    onPostAction?(context: Context, payload: T): void;
+    onCatchAction?(context: Context, payload: T): void; 
 }

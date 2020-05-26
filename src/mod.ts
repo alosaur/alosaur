@@ -47,8 +47,8 @@ export * from "./injection/index.ts";
 export * from "./models/view-render-config.ts";
 
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { serve, Response, Server, ServerRequest } from "./package.ts";
-import { getAction, notFoundActionResponse } from "./route/get-action.ts";
+import { serve, Response, Server } from "./package.ts";
+import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
 import { ViewRenderConfig } from "./models/view-render-config.ts";
@@ -68,6 +68,8 @@ import {
 
 import Reader = Deno.Reader;
 import { HookMetadataArgs } from "./metadata/hook.ts";
+import { Context } from './models/context.ts';
+import { notFoundAction } from './renderer/not-found.ts';
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -86,42 +88,23 @@ export function getViewRenderConfig(): ViewRenderConfig {
   return (global as any).viewRenderConfig;
 }
 
-export function getResponseFromActionResult(
-  value: RenderResult | any,
-  globalHeaders: Headers,
-): ServerResponse {
-  let response: ServerResponse;
-
-  if (value && (value as RenderResult).__isRenderResult) {
-    response = value;
-  } else {
-    response = Content(value);
-  }
-
-  // merge headers
-  response.headers = new Headers([...response.headers, ...globalHeaders]);
-
-  delete (response as RenderResult).__isRenderResult;
-  return response;
-}
-
 // TODO(irustm): move to hooks function
 /**
  * Run hooks function and return true if response is immediately
  */
-async function resolvHooks(req: ServerRequest, res: ServerResponse, actionName: string, hooks?: HookMetadataArgs[], result?: any): Promise<boolean> {
+async function resolvHooks(context: Context, actionName: string, hooks?: HookMetadataArgs[]): Promise<boolean> {
   if(hooks !== undefined && hooks.length > 0) {
     for(const hook of hooks) {
 
       const action: Function | undefined = (hook as any).instance[actionName];
       
       if(action !== undefined) {
-        (hook as any).instance[actionName](req, res, hook.payload, result);
+        (hook as any).instance[actionName](context, hook.payload);
       }
     }
 
-    if(res.immediately) {
-      await req.respond(res);
+    if(context.response.isImmediately()) {
+      await context.request.serverRequest.respond(context.response.getRaw());
       return true;
     }
   }
@@ -140,10 +123,6 @@ export interface ServerResponse extends Response {
   body?: Uint8Array | Reader | string;
   trailers?: () => Promise<Headers> | Headers;
   immediately?: boolean; // Flag for optimization request, if immediately is "true" server try send respond after any middleware, action, 
-}
-
-export interface RenderResult extends ServerResponse {
-  __isRenderResult: boolean;
 }
 
 export interface AppSettings {
@@ -188,112 +167,105 @@ export class App {
 
     console.log(`Server start in ${address}`);
     for await (const req of server) {
+      const context = new Context(req);
       try {
-        const res: ServerResponse = {
-          headers: new Headers(),
-        };
-
-        let result: RenderResult | ServerResponse | undefined;
-
         // Get middlewares in request
         const middlewares = this.metadata.middlewares.filter((m) =>
-          m.route.test(req.url)
+          m.route.test(context.request.url)
         );
 
         // Resolve every pre middleware
         for (const middleware of middlewares) {
-          await middleware.target.onPreRequest(req, res);
-        }
+          await middleware.target.onPreRequest(context);
+        }        
 
-        if (res.immediately) {
-          await req.respond(res);
+        if (context.response.isImmediately()) {
+          await req.respond(context.response.getRaw());
           continue;
         }
 
         // try getting static file
-        if (await getStaticFile(req, res, this.staticConfig)) {
-          await req.respond(res);
+        if (await getStaticFile(context, this.staticConfig)) {
+          await req.respond(context.response.getRaw());
           continue;
         } else {
-          const action = getAction(this.routes, req.method, req.url);
-
+          
+          const action = getAction(this.routes, context.request.method, context.request.url);
+          
           if (action !== null) {
             const { controllerHooks, actionHooks } = getGroupedHooks(this.metadata.hooks, action);
             
             // try resolve controller hooks
-            if (await resolvHooks(req, res, "onPreAction", controllerHooks)) {
+            if (await resolvHooks(context, "onPreAction", controllerHooks)) {
                 continue;
             }
             
             // try resolve action hooks
-            if (await resolvHooks(req, res, "onPreAction", actionHooks)) {
+            if (await resolvHooks(context, "onPreAction", actionHooks)) {
                 continue;
             }
 
             // Get arguments in this action
-            const args = await getActionParams(
-              req,
-              res,
-              action,
-              this.transformConfigMap,
-            );
-
-            let actionResult: any;
+            const args = await getActionParams(context, action, this.transformConfigMap);
 
             try {
-                actionResult = await action.target[action.action](...args);
+              // Get Action result from controller method
+              context.response.result = await action.target[action.action](...args);
             } catch (error) {
+              context.response.error = error;
 
               if(hasHooksAction("onCatchAction", controllerHooks) || hasHooksAction("onCatchAction", actionHooks)) {
                 // try resolve controller hooks
-                if (await resolvHooks(req, res, "onCatchAction", controllerHooks, error)) {
+                if (await resolvHooks(context, "onCatchAction", controllerHooks)) {
                   continue;
                 }
                 
                 // try resolve action hooks
-                if (await resolvHooks(req, res, "onCatchAction", actionHooks, error)) {
+                if (await resolvHooks(context, "onCatchAction", actionHooks)) {
                   continue;
                 }
               } else {
                 throw error; 
               }
             }
-           
-            // Get Action result
-            result = getResponseFromActionResult(
-              actionResult,
-              res.headers,
-            );
             
             // try resolve controller hooks
-            if (await resolvHooks(req, res, "onPostAction", controllerHooks, result)) {
+            if (await resolvHooks(context, "onPostAction", controllerHooks)) {
               continue;
             }
           
-            if (await resolvHooks(req, res, "onPostAction", actionHooks, result)) {
+            if (await resolvHooks(context, "onPostAction", actionHooks)) {
               continue;
             }
           }
         }
 
-        if (res.immediately) {
-          await req.respond(result as ServerResponse);
+        if (context.response.isImmediately()) {
+          await req.respond(context.response.getMergedResult());
           continue;
         }
 
         // Resolve every post middleware
         for (const middleware of middlewares) {
-          await middleware.target.onPostRequest(req, res, result);
+          await middleware.target.onPostRequest(context);
         }
 
-        if (res.immediately) {
-          await req.respond(res);
+        if (context.response.isImmediately()) {          
+          await req.respond(context.response.getMergedResult());
           continue;
         }
 
-        req.respond(result || notFoundActionResponse);
+        if(context.response.result === undefined) {
+          context.response.result = notFoundAction();
+          
+          await req.respond(context.response.getMergedResult());
+          continue;
+        }
+        
+        await req.respond(context.response.getMergedResult());
+
       } catch (error) {
-        req.respond(Content(error, error.httpCode || 500));
+        await req.respond(Content(error, error.httpCode || 500));
       }
     }
 

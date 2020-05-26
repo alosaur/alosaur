@@ -1,5 +1,6 @@
 import { contentType } from '../package.ts';
-import { getViewRenderConfig, RenderResult } from '../mod.ts';
+import { getViewRenderConfig } from '../mod.ts';
+import { ActionResult } from '../models/response.ts';
 
 /**
  * Renders view with template with changed template render
@@ -7,7 +8,7 @@ import { getViewRenderConfig, RenderResult } from '../mod.ts';
  * @param model
  * @param status
  */
-export async function View(path: string, model: Object, status: number = 200): Promise<RenderResult> {
+export async function View(path: string, model: Object, status: number = 200): Promise<ActionResult> {
     const headers = new Headers();
 
     headers.set('content-type', contentType('text/html') as string);
@@ -17,6 +18,6 @@ export async function View(path: string, model: Object, status: number = 200): P
         body: await renderConfig.getBody(path, model, renderConfig),
         status,
         headers,
-        __isRenderResult: true,
+        __isActionResult: true,
     };
 }

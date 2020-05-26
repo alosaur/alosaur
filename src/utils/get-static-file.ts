@@ -1,27 +1,27 @@
-import { Response, ServerRequest } from '../package.ts';
 import { getPathNameFromUrl } from '../route/route.utils.ts';
 import { send } from '../static/send.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';
+import { Context } from '../models/context.ts';
 
-export async function getStaticFile(req: ServerRequest, res: Response, staticConfig?: StaticFilesConfig) {
+export async function getStaticFile(context: Context, staticConfig?: StaticFilesConfig) {
     if (staticConfig == null) {
         return false;
     }
-
-    let url = req.url;
+    
+    let url = context.request.url;
 
     if (staticConfig.baseRoute) {
-        const regexUrl = new RegExp(`^${staticConfig.baseRoute}`);
-
-        if (regexUrl.test(url)) {
-            url = url.replace(regexUrl, '/');
+        const regexpUrl = new RegExp(`^${staticConfig.baseRoute}`);
+        
+        if (regexpUrl.test(url)) {
+            url = url.replace(regexpUrl, '/');
         } else {
             return false;
         }
     }
 
     try {
-        const filePath = await send({ request: req, response: res }, getPathNameFromUrl(url), staticConfig);
+        const filePath = await send({ request: context.request.serverRequest, response: context.response }, getPathNameFromUrl(url), staticConfig);
 
         return filePath ? true : false;
     } catch (error) {

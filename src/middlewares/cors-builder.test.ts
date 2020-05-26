@@ -1,13 +1,13 @@
 import { assert } from '../package_test.ts';
 import { CorsBuilder } from './cors-builder.ts';
-import { ServerRequest, Response, RenderResult } from '../mod.ts';
+import { Context } from '../models/context.ts';
 const { test } = Deno;
 
 test({
     name: 'testCorsBuilder',
     fn() {
         const builder = new CorsBuilder();
-        const response: Response = { headers: new Headers() };
+        const context = new Context({} as any)
 
         builder
             .WithOrigins('http://localhost:8000')
@@ -15,22 +15,12 @@ test({
             .WithHeaders('X-Custom-Header, Upgrade-Insecure-Requests')
             .AllowCredentials();
 
-        builder.onPostRequest({} as ServerRequest, response, response as RenderResult).then(() => {
-            assert(
-                response &&
-                    response.headers &&
-                    response.headers.get('Access-Control-Allow-Origin') === 'http://localhost:8000',
+        builder.onPostRequest(context).then(() => {
+            assert(context.response.headers.get('Access-Control-Allow-Origin') === 'http://localhost:8000');
+            assert(context.response.headers.get('Access-Control-Allow-Methods') === 'PUT, OPTIONS',
             );
-            assert(
-                response && response.headers && response.headers.get('Access-Control-Allow-Methods') === 'PUT, OPTIONS',
-            );
-            assert(
-                response &&
-                    response.headers &&
-                    response.headers.get('Access-Control-Allow-Headers') ===
-                        'X-Custom-Header, Upgrade-Insecure-Requests',
-            );
-            assert(response && response.headers && response.headers.get('Access-Control-Allow-Credentials') === 'true');
+            assert(context.response.headers.get('Access-Control-Allow-Headers') === 'X-Custom-Header, Upgrade-Insecure-Requests');
+            assert(context.response.headers.get('Access-Control-Allow-Credentials') === 'true');
         });
     },
 });

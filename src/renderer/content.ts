@@ -1,5 +1,5 @@
 import { contentType } from "../package.ts";
-import { RenderResult } from "../mod.ts";
+import { ActionResult } from '../models/response.ts';
 
 /**
  * Render json, number, boolean, or string content
@@ -7,7 +7,7 @@ import { RenderResult } from "../mod.ts";
 export function Content(
   result?: string | number | boolean | Object,
   status: number = 200,
-): RenderResult {
+): ActionResult {
   let body;
   const headers = new Headers();
 
@@ -29,6 +29,6 @@ export function Content(
     body,
     status,
     headers,
-    __isRenderResult: true,
+    __isActionResult: true,
   };
 }
