@@ -1,4 +1,4 @@
-import { getCookies } from "../package.ts";
+import { getCookies } from "../deps.ts";
 import { RouteMetadata } from "../metadata/route.ts";
 import { TransformConfigMap } from "../models/transform-config.ts";
 import { Context } from "../models/context.ts";

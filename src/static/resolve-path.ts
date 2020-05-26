@@ -1,4 +1,4 @@
-import { isAbsolute, join, normalize, resolve, sep } from "../package.ts";
+import { isAbsolute, join, normalize, resolve, sep } from "../deps.ts";
 /*!
  * Adapted directly from https://github.com/pillarjs/resolve-path
  * which is licensed as follows:

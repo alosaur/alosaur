@@ -3,8 +3,8 @@
  * with the MIT license.
  */
 
-import { sep, parse, extname, basename, ServerRequest, contentType } from '../package.ts';
-import { isAbsolute, join, normalize, resolve } from '../package.ts';
+import { sep, parse, extname, basename, ServerRequest, contentType } from '../deps.ts';
+import { isAbsolute, join, normalize, resolve } from '../deps.ts';
 
 // TODO move to library mode
 interface Response {

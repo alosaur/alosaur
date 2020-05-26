@@ -1,53 +1,5 @@
-// -------------------------------------------------------------------------
-// Main exports
-// -------------------------------------------------------------------------
-
-// Http errors
-
-export * from "./http-error/HttpError.ts";
-export * from "./http-error/InternalServerError.ts";
-export * from "./http-error/BadRequestError.ts";
-export * from "./http-error/ForbiddenError.ts";
-export * from "./http-error/NotAcceptableError.ts";
-export * from "./http-error/MethodNotAllowedError.ts";
-export * from "./http-error/NotFoundError.ts";
-export * from "./http-error/UnauthorizedError.ts";
-
-// Renderer
-export * from "./renderer/content.ts";
-export * from "./renderer/view.ts";
-
-// Decorators
-export * from "./decorator/Area.ts";
-export * from "./decorator/Controller.ts";
-export * from "./decorator/Get.ts";
-export * from "./decorator/Post.ts";
-export * from "./decorator/Patch.ts";
-export * from "./decorator/Put.ts";
-export * from "./decorator/Delete.ts";
-
-// Action decorators
-export * from "./decorator/Cookie.ts";
-export * from "./decorator/QueryParam.ts";
-export * from "./decorator/Body.ts";
-export * from "./decorator/Req.ts";
-export * from "./decorator/Res.ts";
-export * from "./decorator/Param.ts";
-
-// Http exports
-export { Response, ServerRequest } from "./package.ts";
-
-// Standart middlewares
-export { CorsBuilder } from "./middlewares/cors-builder.ts";
-
-// DI
-export * from "./injection/index.ts";
-
-// Interfaces
-export * from "./models/view-render-config.ts";
-
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { serve, Response, Server } from "./package.ts";
+import { serve, Response, Server } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";

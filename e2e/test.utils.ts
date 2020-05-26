@@ -1,4 +1,4 @@
-import { assert, TextProtoReader, BufReader } from '../src/package_test.ts';
+import { assert, TextProtoReader, BufReader } from '../src/deps_test.ts';
 
 /**
  * https://github.com/denoland/deno/issues/4735

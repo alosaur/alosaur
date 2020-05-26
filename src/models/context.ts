@@ -1,12 +1,12 @@
 import { Request } from './request.ts';
 import { Response } from './response.ts';
-import { ServerRequest } from '../mod.ts';
+import { ServerRequest } from '../deps.ts';
 
 export class Context<T> {
    public readonly request: Request;
    public readonly response: Response;
    
-   public state?: T;
+   public state: T;
 
    constructor(serverRequest: ServerRequest) {
      this.request = new Request(serverRequest);

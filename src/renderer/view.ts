@@ -1,4 +1,4 @@
-import { contentType } from '../package.ts';
+import { contentType } from '../deps.ts';
 import { getViewRenderConfig } from '../mod.ts';
 import { ActionResult } from '../models/response.ts';
 
