@@ -48,7 +48,7 @@ to be instantiated.
 #### Usage
 
 ```typescript
-import { Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable } from 'https://deno.land/x/alosaur/mod.ts';
 
 @Injectable()
 class Foo {
@@ -56,7 +56,7 @@ class Foo {
 }
 
 // some other file
-import { container } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { container } from 'https://deno.land/x/alosaur/mod.ts';
 import { Foo } from './foo.ts';
 
 const instance = container.resolve(Foo);
@@ -70,7 +70,7 @@ global container.
 #### Usage
 
 ```typescript
-import { Singleton } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Singleton } from 'https://deno.land/x/alosaur/mod.ts';
 
 @Singleton()
 class Foo {
@@ -78,7 +78,7 @@ class Foo {
 }
 
 // some other file
-import { container } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { container } from 'https://deno.land/x/alosaur/mod.ts';
 import { Foo } from './foo.ts';
 
 const instance = container.resolve(Foo);
@@ -94,7 +94,7 @@ a parameterless constructor that has dependencies auto-resolved.
 #### Usage
 
 ```typescript
-import { AutoInjectable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { AutoInjectable } from 'https://deno.land/x/alosaur/mod.ts';
 
 @AutoInjectable()
 class Foo {
@@ -118,7 +118,7 @@ information to be stored in the constructor's metadata.
 #### Usage
 
 ```typescript
-import { Injectable, Inject } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, Inject } from 'https://deno.land/x/alosaur/mod.ts';
 
 interface Database {
     // ...
@@ -138,7 +138,7 @@ It will Inject an array using the specified Injection token to resolve the value
 #### Usage
 
 ```typescript
-import { Injectable, InjectAll } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, InjectAll } from 'https://deno.land/x/alosaur/mod.ts';
 
 @Injectable
 class Foo {}
@@ -245,7 +245,7 @@ This factory is used to lazy construct an object and cache result, returning the
 resolution. This is very similar to `@Singleton()`
 
 ```typescript
-import { instanceCachingFactory } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { instanceCachingFactory } from 'https://deno.land/x/alosaur/mod.ts';
 
 {
     token: 'SingletonFoo';
@@ -259,7 +259,7 @@ This factory is used to provide conditional behavior upon resolution. It caches 
 has an optional parameter to resolve fresh each time.
 
 ```typescript
-import { predicateAwareClassFactory } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { predicateAwareClassFactory } from 'https://deno.land/x/alosaur/mod.ts';
 
 {
     token: useFactory: predicateAwareClassFactory<Foo>(
@@ -498,7 +498,7 @@ export class Foo {}
 ```typescript
 // Bar.ts
 import { Foo } from './Foo';
-import { Injectable } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable } from 'https://deno.land/x/alosaur/mod.ts';
 
 @Injectable()
 export class Bar {
@@ -508,7 +508,7 @@ export class Bar {
 
 ```typescript
 // main.ts
-import { container } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { container } from 'https://deno.land/x/alosaur/mod.ts';
 import { Bar } from './Bar.ts';
 
 const myBar = container.resolve(Bar);
@@ -537,7 +537,7 @@ export class TestService implements SuperService {
 
 ```typescript
 // Client.ts
-import { Injectable, Inject } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { Injectable, Inject } from 'https://deno.land/x/alosaur/mod.ts';
 
 @Injectable()
 export class Client {
@@ -549,7 +549,7 @@ export class Client {
 // main.ts
 import { Client } from './Client.ts';
 import { TestService } from './TestService.ts';
-import { container } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { container } from 'https://deno.land/x/alosaur/mod.ts';
 
 container.register('SuperService', {
     useClass: TestService,

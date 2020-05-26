@@ -2,7 +2,7 @@
 
 ```ts
 import { Handlebars } from 'https://deno.land/x/handlebars@v0.2.2/mod.ts';
-import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from 'https://deno.land/x/alosaur/src/mod.ts';
+import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from 'https://deno.land/x/alosaur/mod.ts';
 
 @Controller('')
 export class HomeController {
