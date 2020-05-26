@@ -24,6 +24,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
+- [Hooks](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
 
 
@@ -150,14 +151,14 @@ You can create middleware and register it in area or all application layer.
 export class Log implements MiddlewareTarget {
     date: Date = new Date();
 
-    onPreRequest(context: Context) {
+    onPreRequest(context: Context<TState>) {
         return new Promise((resolve, reject) => {
             this.date = new Date();
             resolve();
         });
     }
 
-    onPostRequest(context: Context) {
+    onPostRequest(context: Context<TState>) {
         return new Promise((resolve, reject) => {
             console.log(new Date().getTime() - this.date.getTime());
             resolve();

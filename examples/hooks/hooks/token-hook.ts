@@ -9,11 +9,11 @@ import { Context } from '../../../src/models/context.ts';
 type PayloadType = string;
 
 @Singleton()
-export class TokenHook implements HookTarget<PayloadType> {
+export class TokenHook implements HookTarget<unknown, PayloadType> {
 
   constructor(public readonly foo: FooService) {}
 
-  onPreAction(context: Context, payload: PayloadType) {
+  onPreAction(context: Context<unknown>, payload: PayloadType) {
     // TODO: move queryParams to context.request
     const queryParams = findSearchParams(context.request.url);
     
@@ -23,7 +23,7 @@ export class TokenHook implements HookTarget<PayloadType> {
     }
   };
   
-  onPostAction(context: Context, payload: PayloadType) {        
+  onPostAction(context: Context<unknown>, payload: PayloadType) {        
     context.response.result = Content(this.foo.getName());
   };
 }

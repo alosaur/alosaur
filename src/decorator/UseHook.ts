@@ -10,7 +10,7 @@ interface Type<T> extends Function {
 /**
  * Registers an controller or action hook.
  */
-export function UseHook<T>(hook: Type<HookTarget<T>>, payload?: T): Function {
+export function UseHook<TState, TPayload>(hook: Type<HookTarget<TState, TPayload>>, payload?: TPayload): Function {
   return function (object: any, methodName: string) {
       getMetadataArgsStorage().hooks.push({
           type: methodName ? BusinessType.Action : BusinessType.Controller,
