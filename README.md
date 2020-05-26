@@ -150,14 +150,14 @@ You can create middleware and register it in area or all application layer.
 export class Log implements MiddlewareTarget {
     date: Date = new Date();
 
-    onPreRequest(request: ServerRequest, responce: ServerResponse) {
+    onPreRequest(context: Context) {
         return new Promise((resolve, reject) => {
             this.date = new Date();
             resolve();
         });
     }
 
-    onPostRequest(request: ServerRequest, responce: ServerResponse) {
+    onPostRequest(context: Context) {
         return new Promise((resolve, reject) => {
             console.log(new Date().getTime() - this.date.getTime());
             resolve();
