@@ -183,6 +183,71 @@ const app = new App(settings);
 app.use(/\//, new Log());
 ```
 
+## Hooks
+
+Hooks - middleware for controller or/and actions with sopports DI container.
+
+Hook in Alosaur there are three types: onPreAction, onPostAction, onCatchAction.
+
+```typescript
+type PayloadType = string; // can use any type for payload
+type State = any;
+
+export class MyHook implements HookTarget<State, PayloadType> {
+
+  // this hook run before controller action
+  onPreAction(context: Context<State>, payload: PayloadType) {
+      // you can rewrite result and set request immediately
+      context.response.result = Content({error: {token: false}}, 403);
+      context.response.setImmediately();
+      // if response setted immediately no further action will be taken
+  };
+  
+  // this hook run after controller action
+  onPostAction(context: Context<State>, payload: PayloadType) {
+    // you can filtered response result here
+  };
+  
+  // this hook run only throw exception in controller action
+  onCatchAction(context: Context<State>, payload: PayloadType) {
+  
+  };
+}
+```
+
+uses: 
+```ts
+@UseHook(MyContollerHook) // or @UseHook(MyHook, 'payload') for all actions in controller
+@Controller()
+export class HomeController {
+
+    @UseHook(MyHook, 'payload') // only for one action
+    @Get('/')
+    text(@Res() res: any) {
+        return ``;
+    }
+}
+```
+
+## Global error handler
+
+Errors that haven't been caught elsewhere get in here
+
+```ts
+const app = new App(
+// app settings
+);
+
+
+// added global error handler
+app.error((context: Context<any>, error: Error) => {
+  context.response.result = Content("This page unprocessed error", (error as HttpError).httpCode || 500);
+  context.response.setImmediately();
+});
+```
+
+
+
 ## Action outputs: Content, View, Redirect
 
 There are 3 ways of information output
