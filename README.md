@@ -105,7 +105,7 @@ And run
 -   [x] Add CI with minimal tests.
 -   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
 -   [ ] Add OpenAPI type reference
--   [ ] Add Hooks example
+-   [x] Add Hooks example
 -   [ ] Add GraphQL
 -   [ ] Add WebSocket
 -   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
