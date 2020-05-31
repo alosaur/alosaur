@@ -21,6 +21,7 @@ export function Put(route?: string|RegExp): Function {
     return function (object: Object, methodName: string) {
         getMetadataArgsStorage().actions.push({
             type: RequestMethod.Put,
+            object: object,
             target: object.constructor,
             method: methodName,
             route: route

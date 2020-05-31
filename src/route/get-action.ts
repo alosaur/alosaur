@@ -40,6 +40,9 @@ export function getAction(routes: RouteMetadata[], method: string, url: string):
 
     if (route) {
         return {
+            areaObject: route.areaObject,
+            controllerObject: route.controllerObject,
+            actionObject: route.actionObject,
             target: route.target,
             action: route.action,
             params: route.params,

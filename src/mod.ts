@@ -11,7 +11,6 @@ import { registerAreas } from "./utils/register-areas.ts";
 import { registerControllers } from "./utils/register-controllers.ts";
 import { getStaticFile } from "./utils/get-static-file.ts";
 import { MiddlewareTarget } from "./models/middleware-target.ts";
-import { getGroupedHooks } from './route/get-hooks.ts';
 import {
   TransformConfigMap,
   TransformConfig,
@@ -21,6 +20,7 @@ import { HookMetadataArgs } from "./metadata/hook.ts";
 import { Context } from './models/context.ts';
 import { notFoundAction } from './renderer/not-found.ts';
 import { AppSettings } from './models/app-settings.ts';
+import { getHooksForAction } from './route/get-hooks.ts';
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -114,7 +114,7 @@ export class App<TState> {
         // Resolve every pre middleware
         for (const middleware of middlewares) {
           await middleware.target.onPreRequest(context);
-        }        
+        }
 
         if (context.response.isImmediately()) {
           await req.respond(context.response.getRaw());
@@ -126,19 +126,14 @@ export class App<TState> {
           await req.respond(context.response.getRaw());
           continue;
         } else {
-          
+
           const action = getAction(this.routes, context.request.method, context.request.url);
           
           if (action !== null) {
-            const { controllerHooks, actionHooks } = getGroupedHooks(this.metadata.hooks, action);
+            const hooks = getHooksForAction(this.metadata.hooks, action);
             
-            // try resolve controller hooks
-            if (await resolvHooks(context, "onPreAction", controllerHooks)) {
-                continue;
-            }
-            
-            // try resolve action hooks
-            if (await resolvHooks(context, "onPreAction", actionHooks)) {
+            // try resolve hooks
+            if (await resolvHooks(context, "onPreAction", hooks)) {
                 continue;
             }
 
@@ -151,16 +146,12 @@ export class App<TState> {
             } catch (error) {
               context.response.error = error;
 
-              if(hasHooksAction("onCatchAction", controllerHooks) || hasHooksAction("onCatchAction", actionHooks)) {
-                // try resolve controller hooks
-                if (await resolvHooks(context, "onCatchAction", controllerHooks)) {
+              if(hasHooksAction("onCatchAction", hooks)) {
+                // try resolve hooks
+                if (await resolvHooks(context, "onCatchAction", hooks)) {
                   continue;
                 }
-                
-                // try resolve action hooks
-                if (await resolvHooks(context, "onCatchAction", actionHooks)) {
-                  continue;
-                }
+
               } else {
                 // Resolve every post middleware if error not cathed
                 for (const middleware of middlewares) {
@@ -176,12 +167,8 @@ export class App<TState> {
               }
             }
             
-            // try resolve controller hooks
-            if (await resolvHooks(context, "onPostAction", controllerHooks)) {
-              continue;
-            }
-          
-            if (await resolvHooks(context, "onPostAction", actionHooks)) {
+            // try resolve hooks
+            if (await resolvHooks(context, "onPostAction", hooks)) {
               continue;
             }
           }

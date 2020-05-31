@@ -15,6 +15,9 @@ const route: RouteMetadata = {
     target: target,
     method: 'GET',
     action: 'testQuery',
+    areaObject: {},
+    controllerObject: {},
+    actionObject: {},
     params: [
         {
             type: ParamType.Query,

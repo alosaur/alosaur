@@ -14,6 +14,7 @@ export function UseHook<TState, TPayload>(hook: Type<HookTarget<TState, TPayload
   return function (object: any, methodName: string) {
       getMetadataArgsStorage().hooks.push({
           type: methodName ? BusinessType.Action : BusinessType.Controller,
+          object,
           target: object.constructor,
           method: methodName,
           instance: container.resolve(hook as any), // TODO(irustm) resolve hook only request

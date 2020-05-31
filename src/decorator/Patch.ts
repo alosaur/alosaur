@@ -21,6 +21,7 @@ export function Patch(route?: string|RegExp): Function {
     return function (object: Object, methodName: string) {
         getMetadataArgsStorage().actions.push({
             type: RequestMethod.Path,
+            object: object,
             target: object.constructor,
             method: methodName,
             route: route

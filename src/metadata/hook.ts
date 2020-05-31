@@ -13,6 +13,8 @@ export interface HookMetadataArgs<TState,TPayload> {
   controller?: ControllerMetadataArgs;
   action?: ActionMetadataArgs;
 
+  object: Object, // object of declaration
+  
   /**
    * Indicates object which is used by this hook.
    */
