@@ -185,9 +185,9 @@ app.use(/\//, new Log());
 
 ## Hooks
 
-Hooks - middleware for controller or/and actions with sopports DI container.
+Hooks - middleware for area, controller and actions with supports DI container.
 
-Hook in Alosaur there are three types: onPreAction, onPostAction, onCatchAction.
+Hook in Alosaur there are three types: `onPreAction, onPostAction, onCatchAction`.
 
 ```typescript
 type PayloadType = string; // can use any type for payload
