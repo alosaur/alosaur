@@ -7,7 +7,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 -   **Area** - these are the modules of your application.
 -   **Controller** - are responsible for controlling the flow of the application execution.
 -   **Middleware** - provide a convenient mechanism for filtering HTTP requests entering your application.
--   **Hooks** - middleware for controller or/and actions.
+-   **Hooks** - middleware for area, controller and actions. Have 3 life cycly functions: onPreAction, onPostAction, onCatchAction
 -   **Decorators** - for query, cookie, parametrs, routes and etc.
 -   **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
 
