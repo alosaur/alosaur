@@ -5,13 +5,20 @@ import { BadRequestError } from '../../../src/http-error/BadRequestError.ts';
 import { TokenHook } from '../hooks/token-hook.ts';
 import { CatchHook } from '../hooks/catch-hook.ts';
 import { PreHook } from '../hooks/pre-hook.ts';
+import { AsyncPreHook } from '../hooks/async-pre-hook.ts';
 
 @Controller()
 export class HomeController {
 
     @Get('/')
-    text(@Res() res: any) {
+    text() {
         return `main page`;
+    }
+
+    @UseHook(AsyncPreHook)
+    @Get('/await')
+    awaitText() {
+        return `await page`;
     }
 
     @UseHook(TokenHook, '123')

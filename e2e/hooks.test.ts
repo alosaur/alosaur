@@ -1,4 +1,4 @@
-import { assertEquals } from '../src/deps_test.ts';
+import { assertEquals, assert } from '../src/deps_test.ts';
 import { startServer, killServer } from './test.utils.ts';
 import { itLog } from './test.utils.ts';
 const { test } = Deno;
@@ -122,6 +122,37 @@ test({
             itLog("\t /about/?token=123");
             assertEquals(r4.status, 200);
             assertEquals((await r4.text()), "admin about page");
+        }
+
+        finally {
+            killServer();
+        }
+    },
+});
+
+/**
+ * Test cases
+ */
+test({
+    name: '[http] async hooks should response after 500ms',
+    async fn(): Promise<void> {
+        await startServer("./examples/hooks/app.ts");
+        const baseUrl = "http://localhost:8000/";
+        
+        itLog("/", true);
+
+        try {
+            const date = new Date();
+            const r1 = await fetch(baseUrl + 'await');
+           
+            // It
+            itLog("\t /await");
+            assertEquals(r1.status, 200);
+            assertEquals((await r1.text()), "await page");
+
+            // It
+            assert((new Date().getTime() - date.getTime()) > 500);
+            
         }
 
         finally {

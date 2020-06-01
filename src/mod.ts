@@ -50,8 +50,8 @@ async function resolvHooks<TState,TPayload>(context: Context<TState>, actionName
       const action: Function | undefined = (hook as any).instance[actionName];
       
       if(action !== undefined) {
-        (hook as any).instance[actionName](context, hook.payload);
-        
+        await (hook as any).instance[actionName](context, hook.payload);
+
         if(context.response.isImmediately()) {
           await context.request.serverRequest.respond(context.response.getMergedResult());
           return true;
