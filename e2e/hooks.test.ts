@@ -51,7 +51,7 @@ test({
  * Test cases
  */
 test({
-    name: '[http] hooks should run order',
+    name: '[http] hooks should run order and setted immediately',
     async fn(): Promise<void> {
         await startServer("./examples/hooks/app.ts");
         const baseUrl = "http://localhost:8000";
@@ -74,8 +74,8 @@ test({
             assertEquals((await r2.text()), "many hook 1 page");
 
             itLog("\t /many-hook-2");
-            assertEquals(r3.status, 200);
-            assertEquals((await r3.text()), "from pre hook. My name is Foo");
+            assertEquals(r3.status, 403);
+            assertEquals((await r3.json()).error.token, false);
 
             itLog("\t /many-hook-2?token=123");
             assertEquals(r4.status, 200);
