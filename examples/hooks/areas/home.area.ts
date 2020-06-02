@@ -1,4 +1,4 @@
-import { Area, Controller, Get, Res } from '../../../mod.ts';
+import { Area, Controller, Get, Post } from '../../../mod.ts';
 import { UseHook } from '../../../src/decorator/UseHook.ts';
 import { BadRequestError } from '../../../src/http-error/BadRequestError.ts';
 
@@ -6,6 +6,7 @@ import { TokenHook } from '../hooks/token-hook.ts';
 import { CatchHook } from '../hooks/catch-hook.ts';
 import { PreHook } from '../hooks/pre-hook.ts';
 import { AsyncPreHook } from '../hooks/async-pre-hook.ts';
+import { PostHook } from '../hooks/post-hook.ts';
 
 @Controller()
 export class HomeController {
@@ -38,7 +39,7 @@ export class HomeController {
     @UseHook(TokenHook, '123')
     @Get('/error')
     geterror() {
-        
+
         throw new BadRequestError();
     }
 
@@ -47,9 +48,15 @@ export class HomeController {
     geterrorhook() {
         throw new BadRequestError();
     }
+
+    @UseHook(PostHook)
+    @Post('/post-hook')
+    getposthook() {
+        return {};
+    }
 }
 
 @Area({
     controllers: [HomeController],
 })
-export class HomeArea {}
+export class HomeArea { }

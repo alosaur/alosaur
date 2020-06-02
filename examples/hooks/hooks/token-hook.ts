@@ -1,5 +1,4 @@
 import { HookTarget } from "../../../src/models/hook.ts";
-import { Singleton } from '../../../src/injection/decorators/index.ts';
 import { findSearchParams } from '../../../src/route/get-action-params.ts';
 import { Content } from '../../../src/renderer/content.ts';
 import { Context } from '../../../src/models/context.ts';
@@ -10,9 +9,9 @@ export class TokenHook implements HookTarget<unknown, PayloadType> {
   onPreAction(context: Context<unknown>, payload: PayloadType) {
     // TODO: move queryParams to context.request
     const queryParams = findSearchParams(context.request.url);
-    
-    if(queryParams == undefined || queryParams.get('token') !== payload) {
-      context.response.result = Content({error: {token: false}}, 403);
+
+    if (queryParams == undefined || queryParams.get('token') !== payload) {
+      context.response.result = Content({ error: { token: false } }, 403);
       context.response.setImmediately();
     }
   };
