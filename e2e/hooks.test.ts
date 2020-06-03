@@ -32,13 +32,17 @@ test({
 
             itLog("\t /error?token=123");
             assertEquals(r4.status, 400);
-            assertEquals((await r4.json()).name, "BadRequestError");
-            assertEquals((await r4.json()).description, undefined);
+            
+            const json4 = await r4.json();
+            assertEquals(json4.name, "BadRequestError");
+            assertEquals(json4.description, undefined);
 
             itLog("\t /error-hook");
             assertEquals(r5.status, 400);
-            assertEquals((await r5.json()).name, "BadRequestError");
-            assertEquals((await r5.json()).description, "This description from catch hook");
+
+            const json5 = await r5.json();
+            assertEquals(json5.name, "BadRequestError");
+            assertEquals(json5.description, "This description from catch hook");
         }
 
         finally {

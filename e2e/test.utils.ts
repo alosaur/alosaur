@@ -1,15 +1,5 @@
 import { assert, TextProtoReader, BufReader } from '../src/deps_test.ts';
 
-/**
- * https://github.com/denoland/deno/issues/4735
- */
-export async function fetchWithClose(url: string): Promise<Response> {
-    const response = await fetch(url);
-
-    return (response.body as any).close().then(() => response);
-}
-
-
 let server: Deno.Process;
 
 export async function startServer(serverPath: string): Promise<void> {
