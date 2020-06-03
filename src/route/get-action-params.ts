@@ -45,58 +45,12 @@ export async function getActionParams<T>(
         break;
 
       case "body":
-        let body = await Deno.readAll(context.request.serverRequest.body);
-        const bodyString = new TextDecoder("utf-8").decode(body);
-        const contentType = context.request.serverRequest.headers.get("content-type");
-
-        switch (contentType) {
-          case "application/json":
-            try {
-              let json: Object = JSON.parse(bodyString);
-
-              args.push(
-                getTransformedParam(
-                  json,
-                  param.transform,
-                  param.type,
-                  transformConfigMap,
-                ),
-              );
-            } catch (error) {
-              args.push(undefined);
-            }
-            break;
-
-          case "application/x-www-form-urlencoded":
-            let formElements: { [key: string]: string } = {};
-
-            /*
-             * URLSearchParams is designed to work with the query string of a URL.
-             * Since a form encoded in `application/x-www-form-urlencoded` looks like a URL query,
-             * URLSearchParams will glady accept it.
-             *
-             * Iterate over the entries of the form, for each entry add its key and value.
-             */
-            for (
-              const [key, value] of new URLSearchParams(bodyString).entries()
-            ) {
-              formElements[key] = value;
-            }
-            args.push(getTransformedParam(
-              formElements,
-              param.transform,
-              param.type,
-              transformConfigMap,
-            ));
-            break;
-
-          // TODO: handle other content types (maybe get a list?)
-
-          default:
-            args.push(body);
-            break;
-        }
-
+        args.push(getTransformedParam(
+          await context.request.body(),
+          param.transform,
+          param.type,
+          transformConfigMap,
+        ));
         break;
 
       case "request":

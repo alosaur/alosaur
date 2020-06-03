@@ -164,3 +164,45 @@ test({
         }
     },
 });
+
+
+/**
+ * Test cases
+ * https://github.com/alosaur/alosaur/issues/65
+ */
+test({
+    name: '[http] post hooks should read request.body() and write result body more 2 times',
+    async fn(): Promise<void> {
+        await startServer("./examples/hooks/app.ts");
+        const baseUrl = "http://localhost:8000/post-hook";
+        
+        itLog("/", true);
+
+        try {
+            let user = {
+                name: 'John',
+                surname: 'Smith'
+              };
+              
+            let response = await fetch(baseUrl, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(user)
+            });
+              
+            let result = await response.json();
+           
+            // It
+            itLog("\t /await");
+            assertEquals(response.status, 200);
+            assertEquals(result.fromPreHook, true);
+            
+        }
+
+        finally {
+            killServer();
+        }
+    },
+});

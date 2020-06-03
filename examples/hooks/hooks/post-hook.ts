@@ -8,10 +8,9 @@ import { FooService } from '../services/foo.service.ts';
 export class PostHook implements HookTarget<unknown, any> {
   constructor(public readonly foo: FooService) { }
 
-  async onPostAction(context: Context<unknown>, payload: any) {
-    let body = await Deno.readAll(context.request.serverRequest.body);
-    const bodyString = new TextDecoder("utf-8").decode(body);
-
-    context.response.result = Content(bodyString);
+  async onPostAction(context: Context<unknown>, payload: any) { 
+    let body = await context.request.body();
+    body.fromPreHook = true;
+    context.response.result = Content(body);
   };
 }

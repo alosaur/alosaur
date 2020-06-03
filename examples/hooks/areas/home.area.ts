@@ -1,4 +1,4 @@
-import { Area, Controller, Get, Post } from '../../../mod.ts';
+import { Area, Controller, Get, Post, Body } from '../../../mod.ts';
 import { UseHook } from '../../../src/decorator/UseHook.ts';
 import { BadRequestError } from '../../../src/http-error/BadRequestError.ts';
 
@@ -51,8 +51,8 @@ export class HomeController {
 
     @UseHook(PostHook)
     @Post('/post-hook')
-    getposthook() {
-        return {};
+    getposthook(@Body() body: any) {        
+        return body;
     }
 }
 
