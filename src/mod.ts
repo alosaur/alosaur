@@ -17,10 +17,12 @@ import {
 } from "./models/transform-config.ts";
 
 import { HookMetadataArgs } from "./metadata/hook.ts";
-import { Context } from './models/context.ts';
-import { notFoundAction } from './renderer/not-found.ts';
-import { AppSettings } from './models/app-settings.ts';
-import { getHooksForAction } from './route/get-hooks.ts';
+import { Context } from "./models/context.ts";
+import { notFoundAction } from "./renderer/not-found.ts";
+import { AppSettings } from "./models/app-settings.ts";
+import { getHooksForAction } from "./route/get-hooks.ts";
+import { HookMethod } from "./models/hook.ts";
+import { HttpError } from "./http-error/HttpError.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -43,29 +45,66 @@ export function getViewRenderConfig(): ViewRenderConfig {
 /**
  * Run hooks function and return true if response is immediately
  */
-async function resolvHooks<TState,TPayload>(context: Context<TState>, actionName: string, hooks?: HookMetadataArgs<TState,TPayload>[]): Promise<boolean> {
-  if(hooks !== undefined && hooks.length > 0) {
-    for(const hook of hooks) {
+async function resolvHooks<TState, TPayload>(
+  context: Context<TState>,
+  actionName: HookMethod,
+  hooks?: HookMetadataArgs<TState, TPayload>[],
+): Promise<boolean> {
+  const reslovedHooks = new Set<HookMetadataArgs<TState, TPayload>>();
 
+  if (hooks !== undefined && hooks.length > 0) {
+    for (const hook of hooks) {
       const action: Function | undefined = (hook as any).instance[actionName];
-      
-      if(action !== undefined) {
+
+      if (action !== undefined) {
         await (hook as any).instance[actionName](context, hook.payload);
 
-        if(context.response.isImmediately()) {
-          await context.request.serverRequest.respond(context.response.getMergedResult());
+        if (context.response.isImmediately()) {
+          let reverseActionName: HookMethod = actionName === "onCatchAction"
+            ? "onCatchAction"
+            : "onPostAction";
+
+          // run reverse reslolved hooks
+          await runHooks(
+            context,
+            reverseActionName,
+            Array.from(reslovedHooks).reverse(),
+          );
+
+          await context.request.serverRequest.respond(
+            context.response.getMergedResult(),
+          );
           return true;
         }
       }
+      reslovedHooks.add(hook);
     }
   }
 
   return false;
 }
 
+async function runHooks<TState, TPayload>(
+  context: Context<TState>,
+  actionName: HookMethod,
+  hooks: HookMetadataArgs<TState, TPayload>[],
+) {
+  for (const hook of hooks) {
+    const action: Function | undefined = (hook as any).instance[actionName];
+
+    if (action !== undefined) {
+      await (hook as any).instance[actionName](context, hook.payload);
+    }
+  }
+}
+
 // TODO(irustm): move to hooks function
-function hasHooksAction<TState,TPayload>(actionName: string, hooks?: HookMetadataArgs<TState,TPayload>[]): boolean {
-  return !!(hooks && hooks.find(hook => (hook as any).instance[actionName] !== undefined));
+function hasHooksAction<TState, TPayload>(
+  actionName: string,
+  hooks?: HookMetadataArgs<TState, TPayload>[],
+): boolean {
+  return !!(hooks &&
+    hooks.find((hook) => (hook as any).instance[actionName] !== undefined));
 }
 
 export class App<TState> {
@@ -77,13 +116,12 @@ export class App<TState> {
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
   private transformConfigMap?: TransformConfigMap | undefined = undefined;
   private globalErrorHandler?: (ctx: Context<TState>, error: Error) => void;
-  
 
   private server: Server | undefined = undefined;
 
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
-    
+
     registerAreas(this.metadata);
     registerControllers(
       this.metadata.controllers,
@@ -103,6 +141,7 @@ export class App<TState> {
     this.server = server;
 
     console.log(`Server start in ${address}`);
+
     for await (const req of server) {
       const context = new Context<TState>(req);
       try {
@@ -126,47 +165,53 @@ export class App<TState> {
           await req.respond(context.response.getRaw());
           continue;
         } else {
+          const action = getAction(
+            this.routes,
+            context.request.method,
+            context.request.url,
+          );
 
-          const action = getAction(this.routes, context.request.method, context.request.url);
-          
           if (action !== null) {
             const hooks = getHooksForAction(this.metadata.hooks, action);
-            
+
             // try resolve hooks
             if (await resolvHooks(context, "onPreAction", hooks)) {
-                continue;
+              continue;
             }
 
             // Get arguments in this action
-            const args = await getActionParams(context, action, this.transformConfigMap);
+            const args = await getActionParams(
+              context,
+              action,
+              this.transformConfigMap,
+            );
 
             try {
               // Get Action result from controller method
-              context.response.result = await action.target[action.action](...args);
+              context.response.result = await action.target[action.action](
+                ...args,
+              );
             } catch (error) {
               context.response.error = error;
 
-              if(hasHooksAction("onCatchAction", hooks)) {
-                // try resolve hooks
-                if (await resolvHooks(context, "onCatchAction", hooks)) {
-                  continue;
-                }
-
+              // try resolve hooks
+              if (hasHooksAction("onCatchAction", hooks) && await resolvHooks(context, "onCatchAction", hooks)) {
+                continue;
               } else {
                 // Resolve every post middleware if error not cathed
                 for (const middleware of middlewares) {
                   await middleware.target.onPostRequest(context);
                 }
 
-                if (context.response.isImmediately()) {          
+                if (context.response.isImmediately()) {
                   await req.respond(context.response.getMergedResult());
                   continue;
                 }
 
-                throw error; 
+                throw error;
               }
             }
-            
+
             // try resolve hooks
             if (await resolvHooks(context, "onPostAction", hooks)) {
               continue;
@@ -184,34 +229,37 @@ export class App<TState> {
           await middleware.target.onPostRequest(context);
         }
 
-        if (context.response.isImmediately()) {          
+        if (context.response.isImmediately()) {
           await req.respond(context.response.getMergedResult());
           continue;
         }
 
-        if(context.response.result === undefined) {
+        if (context.response.result === undefined) {
           context.response.result = notFoundAction();
-          
+
           await req.respond(context.response.getMergedResult());
           continue;
         }
-        
+
         await req.respond(context.response.getMergedResult());
-
       } catch (error) {
-
-        if(this.globalErrorHandler) {
+        if (this.globalErrorHandler) {
           this.globalErrorHandler(context, error);
 
-          if (context.response.isImmediately()) {          
+          if (context.response.isImmediately()) {
             await req.respond(context.response.getMergedResult());
             continue;
           }
         }
 
-        if (context.response.isImmediately()) {          
+        if (context.response.isImmediately()) {
           await req.respond(context.response.getMergedResult());
           continue;
+        }
+
+        // 
+        if (!(error instanceof HttpError)) {
+          console.error(error);
         }
 
         await req.respond(Content(error, error.httpCode || 500));
@@ -272,7 +320,9 @@ export class App<TState> {
   /**
    * Create one global error handler
    */
-  public error(globalErrorHandler: (ctx: Context<TState>, error: Error) => void): void {
+  public error(
+    globalErrorHandler: (ctx: Context<TState>, error: Error) => void,
+  ): void {
     this.globalErrorHandler = globalErrorHandler;
   }
 }
