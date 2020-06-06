@@ -1,3 +1,4 @@
+import * as log from "https://deno.land/std@0.55.0/log/mod.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve, Server } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
@@ -45,12 +46,12 @@ export function getViewRenderConfig(): ViewRenderConfig {
 /**
  * Run hooks function and return true if response is immediately
  */
-async function resolvHooks<TState, TPayload>(
+async function resolveHooks<TState, TPayload>(
   context: Context<TState>,
   actionName: HookMethod,
   hooks?: HookMetadataArgs<TState, TPayload>[],
 ): Promise<boolean> {
-  const reslovedHooks = new Set<HookMetadataArgs<TState, TPayload>>();
+  const resolvedHooks = new Set<HookMetadataArgs<TState, TPayload>>();
 
   if (hooks !== undefined && hooks.length > 0) {
     for (const hook of hooks) {
@@ -64,11 +65,11 @@ async function resolvHooks<TState, TPayload>(
             ? "onCatchAction"
             : "onPostAction";
 
-          // run reverse reslolved hooks
+          // run reverse resolved hooks
           await runHooks(
             context,
             reverseActionName,
-            Array.from(reslovedHooks).reverse(),
+            Array.from(resolvedHooks).reverse(),
           );
 
           await context.request.serverRequest.respond(
@@ -77,7 +78,7 @@ async function resolvHooks<TState, TPayload>(
           return true;
         }
       }
-      reslovedHooks.add(hook);
+      resolvedHooks.add(hook);
     }
   }
 
@@ -175,7 +176,7 @@ export class App<TState> {
             const hooks = getHooksForAction(this.metadata.hooks, action);
 
             // try resolve hooks
-            if (await resolvHooks(context, "onPreAction", hooks)) {
+            if (await resolveHooks(context, "onPreAction", hooks)) {
               continue;
             }
 
@@ -195,10 +196,10 @@ export class App<TState> {
               context.response.error = error;
 
               // try resolve hooks
-              if (hasHooksAction("onCatchAction", hooks) && await resolvHooks(context, "onCatchAction", hooks)) {
+              if (hasHooksAction("onCatchAction", hooks) && await resolveHooks(context, "onCatchAction", hooks)) {
                 continue;
               } else {
-                // Resolve every post middleware if error not cathed
+                // Resolve every post middleware if error was not caught
                 for (const middleware of middlewares) {
                   await middleware.target.onPostRequest(context);
                 }
@@ -213,7 +214,7 @@ export class App<TState> {
             }
 
             // try resolve hooks
-            if (await resolvHooks(context, "onPostAction", hooks)) {
+            if (await resolveHooks(context, "onPostAction", hooks)) {
               continue;
             }
           }
@@ -259,7 +260,7 @@ export class App<TState> {
 
         // 
         if (!(error instanceof HttpError)) {
-          console.error(error);
+          log.error(error);
         }
 
         await req.respond(Content(error, error.httpCode || 500));
@@ -273,7 +274,7 @@ export class App<TState> {
     if (this.server) {
       this.server.close();
     } else {
-      console.warn("Server is not listening");
+      log.warning("Server is not listening");
     }
   }
 

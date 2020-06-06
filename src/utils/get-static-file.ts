@@ -1,3 +1,4 @@
+import * as log from "https://deno.land/std@0.55.0/log/mod.ts";
 import { getPathNameFromUrl } from '../route/route.utils.ts';
 import { send } from '../static/send.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';
@@ -23,11 +24,11 @@ export async function getStaticFile<T>(context: Context<T>, staticConfig?: Stati
     try {
         const filePath = await send({ request: context.request.serverRequest, response: context.response }, getPathNameFromUrl(url), staticConfig);
 
-        return filePath ? true : false;
+        return !!filePath;
     } catch (error) {
         // TODO: exception
         if (staticConfig.baseRoute) {
-            console.warn(error);
+            log.warning(error);
         }
         return null;
     }

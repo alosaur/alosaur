@@ -6,7 +6,7 @@ import { formatErrorCtor } from "../error-helpers.ts";
 
 /**
  * Class decorator factory that replaces the decorated class' constructor with
- * a parameterless constructor that has dependencies auto-resolved
+ * a parameter less constructor that has dependencies auto-resolved
  *
  * Note: Resolution is performed using the global container
  *
