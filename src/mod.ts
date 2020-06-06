@@ -141,7 +141,7 @@ export class App<TState> {
     const server: Server = serve(address);
     this.server = server;
 
-    console.log(`Server listening on ${address}`);
+    console.log(`Server start in ${address}`);
 
     for await (const req of server) {
       const context = new Context<TState>(req);
