@@ -1,46 +1,44 @@
-import { assertEquals } from '../src/deps_test.ts';
-import { startServer, killServer, itLog } from './test.utils.ts';
+import { assertEquals } from "../src/deps_test.ts";
+import { startServer, killServer, itLog } from "./test.utils.ts";
 const { test } = Deno;
 
 /**
  * Test cases
  */
 test({
-    name: '[http] spa server, requests to info controller',
-    async fn(): Promise<void> {
-        await startServer("./examples/spa/app.ts");
-        const baseUrl = "http://localhost:8000";
+  name: "[http] spa server, requests to info controller",
+  async fn(): Promise<void> {
+    await startServer("./examples/spa/app.ts");
+    const baseUrl = "http://localhost:8000";
 
-        itLog("/", true)
+    itLog("/", true);
 
-        try {
-            // It
-            itLog("\t ''",);
-            
-            let response = await fetch(baseUrl);
-            let text = await response.text();
-    
-            assertEquals(response.status, 404);
+    try {
+      // It
+      itLog("\t ''");
 
-            // It
-            itLog("\t '/www'",);
-            
-            response = await fetch(baseUrl + '/www');
-            text = await response.text();
-    
-            assertEquals(response.status, 200);
+      let response = await fetch(baseUrl);
+      let text = await response.text();
 
-            // It
-            itLog("\t '/www/spa-route'",);
-            
-            response = await fetch(baseUrl + '/www/spa-route');
-            text = await response.text();
-    
-            assertEquals(response.status, 200);
+      assertEquals(response.status, 404);
 
-        }
-        finally {
-            killServer();
-        }
-    },
+      // It
+      itLog("\t '/www'");
+
+      response = await fetch(baseUrl + "/www");
+      text = await response.text();
+
+      assertEquals(response.status, 200);
+
+      // It
+      itLog("\t '/www/spa-route'");
+
+      response = await fetch(baseUrl + "/www/spa-route");
+      text = await response.text();
+
+      assertEquals(response.status, 200);
+    } finally {
+      killServer();
+    }
+  },
 });

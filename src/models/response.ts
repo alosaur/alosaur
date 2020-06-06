@@ -1,10 +1,10 @@
-import { Content } from '../renderer/content.ts';
+import { Content } from "../renderer/content.ts";
 type ResponseBody = Uint8Array | Deno.Reader | string | any;
 
 export interface ActionResult {
   headers: Headers;
   body?: ResponseBody;
-  status?: number,
+  status?: number;
   __isActionResult: boolean;
 }
 
@@ -30,8 +30,8 @@ export class Response {
     return {
       headers: this.headers,
       body: this.body,
-      status: this.status
-    }
+      status: this.status,
+    };
   }
 
   public getMergedResult() {

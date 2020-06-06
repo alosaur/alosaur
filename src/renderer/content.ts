@@ -1,5 +1,5 @@
 import { contentType } from "../deps.ts";
-import { ActionResult } from '../models/response.ts';
+import { ActionResult } from "../models/response.ts";
 
 /**
  * Render json, number, boolean, or string content

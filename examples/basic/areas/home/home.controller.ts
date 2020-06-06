@@ -1,64 +1,75 @@
 import {
   Controller,
-  ForbiddenError
-} from '../../../../mod.ts';
-import { Get, QueryParam, Cookie, Req, Res, Post, Body,Param } from '../../../../src/decorator/mod.ts';
-import { Request, Response } from '../../../../mod.ts';
+  ForbiddenError,
+} from "../../../../mod.ts";
+import {
+  Get,
+  QueryParam,
+  Cookie,
+  Req,
+  Res,
+  Post,
+  Body,
+  Param,
+} from "../../../../src/decorator/mod.ts";
+import { Request, Response } from "../../../../mod.ts";
 
-@Controller('/home')
+@Controller("/home")
 export class HomeController {
-
-  @Get('/text')
+  @Get("/text")
   text(
-    @QueryParam('name') name: string,
-    @QueryParam('test') test: string,
-    @Cookie('username') username: string
+    @QueryParam("name") name: string,
+    @QueryParam("test") test: string,
+    @Cookie("username") username: string,
   ) {
     return `Hello world, ${name} ${test} ${username}`;
   }
 
-  @Get('/json')
+  @Get("/json")
   json(
     @Req() request: Request,
     @Res() response: Response,
-    @QueryParam('name') name: string
+    @QueryParam("name") name: string,
   ) {
     return response.getRaw();
   }
 
-
-  @Get('/error')
-  error(){
-    throw new ForbiddenError('error');
+  @Get("/error")
+  error() {
+    throw new ForbiddenError("error");
   }
 
-  @Get('/query')
-  query(@QueryParam("a") a: string, @QueryParam("b") b: string, @QueryParam("c") c: string) {
+  @Get("/query")
+  query(
+    @QueryParam("a") a: string,
+    @QueryParam("b") b: string,
+    @QueryParam("c") c: string,
+  ) {
     return { a, b, c };
   }
 
-  @Get('/test')
+  @Get("/test")
   gerTests() {
-    return 'test';
+    return "test";
   }
-  
-  @Get('/test/:id')
-  gerParamId(@Param('id') id: string) {
+
+  @Get("/test/:id")
+  gerParamId(@Param("id") id: string) {
     return id;
   }
 
-  @Get('/test/:id/:name')
-  gerParamIdName(@Param('id') id: string, @Param('name') name: string) {
+  @Get("/test/:id/:name")
+  gerParamIdName(@Param("id") id: string, @Param("name") name: string) {
     return `${id} ${name}`;
   }
 
-  @Get('/test/:id/:name/detail')
-  gerParamIdNameDetail(@Param('id') id: string, @Param('name') name: string) {
+  @Get("/test/:id/:name/detail")
+  gerParamIdNameDetail(@Param("id") id: string, @Param("name") name: string) {
     return `${id} ${name} this is details page`;
   }
 
-  @Post('/post')
-  post(@Body() body: any, @QueryParam('name') name: string) {
+  @Post("/post")
+  post(@Body() body: any, @QueryParam("name") name: string) {
     return body;
   }
 }

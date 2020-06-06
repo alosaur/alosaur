@@ -15,7 +15,7 @@ export class Request {
   }
 
   async body() {
-    if(!this._body) {
+    if (!this._body) {
       this._body = getBody(this.serverRequest);
     }
 

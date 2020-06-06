@@ -14,7 +14,7 @@ export class AreaMetadata {
  * Area metadata used to storage information.
  */
 export interface AreaMetadataArgs {
-   /**
+  /**
    * Type, vase default
    */
   type: any;

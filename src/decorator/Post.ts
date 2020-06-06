@@ -17,14 +17,14 @@ export function Post(route?: string): Function;
  * Registers an action to be executed when POST request comes on a given route.
  * Must be applied on a controller action.
  */
-export function Post(route?: string|RegExp): Function {
-    return function (object: Object, methodName: string) {
-        getMetadataArgsStorage().actions.push({
-            type: RequestMethod.Post,
-            object: object,
-            target: object.constructor,
-            method: methodName,
-            route: route
-        });
-    };
+export function Post(route?: string | RegExp): Function {
+  return function (object: Object, methodName: string) {
+    getMetadataArgsStorage().actions.push({
+      type: RequestMethod.Post,
+      object: object,
+      target: object.constructor,
+      method: methodName,
+      route: route,
+    });
+  };
 }

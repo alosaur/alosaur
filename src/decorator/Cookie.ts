@@ -1,5 +1,5 @@
 import { getMetadataArgsStorage } from "../mod.ts";
-import { ParamType } from '../types/param.ts';
+import { ParamType } from "../types/param.ts";
 
 /**
  * Injects a request's query parameter value to the controller action parameter.
@@ -7,12 +7,12 @@ import { ParamType } from '../types/param.ts';
  */
 export function Cookie(name: string): Function {
   return function (object: Object, methodName: string, index: number) {
-      getMetadataArgsStorage().params.push({
-          type: ParamType.Cookie,
-          target: object.constructor,
-          method: methodName,
-          index: index,
-          name: name
-      });
+    getMetadataArgsStorage().params.push({
+      type: ParamType.Cookie,
+      target: object.constructor,
+      method: methodName,
+      index: index,
+      name: name,
+    });
   };
 }

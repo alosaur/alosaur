@@ -1,5 +1,5 @@
 export enum BusinessType {
-    Controller = "contoller",
-    Action = "action",
-    Area = "area"
+  Controller = "controller",
+  Action = "action",
+  Area = "area",
 }
