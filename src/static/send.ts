@@ -21,7 +21,7 @@ export function decodeComponent(text: string) {
 
 export interface SendOptions {
     /** Browser cache max-age in milliseconds. (defaults to `0`) */
-    maxage?: number;
+    maxAge?: number;
 
     /** Tell the browser the resource is immutable and can be cached
      * indefinitely. (defaults to `false`) */
@@ -58,19 +58,14 @@ export interface SendOptions {
     extensions?: string[];
 }
 
-interface RequestResponce {
+interface RequestResponse {
     request: ServerRequest;
     response: Response;
 }
 
 function isHidden(root: string, path: string) {
     const pathArr = path.substr(root.length).split(sep);
-    for (const segment of pathArr) {
-        if (segment[0] === '.') {
-            return true;
-        }
-        return false;
-    }
+    return !!pathArr.find((segment) => segment.startsWith("."));
 }
 
 async function exists(path: string): Promise<boolean> {
@@ -88,7 +83,7 @@ function toUTCString(value: number): string {
 /** Asynchronously fulfill a response with a file from the local file
  * system. */
 export async function send(
-    { request, response }: RequestResponce,
+    { request, response }: RequestResponse,
     path: string,
     options: SendOptions = { root: '' },
 ): Promise<string | undefined> {
@@ -100,7 +95,7 @@ export async function send(
         index,
         hidden = false,
         immutable = false,
-        maxage = 0,
+        maxAge = 0,
         root,
     } = options;
     const trailingSlash = path[path.length - 1] === '/';
@@ -171,7 +166,7 @@ export async function send(
     // }
 
     if (!response.headers.has('Cache-Control')) {
-        const directives = [`max-age=${(maxage / 1000) | 0}`];
+        const directives = [`max-age=${(maxAge / 1000) | 0}`];
         if (immutable) {
             directives.push('immutable');
         }

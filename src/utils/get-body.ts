@@ -1,3 +1,4 @@
+import * as log from "https://deno.land/std@0.55.0/log/mod.ts";
 import { ServerRequest } from "../deps.ts";
 
 export async function getBody(request: ServerRequest) {
@@ -16,7 +17,7 @@ export async function getBody(request: ServerRequest) {
         /*
         * URLSearchParams is designed to work with the query string of a URL.
         * Since a form encoded in `application/x-www-form-urlencoded` looks like a URL query,
-        * URLSearchParams will glady accept it.
+        * URLSearchParams will gladly accept it.
         *
         * Iterate over the entries of the form, for each entry add its key and value.
         */
@@ -32,7 +33,7 @@ export async function getBody(request: ServerRequest) {
         return body;
     }
   } catch (e) {
-    console.warn(e);
+    log.warning(e);
     return undefined;
   }
 }
