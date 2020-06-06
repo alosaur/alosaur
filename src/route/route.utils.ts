@@ -58,8 +58,7 @@ export const getRouteWithRegex = (
     .find((r) => {
       const baseRouteRegex: RegExp = new RegExp("^" + r.route);
       // @ts-ignore: Object is possibly 'null'.
-      return baseRouteRegex.test(pathname) &&
-        r.regexpRoute.test(pathname.replace(baseRouteRegex, ""));
+      return r.regexpRoute.test(pathname.replace(baseRouteRegex, "")) && baseRouteRegex.test(pathname);
     });
 };
 
