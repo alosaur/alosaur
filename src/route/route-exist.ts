@@ -6,9 +6,13 @@ export function routeExist(routes: RouteMetadata[], url: string): boolean {
 
     let route = getRouteFromFullPath(routes, pathname);
 
-    if (!route) route = getRouteWithRegex(routes, pathname);
+    if (!route) {
+        route = getRouteWithRegex(routes, pathname);
+    }
 
-    if (!route) route = getRouteWithRouteParams(routes, pathname);
+    if (!route) {
+        route = getRouteWithRouteParams(routes, pathname);
+    }
 
     return !!route;
 }

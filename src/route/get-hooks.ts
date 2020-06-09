@@ -1,8 +1,7 @@
 import { HookMetadataArgs } from '../metadata/hook.ts';
 import { RouteMetadata } from '../metadata/route.ts';
 
-type GroupedHooks<TState,TPayload> = 
-{ 
+type GroupedHooks<TState,TPayload> = {
   areaHooks: HookMetadataArgs<TState,TPayload>[],
   controllerHooks: HookMetadataArgs<TState,TPayload>[],
   actionHooks: HookMetadataArgs<TState,TPayload>[]
@@ -15,7 +14,7 @@ export function getGroupedHooks<TState,TPayload>(hooks: HookMetadataArgs<TState,
     actionHooks: []
   }
 
-  if(hooks != undefined && hooks.length > 0) {
+  if (hooks != undefined && hooks.length > 0) {
     const group = getGrouped(hooks, action);
     
     result.areaHooks = group.areaHooks;
@@ -27,8 +26,7 @@ export function getGroupedHooks<TState,TPayload>(hooks: HookMetadataArgs<TState,
 }
 
 export function getHooksForAction<TState,TPayload>(hooks: HookMetadataArgs<TState,TPayload>[], action: RouteMetadata): HookMetadataArgs<TState,TPayload>[] | undefined {
-
-  if(hooks == undefined) {
+  if (hooks == undefined) {
     return undefined;
   }
   
@@ -42,20 +40,19 @@ function getGrouped<TState,TPayload>(hooks: HookMetadataArgs<TState,TPayload>[],
   const controllerHooks: HookMetadataArgs<TState,TPayload>[] = [];
   const actionHooks: HookMetadataArgs<TState,TPayload>[] = [];
 
-  for (let hook of hooks) {
-    if(hook.object === action.areaObject) {
+  hooks.forEach((hook) => {
+    if (hook.object === action.areaObject) {
       areaHooks.push(hook);
-      continue;
     }
-    if(hook.object === action.controllerObject) {
+
+    if (hook.object === action.controllerObject) {
       controllerHooks.push(hook);
-      continue;
     }
-    if(hook.object === action.actionObject && hook.method === action.action) {
+
+    if (hook.object === action.actionObject && hook.method === action.action) {
       actionHooks.push(hook);
-      continue;
     }
-  }
+  })
 
   return {
     areaHooks,

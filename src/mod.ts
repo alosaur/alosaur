@@ -1,4 +1,4 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
+import { logger } from "./_util/logger.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve, Server } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
@@ -110,7 +110,7 @@ function hasHooksAction<TState, TPayload>(
 
 export class App<TState> {
   private classes: ObjectKeyAny[] = [];
-  private metadata: MetadataArgsStorage<TState>;
+  private readonly metadata: MetadataArgsStorage<TState>;
   private routes: RouteMetadata[] = [];
 
   private staticConfig: StaticFilesConfig | undefined = undefined;
@@ -260,7 +260,7 @@ export class App<TState> {
 
         // 
         if (!(error instanceof HttpError)) {
-          log.error(error);
+          logger.error(error);
         }
 
         await req.respond(Content(error, error.httpCode || 500));
@@ -274,7 +274,7 @@ export class App<TState> {
     if (this.server) {
       this.server.close();
     } else {
-      log.warning("Server is not listening");
+      logger.warning("Server is not listening");
     }
   }
 

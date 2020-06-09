@@ -6,9 +6,10 @@ import { Context } from "../models/context.ts";
 type ArgumentValue = any;
 
 /**
- * Gets action params for routes 
- * @param context 
- * @param route 
+ * Gets action params for routes
+ * @param context
+ * @param route
+ * @param transformConfigMap
  */
 export async function getActionParams<T>(
   context: Context<T>,

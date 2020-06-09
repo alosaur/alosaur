@@ -1,4 +1,4 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
+import { logger } from "../_util/logger.ts";
 import { getPathNameFromUrl } from '../route/route.utils.ts';
 import { send } from '../static/send.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';
@@ -28,7 +28,7 @@ export async function getStaticFile<T>(context: Context<T>, staticConfig?: Stati
     } catch (error) {
         // TODO: exception
         if (staticConfig.baseRoute) {
-            log.warning(error);
+            logger.warning(error);
         }
         return null;
     }

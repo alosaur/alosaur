@@ -1,4 +1,4 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
+import { logger } from "../_util/logger.ts";
 import { ServerRequest } from "../deps.ts";
 
 export async function getBody(request: ServerRequest) {
@@ -33,7 +33,7 @@ export async function getBody(request: ServerRequest) {
         return body;
     }
   } catch (e) {
-    log.warning(e);
+    logger.warning(e);
     return undefined;
   }
 }
