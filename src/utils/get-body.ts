@@ -26,7 +26,6 @@ export async function getBody(request: ServerRequest) {
         }
 
         return formElements;
-        
 
       // TODO: handle other content types (maybe get a list?)
       default:

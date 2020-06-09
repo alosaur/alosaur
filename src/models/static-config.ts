@@ -1,4 +1,4 @@
-export interface StaticFilesConfig{
+export interface StaticFilesConfig {
     // local files
     root: string;
     // index file

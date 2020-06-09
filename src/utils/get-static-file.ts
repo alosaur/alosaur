@@ -23,7 +23,6 @@ export async function getStaticFile<T>(context: Context<T>, staticConfig?: Stati
 
     try {
         const filePath = await send({ request: context.request.serverRequest, response: context.response }, getPathNameFromUrl(url), staticConfig);
-
         return !!filePath;
     } catch (error) {
         // TODO: exception

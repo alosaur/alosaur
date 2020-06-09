@@ -2,12 +2,7 @@ import { contentType } from '../deps.ts';
 import { getViewRenderConfig } from '../mod.ts';
 import { ActionResult } from '../models/response.ts';
 
-/**
- * Renders view with template with changed template render
- * @param path
- * @param model
- * @param status
- */
+/** Renders view with template with changed template render */
 export async function View(path: string, model: Object, status: number = 200): Promise<ActionResult> {
     const headers = new Headers();
 

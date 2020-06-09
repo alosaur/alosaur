@@ -4,6 +4,7 @@ import { container } from '../injection/index.ts';
 import { RouteMetadata } from '../metadata/route.ts';
 import { ControllerMetadataArgs } from '../metadata/controller.ts';
 
+/** Registering controllers */
 export function registerControllers(
     controllers: ControllerMetadataArgs[] = [],
     classes: ObjectKeyAny[] = [],
@@ -26,7 +27,7 @@ export function registerControllers(
             logger.debug(`The "${ controller.target.name || controller.target.constructor.name }" controller has been registered.`);
         }
 
-        let areaRoute = ``;
+        let areaRoute: string = '';
 
         if (controller.area !== undefined && controller.area.baseRoute) {
             areaRoute = controller.area.baseRoute;
