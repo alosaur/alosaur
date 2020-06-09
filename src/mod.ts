@@ -1,6 +1,6 @@
 import { logger } from "./utils/logger.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { serve, Server } from "./deps.ts";
+import { serve, Server, HTTPOptions } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
@@ -137,11 +137,11 @@ export class App<TState> {
     }
   }
 
-  async listen(address: string = ":8000"): Promise<Server> {
+  async listen(address: string | HTTPOptions = ":8000"): Promise<Server> {
     const server: Server = serve(address);
     this.server = server;
 
-    console.log(`Server start in ${address}`);
+    console.log("Server start in", address);
 
     for await (const req of server) {
       const context = new Context<TState>(req);

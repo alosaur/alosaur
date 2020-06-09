@@ -1,4 +1,4 @@
-export { serve, Server, ServerRequest, Response } from 'https://deno.land/std@0.56.0/http/server.ts';
+export { serve, Server, ServerRequest, Response, HTTPOptions  } from 'https://deno.land/std@0.56.0/http/server.ts';
 export { getCookies } from 'https://deno.land/std@0.56.0/http/cookie.ts';
 
 export {
