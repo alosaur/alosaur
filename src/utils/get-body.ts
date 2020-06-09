@@ -1,4 +1,4 @@
-import { logger } from "../_util/logger.ts";
+import { logger } from "./logger.ts";
 import { ServerRequest } from "../deps.ts";
 
 export async function getBody(request: ServerRequest) {

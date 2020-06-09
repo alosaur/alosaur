@@ -1,16 +1,23 @@
 import { ActionResult } from '../models/response.ts';
 
-export function Redirect(url: string, permanent: boolean = false): ActionResult {
+export function Redirect(url: string): ActionResult {
     const headers = new Headers();
     headers.append("Location", url);
 
     return {
-        status: !permanent ? 302 : 301,
+        status: 302,
         headers,
         __isActionResult: true,
     };
 }
 
-export function PermanentRedirect(url: string) {
-    return Redirect(url, true)
+export function RedirectPermanent(url: string): ActionResult {
+    const headers = new Headers();
+    headers.append("Location", url);
+
+    return {
+        status: 301,
+        headers,
+        __isActionResult: true,
+    };
 }

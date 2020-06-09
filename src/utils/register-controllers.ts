@@ -1,4 +1,4 @@
-import { logger } from "../_util/logger.ts";
+import { logger } from "./logger.ts";
 import { getMetadataArgsStorage, ObjectKeyAny } from '../mod.ts';
 import { container } from '../injection/index.ts';
 import { RouteMetadata } from '../metadata/route.ts';

@@ -38,7 +38,7 @@ function getGrouped<TState,TPayload>(hooks: HookMetadataArgs<TState,TPayload>[],
   const controllerHooks: HookMetadataArgs<TState,TPayload>[] = [];
   const actionHooks: HookMetadataArgs<TState,TPayload>[] = [];
 
-  hooks.forEach((hook) => {
+  for (let hook of hooks) {
     if (hook.object === action.areaObject) {
       areaHooks.push(hook);
     }
@@ -50,7 +50,7 @@ function getGrouped<TState,TPayload>(hooks: HookMetadataArgs<TState,TPayload>[],
     if (hook.object === action.actionObject && hook.method === action.action) {
       actionHooks.push(hook);
     }
-  })
+  }
 
   return {
     areaHooks,

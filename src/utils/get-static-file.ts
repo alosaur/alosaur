@@ -1,4 +1,4 @@
-import { logger } from "../_util/logger.ts";
+import { logger } from "./logger.ts";
 import { getPathNameFromUrl } from '../route/route.utils.ts';
 import { send } from '../static/send.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';
