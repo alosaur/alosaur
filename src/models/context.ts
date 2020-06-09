@@ -12,5 +12,4 @@ export class Context<T> {
      this.request = new Request(serverRequest);
      this.response = new Response();
    }
-
 }

@@ -1,4 +1,4 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
+import { logger } from "./logger.ts";
 import { ServerRequest } from "../deps.ts";
 
 export async function getBody(request: ServerRequest) {
@@ -26,14 +26,13 @@ export async function getBody(request: ServerRequest) {
         }
 
         return formElements;
-        
 
       // TODO: handle other content types (maybe get a list?)
       default:
         return body;
     }
   } catch (e) {
-    log.warning(e);
+    logger.warning(e);
     return undefined;
   }
 }

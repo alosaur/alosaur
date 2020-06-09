@@ -173,10 +173,10 @@ export async function send(
         response.headers.set('Cache-Control', directives.join(','));
     }
 
-    if (!response.headers.has('Content-type')) {
+    if (!response.headers.has('Content-Type')) {
         const type = contentType(encodingExt !== '' ? extname(basename(path, encodingExt)) : extname(path));
 
-        response.headers.set('Content-type', type);
+        response.headers.set('Content-Type', type);
     }
 
     response.body = await Deno.readFile(path);
@@ -201,7 +201,7 @@ export function resolvePath(rootPath: string, relativePath?: string): string {
         root = Deno.cwd();
     }
 
-    if (path == null) {
+    if (path === undefined) {
         throw new TypeError('Argument relativePath is required.');
     }
 

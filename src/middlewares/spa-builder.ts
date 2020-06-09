@@ -9,7 +9,6 @@ export class SpaBuilder<TState> implements MiddlewareTarget<TState> {
 
     onPreRequest(context: Context<TState>): Promise<void> {
         return new Promise(async (resolve, reject) => {
-            
             if (await getStaticFile(context, this.staticConfig)) {
                 context.response.setImmediately();
             }

@@ -1,9 +1,7 @@
 import { contentType } from "../deps.ts";
 import { ActionResult } from '../models/response.ts';
 
-/**
- * Render json, number, boolean, or string content
- */
+/** Render JSON or other content such as strings, numbers, booleans */
 export function Content(
   result?: string | number | boolean | Object,
   status: number = 200,

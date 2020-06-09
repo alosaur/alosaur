@@ -1,9 +1,10 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
+import { logger } from "./logger.ts";
 import { getMetadataArgsStorage, ObjectKeyAny } from '../mod.ts';
 import { container } from '../injection/index.ts';
 import { RouteMetadata } from '../metadata/route.ts';
 import { ControllerMetadataArgs } from '../metadata/controller.ts';
 
+/** Registering controllers */
 export function registerControllers(
     controllers: ControllerMetadataArgs[] = [],
     classes: ObjectKeyAny[] = [],
@@ -23,10 +24,10 @@ export function registerControllers(
         classes.push(target);
 
         if (logging) {
-            log.debug(`The "${ controller.target.name || controller.target.constructor.name }" controller has been registered.`);
+            logger.debug(`The "${ controller.target.name || controller.target.constructor.name }" controller has been registered.`);
         }
 
-        let areaRoute = ``;
+        let areaRoute: string = '';
 
         if (controller.area !== undefined && controller.area.baseRoute) {
             areaRoute = controller.area.baseRoute;
@@ -63,7 +64,7 @@ export function registerControllers(
             };
 
             if (logging) {
-                log.debug(`The "${ metaRoute.route }" route has been registered.`);
+                logger.debug(`The "${ metaRoute.route }" route has been registered.`);
             }
 
             addToRoute(metaRoute);

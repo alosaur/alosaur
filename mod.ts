@@ -7,7 +7,7 @@ export * from "./src/renderer/mod.ts";
 // Decorators
 export * from "./src/decorator/mod.ts";
 
-// Standart middlewares
+// Standard middlewares
 export * from "./src/middlewares/mod.ts";
 
 // DI

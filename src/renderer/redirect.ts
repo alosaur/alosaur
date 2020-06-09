@@ -14,10 +14,10 @@ export function Redirect(url: string): ActionResult {
 export function RedirectPermanent(url: string): ActionResult {
     const headers = new Headers();
     headers.append("Location", url);
-    
+
     return {
         status: 301,
         headers,
         __isActionResult: true,
-      };
-}    
+    };
+}
