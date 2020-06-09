@@ -1,4 +1,4 @@
-import * as log from "https://deno.land/std@0.55.0/log/mod.ts";
+import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
 import { getPathNameFromUrl } from '../route/route.utils.ts';
 import { send } from '../static/send.ts';
 import { StaticFilesConfig } from '../models/static-config.ts';

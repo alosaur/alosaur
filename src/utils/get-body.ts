@@ -1,4 +1,4 @@
-import * as log from "https://deno.land/std@0.55.0/log/mod.ts";
+import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
 import { ServerRequest } from "../deps.ts";
 
 export async function getBody(request: ServerRequest) {

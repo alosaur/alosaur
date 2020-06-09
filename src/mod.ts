@@ -1,4 +1,4 @@
-import * as log from "https://deno.land/std@0.55.0/log/mod.ts";
+import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve, Server } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
