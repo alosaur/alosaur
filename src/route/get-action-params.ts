@@ -13,7 +13,7 @@ export async function getActionParams<T>(
 ): Promise<ArgumentValue[]> {
   const args: ArgumentValue[] = [];
 
-  const searchParams = getSearchParams(context.request.url);
+  const queryParams = getQueryParams(context.request.url);
   const cookies = getCookies(context.request.serverRequest) || {};
   const params = route.params.sort((a, b) => a.index - b.index);
 
@@ -23,8 +23,8 @@ export async function getActionParams<T>(
 
     switch (param.type) {
       case "query":
-        if (searchParams && param.name) {
-          const paramsArgs = searchParams.get(param.name);
+        if (queryParams && param.name) {
+          const paramsArgs = queryParams.get(param.name);
           args.push(paramsArgs ? paramsArgs : undefined);
         } else {
           args.push(undefined);
@@ -72,8 +72,8 @@ export async function getActionParams<T>(
   return new Promise((resolve) => resolve(args));
 }
 
-/** Gets URL search params */
-export function getSearchParams(url: string): URLSearchParams | undefined {
+/** Gets URL query params */
+export function getQueryParams(url: string): URLSearchParams | undefined {
   const params = url.split("?")[1];
 
   if (!params) return undefined;
