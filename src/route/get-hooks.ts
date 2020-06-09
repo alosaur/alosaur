@@ -41,10 +41,12 @@ function getGrouped<TState,TPayload>(hooks: HookMetadataArgs<TState,TPayload>[],
   for (let hook of hooks) {
     if (hook.object === action.areaObject) {
       areaHooks.push(hook);
+      continue;
     }
 
     if (hook.object === action.controllerObject) {
       controllerHooks.push(hook);
+      continue;
     }
 
     if (hook.object === action.actionObject && hook.method === action.action) {
