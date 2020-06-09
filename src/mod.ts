@@ -258,7 +258,6 @@ export class App<TState> {
           continue;
         }
 
-        // 
         if (!(error instanceof HttpError)) {
           logger.error(error);
         }
