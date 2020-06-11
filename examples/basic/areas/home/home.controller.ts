@@ -2,7 +2,7 @@ import {
   Controller,
   ForbiddenError
 } from '../../../../mod.ts';
-import { Get, QueryParam, Cookie, Req, Res, Post, Body,Param } from '../../../../src/decorator/mod.ts';
+import { Get, QueryParam, Cookie, Req, Res, Post, Body, Param, Delete } from '../../../../src/decorator/mod.ts';
 import { Request, Response } from '../../../../mod.ts';
 
 @Controller('/home')
@@ -61,4 +61,19 @@ export class HomeController {
   post(@Body() body: any, @QueryParam('name') name: string) {
     return body;
   }
+
+  @Delete("/delete/:id")
+  async delete(@Param("id") id: number) {
+    await delay(500);
+    return id;
+  }
 }
+
+function delay(duration: number): Promise<any> {
+  return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+          resolve();
+      }, duration);
+  });
+}
+
