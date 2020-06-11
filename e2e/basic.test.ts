@@ -188,14 +188,14 @@ test({
             let response = await fetch(baseUrl);
             let text = await response.text();
             assertEquals(response.status, 200);
-            assertEquals(text, "");
+            assertEquals(text, "root page");
 
             // It
             itLog("\t '/'");
             response = await fetch(`${baseUrl}/`);
             text = await response.text();
             assertEquals(response.status, 200);
-            assertEquals(text, "");
+            assertEquals(text, "root page");
         } finally {
             killServer();
         }

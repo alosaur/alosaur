@@ -5,6 +5,6 @@ import { Get } from '../../../../src/decorator/Get.ts';
 export class RootController {
     @Get()
     public async getRoot() {
-        return "";
+        return "root page";
     }
 }
