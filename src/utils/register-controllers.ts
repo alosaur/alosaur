@@ -1,4 +1,3 @@
-import { logger } from "./logger.ts";
 import { getMetadataArgsStorage, ObjectKeyAny } from '../mod.ts';
 import { container } from '../injection/index.ts';
 import { RouteMetadata } from '../metadata/route.ts';
@@ -24,7 +23,7 @@ export function registerControllers(
         classes.push(target);
 
         if (logging) {
-            logger.debug(`The "${ controller.target.name || controller.target.constructor.name }" controller has been registered.`);
+            console.debug(`The "${ controller.target.name || controller.target.constructor.name }" controller has been registered.`);
         }
 
         let areaRoute: string = '';
@@ -64,7 +63,7 @@ export function registerControllers(
             };
 
             if (logging) {
-                logger.debug(`The "${ metaRoute.route }" route has been registered.`);
+                console.debug(`The "${ metaRoute.route }" route has been registered.`);
             }
 
             addToRoute(metaRoute);

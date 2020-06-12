@@ -1,3 +1,5 @@
-import { log } from "../deps.ts";
+// TODO: logger will implemented after resolve PR #73
 
-export const logger = log.getLogger();
+// import { log } from "../deps.ts";
+
+// export const logger = log.getLogger();

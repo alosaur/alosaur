@@ -1,4 +1,3 @@
-import { logger } from "./logger.ts";
 import { ServerRequest } from "../deps.ts";
 
 export async function getBody(request: ServerRequest) {
@@ -32,7 +31,7 @@ export async function getBody(request: ServerRequest) {
         return body;
     }
   } catch (e) {
-    logger.warning(e);
+    console.warn(e);
     return undefined;
   }
 }

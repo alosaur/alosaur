@@ -1,4 +1,3 @@
-import { logger } from "./utils/logger.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { serve, Server, HTTPOptions } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
@@ -259,7 +258,7 @@ export class App<TState> {
         }
 
         if (!(error instanceof HttpError)) {
-          logger.error(error);
+          console.error(error);
         }
 
         await req.respond(Content(error, error.httpCode || 500));
@@ -273,7 +272,7 @@ export class App<TState> {
     if (this.server) {
       this.server.close();
     } else {
-      logger.warning("Server is not listening");
+      console.warn("Server is not listening"); 
     }
   }
 
