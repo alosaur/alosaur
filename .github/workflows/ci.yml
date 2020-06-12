@@ -15,5 +15,7 @@ jobs:
               uses: denolib/setup-deno@master
               with:
                   deno-version: ${{ matrix.deno }}
+            - name: fmt check
+              run: deno fmt --check 
             - name: Test
               run: deno test -A --config ./src/tsconfig.lib.json

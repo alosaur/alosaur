@@ -195,7 +195,10 @@ export class App<TState> {
               context.response.error = error;
 
               // try resolve hooks
-              if (hasHooksAction("onCatchAction", hooks) && await resolveHooks(context, "onCatchAction", hooks)) {
+              if (
+                hasHooksAction("onCatchAction", hooks) &&
+                await resolveHooks(context, "onCatchAction", hooks)
+              ) {
                 continue;
               } else {
                 // Resolve every post middleware if error was not caught
@@ -272,7 +275,7 @@ export class App<TState> {
     if (this.server) {
       this.server.close();
     } else {
-      console.warn("Server is not listening"); 
+      console.warn("Server is not listening");
     }
   }
 

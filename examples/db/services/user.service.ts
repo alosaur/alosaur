@@ -1,16 +1,16 @@
-import { Database } from '../database.ts';
-import { Injectable } from '../../../mod.ts';
+import { Database } from "../database.ts";
+import { Injectable } from "../../../mod.ts";
 
-export interface User{
+export interface User {
   name: string;
   age: number;
 }
+
 @Injectable()
 export class UserService {
-  constructor(private db: Database){
+  constructor(private db: Database) {
   }
   async getUsers(): Promise<User[]> {
     return (await this.db.query("SELECT * FROM users;")).rows;
   }
 }
-

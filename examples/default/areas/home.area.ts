@@ -1,14 +1,14 @@
-import { Area, Controller, Get, Content, QueryParam } from '../../../mod.ts';
+import { Area, Controller, Get, Content, QueryParam } from "../../../mod.ts";
 
-@Controller('/home')
+@Controller("/home")
 export class HomeController {
-    @Get('/query-name')
-    text(@QueryParam('name') name: string) {
-        return Content(`Hey! ${name}`);
-    }
+  @Get("/query-name")
+  text(@QueryParam("name") name: string) {
+    return Content(`Hey! ${name}`);
+  }
 }
 
 @Area({
-    controllers: [HomeController],
+  controllers: [HomeController],
 })
 export class HomeArea {}

@@ -1,4 +1,4 @@
-import { MetadataArgsStorage } from '../metadata/metadata.ts';
+import { MetadataArgsStorage } from "../metadata/metadata.ts";
 
 /** Registering areas */
 export function registerAreas<TState>(metadata: MetadataArgsStorage<TState>) {
@@ -7,7 +7,7 @@ export function registerAreas<TState>(metadata: MetadataArgsStorage<TState>) {
       controller.area = metadata.areas.find((area) => {
         if (area.controllers) {
           return !!area.controllers.find(
-            (areaController) => areaController === controller.target
+            (areaController) => areaController === controller.target,
           );
         }
         return false;

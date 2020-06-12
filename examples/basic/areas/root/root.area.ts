@@ -1,7 +1,7 @@
-import { Area } from '../../../../mod.ts';
+import { Area } from "../../../../mod.ts";
 import { RootController } from "./root.controller.ts";
 
 @Area({
-    controllers: [ RootController ],
+  controllers: [RootController],
 })
 export class RootArea {}

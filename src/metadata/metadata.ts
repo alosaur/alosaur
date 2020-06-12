@@ -1,9 +1,9 @@
 import { ControllerMetadataArgs } from "./controller.ts";
 import { AreaMetadataArgs } from "./area.ts";
 import { MiddlewareMetadataArgs } from "./middleware.ts";
-import { ParamMetadataArgs } from './param.ts';
+import { ParamMetadataArgs } from "./param.ts";
 import { ActionMetadataArgs } from "./action.ts";
-import { HookMetadataArgs } from './hook.ts';
+import { HookMetadataArgs } from "./hook.ts";
 
 /**
 * Storage all metadatas read from decorators.
@@ -13,7 +13,7 @@ export class MetadataArgsStorage<TState> {
    * Registered middlewares
    */
   middlewares: MiddlewareMetadataArgs<TState>[] = [];
-  
+
   /*
    * Registered areas
    */
@@ -34,8 +34,8 @@ export class MetadataArgsStorage<TState> {
    */
   params: ParamMetadataArgs[] = [];
 
-    /**
+  /**
    * Registered params.
    */
-  hooks: HookMetadataArgs<TState,any>[] = [];
+  hooks: HookMetadataArgs<TState, any>[] = [];
 }

@@ -8,7 +8,7 @@ export async function getBody(request: ServerRequest) {
 
     switch (contentType) {
       case "application/json":
-          return JSON.parse(bodyString);
+        return JSON.parse(bodyString);
 
       case "application/x-www-form-urlencoded":
         let formElements: { [key: string]: string } = {};
@@ -27,6 +27,7 @@ export async function getBody(request: ServerRequest) {
         return formElements;
 
       // TODO: handle other content types (maybe get a list?)
+
       default:
         return body;
     }

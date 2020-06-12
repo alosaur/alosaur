@@ -1,30 +1,30 @@
-import { MiddlewareTarget } from '../models/middleware-target.ts';
+import { MiddlewareTarget } from "../models/middleware-target.ts";
 
 export class MiddlewareMetadata {
-    target: Function;
-    route: RegExp;
-  
-    constructor(args: any) {
-      this.target = args.target;
-      this.route = args.route;
-    }
+  target: Function;
+  route: RegExp;
+
+  constructor(args: any) {
+    this.target = args.target;
+    this.route = args.route;
   }
-  
-  /**
+}
+
+/**
    * Middleware metadata used to storage information.
    */
-  export interface MiddlewareMetadataArgs<TState> {
-    /**
+export interface MiddlewareMetadataArgs<TState> {
+  /**
     * Type, vase default
     */
-    type: any;
-    /**
+  type: any;
+  /**
      * Indicates object which is used by this Middleware.
      */
-    target: MiddlewareTarget<TState>;
-  
-    /**
+  target: MiddlewareTarget<TState>;
+
+  /**
      * Route for all controllers registered in this Middleware.
      */
-    route: RegExp;
-  }
+  route: RegExp;
+}
