@@ -156,13 +156,13 @@ export class App<TState> {
         }
 
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getRaw());
+          req.respond(context.response.getRaw());
           continue;
         }
 
         // try getting static file
         if (await getStaticFile(context, this.staticConfig)) {
-          await req.respond(context.response.getRaw());
+          req.respond(context.response.getRaw());
           continue;
         } else {
           const action = getAction(
@@ -207,7 +207,7 @@ export class App<TState> {
                 }
 
                 if (context.response.isImmediately()) {
-                  await req.respond(context.response.getMergedResult());
+                  req.respond(context.response.getMergedResult());
                   continue;
                 }
 
@@ -223,7 +223,7 @@ export class App<TState> {
         }
 
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
@@ -233,30 +233,30 @@ export class App<TState> {
         }
 
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
         if (context.response.result === undefined) {
           context.response.result = notFoundAction();
 
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
-        await req.respond(context.response.getMergedResult());
+        req.respond(context.response.getMergedResult());
       } catch (error) {
         if (this.globalErrorHandler) {
           this.globalErrorHandler(context, error);
 
           if (context.response.isImmediately()) {
-            await req.respond(context.response.getMergedResult());
+            req.respond(context.response.getMergedResult());
             continue;
           }
         }
 
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
@@ -264,7 +264,7 @@ export class App<TState> {
           console.error(error);
         }
 
-        await req.respond(Content(error, error.httpCode || 500));
+        req.respond(Content(error, error.httpCode || 500));
       }
     }
 

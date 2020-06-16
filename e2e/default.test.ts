@@ -21,11 +21,11 @@ test({
 
       assertEquals(r1.status, 200);
       assertEquals(r2.status, 404);
-      assertEquals(r3.status, 404);
+      assertEquals(r3.status, 200);
 
       assertEquals(text_r1, "Hey! undefined");
       assertEquals(text_r2, "Not found");
-      assertEquals(text_r3, "Not found");
+      assertEquals(text_r3, "Hello world");
     } finally {
       killServer();
     }

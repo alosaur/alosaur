@@ -4,7 +4,7 @@ import { Area, Controller, Get } from "../../../mod.ts";
 export class CoreController {
   @Get()
   text() {
-    return "Hello worls";
+    return "Hello world";
   }
 }
 
