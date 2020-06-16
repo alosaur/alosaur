@@ -36,20 +36,17 @@ Controller:
 ```typescript
 import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/mod.ts';
 
-@Controller('/home')
+@Controller() // or specific path @Controller("/home")
 export class HomeController {
-    @Get('/text')
+    @Get() // or specific path @Get("/hello")
     text() {
         return 'Hello world';
-    }
-    @Get('/json')
-    json() {
-        return { text: 'test' };
     }
 }
 
 // Declare module
 @Area({
+
     controllers: [HomeController],
 })
 export class HomeArea {}
