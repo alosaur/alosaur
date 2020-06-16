@@ -46,7 +46,6 @@ export class HomeController {
 
 // Declare module
 @Area({
-
     controllers: [HomeController],
 })
 export class HomeArea {}
@@ -266,12 +265,14 @@ return Content("Text or Model", 404); // return 404 status
 return View("page", 404); // return 404 status
 ```
 
-## Renderer views
+## Render pages
 
 Alosaur can suppport all html renderer. All you have to do is define the rendering function in the settings.
 For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
 
+
 ```ts
+// Handlebars
 ...
 // Basedir path
 const viewPath = `${Deno.cwd()}/examples/handlebars/views`;
