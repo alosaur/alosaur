@@ -1,6 +1,6 @@
 import { getMetadataArgsStorage, ObjectKeyAny } from "../src/mod.ts";
 import { AppSettings } from "../mod.ts";
-import { writeJsonSync } from "https://deno.land/std/fs/mod.ts";
+import { writeJsonSync } from "https://deno.land/std@0.57.0/fs/write_json.ts";
 
 import { RouteMetadata } from "../src/metadata/route.ts";
 import { MetadataArgsStorage } from "../src/metadata/metadata.ts";
@@ -21,7 +21,7 @@ export class AlosaurOpenApiBuilder<T> {
   private routes: RouteMetadata[] = [];
   private builder = new OpenApiBuilder();
 
-  static create(settings: AppSettings): AlosaurOpenApiBuilder {
+  static create<T>(settings: AppSettings): AlosaurOpenApiBuilder<T> {
     return new AlosaurOpenApiBuilder(settings);
   }
 
@@ -48,7 +48,7 @@ export class AlosaurOpenApiBuilder<T> {
     return this.builder.getSpec();
   }
 
-  public saveToFile(path: string = "./openapi.json"): AlosaurOpenApiBuilder {
+  public saveToFile(path: string = "./openapi.json"): AlosaurOpenApiBuilder<T> {
     writeJsonSync(path, this.getSpec());
     return this;
   }
@@ -112,22 +112,22 @@ export class AlosaurOpenApiBuilder<T> {
     };
   }
 
-  public addTitle(title: string): AlosaurOpenApiBuilder {
+  public addTitle(title: string): AlosaurOpenApiBuilder<T> {
     this.builder.addTitle(title);
     return this;
   }
 
-  public addVersion(version: string): AlosaurOpenApiBuilder {
+  public addVersion(version: string): AlosaurOpenApiBuilder<T> {
     this.builder.addVersion(version);
     return this;
   }
 
-  public addDescription(description: string): AlosaurOpenApiBuilder {
+  public addDescription(description: string): AlosaurOpenApiBuilder<T> {
     this.builder.addDescription(description);
     return this;
   }
 
-  public addServer(server: oa.ServerObject): AlosaurOpenApiBuilder {
+  public addServer(server: oa.ServerObject): AlosaurOpenApiBuilder<T> {
     this.builder.addServer(server);
     return this;
   }
