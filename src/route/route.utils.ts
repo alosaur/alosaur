@@ -28,9 +28,7 @@ export const getRouteWithRouteParams = (
   method?: string,
 ): any => {
   return routes
-    .filter((r) =>
-      r.route.includes("/:") && allowedMethod(r.method.toString(), method)
-    )
+    .filter((r) => r.route.includes("/:") && allowedMethod(r.method, method))
     .find((r) => {
       return new RegExp("^" + getRouteParamPattern(r.route) + "$").test(
         pathname,
@@ -43,9 +41,9 @@ export const getRouteFromFullPath = (
   pathname: string,
   method?: string,
 ): RouteMetadata | undefined => {
-  return routes.find((r) => {
-    return allowedMethod(r.method.toString(), method) && r.route === pathname;
-  });
+  return routes.find((r) =>
+    allowedMethod(r.method, method) && r.route === pathname
+  );
 };
 
 export const getRouteWithRegex = (
@@ -64,8 +62,16 @@ export const getRouteWithRegex = (
     });
 };
 
-export const getPathNameFromUrl = (url: string): string => {
-  // TODO: use normal parser
-  // need for parse
-  return new URL("http://localhost" + url).pathname;
-};
+export function getPathNameFromUrl(url: string): string {
+  return getParsedUrl(url).pathname;
+}
+
+const parsedUrlMap: Map<string, URL> = new Map<string, URL>();
+// TODO: use normal parser
+// need for parse
+function getParsedUrl(url: string): URL {
+  if (!parsedUrlMap.has(url)) {
+    parsedUrlMap.set(url, new URL("http://localhost" + url));
+  }
+  return parsedUrlMap.get(url) as URL;
+}

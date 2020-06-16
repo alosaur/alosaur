@@ -11,10 +11,11 @@ export async function getActionParams<T>(
   route: RouteMetadata,
   transformConfigMap?: TransformConfigMap,
 ): Promise<ArgumentValue[]> {
-  const args: ArgumentValue[] = [];
+  if (route.params.length == 0) {
+    return [];
+  }
 
-  const queryParams = getQueryParams(context.request.url);
-  const cookies = getCookies(context.request.serverRequest) || {};
+  const args: ArgumentValue[] = [];
   const params = route.params.sort((a, b) => a.index - b.index);
 
   // fill params to resolve
@@ -23,6 +24,8 @@ export async function getActionParams<T>(
 
     switch (param.type) {
       case "query":
+        const queryParams = getQueryParams(context.request.url);
+
         if (queryParams && param.name) {
           const paramsArgs = queryParams.get(param.name);
           args.push(paramsArgs ? paramsArgs : undefined);
@@ -33,6 +36,7 @@ export async function getActionParams<T>(
 
       case "cookie":
         if (param.name) {
+          const cookies = getCookies(context.request.serverRequest) || {};
           args.push(cookies[param.name]);
         } else {
           args.push(undefined);
@@ -69,7 +73,7 @@ export async function getActionParams<T>(
         break;
     }
   }
-  return new Promise((resolve) => resolve(args));
+  return args;
 }
 
 /** Gets URL query params */
