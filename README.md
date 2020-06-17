@@ -267,7 +267,7 @@ return View("page", 404); // return 404 status
 
 ## Render pages
 
-Alosaur can suppport all html renderer. All you have to do is define the rendering function in the settings.
+Alosaur can suppport any html renderer. All you have to do is define the rendering function in the settings.
 For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
 
 
