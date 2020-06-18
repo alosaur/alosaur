@@ -31,7 +31,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 ## Simple example
 
-Controller:
+app.ts:
 
 ```typescript
 import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/mod.ts';
