@@ -315,7 +315,7 @@ For example `class-validator` and `class-transformer` for body
 post.model.ts:
 
 ```ts
-import validator from "https://dev.jspm.io/class-validator@0.8.5";
+import validator from "https://jspm.dev/class-validator@0.8.5";
 
 const { Length, Contains, IsInt, Min, Max, IsEmail, IsFQDN, IsDate } =
   validator;
@@ -341,8 +341,8 @@ export class PostModel {
 app.ts
 ```ts
 
-import validator from "https://dev.jspm.io/class-validator@0.8.5";
-import transformer from "https://dev.jspm.io/class-transformer@0.2.3";
+import validator from "https://jspm.dev/class-validator@0.8.5";
+import transformer from "https://jspm.dev/class-transformer@0.2.3";
 import { App, Area, Controller, Post, Body } from 'https://deno.land/x/alosaur/mod.ts';
 import { PostModel } from './post.model.ts';
 
