@@ -52,7 +52,8 @@ async function resolveHooks<TState, TPayload>(
 ): Promise<boolean> {
   const resolvedHooks = new Set<HookMetadataArgs<TState, TPayload>>();
 
-  if (hooks !== undefined && hooks.length > 0) {
+  if (hasHooks(hooks)) {
+    // @ts-ignore: Object is possibly 'undefined'.
     for (const hook of hooks) {
       const action: Function | undefined = (hook as any).instance[actionName];
 
@@ -82,6 +83,12 @@ async function resolveHooks<TState, TPayload>(
   }
 
   return false;
+}
+
+function hasHooks<TState = any, TPayload = any>(
+  hooks?: HookMetadataArgs<TState, TPayload>[],
+): boolean {
+  return hooks !== undefined && hooks.length > 0;
 }
 
 async function runHooks<TState, TPayload>(
@@ -161,64 +168,72 @@ export class App<TState> {
         }
 
         // try getting static file
-        if (await getStaticFile(context, this.staticConfig)) {
+        if (
+          this.staticConfig && await getStaticFile(context, this.staticConfig)
+        ) {
           req.respond(context.response.getRaw());
           continue;
-        } else {
-          const action = getAction(
-            this.routes,
-            context.request.method,
-            context.request.url,
+        }
+
+        const action = getAction(
+          this.routes,
+          context.request.method,
+          context.request.url,
+        );
+
+        if (action !== null) {
+          const hooks = getHooksForAction(this.metadata.hooks, action);
+
+          // try resolve hooks
+          if (
+            hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
+          ) {
+            continue;
+          }
+
+          // Get arguments in this action
+          const args = await getActionParams(
+            context,
+            action,
+            this.transformConfigMap,
           );
 
-          if (action !== null) {
-            const hooks = getHooksForAction(this.metadata.hooks, action);
-
-            // try resolve hooks
-            if (await resolveHooks(context, "onPreAction", hooks)) {
-              continue;
-            }
-
-            // Get arguments in this action
-            const args = await getActionParams(
-              context,
-              action,
-              this.transformConfigMap,
+          try {
+            // Get Action result from controller method
+            context.response.result = await action.target[action.action](
+              ...args,
             );
-
-            try {
-              // Get Action result from controller method
-              context.response.result = await action.target[action.action](
-                ...args,
-              );
-            } catch (error) {
-              context.response.error = error;
-
-              // try resolve hooks
-              if (
-                hasHooksAction("onCatchAction", hooks) &&
-                await resolveHooks(context, "onCatchAction", hooks)
-              ) {
-                continue;
-              } else {
-                // Resolve every post middleware if error was not caught
-                for (const middleware of middlewares) {
-                  await middleware.target.onPostRequest(context);
-                }
-
-                if (context.response.isImmediately()) {
-                  req.respond(context.response.getMergedResult());
-                  continue;
-                }
-
-                throw error;
-              }
-            }
+          } catch (error) {
+            context.response.error = error;
 
             // try resolve hooks
-            if (await resolveHooks(context, "onPostAction", hooks)) {
+            if (
+              hasHooks(hooks) &&
+              hasHooksAction("onCatchAction", hooks) &&
+              await resolveHooks(context, "onCatchAction", hooks)
+            ) {
               continue;
+            } else {
+              // Resolve every post middleware if error was not caught
+              for (const middleware of middlewares) {
+                await middleware.target.onPostRequest(context);
+              }
+
+              if (context.response.isImmediately()) {
+                req.respond(context.response.getMergedResult());
+                continue;
+              }
+
+              throw error;
             }
+          }
+
+          // try resolve hooks
+          if (
+            hasHooks(hooks) &&
+            await resolveHooks(context, "onPostAction", hooks)
+          ) {
+            continue;
           }
         }
 
