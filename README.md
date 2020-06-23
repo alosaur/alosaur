@@ -90,7 +90,7 @@ And run
 -   -   [x] `@Res`
 -   -   [x] `@Middleware` with regex route
 -   -   [x] `@UseHook` for contoller and actions
--   -   [ ] `@Cache` cache to actions {duration: number} number in ms
+-   -   [ ]  Support create custom decorators with app metadata
 
 -   [x] Add middleware
 -   [x] Add static middleware (example: app.useStatic)
