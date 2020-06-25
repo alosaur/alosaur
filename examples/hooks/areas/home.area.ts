@@ -7,6 +7,7 @@ import { CatchHook } from "../hooks/catch-hook.ts";
 import { PreHook } from "../hooks/pre-hook.ts";
 import { AsyncPreHook } from "../hooks/async-pre-hook.ts";
 import { PostHook } from "../hooks/post-hook.ts";
+import { Authorize } from "../decorators/authorize-hook.decorator.ts";
 
 @Controller()
 export class HomeController {
@@ -51,6 +52,12 @@ export class HomeController {
   @Post("/post-hook")
   getposthook(@Body() body: any) {
     return body;
+  }
+
+  @Authorize("admin")
+  @Get("/protected")
+  getAdminPage() {
+    return "Hi! this protected info";
   }
 }
 

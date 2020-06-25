@@ -90,7 +90,7 @@ And run
 -   -   [x] `@Res`
 -   -   [x] `@Middleware` with regex route
 -   -   [x] `@UseHook` for contoller and actions
--   -   [ ]  Support create custom decorators with app metadata
+-   -   [x]  Support create custom decorators with app metadata
 
 -   [x] Add middleware
 -   [x] Add static middleware (example: app.useStatic)
@@ -401,4 +401,66 @@ post(@Body(parser) data: ParsedObject) {
 
 }
 
+```
+
+
+## Custom Decorators
+
+You can add any decorator and put it in a DI system.
+
+Example with hooks:
+
+```ts
+import {
+    Content,
+    Context,
+    HookTarget,
+    BusinessType,
+    getMetadataArgsStorage,
+    container
+} from "https://deno.land/x/alosaur/mod.ts";
+
+type AuthorizeRoleType = string | undefined;
+
+/**
+ * Authorize decorator with role
+ */
+export function Authorize(role?: AuthorizeRoleType): Function {
+  return function (object: any, methodName?: string) {
+    // add hook to global metadata
+    getMetadataArgsStorage().hooks.push({
+      type: methodName ? BusinessType.Action : BusinessType.Controller,
+      object,
+      target: object.constructor,
+      method: methodName,
+      instance: container.resolve(AutorizeHook),
+      payload: role,
+    });
+  };
+}
+
+export class AutorizeHook implements HookTarget<unknown, AuthorizeRoleType> {
+  onPreAction(context: Context<unknown>, role: AuthorizeRoleType) {
+    const queryParams = getQueryParams(context.request.url);
+
+    if (queryParams == undefined || queryParams.get("role") !== role) {
+      context.response.result = Content({ error: { token: false } }, 403);
+      context.response.setImmediately();
+    }
+  }
+}
+
+```
+
+Then you can add anywhere you want. For example action of controller:
+
+```ts
+  // ..controller
+
+  // action
+  @Authorize("admin")
+  @Get("/protected")
+  getAdminPage() {
+    return "Hi! this protected info";
+  }
 ```

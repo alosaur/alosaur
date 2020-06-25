@@ -4,11 +4,11 @@ import { HookTarget } from "../models/hook.ts";
 import { container } from "../injection/index.ts";
 
 interface Type<T> extends Function {
-  new (...args: any[]): T;
+  new(...args: any[]): T;
 }
 
 /**
- * Registers an controller or action hook.
+ * Registers hook an area or controller or action.
  */
 export function UseHook<TState, TPayload>(
   hook: Type<HookTarget<TState, TPayload>>,
