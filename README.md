@@ -105,7 +105,7 @@ And run
 -   [ ] Add WebSocket
 -   [ ] Add SRE
 -   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
--   [ ] Add microservice connector with Wasm
+-   [ ] Add microservice connector with WASM
 -   [ ] Add benchmarks
 -   [x] Transfer to Alosaur github organization
 -   [ ] Add docs and more examples
@@ -123,8 +123,8 @@ And run
 -   [x] Add Dejs view render example
 -   [x] Add example with SQL drivers (PostgreSQL)
 -   [x] Add basic example in Docker container
--   [ ] Add WebSockets example
--   [ ] Add example with Wasm
+-   [ ] Add WebSocket example
+-   [ ] Add example with WASM
 
 ## OpenAPI v3
 
