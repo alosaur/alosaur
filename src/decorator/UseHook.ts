@@ -4,7 +4,7 @@ import { HookTarget } from "../models/hook.ts";
 import { container } from "../injection/index.ts";
 
 interface Type<T> extends Function {
-  new(...args: any[]): T;
+  new (...args: any[]): T;
 }
 
 /**
