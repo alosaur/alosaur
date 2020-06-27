@@ -110,21 +110,21 @@ And run
 -   [x] Transfer to Alosaur github organization
 -   [ ] Add docs and more examples
 
-## Plugins & modules
+- Plugins & modules
 
--   [ ] Add [Angular](https://angular.io) template parser
--   [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
+-  -   [ ] Add [Angular](https://angular.io) template parser
+-  -   [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
 
-## Examples
+- Examples
 
--   [x] Add basic example
--   [x] Add DI example
--   [x] Add static serve example
--   [x] Add Dejs view render example
--   [x] Add example with SQL drivers (PostgreSQL)
--   [x] Add basic example in Docker container
--   [ ] Add WebSocket example
--   [ ] Add example with WASM
+-  -   [x] Add basic example
+-  -   [x] Add DI example
+-  -   [x] Add static serve example
+-  -   [x] Add Dejs view render example
+-  -   [x] Add example with SQL drivers (PostgreSQL)
+-  -   [x] Add basic example in Docker container
+-  -   [ ] Add WebSocket example
+-  -   [ ] Add example with WASM
 
 ## OpenAPI v3
 
