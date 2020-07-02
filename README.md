@@ -112,7 +112,7 @@ And run
 
 - Plugins & modules
 
--  -   [ ] Add [Angular](https://angular.io) template parser
+-  -   [x] Add [Angular](https://github.com/alosaur/angular_deno) render engine
 -  -   [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
 
 - Examples
@@ -268,7 +268,7 @@ return View("page", 404); // return 404 status
 ## Render pages
 
 Alosaur can suppport any html renderer. All you have to do is define the rendering function in the settings.
-For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs) and [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars)
+For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars) [Angular](https://github.com/alosaur/angular_deno)
 
 
 ```ts
