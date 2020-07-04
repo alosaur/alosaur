@@ -10,6 +10,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 -   **Hooks** - middleware for area, controller and actions with support DI. Have 3 life cyclic functions: `onPreAction, onPostAction, onCatchAction`
 -   **Decorators** - for query, cookie, parametrs, routes and etc.
 -   **Dependency Injection** - for all controllers by default from `microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
+-   **Render pages** any template render engine [More](https://github.com/alosaur/alosaur#render-pages)
 
 **[Documentation](https://github.com/alosaur/alosaur/tree/master/docs)**
 
@@ -268,7 +269,7 @@ return View("page", 404); // return 404 status
 ## Render pages
 
 Alosaur can suppport any html renderer. All you have to do is define the rendering function in the settings.
-For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars) [Angular](https://github.com/alosaur/angular_deno)
+For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/angular_deno)
 
 
 ```ts
