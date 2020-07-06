@@ -1,5 +1,5 @@
 import { getMetadataArgsStorage, ObjectKeyAny } from "../mod.ts";
-import { container } from "../injection/index.ts";
+import { container as defaultContainer, DependencyContainer } from "../injection/index.ts";
 import { RouteMetadata } from "../metadata/route.ts";
 import { ControllerMetadataArgs } from "../metadata/controller.ts";
 
@@ -9,9 +9,12 @@ export function registerControllers(
   classes: ObjectKeyAny[] = [],
   addToRoute: (route: RouteMetadata) => void,
   logging: boolean = true,
+  customContainer?: DependencyContainer
 ) {
   // TODO: add two route Map (with route params / exact match)
   // example: new Map(); key = route, value = object
+
+  const container = customContainer || defaultContainer;
 
   controllers.forEach((controller) => {
     const actions = getMetadataArgsStorage().actions.filter((action) =>
@@ -25,7 +28,7 @@ export function registerControllers(
     // resolve from DI
     const target: ObjectKeyAny = container.resolve(controller.target as any);
     classes.push(target);
-
+    
     if (logging) {
       console.debug(
         `The "${controller.target.name ||

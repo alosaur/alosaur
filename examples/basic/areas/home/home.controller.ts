@@ -15,8 +15,8 @@ import {
 } from "../../../../src/decorator/mod.ts";
 import { Request, Response } from "../../../../mod.ts";
 
-@Controller("/home")
 export class HomeController {
+
   @Get("/text")
   text(
     @QueryParam("name") name: string,

@@ -1,5 +1,6 @@
 import { StaticFilesConfig } from "./static-config.ts";
 import { ViewRenderConfig } from "./view-render-config.ts";
+import { DependencyContainer } from "../injection/index.ts";
 
 export interface AppSettings {
   areas: Function[];
@@ -7,4 +8,5 @@ export interface AppSettings {
   staticConfig?: StaticFilesConfig;
   viewRenderConfig?: ViewRenderConfig;
   logging?: boolean;
+  container?: DependencyContainer;
 }
