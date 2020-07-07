@@ -400,7 +400,7 @@ class InternalDependencyContainer implements DependencyContainer {
   }
 }
 
-export {InternalDependencyContainer};
+export { InternalDependencyContainer };
 
 export const instance: DependencyContainer = new InternalDependencyContainer();
 

@@ -23,7 +23,10 @@ import { AppSettings } from "./models/app-settings.ts";
 import { getHooksForAction } from "./route/get-hooks.ts";
 import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
-import { DependencyContainer, InternalDependencyContainer } from "./injection/index.ts";
+import {
+  DependencyContainer,
+  InternalDependencyContainer,
+} from "./injection/index.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -136,7 +139,7 @@ export class App<TState> {
       this.classes,
       (route) => this.routes.push(route),
       settings.logging,
-      settings.container
+      settings.container,
     );
 
     if (settings) {
