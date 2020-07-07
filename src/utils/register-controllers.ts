@@ -28,7 +28,7 @@ export function registerControllers(
     // resolve from DI
     const target: ObjectKeyAny = container.resolve(controller.target as any);
     classes.push(target);
-    
+
     if (logging) {
       console.debug(
         `The "${controller.target.name ||
