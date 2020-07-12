@@ -46,5 +46,5 @@ export class MetadataArgsStorage<TState> {
   /**
    * Container injections
    */
-  container: DependencyContainer = defaultContainer
+  container: DependencyContainer = defaultContainer;
 }

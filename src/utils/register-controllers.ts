@@ -7,7 +7,7 @@ export function registerControllers(
   controllers: ControllerMetadataArgs[] = [],
   classes: ObjectKeyAny[] = [],
   addToRoute: (route: RouteMetadata) => void,
-  logging: boolean = true
+  logging: boolean = true,
 ) {
   // TODO: add two route Map (with route params / exact match)
   // example: new Map(); key = route, value = object

@@ -130,7 +130,6 @@ export class App<TState> {
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
 
-    
     this.metadata.container = settings.container || defaultContainer;
 
     registerAreas(this.metadata);
@@ -138,7 +137,7 @@ export class App<TState> {
       this.metadata.controllers,
       this.classes,
       (route) => this.routes.push(route),
-      settings.logging
+      settings.logging,
     );
 
     this.useStatic(settings.staticConfig);
