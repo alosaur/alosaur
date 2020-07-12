@@ -4,9 +4,13 @@ import { MiddlewareMetadataArgs } from "./middleware.ts";
 import { ParamMetadataArgs } from "./param.ts";
 import { ActionMetadataArgs } from "./action.ts";
 import { HookMetadataArgs } from "./hook.ts";
+import {
+  container as defaultContainer,
+  DependencyContainer,
+} from "../injection/index.ts";
 
 /**
-* Storage all metadatas read from decorators.
+* Storage all metadatas read from decorators and app settings.
 */
 export class MetadataArgsStorage<TState> {
   /**
@@ -38,4 +42,9 @@ export class MetadataArgsStorage<TState> {
    * Registered params.
    */
   hooks: HookMetadataArgs<TState, any>[] = [];
+
+  /**
+   * Container injections
+   */
+  container: DependencyContainer = defaultContainer
 }

@@ -23,10 +23,7 @@ import { AppSettings } from "./models/app-settings.ts";
 import { getHooksForAction } from "./route/get-hooks.ts";
 import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
-import {
-  DependencyContainer,
-  InternalDependencyContainer,
-} from "./injection/index.ts";
+import { container as defaultContainer } from "./injection/index.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -133,19 +130,19 @@ export class App<TState> {
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
 
+    
+    this.metadata.container = settings.container || defaultContainer;
+
     registerAreas(this.metadata);
     registerControllers(
       this.metadata.controllers,
       this.classes,
       (route) => this.routes.push(route),
-      settings.logging,
-      settings.container,
+      settings.logging
     );
 
-    if (settings) {
-      this.useStatic(settings.staticConfig);
-      this.useViewRender(settings.viewRenderConfig);
-    }
+    this.useStatic(settings.staticConfig);
+    this.useViewRender(settings.viewRenderConfig);
   }
 
   async listen(address: string | HTTPOptions = ":8000"): Promise<Server> {
