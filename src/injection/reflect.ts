@@ -777,11 +777,11 @@ export namespace Reflect {
     const usePolyfill = typeof process === "object" && process.env &&
       process.env["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
     const _Map: typeof Map = !usePolyfill && typeof Map === "function" &&
-      typeof Map.prototype.entries === "function"
+        typeof Map.prototype.entries === "function"
       ? Map
       : CreateMapPolyfill();
     const _Set: typeof Set = !usePolyfill && typeof Set === "function" &&
-      typeof Set.prototype.entries === "function"
+        typeof Set.prototype.entries === "function"
       ? Set
       : CreateSetPolyfill();
     const _WeakMap: typeof WeakMap =

@@ -182,7 +182,9 @@ export async function send(
 
   if (!response.headers.has("Content-Type")) {
     const type = contentType(
-      encodingExt !== "" ? extname(basename(path, encodingExt)) : extname(path),
+      encodingExt !== ""
+        ? extname(basename(path, encodingExt))
+        : extname(path),
     );
 
     response.headers.set("Content-Type", type);
