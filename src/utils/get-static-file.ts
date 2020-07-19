@@ -6,6 +6,7 @@ import { Context } from "../models/context.ts";
 export async function getStaticFile<T>(
   context: Context<T>,
   staticConfig?: StaticFilesConfig,
+  showError: boolean = true
 ) {
   if (staticConfig == null) {
     return false;
@@ -32,7 +33,7 @@ export async function getStaticFile<T>(
     return !!filePath;
   } catch (error) {
     // TODO: exception
-    if (staticConfig.baseRoute) {
+    if (staticConfig.baseRoute && showError) {
       console.warn(error);
     }
     return null;

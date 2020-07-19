@@ -20,7 +20,7 @@ const app = new App({
 });
 
 app.use(
-  /\/www/,
+  /^\/www/,
   new SpaBuilder({
     root: `${Deno.cwd()}/examples/spa/www`,
     index: "index.html",
