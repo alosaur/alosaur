@@ -6,7 +6,7 @@ import { Context } from "../models/context.ts";
 export async function getStaticFile<T>(
   context: Context<T>,
   staticConfig?: StaticFilesConfig,
-  showError: boolean = true
+  showError: boolean = true,
 ) {
   if (staticConfig == null) {
     return false;
