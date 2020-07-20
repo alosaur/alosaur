@@ -35,7 +35,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 app.ts:
 
 ```typescript
-import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/mod.ts';
+import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur@v0.21.1/mod.ts';
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
