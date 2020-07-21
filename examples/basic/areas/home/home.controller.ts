@@ -35,6 +35,11 @@ export class HomeController {
     return response.getRaw();
   }
 
+  @Get("/json/")
+  obj() {
+    return {};
+  }
+
   @Get("/error")
   error() {
     throw new ForbiddenError("error");
