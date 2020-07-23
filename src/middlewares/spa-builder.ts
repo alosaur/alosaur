@@ -7,36 +7,33 @@ import { Context } from "../models/context.ts";
 export class SpaBuilder<TState> implements MiddlewareTarget<TState> {
   constructor(private staticConfig: StaticFilesConfig) {}
 
-  onPreRequest(context: Context<TState>): Promise<void> {
-    return new Promise(async (resolve, reject) => {
-      if (await getStaticFile(context, this.staticConfig, false)) {
-        context.response.setImmediately();
-      }
-
-      resolve();
-    });
+  onPreRequest(context: Context<TState>) {
+    return null;
   }
 
   onPostRequest(context: Context<TState>): Promise<void> {
     return new Promise(async (resolve, reject) => {
-      if (
-        context.response.result === undefined && this.staticConfig.index &&
-        !hasUrlExtension(context.request.url)
-      ) {
+      if (await getStaticFile(context, this.staticConfig, false)) {
+        context.response.setImmediately();
+      } else {
         if (
-          await send(
-            {
-              request: context.request.serverRequest,
-              response: context.response,
-            },
-            this.staticConfig.index,
-            this.staticConfig,
-          )
+          context.response.result === undefined && this.staticConfig.index &&
+          !hasUrlExtension(context.request.url)
         ) {
-          context.response.setImmediately();
+          if (
+            await send(
+              {
+                request: context.request.serverRequest,
+                response: context.response,
+              },
+              this.staticConfig.index,
+              this.staticConfig,
+            )
+          ) {
+            context.response.setImmediately();
+          }
         }
       }
-
       resolve();
     });
   }
