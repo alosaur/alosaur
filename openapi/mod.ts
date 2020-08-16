@@ -1,6 +1,6 @@
 import { getMetadataArgsStorage, ObjectKeyAny } from "../src/mod.ts";
 import { AppSettings } from "../mod.ts";
-import { writeJsonSync } from "https://deno.land/std@0.61.0/fs/write_json.ts";
+import { writeJsonSync } from "https://deno.land/std@0.65.0/fs/write_json.ts";
 
 import { RouteMetadata } from "../src/metadata/route.ts";
 import { MetadataArgsStorage } from "../src/metadata/metadata.ts";
