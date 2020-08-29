@@ -1,19 +1,7 @@
-import { Area, Controller, Get, Content, HttpError, App } from "../../mod.ts";
+import {  Content, HttpError, App } from "../../mod.ts";
 import { Context } from "../../src/models/context.ts";
-import { BadRequestError } from "../../src/http-error/BadRequestError.ts";
+import { HomeArea } from "./settings.ts";
 
-@Controller()
-export class HomeController {
-  @Get()
-  text() {
-    throw new BadRequestError("Message from controller");
-  }
-}
-
-@Area({
-  controllers: [HomeController],
-})
-export class HomeArea {}
 const app = new App({
   areas: [HomeArea],
   logging: false,

@@ -1,18 +1,5 @@
-import { App, Area, Controller, Get, QueryParam } from "../../mod.ts";
-import { SpaBuilder } from "../../src/middlewares/spa-builder.ts";
-
-@Controller("/home")
-export class HomeController {
-  @Get("/text")
-  text(@QueryParam("name") name: string) {
-    return `Hey! ${name}`;
-  }
-}
-
-@Area({
-  controllers: [HomeController],
-})
-export class HomeArea {}
+import { App, SpaBuilder } from "../../mod.ts";
+import { HomeArea } from "./settings.ts";
 
 const app = new App({
   areas: [HomeArea],
