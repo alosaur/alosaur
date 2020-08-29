@@ -16,5 +16,9 @@ export * from "./src/injection/index.ts";
 // Models
 export * from "./src/models/mod.ts";
 
+// Version
+
+export * from "./src/version.ts";
+
 // Application
 export * from "./src/mod.ts";
