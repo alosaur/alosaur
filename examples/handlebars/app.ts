@@ -1,4 +1,4 @@
-import { Handlebars } from "https://deno.land/x/handlebars@v0.2.2/mod.ts";
+import { Handlebars } from "https://deno.land/x/handlebars@v0.4.1/mod.ts";
 import {
   App,
   Area,
