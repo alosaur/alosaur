@@ -22,7 +22,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - [SPA middleware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
 - [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
 - [Database PostgreSQL](https://github.com/alosaur/alosaur/tree/master/examples/db)
-- Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/alosaur/tree/master/examples//angular)
+- Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/alosaur/tree/master/examples//angular), [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 - [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
@@ -269,7 +269,7 @@ return View("page", 404); // return 404 status
 ## Render pages
 
 Alosaur can suppport any html renderer. All you have to do is define the rendering function in the settings.
-For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/angular_deno)
+For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/angular_deno), [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 
 
 ```ts
