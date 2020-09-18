@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html>
+  <%~ await includeFile('./header', { title: 'Eta' }) %>
+  <body>
+    <%~ await it.body %>
+    <%~ await includeFile('./footer') %>
+  </body>
+</html>
