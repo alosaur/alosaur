@@ -375,7 +375,7 @@ const app = new App({
     areas: [HomeArea],
 });
 
-// added tranform function
+// add transform function
 app.useTransform({
     type: 'body', // parse body params
     getTransform: (transform: any, body: any) => {
