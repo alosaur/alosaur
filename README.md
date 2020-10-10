@@ -311,7 +311,9 @@ Handlebars support custom config, [more about handlebars for deno](https://githu
 
 You can use different transformers
 
-For example `class-validator` and `class-transformer` for body
+For example `class-validator` and `class-transformer` for body.
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/validator)
 
 post.model.ts:
 
