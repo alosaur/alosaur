@@ -129,7 +129,20 @@ And run
 
 ## OpenAPI v3
 
-Example in `examples/basic/openapi.ts`
+[Full example](https://github.com/alosaur/alosaur/tree/master/basic/)
+
+```ts
+AlosaurOpenApiBuilder.create(settings)
+  .addTitle("Basic Application")
+  .addVersion("1.0.0")
+  .addDescription("Example Alosaur OpenApi generate")
+  .addServer({
+    url: "http://localhost:8000",
+    description: "Local server",
+  })
+  .saveToFile("./examples/basic/api.json");
+```
+
 
 Generate OpenAPI file:
 
@@ -141,6 +154,8 @@ deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
 ## Middleware
 
 You can create middleware and register it in area or all application layer.
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/basic/)
 
 ```ts
 @Middleware(new RegExp('/'))
@@ -185,6 +200,8 @@ app.use(/\//, new Log());
 Hooks - middleware for area, controller and actions with supports DI container.
 
 Hook in Alosaur there are three types: `onPreAction, onPostAction, onCatchAction`.
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
 ```typescript
 type PayloadType = string; // can use any type for payload
@@ -249,11 +266,11 @@ app.error((context: Context<any>, error: Error) => {
 
 There are 3 ways of information output
 
-https://github.com/alosaur/alosaur/tree/master/src/renderer
-
 - **Content** similar `return {};` by default Status 200 OK
 - **View** uses with template engine, `return View("index", model);`
 - **Redirect** and **RedirectPermanent** status 301,302 `return Redirect('/to/page')`
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/src/renderer)
 
 ```ts
 
@@ -410,6 +427,8 @@ post(@Body(parser) data: ParsedObject) {
 ## Custom Decorators
 
 You can add any decorator and put it in a DI system.
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
 Example with hooks:
 
