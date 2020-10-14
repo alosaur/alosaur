@@ -15,6 +15,18 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 **[Documentation](https://github.com/alosaur/alosaur/tree/master/docs)**
 
 ---
+
+## Features roadmap
+
+Q4 2020 – Oct-Dec
+
+- WebSocket wrapper
+- SSE
+- OpenAPI type reference
+- microservice connector with WASM
+- implement passport strategy
+
+---
 ## Examples
 
 - [Basic + OpenAPI v3 generator (Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
