@@ -1,4 +1,4 @@
-import { Controller, Content, Get } from "https://deno.land/x/alosaur/mod.ts";
+import { Content, Controller, Get } from "https://deno.land/x/alosaur/mod.ts";
 
 @Controller("/info")
 export class InfoController {

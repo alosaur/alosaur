@@ -2,8 +2,8 @@ import {
   Cookie,
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.56.0/http/cookie.ts";
-import { Response } from "https://deno.land/std@0.56.0/http/server.ts";
+} from "https://deno.land/std@0.65.0/http/cookie.ts";
+import { Response } from "https://deno.land/std@0.65.0/http/server.ts";
 import {
   App,
   Area,
@@ -14,6 +14,7 @@ import {
   ServerRequest,
 } from "../../mod.ts";
 import { Redirect } from "../../src/renderer/redirect.ts";
+import { WebsocketMiddleware } from "./websocket.middlware.ts";
 
 @Controller("/home")
 export class HomeController {
@@ -40,12 +41,13 @@ export class HomeArea {}
 
 const app = new App({
   areas: [HomeArea],
+  logging: false,
 });
 
 app.useStatic({
-  root: `${Deno.cwd()}/examples/static/www`,
+  root: `${Deno.cwd()}/examples/ws/www`,
   index: "index.html",
-  baseRoute: "/www/",
-} // or undefined for default route /
-);
+});
+
+app.use(/^\/ws$/, new WebsocketMiddleware());
 app.listen();

@@ -3,8 +3,8 @@ export {
   assertEquals,
   assertThrows,
   assertThrowsAsync,
-} from "https://deno.land/std@0.69.0/testing/asserts.ts";
+} from "https://deno.land/std@0.74.0/testing/asserts.ts";
 
-export { TextProtoReader } from "https://deno.land/std@0.69.0/textproto/mod.ts";
+export { TextProtoReader } from "https://deno.land/std@0.74.0/textproto/mod.ts";
 
-export { BufReader } from "https://deno.land/std@0.69.0/io/bufio.ts";
+export { BufReader } from "https://deno.land/std@0.74.0/io/bufio.ts";

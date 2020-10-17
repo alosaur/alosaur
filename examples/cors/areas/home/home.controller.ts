@@ -1,8 +1,4 @@
-import {
-  Controller,
-  Delete,
-  Put,
-} from "../../../../mod.ts";
+import { Controller, Delete, Put } from "../../../../mod.ts";
 import { Get } from "../../../../src/decorator/Get.ts";
 import { Post } from "../../../../src/decorator/Post.ts";
 import { Body } from "../../../../src/decorator/Body.ts";

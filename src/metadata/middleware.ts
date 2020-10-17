@@ -1,4 +1,4 @@
-import { MiddlewareTarget } from "../models/middleware-target.ts";
+import { IMiddleware } from "../models/middleware-target.ts";
 
 export class MiddlewareMetadata {
   target: Function;
@@ -21,7 +21,7 @@ export interface MiddlewareMetadataArgs<TState> {
   /**
      * Indicates object which is used by this Middleware.
      */
-  target: MiddlewareTarget<TState>;
+  target: IMiddleware<TState>;
 
   /**
      * Route for all controllers registered in this Middleware.

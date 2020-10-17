@@ -1,17 +1,14 @@
+import { Controller, ForbiddenError } from "../../../../mod.ts";
 import {
-  Controller,
-  ForbiddenError,
-} from "../../../../mod.ts";
-import {
-  Get,
-  QueryParam,
+  Body,
   Cookie,
+  Delete,
+  Get,
+  Param,
+  Post,
+  QueryParam,
   Req,
   Res,
-  Post,
-  Body,
-  Param,
-  Delete,
 } from "../../../../src/decorator/mod.ts";
 import { Request, Response } from "../../../../mod.ts";
 

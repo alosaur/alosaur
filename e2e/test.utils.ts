@@ -1,4 +1,4 @@
-import { assert, TextProtoReader, BufReader } from "../src/deps_test.ts";
+import { assert, BufReader, TextProtoReader } from "../src/deps_test.ts";
 
 let server: Deno.Process;
 

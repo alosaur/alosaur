@@ -1,4 +1,4 @@
-import { Content, HttpError, App } from "../../mod.ts";
+import { App, Content, HttpError } from "../../mod.ts";
 import { Context } from "../../src/models/context.ts";
 import { HomeArea } from "./settings.ts";
 

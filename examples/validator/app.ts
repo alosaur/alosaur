@@ -1,6 +1,6 @@
 import validator from "https://jspm.dev/class-validator@0.8.5";
 import transformer from "https://jspm.dev/class-transformer@0.2.3";
-import { App, Area, Controller, Post, Body } from "../../mod.ts";
+import { App, Area, Body, Controller, Post } from "../../mod.ts";
 import { PostModel } from "./models/post.ts";
 
 const { validate } = validator;

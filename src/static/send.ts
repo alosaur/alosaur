@@ -4,12 +4,12 @@
  */
 
 import {
-  sep,
-  parse,
-  extname,
   basename,
-  ServerRequest,
   contentType,
+  extname,
+  parse,
+  sep,
+  ServerRequest,
 } from "../deps.ts";
 import { isAbsolute, join, normalize, resolve } from "../deps.ts";
 

@@ -1,4 +1,4 @@
-import { Controller, Content } from "../../../../mod.ts";
+import { Content, Controller } from "../../../../mod.ts";
 import { Get } from "../../../../src/decorator/Get.ts";
 
 @Controller("/info")

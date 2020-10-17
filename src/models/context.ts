@@ -2,7 +2,7 @@ import { Request } from "./request.ts";
 import { Response } from "./response.ts";
 import { ServerRequest } from "../deps.ts";
 
-export class Context<T> {
+export class Context<T = any> {
   public readonly request: Request;
   public readonly response: Response;
 

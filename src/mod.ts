@@ -1,5 +1,5 @@
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { serve, Server, HTTPOptions } from "./deps.ts";
+import { HTTPOptions, serve, Server } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
@@ -10,10 +10,10 @@ import { RouteMetadata } from "./metadata/route.ts";
 import { registerAreas } from "./utils/register-areas.ts";
 import { registerControllers } from "./utils/register-controllers.ts";
 import { getStaticFile } from "./utils/get-static-file.ts";
-import { MiddlewareTarget } from "./models/middleware-target.ts";
+import { IMiddleware } from "./models/middleware-target.ts";
 import {
-  TransformConfigMap,
   TransformConfig,
+  TransformConfigMap,
 } from "./models/transform-config.ts";
 
 import { HookMetadataArgs } from "./metadata/hook.ts";
@@ -163,6 +163,10 @@ export class App<TState> {
           await middleware.target.onPreRequest(context);
         }
 
+        if (context.response.isNotRespond()) {
+          continue;
+        }
+
         if (context.response.isImmediately()) {
           req.respond(context.response.getRaw());
           continue;
@@ -217,6 +221,7 @@ export class App<TState> {
             } else {
               // Resolve every post middleware if error was not caught
               for (const middleware of middlewares) {
+                //@ts-ignore
                 await middleware.target.onPostRequest(context);
               }
 
@@ -245,6 +250,7 @@ export class App<TState> {
 
         // Resolve every post middleware
         for (const middleware of middlewares) {
+          //@ts-ignore
           await middleware.target.onPostRequest(context);
         }
 
@@ -327,7 +333,7 @@ export class App<TState> {
     });
   }
 
-  public use(route: RegExp, middleware: MiddlewareTarget<TState>): void {
+  public use(route: RegExp, middleware: IMiddleware<TState>): void {
     this.metadata.middlewares.push({
       type: "middleware",
       target: middleware,
