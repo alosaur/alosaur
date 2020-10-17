@@ -1,5 +1,5 @@
-import { assertEquals, assert } from "../src/deps_test.ts";
-import { startServer, killServer, itLog } from "./test.utils.ts";
+import { assert, assertEquals } from "../src/deps_test.ts";
+import { itLog, killServer, startServer } from "./test.utils.ts";
 const { test } = Deno;
 
 const ContentTypeJson = "application/json; charset=utf-8";

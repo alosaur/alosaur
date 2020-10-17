@@ -18,10 +18,10 @@ export * from "./src/models/mod.ts";
 
 // Deps
 export {
+  HTTPOptions,
   serve,
   Server,
   ServerRequest,
-  HTTPOptions,
 } from "https://deno.land/std@0.74.0/http/server.ts";
 
 // Version

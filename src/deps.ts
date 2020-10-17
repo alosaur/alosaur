@@ -1,21 +1,21 @@
 export {
+  HTTPOptions,
+  Response,
   serve,
   Server,
   ServerRequest,
-  Response,
-  HTTPOptions,
 } from "https://deno.land/std@0.74.0/http/server.ts";
 export { getCookies } from "https://deno.land/std@0.74.0/http/cookie.ts";
 
 export {
-  normalize,
   basename,
   extname,
-  parse,
-  sep,
-  join,
-  resolve,
   isAbsolute,
+  join,
+  normalize,
+  parse,
+  resolve,
+  sep,
 } from "https://deno.land/std@0.74.0/path/mod.ts";
 
 export { contentType } from "https://deno.land/x/media_types@v2.4.2/mod.ts";

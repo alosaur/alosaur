@@ -1,5 +1,5 @@
-import { assertEquals, assert } from "../src/deps_test.ts";
-import { startServer, killServer, itLog } from "./test.utils.ts";
+import { assert, assertEquals } from "../src/deps_test.ts";
+import { itLog, killServer, startServer } from "./test.utils.ts";
 const { test } = Deno;
 
 // Test case from https://github.com/denoland/deno/blob/master/std/examples/chat/server_test.ts
@@ -17,26 +17,28 @@ test({
       itLog("\t '/'");
       let response = await fetch(baseUrl + "/");
       assertEquals(response.status, 200);
-      assertEquals(response.headers.get("content-type"), "text/html; charset=utf-8");
+      assertEquals(
+        response.headers.get("content-type"),
+        "text/html; charset=utf-8",
+      );
       const html = await response.text();
       assertEquals(html.includes("ws chat example"), true);
 
       itLog("\t '/ws'");
       const ws = new WebSocket("ws://localhost:8000/ws");
       await new Promise((resolve, reject) => {
-        ws.onmessage = ((message)  => {
+        ws.onmessage = ((message) => {
           assertEquals(message.data, "Connected: [1]");
 
-          ws.onmessage = ((message:{data: string}) => {
+          ws.onmessage = ((message: { data: string }) => {
             assertEquals(message.data, "[1]: Hello");
             ws.close();
-            reject()
+            reject();
             resolve();
           });
           ws.send("Hello");
         });
       });
-
     } catch (err) {
       console.log(err);
     } finally {

@@ -1,4 +1,4 @@
-import { renderFile, configure } from "https://deno.land/x/eta@v1.9.0/mod.ts";
+import { configure, renderFile } from "https://deno.land/x/eta@v1.9.0/mod.ts";
 import { App, Area, Controller, Get, QueryParam, View } from "../../mod.ts";
 
 const viewPath = `${Deno.cwd()}/examples/eta/views/`;

@@ -1,8 +1,8 @@
 import {
   getPathNameFromUrl,
   getRouteFromFullPath,
-  getRouteWithRouteParams,
   getRouteWithRegex,
+  getRouteWithRouteParams,
 } from "./route.utils.ts";
 import { RouteMetadata } from "../metadata/route.ts";
 

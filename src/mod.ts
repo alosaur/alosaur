@@ -1,5 +1,5 @@
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { serve, Server, HTTPOptions } from "./deps.ts";
+import { HTTPOptions, serve, Server } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
@@ -12,8 +12,8 @@ import { registerControllers } from "./utils/register-controllers.ts";
 import { getStaticFile } from "./utils/get-static-file.ts";
 import { IMiddleware } from "./models/middleware-target.ts";
 import {
-  TransformConfigMap,
   TransformConfig,
+  TransformConfigMap,
 } from "./models/transform-config.ts";
 
 import { HookMetadataArgs } from "./metadata/hook.ts";

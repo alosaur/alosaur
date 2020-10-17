@@ -1,5 +1,5 @@
 import { assertEquals } from "../../src/deps_test.ts";
-import { startServer, killServer } from "../test.utils.ts";
+import { killServer, startServer } from "../test.utils.ts";
 const { test } = Deno;
 
 /**

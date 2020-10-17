@@ -2,9 +2,9 @@ import { RouteMetadata } from "../metadata/route.ts";
 import {
   getPathNameFromUrl,
   getRouteFromFullPath,
-  getRouteWithRouteParams,
-  getRouteWithRegex,
   getRouteParams,
+  getRouteWithRegex,
+  getRouteWithRouteParams,
 } from "./route.utils.ts";
 
 // TODO

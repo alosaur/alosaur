@@ -1,7 +1,7 @@
 import {
   Cookie,
-  setCookie,
   getCookies,
+  setCookie,
 } from "https://deno.land/std@0.65.0/http/cookie.ts";
 import { Response } from "https://deno.land/std@0.65.0/http/server.ts";
 import {
@@ -41,7 +41,7 @@ export class HomeArea {}
 
 const app = new App({
   areas: [HomeArea],
-  logging: false
+  logging: false,
 });
 
 app.useStatic({
