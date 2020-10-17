@@ -21,10 +21,10 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 Q4 2020 – Oct-Dec
 
 - [x] WebSocket example
-- SSE
-- OpenAPI type reference
-- microservice connector with WASM
-- implement passport strategy
+- [ ] SSE
+- [ ] OpenAPI type reference
+- [ ] microservice connector with WASM
+- [ ] implement passport strategy
 
 ---
 ## Examples
