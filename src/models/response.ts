@@ -17,6 +17,7 @@ export class Response {
   public error?: Error;
 
   private immediately: boolean = false;
+  private notRespond: boolean = false;
 
   public setImmediately(): void {
     this.immediately = true;
@@ -24,6 +25,14 @@ export class Response {
 
   public isImmediately(): boolean {
     return this.immediately;
+  }
+
+  public setNotRespond(): void {
+    this.notRespond = true;
+  }
+
+  public isNotRespond(): boolean {
+    return this.notRespond;
   }
 
   public getRaw() {

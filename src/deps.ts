@@ -4,8 +4,8 @@ export {
   ServerRequest,
   Response,
   HTTPOptions,
-} from "https://deno.land/std@0.69.0/http/server.ts";
-export { getCookies } from "https://deno.land/std@0.69.0/http/cookie.ts";
+} from "https://deno.land/std@0.74.0/http/server.ts";
+export { getCookies } from "https://deno.land/std@0.74.0/http/cookie.ts";
 
 export {
   normalize,
@@ -16,6 +16,6 @@ export {
   join,
   resolve,
   isAbsolute,
-} from "https://deno.land/std@0.69.0/path/mod.ts";
+} from "https://deno.land/std@0.74.0/path/mod.ts";
 
 export { contentType } from "https://deno.land/x/media_types@v2.4.2/mod.ts";

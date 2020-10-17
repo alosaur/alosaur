@@ -16,8 +16,15 @@ export * from "./src/injection/index.ts";
 // Models
 export * from "./src/models/mod.ts";
 
-// Version
+// Deps
+export {
+  serve,
+  Server,
+  ServerRequest,
+  HTTPOptions,
+} from "https://deno.land/std@0.74.0/http/server.ts";
 
+// Version
 export * from "./src/version.ts";
 
 // Application
