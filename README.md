@@ -20,7 +20,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 Q4 2020 – Oct-Dec
 
-- WebSocket wrapper
+- [x] WebSocket example
 - SSE
 - OpenAPI type reference
 - microservice connector with WASM
@@ -136,7 +136,7 @@ And run
 -  -   [x] Add Dejs view render example
 -  -   [x] Add example with SQL drivers (PostgreSQL)
 -  -   [x] Add basic example in Docker container
--  -   [ ] Add WebSocket example
+-  -   [x] Add WebSocket example
 -  -   [ ] Add example with WASM
 
 ## OpenAPI v3
@@ -205,6 +205,37 @@ or in app
 const app = new App(settings);
 
 app.use(/\//, new Log());
+```
+
+
+### WebSocket middleware example
+
+Use `context.response.setNotRespond()` for return the rest of the requests
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
+
+```ts
+export class WebsocketMiddleware implements PreRequestMiddleware {
+  onPreRequest(context: Context) {
+    const { conn, r: bufReader, w: bufWriter, headers } =
+      context.request.serverRequest;
+
+    acceptWebSocket({
+      conn,
+      bufReader,
+      bufWriter,
+      headers,
+    })
+      .then(ChatHandler) // execute chat
+      .catch(async (e) => {
+        console.error(`failed to accept websocket: ${e}`);
+        await context.request.serverRequest.respond({ status: 400 });
+      });
+
+    context.response.setNotRespond(); // It is necessary to return the rest of the requests by standard
+  }
+}
+
 ```
 
 ## Hooks
