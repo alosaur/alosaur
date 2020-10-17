@@ -115,8 +115,8 @@ And run
 -   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
 -   [ ] Add OpenAPI type reference
 -   [x] Add Hooks example
--   [ ] Add WebSocket
--   [ ] Add SRE
+-   [x] Add WebSocket
+-   [ ] Add SSE
 -   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
 -   [ ] Add microservice connector with WASM
 -   [ ] Add benchmarks
