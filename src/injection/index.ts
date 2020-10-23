@@ -1,8 +1,8 @@
 import "./reflect.ts";
 
-export {
+export { Lifecycle } from "./types/index.ts";
+export type {
   DependencyContainer,
-  Lifecycle,
   RegistrationOptions,
 } from "./types/index.ts";
 export * from "./decorators/index.ts";
