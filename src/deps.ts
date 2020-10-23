@@ -1,9 +1,11 @@
 export {
-  HTTPOptions,
-  Response,
   serve,
   Server,
   ServerRequest,
+} from "https://deno.land/std@0.74.0/http/server.ts";
+export type {
+  HTTPOptions,
+  Response,
 } from "https://deno.land/std@0.74.0/http/server.ts";
 export { getCookies } from "https://deno.land/std@0.74.0/http/cookie.ts";
 
