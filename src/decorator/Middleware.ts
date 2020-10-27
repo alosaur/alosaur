@@ -5,6 +5,7 @@ export function Middleware(route: RegExp): Function {
     getMetadataArgsStorage().middlewares.push({
       type: "middleware",
       target: new middleware(),
+      object: middleware,
       route: route,
     });
   };

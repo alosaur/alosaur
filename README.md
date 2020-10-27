@@ -32,6 +32,7 @@ Q4 2020 – Oct-Dec
 - [Basic + OpenAPI v3 generator (Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
 - [CORS middleware](https://github.com/alosaur/alosaur/tree/master/examples/cors)
 - [SPA middleware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
+- [WebSocket middleware](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 - [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
 - [Database PostgreSQL](https://github.com/alosaur/alosaur/tree/master/examples/db)
 - Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/alosaur/tree/master/examples//angular), [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
@@ -101,6 +102,7 @@ And run
 -   -   [x] `@Cookie`
 -   -   [x] `@Req`
 -   -   [x] `@Res`
+-   -   [x] `@Ctx`
 -   -   [x] `@Middleware` with regex route
 -   -   [x] `@UseHook` for contoller and actions
 -   -   [x]  Support create custom decorators with app metadata
@@ -119,7 +121,6 @@ And run
 -   [ ] Add SSE
 -   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
 -   [ ] Add microservice connector with WASM
--   [ ] Add benchmarks
 -   [x] Transfer to Alosaur github organization
 -   [ ] Add docs and more examples
 
@@ -167,7 +168,7 @@ deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
 
 You can create middleware and register it in area or all application layer.
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/basic/)
+[Full example](https://github.com/alosaur/alosaur/tree/master/middlewares/)
 
 ```ts
 @Middleware(new RegExp('/'))
@@ -195,7 +196,7 @@ Register in app settings
 ```ts
 const settings: AppSettings = {
     areas: [HomeArea, InfoArea],
-    middlewares: [Log],
+    middlewares: [Log], // The order in this array corresponds to the order of the run middleware
 };
 ```
 

@@ -11,6 +11,7 @@ export * from "./QueryParam.ts";
 export * from "./Req.ts";
 export * from "./Res.ts";
 export * from "./Cookie.ts";
+export * from "./Context.ts";
 export * from "./Body.ts";
 
 export * from "./UseHook.ts";

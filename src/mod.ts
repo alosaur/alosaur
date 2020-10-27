@@ -24,6 +24,7 @@ import { getHooksForAction } from "./route/get-hooks.ts";
 import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
 import { container as defaultContainer } from "./injection/index.ts";
+import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -132,6 +133,8 @@ export class App<TState> {
 
     this.metadata.container = settings.container || defaultContainer;
 
+    this.sortMiddlewares(settings);
+
     registerAreas(this.metadata);
     registerControllers(
       this.metadata.controllers,
@@ -142,6 +145,22 @@ export class App<TState> {
 
     this.useStatic(settings.staticConfig);
     this.useViewRender(settings.viewRenderConfig);
+  }
+
+  // Sort middlewares by app settings
+  private sortMiddlewares(settings: AppSettings) {
+    if (settings.middlewares) {
+      let middlewares: MiddlewareMetadataArgs<TState>[] = [];
+
+      for (let middleware of settings.middlewares) {
+        middlewares.push(
+          this.metadata.middlewares.find((m) =>
+            m.object === middleware
+          ) as MiddlewareMetadataArgs<TState>,
+        );
+      }
+      this.metadata.middlewares = middlewares;
+    }
   }
 
   async listen(address: string | HTTPOptions = ":8000"): Promise<Server> {
@@ -329,6 +348,7 @@ export class App<TState> {
     this.metadata.middlewares.push({
       type: "middleware",
       target: builder,
+      object: builder,
       route: /\//,
     });
   }
@@ -337,6 +357,7 @@ export class App<TState> {
     this.metadata.middlewares.push({
       type: "middleware",
       target: middleware,
+      object: middleware,
       route,
     });
   }

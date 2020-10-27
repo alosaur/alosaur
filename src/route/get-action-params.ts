@@ -60,6 +60,10 @@ export async function getActionParams<T>(
         args.push(context.response);
         break;
 
+      case "context":
+        args.push(context);
+        break;
+
       case "route-param":
         if (route.routeParams && param.name) {
           args.push(route.routeParams[param.name]);
