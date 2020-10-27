@@ -1,5 +1,4 @@
-import { Context, Controller, Ctx } from "../../../../mod.ts";
-import { Get, QueryParam } from "../../../../src/decorator/mod.ts";
+import { Context, Controller, Ctx, Get, QueryParam } from "../../../../mod.ts";
 
 @Controller("/home")
 export class HomeController {
