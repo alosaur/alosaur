@@ -1,5 +1,5 @@
 # Websocket chat example
 
-This example is an adapter from https://deno.land/std@0.74.0/examples/chat/server.ts;
+This example is an adapter from https://deno.land/std@0.75.0/examples/chat/server.ts;
 
 It shows how to implement Alosaur Middleware for WebSocket.

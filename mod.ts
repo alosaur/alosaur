@@ -21,8 +21,8 @@ export {
   serve,
   Server,
   ServerRequest,
-} from "https://deno.land/std@0.74.0/http/server.ts";
-export type { HTTPOptions } from "https://deno.land/std@0.74.0/http/server.ts";
+} from "https://deno.land/std@0.75.0/http/server.ts";
+export type { HTTPOptions } from "https://deno.land/std@0.75.0/http/server.ts";
 
 // Version
 export * from "./src/version.ts";
