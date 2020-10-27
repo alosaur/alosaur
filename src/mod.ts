@@ -24,7 +24,7 @@ import { getHooksForAction } from "./route/get-hooks.ts";
 import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
 import { container as defaultContainer } from "./injection/index.ts";
-import {MiddlewareMetadataArgs} from "./metadata/middleware.ts";
+import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -149,11 +149,15 @@ export class App<TState> {
 
   // Sort middlewares by app settings
   private sortMiddlewares(settings: AppSettings) {
-    if(settings.middlewares) {
+    if (settings.middlewares) {
       let middlewares: MiddlewareMetadataArgs<TState>[] = [];
 
-      for(let middleware of settings.middlewares) {
-        middlewares.push(this.metadata.middlewares.find(m => m.object === middleware) as MiddlewareMetadataArgs<TState>);
+      for (let middleware of settings.middlewares) {
+        middlewares.push(
+          this.metadata.middlewares.find((m) =>
+            m.object === middleware
+          ) as MiddlewareMetadataArgs<TState>,
+        );
       }
       this.metadata.middlewares = middlewares;
     }
