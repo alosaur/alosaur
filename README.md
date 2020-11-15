@@ -21,7 +21,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 Q4 2020 – Oct-Dec
 
 - [x] WebSocket example
-- [ ] SSE
+- [x] SSE
 - [ ] OpenAPI type reference
 - [ ] microservice connector with WASM
 - [ ] implement passport strategy
@@ -116,7 +116,7 @@ And run
 -   [ ] Add OpenAPI type reference
 -   [x] Add Hooks example
 -   [x] Add WebSocket
--   [ ] Add SSE
+-   [x] Add SSE
 -   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
 -   [ ] Add microservice connector with WASM
 -   [ ] Add benchmarks
@@ -215,6 +215,9 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 [Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
+import { acceptWebSocket } from "https://deno.land/std@0.74.0/ws/mod.ts";
+import { Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
+
 export class WebsocketMiddleware implements PreRequestMiddleware {
   onPreRequest(context: Context) {
     const { conn, r: bufReader, w: bufWriter, headers } =
@@ -237,6 +240,30 @@ export class WebsocketMiddleware implements PreRequestMiddleware {
 }
 
 ```
+
+### SSE middleware example
+
+Use `context.response.setNotRespond()` for return the rest of the requests
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/sse)
+
+```ts
+import { acceptSSE, Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
+
+export class SseMiddleware implements PreRequestMiddleware {
+  async onPreRequest(context: Context) {
+    acceptSSE(context).then(ChatHandler) // execute chat
+      .catch(async (e) => {
+        console.error(`failed to accept sse: ${e}`);
+        await context.request.serverRequest.respond({ status: 400 });
+      });
+
+    context.response.setNotRespond();
+  }
+}
+
+```
+
 
 ## Hooks
 

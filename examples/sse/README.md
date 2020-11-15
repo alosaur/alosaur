@@ -8,7 +8,7 @@ import { acceptSSE, Context, PreRequestMiddleware } from "https://deno.land/x/al
 
 export class SseMiddleware implements PreRequestMiddleware {
   async onPreRequest(context: Context) {
-    acceptSSE(context).then(ChatHandler) // 
+    acceptSSE(context).then(ChatHandler) // execute chat
       .catch(async (e) => {
         console.error(`failed to accept sse: ${e}`);
         await context.request.serverRequest.respond({ status: 400 });
