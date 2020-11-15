@@ -14,7 +14,7 @@ import {
   ServerRequest,
 } from "../../mod.ts";
 import { Redirect } from "../../src/renderer/redirect.ts";
-import {SseMiddleware} from "./sse.middlware.ts";
+import { SseMiddleware } from "./sse.middlware.ts";
 
 @Controller("/home")
 export class HomeController {

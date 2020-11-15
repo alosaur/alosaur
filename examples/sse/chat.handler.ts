@@ -1,30 +1,13 @@
-import {
-  isWebSocketCloseEvent,
-  WebSocket,
-} from "https://deno.land/std@0.74.0/ws/mod.ts";
-
-const clients = new Map<number, WebSocket>();
+const clients = new Map<number, Function>();
 let clientId = 0;
 function dispatch(msg: string): void {
   for (const client of clients.values()) {
-    client.send(msg);
+    client(msg);
   }
 }
 
-export async function ChatHandler(ws: WebSocket): Promise<void> {
+export async function ChatHandler(send: Function): Promise<void> {
   const id = ++clientId;
-  clients.set(id, ws);
+  clients.set(id, send);
   dispatch(`Connected: [${id}]`);
-
-  for await (const msg of ws) {
-    console.log(`msg:${id}`, msg);
-
-    if (typeof msg === "string") {
-      dispatch(`[${id}]: ${msg}`);
-    } else if (isWebSocketCloseEvent(msg)) {
-      clients.delete(id);
-      dispatch(`Closed: [${id}]`);
-      break;
-    }
-  }
 }

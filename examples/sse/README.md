@@ -1,5 +1,21 @@
-# Websocket chat example
+## SSE Example
 
-This example is an adapter from https://deno.land/std@0.74.0/examples/chat/server.ts;
+It shows how to implement Alosaur Middleware for SSE.
 
-It shows how to implement Alosaur Middleware for WebSocket.
+```ts
+import { ChatHandler } from "./chat.handler.ts";
+import { acceptSSE, Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
+
+export class SseMiddleware implements PreRequestMiddleware {
+  async onPreRequest(context: Context) {
+    acceptSSE(context).then(ChatHandler) // 
+      .catch(async (e) => {
+        console.error(`failed to accept sse: ${e}`);
+        await context.request.serverRequest.respond({ status: 400 });
+      });
+
+    context.response.setNotRespond();
+  }
+}
+
+```
