@@ -3,6 +3,7 @@
 Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 ![test](https://github.com/alosaur/alosaur/workflows/test/badge.svg)
+![sponsors](https://opencollective.com/alosaur/sponsors/badge.svg)
 
 -   **Area** - these are the modules of your application.
 -   **Controller** - are responsible for controlling the flow of the application execution.
@@ -557,3 +558,12 @@ Then you can add anywhere you want. For example action of controller:
     return "Hi! this protected info";
   }
 ```
+
+
+## Sponsors
+
+<a  align="center" href="https://opencollective.com/libertyware-limited" target="_blank"><img src="https://images.opencollective.com/libertyware-limited/647a24a/logo/256.png" width="100"></a>
+
+### Backers
+
+<a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000"></a>
