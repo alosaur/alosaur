@@ -8,10 +8,13 @@ export interface SessionInterface {
 }
 
 export interface SessionOptions {
-  cookieKey?: string;
+  /** Security key for create hash **/
+  security: string;
+  /** Key for save in cookie default 'sid' **/
+  name?: string;
   /** Expiration date of the cookie. */
   expires?: Date;
-  /** Max-Age of the Cookie. Must be integer superior to 0. */
+  /** Max-Age of the session Cookie. Must be integer superior to 0. */
   maxAge?: number;
   /** Specifies those hosts to which the cookie will be sent. */
   domain?: string;
