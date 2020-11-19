@@ -9,7 +9,10 @@ const { test } = Deno;
 test({
   name: "[Session] middleware create test",
   async fn() {
-    const middleware = new SessionMiddleware(new MemoryStore(), {security: "key of secure"});
+    const middleware = new SessionMiddleware(
+      new MemoryStore(),
+      { security: "key of secure" },
+    );
 
     // first unsession request
     const req = new ServerRequest();
@@ -38,14 +41,16 @@ test({
     await middleware.onPreRequest(context3);
 
     assertEquals(await context3.security!.session!.get("testVal"), undefined);
-
   },
 });
 
 test({
   name: "[Session] middleware options test",
   async fn() {
-    const middleware = new SessionMiddleware(new MemoryStore(), {maxAge: 100, security: "key of secure"});
+    const middleware = new SessionMiddleware(
+      new MemoryStore(),
+      { maxAge: 100, security: "key of secure" },
+    );
 
     // first unsession request
     const req = new ServerRequest();
@@ -59,11 +64,13 @@ test({
   },
 });
 
-
 test({
   name: "[Session] middleware max age test",
   async fn() {
-    const middleware = new SessionMiddleware(new MemoryStore(), { maxAge: 100,security: "key of secure"});
+    const middleware = new SessionMiddleware(
+      new MemoryStore(),
+      { maxAge: 100, security: "key of secure" },
+    );
 
     // first unsession request
     const req = new ServerRequest();
