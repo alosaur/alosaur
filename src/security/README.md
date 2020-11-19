@@ -4,7 +4,8 @@ Contains the security and authorization middlewares for Alosaur
 
 ### TODO
 
-- [ ] Identifications middlwares like session
+- [x] Identifications middlwares like session
+  - [ ] Sign session hash with [noble-secp256k1](https://github.com/paulmillr/noble-secp256k1)
 - [ ] context.security.signIn() / signOut() / getUser()
 - [ ] Authentication strategies
   - [ ] Cookies

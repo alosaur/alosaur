@@ -1,12 +1,18 @@
-import { SameSite } from "https://deno.land/std@0.74.0/http/cookie.ts";
-import { SessionStore } from "./store/store.interface.ts";
+## Alosaur.Security.Session
 
-export interface SessionInterface {
-  get<T>(key: string): Promise<T>;
-  set<T>(key: string, value: T): Promise<void>;
-  store: SessionStore;
-}
+Use session middleware
+```ts
+...
 
+const store = new MemoryStore();
+await store.init();
+
+app.use(/\//,  new SessionMiddleware(store, {secret: "secret sign key"}));
+
+``` 
+
+session options interface
+```ts
 export interface SessionOptions {
   /** Security key for sign hash **/
   security: string;
@@ -28,3 +34,5 @@ export interface SessionOptions {
    * be sent along with cross-site requests. */
   sameSite?: SameSite;
 }
+
+```

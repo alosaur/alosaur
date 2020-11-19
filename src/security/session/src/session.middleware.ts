@@ -58,12 +58,14 @@ export class SessionMiddleware implements PreRequestMiddleware {
   }
 
   private getSessionIdCookie(context: Context): string | undefined {
+    // TODO add verify cookie
     const cookies = getCookies(context.request.serverRequest);
 
     return cookies && cookies[this.cookieKey];
   }
 
   private setSessionIdCookie(sid: string, context: Context): void {
+    // TODO add sign cookie
     setCookie(
       context.response,
       { ...this.options, name: this.cookieKey, value: sid },
