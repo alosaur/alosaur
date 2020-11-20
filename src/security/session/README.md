@@ -9,13 +9,89 @@ await store.init();
 
 app.use(/\//,  new SessionMiddleware(store, {secret: "6b911fd37cdf5c81d4c0adb1ab7fa822ed253ab0ad9aa18d77257c88b29b718e"}));
 
-``` 
 
-session options interface
+
+// then you can use Context in action:
+// action
+@Get('counter')
+public action(@Ctx() context: Context) {
+    context.security.session.set("testValue", 1);
+    context.security.session.get("testValue", 1);
+    
+    const sid = context.security.session.sessionId;
+    
+    console.log(sid);
+    
+    // and use your store
+    await context.security.session.store.exist(sid);
+}
+ 
+```
+
+Store interface:
+```ts
+/**
+ * Store for sessions
+ */
+export interface SessionStore {
+  /**
+   * Initialize this store on start application
+   */
+  init(): Promise<void>;
+
+  /**
+   * Check exist SessionId in store
+   * @param sid SessionId
+   */
+  exist(sid: string): Promise<boolean>;
+
+  /**
+   * Create SessionId in store
+   * @param sid SessionId
+   */
+  create(sid: string): Promise<void>;
+
+  /**
+   * Delete Session from store
+   * @param sid SessionId
+   */
+  delete(sid: string): Promise<void>;
+
+  /**
+   * Get object value by Session
+   * @param sid SessionId
+   */
+  get(sid: string): Promise<any>;
+
+  /**
+   *
+   * @param sid SessionId
+   * @param key string
+   * @param value any
+   */
+  setValue(sid: string, key: string, value: any): Promise<void>;
+
+  /**
+   * Returns value by key in store
+   * @param sid SessionId
+   * @param key string
+   */
+  getValue(sid: string, key: string): Promise<any>;
+
+  /**
+   * Clear all store
+   */
+  clear(): Promise<void>;
+}
+
+
+```
+
+Session options interface
 ```ts
 export interface SessionOptions {
   /** Security key for sign hash **/
-  security: string;
+  secret: Uint8Array | bigint | number | string;
   /** Key for save in cookie default 'sid' **/
   name?: string;
   /** Expiration date of the cookie. */
