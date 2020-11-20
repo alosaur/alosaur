@@ -24,16 +24,19 @@ test({
 
     await middleware.onPreRequest(context);
     await context.security!.session!.set("testVal", 1);
-    const cookies = context.response.headers.get("set-cookie")!.replace("sid=", "").split(", ");
+    const cookies = context.response.headers.get("set-cookie")!.replace(
+      "sid=",
+      "",
+    ).split(", ");
     const sid = cookies[0];
-    const sign = cookies[1].replace("sid-s=","");
+    const sign = cookies[1].replace("sid-s=", "");
 
     assert(sid);
     assert(sign);
     assertEquals(await context.security!.session!.get("testVal"), 1);
 
     // second session request with sid
-    req.headers.set("Cookie", "sid=" + sid +"; sid-s=" + sign);
+    req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
     const context2 = new Context(req);
     await middleware.onPreRequest(context2);
@@ -85,9 +88,12 @@ test({
 
     await middleware.onPreRequest(context);
     await context.security!.session!.set("testVal", 1);
-    const cookies = context.response.headers.get("set-cookie")!.replace("sid=", "").split(", ");
+    const cookies = context.response.headers.get("set-cookie")!.replace(
+      "sid=",
+      "",
+    ).split(", ");
     const sid = cookies[0];
-    const sign = cookies[1].replace("sid-s=","");
+    const sign = cookies[1].replace("sid-s=", "");
 
     assert(sid);
     assertEquals(await context.security!.session!.get("testVal"), 1);
@@ -96,7 +102,7 @@ test({
     await delay(500);
 
     // second session request with sid
-    req.headers.set("Cookie", "sid=" + sid +"; sid-s=" + sign);
+    req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
     const context2 = new Context(req);
     await middleware.onPreRequest(context2);

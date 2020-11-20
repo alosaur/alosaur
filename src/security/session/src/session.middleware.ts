@@ -69,13 +69,16 @@ export class SessionMiddleware implements PreRequestMiddleware {
     const sidHash = cookies[this.cookieKey];
     const sign = cookies[this.cookieKey + SIGNATURE_PREFIX_KEY];
 
-    if(this.isValidSessionId(sidHash, sign)) {
-        return sidHash;
+    if (this.isValidSessionId(sidHash, sign)) {
+      return sidHash;
     }
     return undefined;
   }
 
-  private async setSessionIdCookie(sessionIdHash: string, context: Context): Promise<void> {
+  private async setSessionIdCookie(
+    sessionIdHash: string,
+    context: Context,
+  ): Promise<void> {
     const sign = await secp.sign(sessionIdHash, this.options.secret);
 
     // set hash
@@ -85,13 +88,17 @@ export class SessionMiddleware implements PreRequestMiddleware {
     );
     // set signre
     setCookie(
-        context.response,
-        { ...this.options, name: this.cookieKey+SIGNATURE_PREFIX_KEY, value: sign.toString() },
+      context.response,
+      {
+        ...this.options,
+        name: this.cookieKey + SIGNATURE_PREFIX_KEY,
+        value: sign.toString(),
+      },
     );
   }
 
   private isValidSessionId(sidHash: string, sign: string): boolean {
-    if(!sidHash) return false;
+    if (!sidHash) return false;
     return secp.verify(sign, sidHash, this.publicKey);
   }
 
