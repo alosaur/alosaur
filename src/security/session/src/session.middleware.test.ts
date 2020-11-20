@@ -6,12 +6,14 @@ import { assert, assertEquals } from "../../../deps_test.ts";
 
 const { test } = Deno;
 
+const SECURITY_KEY = 11231n;
+
 test({
   name: "[Session] middleware create test",
   async fn() {
     const middleware = new SessionMiddleware(
       new MemoryStore(),
-      { security: "key of secure" },
+      { secret: SECURITY_KEY },
     );
 
     // first unsession request
@@ -22,13 +24,16 @@ test({
 
     await middleware.onPreRequest(context);
     await context.security!.session!.set("testVal", 1);
-    const sid = context.response.headers.get("set-cookie")!.replace("sid=", "");
+    const cookies = context.response.headers.get("set-cookie")!.replace("sid=", "").split(", ");
+    const sid = cookies[0];
+    const sign = cookies[1].replace("sid-s=","");
 
     assert(sid);
+    assert(sign);
     assertEquals(await context.security!.session!.get("testVal"), 1);
 
     // second session request with sid
-    req.headers.set("Cookie", "sid=" + sid);
+    req.headers.set("Cookie", "sid=" + sid +"; sid-s=" + sign);
 
     const context2 = new Context(req);
     await middleware.onPreRequest(context2);
@@ -49,7 +54,7 @@ test({
   async fn() {
     const middleware = new SessionMiddleware(
       new MemoryStore(),
-      { maxAge: 100, security: "key of secure" },
+      { maxAge: 100, secret: SECURITY_KEY },
     );
 
     // first unsession request
@@ -69,7 +74,7 @@ test({
   async fn() {
     const middleware = new SessionMiddleware(
       new MemoryStore(),
-      { maxAge: 100, security: "key of secure" },
+      { maxAge: 100, secret: SECURITY_KEY },
     );
 
     // first unsession request
@@ -80,7 +85,9 @@ test({
 
     await middleware.onPreRequest(context);
     await context.security!.session!.set("testVal", 1);
-    const sid = context.response.headers.get("set-cookie")!.replace("sid=", "");
+    const cookies = context.response.headers.get("set-cookie")!.replace("sid=", "").split(", ");
+    const sid = cookies[0];
+    const sign = cookies[1].replace("sid-s=","");
 
     assert(sid);
     assertEquals(await context.security!.session!.get("testVal"), 1);
@@ -89,7 +96,7 @@ test({
     await delay(500);
 
     // second session request with sid
-    req.headers.set("Cookie", "sid=" + sid);
+    req.headers.set("Cookie", "sid=" + sid +"; sid-s=" + sign);
 
     const context2 = new Context(req);
     await middleware.onPreRequest(context2);

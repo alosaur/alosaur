@@ -9,7 +9,7 @@ export interface SessionInterface {
 
 export interface SessionOptions {
   /** Security key for sign hash **/
-  security: string;
+  secret: Uint8Array | bigint | number | string;
   /** Key for save in cookie default 'sid' **/
   name?: string;
   /** Expiration date of the cookie. */

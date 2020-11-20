@@ -1,3 +1,4 @@
+import * as secp from "https://deno.land/x/secp256k1/mod.ts";
 import { PreRequestMiddleware } from "../../../models/middleware-target.ts";
 import { Context } from "../../../models/context.ts";
 import { SessionStore } from "./store/store.interface.ts";
@@ -5,21 +6,24 @@ import { Session } from "./session.instance.ts";
 import {
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.74.0/http/cookie.ts";
+} from "https://deno.land/std@0.78.0/http/cookie.ts";
 import { SessionOptions } from "./session.interface.ts";
 
 const DEFAULT_SESSION_COOKIE_KEY = "sid";
 const DEFAULT_MAX_AGE = 24 * 60 * 60 * 1000; // day
 const EXPIRES_STORE_KEY = "_expires";
+const SIGNATURE_PREFIX_KEY = "-s";
 
 export class SessionMiddleware implements PreRequestMiddleware {
   private readonly cookieKey: string;
+  private readonly publicKey: any;
 
   constructor(
     private readonly store: SessionStore,
     private readonly options: SessionOptions,
   ) {
     this.cookieKey = options.name || DEFAULT_SESSION_COOKIE_KEY;
+    this.publicKey = secp.getPublicKey(options.secret as any);
   }
 
   async onPreRequest(context: Context) {
@@ -50,7 +54,7 @@ export class SessionMiddleware implements PreRequestMiddleware {
       Date.now() + (this.options.maxAge || DEFAULT_MAX_AGE),
     );
 
-    this.setSessionIdCookie(session.sessionId, context);
+    await this.setSessionIdCookie(session.sessionId, context);
 
     return session;
   }
@@ -61,18 +65,34 @@ export class SessionMiddleware implements PreRequestMiddleware {
   }
 
   private getSessionIdCookie(context: Context): string | undefined {
-    // TODO add verify cookie
     const cookies = getCookies(context.request.serverRequest);
+    const sidHash = cookies[this.cookieKey];
+    const sign = cookies[this.cookieKey + SIGNATURE_PREFIX_KEY];
 
-    return cookies && cookies[this.cookieKey];
+    if(this.isValidSessionId(sidHash, sign)) {
+        return sidHash;
+    }
+    return undefined;
   }
 
-  private setSessionIdCookie(sid: string, context: Context): void {
-    // TODO add sign cookie
+  private async setSessionIdCookie(sessionIdHash: string, context: Context): Promise<void> {
+    const sign = await secp.sign(sessionIdHash, this.options.secret);
+
+    // set hash
     setCookie(
       context.response,
-      { ...this.options, name: this.cookieKey, value: sid },
+      { ...this.options, name: this.cookieKey, value: sessionIdHash },
     );
+    // set signre
+    setCookie(
+        context.response,
+        { ...this.options, name: this.cookieKey+SIGNATURE_PREFIX_KEY, value: sign.toString() },
+    );
+  }
+
+  private isValidSessionId(sidHash: string, sign: string): boolean {
+    if(!sidHash) return false;
+    return secp.verify(sign, sidHash, this.publicKey);
   }
 
   private assignToContext(context: Context, session: Session) {
