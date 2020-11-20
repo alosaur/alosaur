@@ -23,9 +23,9 @@ Q4 2020 – Oct-Dec
 
 - [x] WebSocket example
 - [x] SSE
+- [ ] Add Alosaur security [more...](https://github.com/alosaur/alosaur/tree/master/src/security)
 - [ ] OpenAPI type reference
 - [ ] microservice connector with WASM
-- [ ] implement passport strategy
 
 ---
 ## Examples
