@@ -14,10 +14,21 @@ const DEFAULT_MAX_AGE = 24 * 60 * 60 * 1000; // day
 const EXPIRES_STORE_KEY = "_expires";
 const SIGNATURE_PREFIX_KEY = "-s";
 
+/**
+ * Middleware for use sessions with signature hash
+ * DEFAULTS:
+ * DEFAULT_SESSION_COOKIE_KEY: sid
+ * DEFAULT_MAX_AGE: day
+ */
 export class SessionMiddleware implements PreRequestMiddleware {
   private readonly cookieKey: string;
   private readonly publicKey: any;
 
+  /**
+   * Creates instance
+   * @param store
+   * @param options
+   */
   constructor(
     private readonly store: SessionStore,
     private readonly options: SessionOptions,
@@ -26,6 +37,10 @@ export class SessionMiddleware implements PreRequestMiddleware {
     this.publicKey = secp.getPublicKey(options.secret as any);
   }
 
+  /**
+   * wrapped context on request
+   * @param context
+   */
   async onPreRequest(context: Context) {
     let session: Session;
 
@@ -45,6 +60,11 @@ export class SessionMiddleware implements PreRequestMiddleware {
     this.assignToContext(context, session);
   }
 
+  /**
+   * Create new session with expires
+   * @param context
+   * @private
+   */
   private async createNewSession(context: Context): Promise<Session> {
     const session = new Session(this.store);
     await this.store.create(session.sessionId);

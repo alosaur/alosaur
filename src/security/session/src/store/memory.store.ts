@@ -2,6 +2,9 @@ import { SessionStore } from "./store.interface.ts";
 
 type StringKeyObject = { [key: string]: any };
 
+/**
+ * Store for sessions in memory
+ */
 export class MemoryStore<T = StringKeyObject> implements SessionStore {
   private sessionMap: Map<string, StringKeyObject> = new Map<
     string,
