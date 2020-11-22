@@ -36,11 +36,11 @@ export class AutorizeHook implements
     let isAuthSuccess = false;
     const identity = context.security.auth.identity();
 
-    if (identity != undefined && !schemePayload.payload) {
+    if (identity != undefined && schemePayload.payload === undefined) {
       isAuthSuccess = true;
     }
 
-    if (schemePayload.payload && identity) {
+    if (schemePayload.payload && identity !== undefined) {
       // TODO add execute policy
 
       if (schemePayload.payload.roles) {
