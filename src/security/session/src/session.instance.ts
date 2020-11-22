@@ -9,6 +9,7 @@ import { createHash } from "https://deno.land/std@0.78.0/hash/mod.ts";
 export class Session implements SessionInterface {
   constructor(
     public readonly store: SessionStore,
+    public readonly sessionKey: string,
     public readonly sessionId: string = createHash("md5").update(v4.generate())
       .toString(),
   ) {
