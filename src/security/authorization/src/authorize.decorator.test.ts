@@ -1,11 +1,11 @@
 import { ServerRequest } from "../../../deps.ts";
 import { SecurityContext } from "../../context/security-context.ts";
-import {assert, assertEquals} from "../../../deps_test.ts";
+import { assert, assertEquals } from "../../../deps_test.ts";
 import { AutorizeHook } from "./authorize.decorator.ts";
 import { CookiesAuthentication } from "../../authentication/cookies/src/default-cookies.scheme.ts";
 import { SessionMiddleware } from "../../session/src/session.middleware.ts";
 import { MemoryStore } from "../../session/src/store/memory.store.ts";
-import {AuthMiddleware} from "./auth.middleware.ts";
+import { AuthMiddleware } from "./auth.middleware.ts";
 const { test } = Deno;
 
 const SECURITY_KEY = 11231n;
@@ -110,13 +110,13 @@ test({
     await authMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
-        CookieScheme,
-        { id: 1, roles: ["admin"] },
+      CookieScheme,
+      { id: 1, roles: ["admin"] },
     );
 
     const cookies = context.response.headers.get("set-cookie")!.replace(
-        "sid=",
-        "",
+      "sid=",
+      "",
     ).split(", ");
     const sid = cookies[0];
     const sign = cookies[1].replace("sid-s=", "");
@@ -132,19 +132,19 @@ test({
     await sessionMiddleware.onPreRequest(context2);
     await authMiddleware.onPreRequest(context2);
 
-    assertEquals(context.security.session!.sessionId, context2.security.session!.sessionId)
+    assertEquals(
+      context.security.session!.sessionId,
+      context2.security.session!.sessionId,
+    );
 
     const result = await hook.onPreAction(
-        context2,
-        { scheme: CookieScheme, payload: { roles: ["admin"] } },
+      context2,
+      { scheme: CookieScheme, payload: { roles: ["admin"] } },
     );
 
     assertEquals(result, true);
-
   },
 });
-
-
 
 test({
   name: "[Auth] AutorizeHook failed in second request",
@@ -157,13 +157,13 @@ test({
     await authMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
-        CookieScheme,
-        { id: 1, roles: ["admin"] },
+      CookieScheme,
+      { id: 1, roles: ["admin"] },
     );
 
     const cookies = context.response.headers.get("set-cookie")!.replace(
-        "sid=",
-        "",
+      "sid=",
+      "",
     ).split(", ");
     const sid = cookies[0];
     const sign = cookies[1].replace("sid-s=", "");
@@ -181,11 +181,10 @@ test({
     await authMiddleware.onPreRequest(context2);
 
     const result = await hook.onPreAction(
-        context2,
-        { scheme: CookieScheme, payload: { roles: ["admin"] } },
+      context2,
+      { scheme: CookieScheme, payload: { roles: ["admin"] } },
     );
 
     assertEquals(result, false);
-
   },
 });
