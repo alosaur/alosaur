@@ -21,7 +21,7 @@ import { App, Area, Controller, Get, QueryParam, View } from "../../mod.ts"
 const viewPath = `${Deno.cwd()}/examples/eta/views/`
 
 @Controller("")
-export class AccountController {
+export class HomeController {
   @Get("/")
   text(@QueryParam("name") name: string) {
     return View("main", { name })
@@ -29,7 +29,7 @@ export class AccountController {
 }
 
 @Area({
-  controllers: [AccountController]
+  controllers: [HomeController]
 })
 export class HomeArea {}
 
