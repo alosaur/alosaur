@@ -1,8 +1,11 @@
-import { PreRequestMiddleware } from "../../../models/middleware-target.ts";
+import {
+  MiddlewareTarget,
+  PreRequestMiddleware,
+} from "../../../models/middleware-target.ts";
 import { AuthenticationScheme } from "../../authentication/core/auth.interface.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 
-export class AuthMiddleware implements PreRequestMiddleware {
+export class AuthMiddleware implements MiddlewareTarget {
   constructor(private readonly schemes: AuthenticationScheme[]) {
   }
 
@@ -10,5 +13,9 @@ export class AuthMiddleware implements PreRequestMiddleware {
     for (const scheme of this.schemes) {
       await scheme.authenticate(context);
     }
+  }
+
+  onPostRequest(): void {
+    // do nothing
   }
 }

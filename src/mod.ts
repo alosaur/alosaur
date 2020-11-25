@@ -173,8 +173,8 @@ export class App<TState> {
 
     for await (const req of server) {
       const context = this.isSecurityContext
-        ? new Context<TState>(req)
-        : new SecurityContext<TState>(req);
+        ? new SecurityContext<TState>(req)
+        : new Context<TState>(req);
       try {
         // Get middlewares in request
         const middlewares = this.metadata.middlewares.filter((m) =>

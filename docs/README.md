@@ -19,7 +19,7 @@
 import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/mod.ts'
 
 @Controller('/home')
-export class HomeController {
+export class AccountController {
   @Get('/text')
   text() {
     return "Hello world";
@@ -30,7 +30,7 @@ export class HomeController {
   }
 }
 @Area({
-  controllers: [HomeController]
+  controllers: [AccountController]
 })
 export class HomeArea {
 }

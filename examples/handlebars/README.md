@@ -5,7 +5,7 @@ import { Handlebars } from 'https://deno.land/x/handlebars@v0.2.2/mod.ts';
 import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from 'https://deno.land/x/alosaur/mod.ts';
 
 @Controller('')
-export class HomeController {
+export class AccountController {
     @Get('/')
     text(@QueryParam('name') name: string) {
         return View('index', { name });
@@ -13,7 +13,7 @@ export class HomeController {
 }
 
 @Area({
-    controllers: [HomeController],
+    controllers: [AccountController],
 })
 export class HomeArea {}
 

@@ -1,5 +1,8 @@
 import * as secp from "https://deno.land/x/secp256k1/mod.ts";
-import { PreRequestMiddleware } from "../../../models/middleware-target.ts";
+import {
+  MiddlewareTarget,
+  PreRequestMiddleware,
+} from "../../../models/middleware-target.ts";
 import { Context } from "../../../models/context.ts";
 import { SessionStore } from "./store/store.interface.ts";
 import { Session } from "./session.instance.ts";
@@ -23,7 +26,7 @@ const EXPIRES_STORE_KEY = "__alosaur-expires";
  * DEFAULT_SESSION_COOKIE_KEY: sid
  * DEFAULT_MAX_AGE: day
  */
-export class SessionMiddleware implements PreRequestMiddleware {
+export class SessionMiddleware implements MiddlewareTarget {
   private readonly cookieKey: string;
   private readonly publicKey: any;
 
@@ -61,6 +64,10 @@ export class SessionMiddleware implements PreRequestMiddleware {
     }
 
     this.assignToContext(context, session);
+  }
+
+  onPostRequest() {
+    // do nothing
   }
 
   /**
@@ -107,12 +114,18 @@ export class SessionMiddleware implements PreRequestMiddleware {
     // set hash
     setCookie(
       context.response,
-      { ...this.options, name: this.cookieKey, value: sessionIdHash },
+      {
+        path: "/",
+        ...this.options,
+        name: this.cookieKey,
+        value: sessionIdHash,
+      },
     );
     // set signature
     setCookie(
       context.response,
       {
+        path: "/",
         ...this.options,
         name: this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY,
         value: sign.toString(),
