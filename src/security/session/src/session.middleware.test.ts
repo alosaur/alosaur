@@ -1,8 +1,8 @@
 import { SessionMiddleware } from "./session.middleware.ts";
 import { MemoryStore } from "./store/memory.store.ts";
-import { Context } from "../../../models/context.ts";
 import { ServerRequest } from "../../../deps.ts";
 import { assert, assertEquals } from "../../../deps_test.ts";
+import { SecurityContext } from "../../context/security-context.ts";
 
 const { test } = Deno;
 
@@ -20,10 +20,10 @@ test({
     const req = new ServerRequest();
     req.headers = new Headers();
 
-    const context = new Context(req);
+    const context = new SecurityContext(req);
 
     await middleware.onPreRequest(context);
-    await context.security!.session!.set("testVal", 1);
+    await context.security.session!.set("testVal", 1);
     const cookies = context.response.headers.get("set-cookie")!.replace(
       "sid=",
       "",
@@ -33,22 +33,22 @@ test({
 
     assert(sid);
     assert(sign);
-    assertEquals(await context.security!.session!.get("testVal"), 1);
+    assertEquals(await context.security.session!.get("testVal"), 1);
 
     // second session request with sid
     req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new Context(req);
+    const context2 = new SecurityContext(req);
     await middleware.onPreRequest(context2);
 
-    assertEquals(await context2.security!.session!.get("testVal"), 1);
+    assertEquals(await context2.security.session!.get("testVal"), 1);
 
     // third request without sid
     req.headers = new Headers();
-    const context3 = new Context(req);
+    const context3 = new SecurityContext(req);
     await middleware.onPreRequest(context3);
 
-    assertEquals(await context3.security!.session!.get("testVal"), undefined);
+    assertEquals(await context3.security.session!.get("testVal"), undefined);
   },
 });
 
@@ -64,7 +64,7 @@ test({
     const req = new ServerRequest();
     req.headers = new Headers();
 
-    const context = new Context(req);
+    const context = new SecurityContext(req);
 
     await middleware.onPreRequest(context);
 
@@ -84,10 +84,10 @@ test({
     const req = new ServerRequest();
     req.headers = new Headers();
 
-    const context = new Context(req);
+    const context = new SecurityContext(req);
 
     await middleware.onPreRequest(context);
-    await context.security!.session!.set("testVal", 1);
+    await context.security.session!.set("testVal", 1);
     const cookies = context.response.headers.get("set-cookie")!.replace(
       "sid=",
       "",
@@ -96,7 +96,7 @@ test({
     const sign = cookies[1].replace("sid-s=", "");
 
     assert(sid);
-    assertEquals(await context.security!.session!.get("testVal"), 1);
+    assertEquals(await context.security.session!.get("testVal"), 1);
 
     // Delay more max age
     await delay(500);
@@ -104,10 +104,10 @@ test({
     // second session request with sid
     req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new Context(req);
+    const context2 = new SecurityContext(req);
     await middleware.onPreRequest(context2);
 
-    assertEquals(await context2.security!.session!.get("testVal"), undefined);
+    assertEquals(await context2.security.session!.get("testVal"), undefined);
   },
 });
 

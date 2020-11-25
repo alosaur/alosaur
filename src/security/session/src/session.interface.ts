@@ -1,9 +1,13 @@
 import { SameSite } from "https://deno.land/std@0.74.0/http/cookie.ts";
 import { SessionStore } from "./store/store.interface.ts";
 
+export const SESSION_SIGNATURE_PREFIX_KEY = "-s";
+
 export interface SessionInterface {
   get<T>(key: string): Promise<T>;
   set<T>(key: string, value: T): Promise<void>;
+  sessionId: string;
+  sessionKey: string;
   store: SessionStore;
 }
 

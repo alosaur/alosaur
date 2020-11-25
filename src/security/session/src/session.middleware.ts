@@ -1,5 +1,8 @@
 import * as secp from "https://deno.land/x/secp256k1/mod.ts";
-import { PreRequestMiddleware } from "../../../models/middleware-target.ts";
+import {
+  MiddlewareTarget,
+  PreRequestMiddleware,
+} from "../../../models/middleware-target.ts";
 import { Context } from "../../../models/context.ts";
 import { SessionStore } from "./store/store.interface.ts";
 import { Session } from "./session.instance.ts";
@@ -7,12 +10,15 @@ import {
   getCookies,
   setCookie,
 } from "https://deno.land/std@0.78.0/http/cookie.ts";
-import { SessionOptions } from "./session.interface.ts";
+import {
+  SESSION_SIGNATURE_PREFIX_KEY,
+  SessionOptions,
+} from "./session.interface.ts";
+import { SecurityContext } from "../../context/security-context.ts";
 
 const DEFAULT_SESSION_COOKIE_KEY = "sid";
 const DEFAULT_MAX_AGE = 24 * 60 * 60 * 1000; // day
-const EXPIRES_STORE_KEY = "_expires";
-const SIGNATURE_PREFIX_KEY = "-s";
+const EXPIRES_STORE_KEY = "__alosaur-expires";
 
 /**
  * Middleware for use sessions with signature hash
@@ -20,7 +26,7 @@ const SIGNATURE_PREFIX_KEY = "-s";
  * DEFAULT_SESSION_COOKIE_KEY: sid
  * DEFAULT_MAX_AGE: day
  */
-export class SessionMiddleware implements PreRequestMiddleware {
+export class SessionMiddleware implements MiddlewareTarget {
   private readonly cookieKey: string;
   private readonly publicKey: any;
 
@@ -41,7 +47,7 @@ export class SessionMiddleware implements PreRequestMiddleware {
    * wrapped context on request
    * @param context
    */
-  async onPreRequest(context: Context) {
+  async onPreRequest(context: SecurityContext) {
     let session: Session;
 
     const sessionId = this.getSessionIdCookie(context);
@@ -49,7 +55,7 @@ export class SessionMiddleware implements PreRequestMiddleware {
     if (sessionId === undefined || !await this.store.exist(sessionId)) {
       session = await this.createNewSession(context);
     } else {
-      session = new Session(this.store, sessionId);
+      session = new Session(this.store, this.cookieKey, sessionId);
 
       if (await this.isSessionExpired(session)) {
         await this.store.delete(sessionId);
@@ -60,13 +66,17 @@ export class SessionMiddleware implements PreRequestMiddleware {
     this.assignToContext(context, session);
   }
 
+  onPostRequest() {
+    // do nothing
+  }
+
   /**
    * Create new session with expires
    * @param context
    * @private
    */
-  private async createNewSession(context: Context): Promise<Session> {
-    const session = new Session(this.store);
+  private async createNewSession(context: SecurityContext): Promise<Session> {
+    const session = new Session(this.store, this.cookieKey);
     await this.store.create(session.sessionId);
 
     await session.set(
@@ -84,10 +94,10 @@ export class SessionMiddleware implements PreRequestMiddleware {
     return expires <= Date.now();
   }
 
-  private getSessionIdCookie(context: Context): string | undefined {
+  private getSessionIdCookie(context: SecurityContext): string | undefined {
     const cookies = getCookies(context.request.serverRequest);
     const sidHash = cookies[this.cookieKey];
-    const sign = cookies[this.cookieKey + SIGNATURE_PREFIX_KEY];
+    const sign = cookies[this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY];
 
     if (this.isValidSessionId(sidHash, sign)) {
       return sidHash;
@@ -104,14 +114,20 @@ export class SessionMiddleware implements PreRequestMiddleware {
     // set hash
     setCookie(
       context.response,
-      { ...this.options, name: this.cookieKey, value: sessionIdHash },
+      {
+        path: "/",
+        ...this.options,
+        name: this.cookieKey,
+        value: sessionIdHash,
+      },
     );
-    // set signre
+    // set signature
     setCookie(
       context.response,
       {
+        path: "/",
         ...this.options,
-        name: this.cookieKey + SIGNATURE_PREFIX_KEY,
+        name: this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY,
         value: sign.toString(),
       },
     );
@@ -122,8 +138,7 @@ export class SessionMiddleware implements PreRequestMiddleware {
     return secp.verify(sign, sidHash, this.publicKey);
   }
 
-  private assignToContext(context: Context, session: Session) {
-    if (!context.security) context.security = {};
+  private assignToContext(context: SecurityContext, session: Session) {
     context.security.session = session;
   }
 }
