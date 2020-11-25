@@ -52,7 +52,7 @@ app.ts:
 import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur@v0.21.1/mod.ts';
 
 @Controller() // or specific path @Controller("/home")
-export class AccountController {
+export class HomeController {
     @Get() // or specific path @Get("/hello")
     text() {
         return 'Hello world';
@@ -61,7 +61,7 @@ export class AccountController {
 
 // Declare module
 @Area({
-    controllers: [AccountController],
+    controllers: [HomeController],
 })
 export class HomeArea {}
 
@@ -305,7 +305,7 @@ uses:
 ```ts
 @UseHook(MyContollerHook) // or @UseHook(MyHook, 'payload') for all actions in controller
 @Controller()
-export class AccountController {
+export class HomeController {
 
     @UseHook(MyHook, 'payload') // only for one action
     @Get('/')
@@ -443,7 +443,7 @@ const { plainToClass } = transformer;
 
 // Create controller
 @Controller()
-export class AccountController {
+export class HomeController {
 
     @Post('/')
     async post(@Body(PostModel) data: PostModel) {
@@ -457,7 +457,7 @@ export class AccountController {
 
 // Declare controller in area
 @Area({
-    controllers: [AccountController],
+    controllers: [HomeController],
 })
 export class HomeArea { }
 
