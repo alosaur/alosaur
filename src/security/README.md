@@ -17,6 +17,6 @@ Contains the security and authorization middlewares for Alosaur
       - [ ] Twitter
       - [ ] ...
 - [x] Authorization decorators and hooks
-- [x] Authorization roles
-- [ ] Authorization policy
+- [x] Authorization decorators: roles
+- [x] Authorization decorators: policy
 - [ ] docs & examples

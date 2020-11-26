@@ -2,10 +2,15 @@ import { getMetadataArgsStorage } from "../../../mod.ts";
 import { HookTarget } from "../../../models/hook.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 import { BusinessType } from "../../../types/business.ts";
-import { AuthenticationScheme } from "../../authentication/core/auth.interface.ts";
+import {
+  AuthenticationScheme,
+  Identity,
+} from "../../authentication/core/auth.interface.ts";
 import { container } from "../../../injection/index.ts";
+import { AuthPolicy } from "./auth-policy.model.ts";
 
-type AuthPayload = { roles?: string[]; policy?: string[] };
+type AuthPayload = { roles?: string[]; policy?: AuthPolicy };
+type SchemePayload = { scheme: AuthenticationScheme; payload?: AuthPayload };
 
 export function Authorize(
   scheme: AuthenticationScheme,
@@ -31,7 +36,7 @@ export class AutorizeHook implements
   > {
   async onPreAction(
     context: SecurityContext<unknown>,
-    schemePayload: { scheme: AuthenticationScheme; payload?: AuthPayload },
+    schemePayload: SchemePayload,
   ) {
     let isAuthSuccess = false;
     const identity = context.security.auth.identity();
@@ -41,14 +46,8 @@ export class AutorizeHook implements
     }
 
     if (schemePayload.payload && identity !== undefined) {
-      // TODO add execute policy
-
-      if (schemePayload.payload.roles) {
-        isAuthSuccess = !!identity.roles &&
-          !!identity.roles.find((role) =>
-            schemePayload.payload!.roles!.find((crole) => crole === role)
-          );
-      }
+      isAuthSuccess = isRolesContains(identity, schemePayload.payload.roles) ||
+        await isPolicyValidResult(context, schemePayload.payload.policy);
     }
 
     isAuthSuccess
@@ -57,4 +56,16 @@ export class AutorizeHook implements
 
     return isAuthSuccess;
   }
+}
+
+function isRolesContains(identity: Identity<unknown>, roles?: string[]) {
+  return !!identity.roles && roles &&
+    !!identity.roles.find((role) => roles!.find((crole) => crole === role));
+}
+
+async function isPolicyValidResult(
+  context: SecurityContext,
+  policy?: AuthPolicy,
+) {
+  return !!policy && await policy(context);
 }

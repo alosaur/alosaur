@@ -1,4 +1,3 @@
-import { Context } from "../../../models/context.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 
 export interface AuthClaims {
