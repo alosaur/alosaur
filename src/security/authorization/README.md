@@ -105,3 +105,13 @@ getProtectedData() {
     return "Hi! this protected info. <br>  <a href='/account/logout'>logout</a>";
   }
 ```
+
+Authorize payload can have roles, and policy function to protect the route.
+
+```ts
+@Authorize(CookieScheme, {roles: ["admin"], policy: (context: SecurityContext) => {
+    result = false ;// validate with context
+    return result;
+}})
+```
+

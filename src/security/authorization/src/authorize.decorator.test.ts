@@ -100,7 +100,7 @@ test({
 });
 
 test({
-  name: "[Auth] AutorizeHook right in second request",
+  name: "[Auth] AutorizeHook roles right in second request",
   async fn() {
     const req = new ServerRequest();
     req.headers = new Headers();
@@ -147,7 +147,7 @@ test({
 });
 
 test({
-  name: "[Auth] AutorizeHook failed in second request",
+  name: "[Auth] AutorizeHook roles failed in second request",
   async fn() {
     const req = new ServerRequest();
     req.headers = new Headers();
@@ -183,6 +183,58 @@ test({
     const result = await hook.onPreAction(
       context2,
       { scheme: CookieScheme, payload: { roles: ["admin"] } },
+    );
+
+    assertEquals(result, false);
+  },
+});
+
+test({
+  name: "[Auth] AutorizeHook payload, true",
+  async fn() {
+    const context = new SecurityContext(req);
+    await sessionMiddleware.onPreRequest(context);
+
+    await context.security.auth.signInAsync(
+      CookieScheme,
+      { id: 1, roles: ["admin"], data: 123 },
+    );
+    const result = await hook.onPreAction(
+      context,
+      {
+        scheme: CookieScheme,
+        payload: {
+          policy: (context: SecurityContext) => {
+            return context.security.auth.identity()!.data === 123;
+          },
+        },
+      },
+    );
+
+    assertEquals(result, true);
+  },
+});
+
+test({
+  name: "[Auth] AutorizeHook payload, false",
+  async fn() {
+    const context = new SecurityContext(req);
+    await sessionMiddleware.onPreRequest(context);
+
+    await context.security.auth.signInAsync(
+      CookieScheme,
+      { id: 1, roles: ["admin"], data: 123 },
+    );
+    const result = await hook.onPreAction(
+      context,
+      {
+        scheme: CookieScheme,
+        payload: {
+          policy: (context: SecurityContext) => {
+            return context.security.auth.identity()!.data === 1;
+          },
+        },
+      },
     );
 
     assertEquals(result, false);
