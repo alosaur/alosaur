@@ -2,28 +2,6 @@
 
 [Example app with authorization & authentication](https://github.com/alosaur/alosaur/tree/master/examples/auth)
 
-For use Alosaur Authorization you need create session middleware.
-[More about Alosaur session middleware](https://github.com/alosaur/alosaur/tree/master/src/security/session)
-
-app.ts:
-```ts
-// create session store
-const sessionStore = new MemoryStore();
-await sessionStore.init();
-
-// create middleware with options
-const sessionMiddleware = new SessionMiddleware(sessionStore, {secret: 123456789n, maxAge: DAYS_30, path: "/"});
-
-// create auth middlware with schemes
-const authMiddleware = new AuthMiddleware([CookiesAuthentication.DefaultScheme]);
-
-app.use(new RegExp("/"), sessionMiddleware);
-app.use(new RegExp("/"), authMiddleware);
-
-// for create and use security context:
-app.useSecurityContext();
-
-```
 
 #### AuthenticationScheme
 
@@ -65,6 +43,7 @@ export interface AuthenticationScheme {
 ```
 
 #### CookiesScheme
+Contains types that enable support for ookies based authentication.
 
 You can use default CookiesAuthentication.DefaultScheme with signIn url.
 or extends from CookiesScheme for create other cases, for example extend onFailureResult
@@ -76,8 +55,34 @@ export namespace CookiesAuthentication {
   );
 }
 ```
+For use Alosaur Authorization with CookiesScheme you need create session middleware.
+
+[More about Alosaur session middleware](https://github.com/alosaur/alosaur/tree/master/src/security/session)
+
+app.ts:
+```ts
+// create session store
+const sessionStore = new MemoryStore();
+await sessionStore.init();
+
+// create middleware with options
+const sessionMiddleware = new SessionMiddleware(sessionStore, {secret: 123456789n, maxAge: DAYS_30, path: "/"});
+
+// create auth middlware with schemes
+const authMiddleware = new AuthMiddleware([CookiesAuthentication.DefaultScheme]);
+
+app.use(new RegExp("/"), sessionMiddleware);
+app.use(new RegExp("/"), authMiddleware);
+
+// for create and use security context:
+app.useSecurityContext();
+
+```
+
 
 #### JwtBearerScheme
+Contains types that enable support for JWT bearer based authentication.
+
 For signIn, and authentificate  you can create instance of scheme.
 ```ts
 export const JWTscheme = new JwtBearerScheme("HS512", "secret_key", 30 * 24 * 60 * 60 * 1000);
@@ -86,16 +91,35 @@ export const JWTscheme = new JwtBearerScheme("HS512", "secret_key", 30 * 24 * 60
 //     private readonly expires: number = DAYS_30,
 
 // and use JWTscheme in other cases, when need scheme
+
+// create auth middlware with schemes
+const authMiddleware = new AuthMiddleware([JWTscheme]);
+
+app.use(new RegExp("/"), authMiddleware);
+
+// for create and use security context:
+app.useSecurityContext();
 ```
 
 
 Note: JwtBearerScheme not suported signOut
 
+
 ### SecurityContext
+This context you can use in various methods and middlewares.
 
-Has methods: signInAsync, signOutAsync, identity.
+SecurityContext extend Context and has methods: signInAsync, signOutAsync, identity.
 
-example account.controller.ts
+For create this context you execute this action in App:
+
+app.ts:
+```ts
+app.useSecurityContext();
+```
+
+Example
+
+account.controller.ts:
 
 ```ts
 
