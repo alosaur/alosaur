@@ -23,7 +23,20 @@ Q4 2020 – Oct-Dec
 
 - [x] WebSocket example.
 - [x] SSE.
-- [ ] Add Alosaur security. [(more)](https://github.com/alosaur/alosaur/tree/master/src/security)
+- [ ] Add [(Alosaur security)](https://github.com/alosaur/alosaur/tree/master/src/security).
+  - [x] Identifications middlwares like session
+    - [x] Sign session hash with [noble-secp256k1](https://github.com/paulmillr/noble-secp256k1)
+  - [x]  SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`, `identity`
+  - [x] Authentication schemas
+    - [x] Cookies
+    - [x] JWT
+  - [ ] External auth strategies
+    - [ ] OAuth handler base
+      - [ ] Google
+      - [ ] Facebook
+      - [ ] Twitter
+      - [ ] ...
+  - [x] Authorization decorators and hooks, roles, policy
 - [ ] OpenAPI type reference
 - [ ] microservice connector with WASM
 
