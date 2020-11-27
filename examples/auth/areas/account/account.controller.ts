@@ -1,9 +1,9 @@
 import { Body, Controller, Ctx, Get, Post, Redirect } from "../../../../mod.ts";
 import { AuthService, UserModel } from "../../services/auth.service.ts";
 import { SecurityContext } from "../../../../src/security/context/security-context.ts";
-import { CookiesAuthentication } from "../../../../src/security/authentication/cookies/src/default-cookies.scheme.ts";
+import { CookiesAuthentication } from "../../../../src/security/authentication/cookies/src/cookies-authentication.ts";
 
-const scheme = CookiesAuthentication.DefaultCookieAuthenticationScheme;
+const scheme = CookiesAuthentication.DefaultScheme;
 
 interface LoginModel {
   login: string;

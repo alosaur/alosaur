@@ -5,14 +5,32 @@ export interface AuthClaims {
 }
 
 export interface AuthenticationScheme {
+  /**
+   * This function assign to context identity info, uses in Authorization middleware
+   */
   authenticate(context: SecurityContext): Promise<void>;
-  signInAsync<T>(
-    context: SecurityContext,
-    identity: Identity<T>,
-  ): Promise<void>;
-  signOutAsync<T>(context: SecurityContext): Promise<void>;
 
+  /**
+   * Create sign identity and assign to context identity info
+   */
+  signInAsync<I, R = any>(
+    context: SecurityContext,
+    identity: Identity<I>,
+  ): Promise<R>;
+
+  /**
+   * Clear sign in info and destroy identity context
+   */
+  signOutAsync<T, R>(context: SecurityContext): Promise<R>;
+
+  /**
+   * Uses in Authorize decorators for handle if AuthPayload result failure
+   */
   onFailureResult(context: SecurityContext): void;
+
+  /**
+   * Uses in Authorize decorators for handle if AuthPayload result success
+   */
   onSuccessResult(context: SecurityContext): void;
 }
 
@@ -24,9 +42,9 @@ export interface Identity<T> {
 
 export interface AuthInterface {
   identity<T>(): Identity<T> | undefined;
-  signInAsync<T>(
+  signInAsync<T, R>(
     scheme: AuthenticationScheme,
     identity: Identity<T>,
-  ): Promise<void>;
-  signOutAsync<T>(scheme: AuthenticationScheme): Promise<void>;
+  ): Promise<R>;
+  signOutAsync<T, R>(scheme: AuthenticationScheme): Promise<R>;
 }

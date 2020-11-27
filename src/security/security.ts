@@ -30,14 +30,14 @@ class SecurityAuth implements AuthInterface {
 
   public identity = noopIdentity;
 
-  public async signInAsync<T>(
+  public async signInAsync<T, R>(
     scheme: AuthenticationScheme,
     identity: Identity<T>,
   ) {
     return await scheme.signInAsync(this.context, identity);
   }
 
-  public async signOutAsync(scheme: AuthenticationScheme) {
+  public async signOutAsync<T, R>(scheme: AuthenticationScheme): Promise<R> {
     return await scheme.signOutAsync(this.context);
   }
 }
