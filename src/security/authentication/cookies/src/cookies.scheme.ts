@@ -29,19 +29,19 @@ export class CookiesScheme implements AuthenticationScheme {
     }
   }
 
-  public async signInAsync<T>(
+  public async signInAsync<I, R>(
     context: SecurityContext,
-    identity: Identity<T>,
+    identity: Identity<I>,
     claims?: AuthClaims,
-  ): Promise<void> {
+  ): Promise<R> {
     const session = getSession(context);
     await session.set(IdentityKey, identity);
     await this.setIdentity(context);
 
-    return undefined;
+    return <unknown> true as R;
   }
 
-  public async signOutAsync<T>(context: SecurityContext): Promise<void> {
+  public async signOutAsync<T, R>(context: SecurityContext): Promise<R> {
     const session = getSession(context);
     const sid = session.sessionId;
     await session.store.delete(sid);
@@ -53,7 +53,7 @@ export class CookiesScheme implements AuthenticationScheme {
       session.sessionKey + SESSION_SIGNATURE_PREFIX_KEY,
     );
 
-    return undefined;
+    return <unknown> true as R;
   }
 
   onFailureResult(context: SecurityContext): void {

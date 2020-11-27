@@ -2,14 +2,14 @@ import { ServerRequest } from "../../../deps.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 import { assert, assertEquals } from "../../../deps_test.ts";
 import { AutorizeHook } from "./authorize.decorator.ts";
-import { CookiesAuthentication } from "../../authentication/cookies/src/default-cookies.scheme.ts";
+import { CookiesAuthentication } from "../../authentication/cookies/src/cookies-authentication.ts";
 import { SessionMiddleware } from "../../session/src/session.middleware.ts";
 import { MemoryStore } from "../../session/src/store/memory.store.ts";
 import { AuthMiddleware } from "./auth.middleware.ts";
 const { test } = Deno;
 
 const SECURITY_KEY = 11231n;
-const CookieScheme = CookiesAuthentication.DefaultCookieAuthenticationScheme;
+const CookieScheme = CookiesAuthentication.DefaultScheme;
 
 const hook = new AutorizeHook();
 const sessionMiddleware = new SessionMiddleware(

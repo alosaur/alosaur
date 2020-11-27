@@ -2,7 +2,7 @@ import { App } from "../../mod.ts";
 import { AccountArea } from "./areas/account/account.area.ts";
 import { HomeArea } from "./areas/home/home.area.ts";
 import { AuthMiddleware } from "../../src/security/authorization/src/auth.middleware.ts";
-import { CookiesAuthentication } from "../../src/security/authentication/cookies/src/default-cookies.scheme.ts";
+import { CookiesAuthentication } from "../../src/security/authentication/cookies/src/cookies-authentication.ts";
 import { SessionMiddleware } from "../../src/security/session/src/session.middleware.ts";
 import { MemoryStore } from "../../src/security/session/src/store/memory.store.ts";
 
@@ -17,7 +17,7 @@ const sessionStore = new MemoryStore();
 await sessionStore.init();
 
 const authMiddleware = new AuthMiddleware(
-  [CookiesAuthentication.DefaultCookieAuthenticationScheme],
+  [CookiesAuthentication.DefaultScheme],
 );
 const sessionMiddleware = new SessionMiddleware(
   sessionStore,

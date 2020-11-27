@@ -1,9 +1,9 @@
 import { Controller } from "../../../../src/decorator/Controller.ts";
 import { Get } from "../../../../src/decorator/Get.ts";
 import { Authorize } from "../../../../src/security/authorization/src/authorize.decorator.ts";
-import { CookiesAuthentication } from "../../../../src/security/authentication/cookies/src/default-cookies.scheme.ts";
+import { CookiesAuthentication } from "../../../../src/security/authentication/cookies/src/cookies-authentication.ts";
 
-const scheme = CookiesAuthentication.DefaultCookieAuthenticationScheme;
+const scheme = CookiesAuthentication.DefaultScheme;
 
 @Controller("/home")
 export class HomeController {
