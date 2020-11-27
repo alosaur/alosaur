@@ -21,9 +21,9 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 Q4 2020 – Oct-Dec
 
-- [x] WebSocket example.
-- [x] SSE.
-- [ ] Add [(Alosaur security)](https://github.com/alosaur/alosaur/tree/master/src/security).
+- [x] WebSocket
+- [x] SSE
+- [ ] Add [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
   - [x] Identifications middlwares like session
     - [x] Sign session hash with [noble-secp256k1](https://github.com/paulmillr/noble-secp256k1)
   - [x]  SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`, `identity`
