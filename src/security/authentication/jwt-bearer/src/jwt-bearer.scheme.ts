@@ -5,9 +5,7 @@ import {
   decode,
   getNumericDate,
 } from "https://deno.land/x/djwt@v1.9/mod.ts";
-import {
-  Algorithm,
-} from "https://deno.land/x/djwt@v1.9/_algorithm.ts";
+import { Algorithm } from "https://deno.land/x/djwt@v1.9/_algorithm.ts";
 import { verify as verifySignature } from "https://deno.land/x/djwt@v1.9/_signature.ts";
 import { Content } from "../../../../renderer/content.ts";
 
