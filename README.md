@@ -26,16 +26,9 @@ Q4 2020 – Oct-Dec
 - [ ] Add [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
   - [x] Identifications middlwares like session
   - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`, `identity`
-  - [x] Authentication schemas
-    - [x] Cookies
-    - [x] JWT
-  - [ ] External auth strategies
-    - [ ] OAuth handler base
-      - [ ] Google
-      - [ ] Facebook
-      - [ ] Twitter
-      - [ ] ...
+  - [x] Authentication schemas (Cookies, JWT Bearer)
   - [x] Authorization decorators and hooks, roles, policy
+  - [ ] External auth strategies, OAuth base handler (Google, Facebook, Twitter, etc, examples)
 - [ ] OpenAPI type reference
 - [ ] microservice connector with WASM
 
