@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   QueryParam,
   Req,
   Res,
@@ -49,6 +50,16 @@ export class HomeController {
     @QueryParam("c") c: string,
   ) {
     return { a, b, c };
+  }
+
+  @Put("/query")
+  putQuery(
+    @QueryParam("a") a: string,
+    @QueryParam("b") b: string,
+    @QueryParam("c") c: string,
+    @Body() body: any,
+  ) {
+    return { a, b, c, ...body };
   }
 
   @Get("/test")

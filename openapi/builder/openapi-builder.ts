@@ -99,7 +99,12 @@ export class OpenApiBuilder {
     return this;
   }
   addPath(path: string, pathItem: oa.PathItemObject): OpenApiBuilder {
-    this.rootDoc.paths[path] = pathItem;
+    // A path can have multiple methods, therefore we must merge them
+    if (this.rootDoc.paths[path]) {
+      this.rootDoc.paths[path] = { ...this.rootDoc.paths[path], ...pathItem };
+    } else {
+      this.rootDoc.paths[path] = pathItem;
+    }
     return this;
   }
   addSchema(
