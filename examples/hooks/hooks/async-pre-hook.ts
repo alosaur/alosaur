@@ -13,7 +13,7 @@ export class AsyncPreHook implements HookTarget<unknown, any> {
 }
 
 function delay(duration: number): Promise<any> {
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     setTimeout(function () {
       resolve();
     }, duration);
