@@ -26,7 +26,7 @@ test({
 
       itLog("\t '/ws'");
       const ws = new WebSocket("ws://localhost:8000/ws");
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
         ws.onmessage = ((message) => {
           assertEquals(message.data, "Connected: [1]");
 

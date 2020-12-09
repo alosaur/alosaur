@@ -9,7 +9,7 @@ import { Session } from "./session.instance.ts";
 import {
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.78.0/http/cookie.ts";
+} from "https://deno.land/std@0.80.0/http/cookie.ts";
 import {
   SESSION_SIGNATURE_PREFIX_KEY,
   SessionOptions,

@@ -182,14 +182,14 @@ export class Log implements MiddlewareTarget<TState> {
     date: Date = new Date();
 
     onPreRequest(context: Context<TState>) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this.date = new Date();
             resolve();
         });
     }
 
     onPostRequest(context: Context<TState>) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             console.log(new Date().getTime() - this.date.getTime());
             resolve();
         });
@@ -222,7 +222,7 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 [Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.74.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.80.0/ws/mod.ts";
 import { Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
