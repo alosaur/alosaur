@@ -1,11 +1,12 @@
 import { BufReader, TextProtoReader } from "../../../src/deps_test.ts";
+import {DenoDoc} from "./deno-doc.model.ts";
 
 const decoder = new TextDecoder();
 const GlobalFilesSet = new Set();
 
 // TODO Implement this with Deno,doc
 //  issue https://github.com/denoland/deno/issues/4531
-export async function getDenoDoc(path?: string): Promise<JSON> {
+export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[]> {
   GlobalFilesSet.add(path);
   const option = {
     cmd: [

@@ -19,6 +19,12 @@ export interface OpenApiActionData {
   code: number;
   type?: any;
   description: string;
+
+  /**
+   * MediaType by default
+   * @example application/json
+   */
+  mediaType?: string;
 }
 
 export interface OpenApiActionArgs {
@@ -33,7 +39,12 @@ export interface OpenApiActionArgs {
  */
 export class OpenApiArgsStorage<TState> {
   /**
-     * Registered actions.
-     */
+   * Registered actions.
+   */
   actionProduces: OpenApiActionArgs[] = [];
+
+  /**
+   * Set of uses class and interface names
+   */
+  usableClassNamesSet: Set<string> = new Set<string>();
 }

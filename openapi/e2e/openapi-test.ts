@@ -5,8 +5,8 @@ const docs = await AlosaurOpenApiBuilder.parseDenoDoc("./app.ts");
 
 const builder = AlosaurOpenApiBuilder.create(ProductAppSettings)
   .addDenoDocs(docs)
-  .saveDenoDocs()
   .registerControllers()
+  .addSchemeComponents()
   .addTitle("Product Application")
   .addVersion("1.0.0")
   .addDescription("Example Alosaur OpenApi generate")
@@ -15,4 +15,5 @@ const builder = AlosaurOpenApiBuilder.create(ProductAppSettings)
     description: "Local server",
   });
 
-console.log(builder.getSpec().paths);
+builder.saveToFile();
+// console.log(builder.getSpec().paths);
