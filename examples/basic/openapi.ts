@@ -2,6 +2,7 @@ import { AlosaurOpenApiBuilder } from "../../openapi/mod.ts";
 import { settings } from "./app-settings.ts";
 
 AlosaurOpenApiBuilder.create(settings)
+  .registerControllers()
   .addTitle("Basic Application")
   .addVersion("1.0.0")
   .addDescription("Example Alosaur OpenApi generate")
