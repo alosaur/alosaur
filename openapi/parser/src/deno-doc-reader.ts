@@ -1,5 +1,5 @@
 import { BufReader, TextProtoReader } from "../../../src/deps_test.ts";
-import {DenoDoc} from "./deno-doc.model.ts";
+import { DenoDoc } from "./deno-doc.model.ts";
 
 const decoder = new TextDecoder();
 const GlobalFilesSet = new Set();

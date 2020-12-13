@@ -1,19 +1,25 @@
-import {getMetadataArgsStorage, ObjectKeyAny} from "../src/mod.ts";
-import {AppSettings} from "../mod.ts";
+import { getMetadataArgsStorage, ObjectKeyAny } from "../src/mod.ts";
+import { AppSettings } from "../mod.ts";
 
-import {RouteMetadata} from "../src/metadata/route.ts";
-import {MetadataArgsStorage} from "../src/metadata/metadata.ts";
-import {registerControllers} from "../src/utils/register-controllers.ts";
-import {registerAreas} from "../src/utils/register-areas.ts";
-import {OpenApiBuilder} from "./builder/openapi-builder.ts";
+import { RouteMetadata } from "../src/metadata/route.ts";
+import { MetadataArgsStorage } from "../src/metadata/metadata.ts";
+import { registerControllers } from "../src/utils/register-controllers.ts";
+import { registerAreas } from "../src/utils/register-areas.ts";
+import { OpenApiBuilder } from "./builder/openapi-builder.ts";
 import * as oa from "./builder/openapi-models.ts";
-import {getDenoDoc} from "./parser/src/deno-doc-reader.ts";
-import {getOpenApiMetadataArgsStorage, OpenApiArgsStorage,} from "./metadata/openapi-metadata.storage.ts";
-import {ParamType} from "../src/types/param.ts";
-import {DenoDoc} from "./parser/src/deno-doc.model.ts";
-import {getParsedNames, getSchemeByDef, ParsedNamesDocMap} from "./parser/src/utils.ts";
-import {JsDocParse} from "./parser/src/js-doc-parser.ts";
-
+import { getDenoDoc } from "./parser/src/deno-doc-reader.ts";
+import {
+  getOpenApiMetadataArgsStorage,
+  OpenApiArgsStorage,
+} from "./metadata/openapi-metadata.storage.ts";
+import { ParamType } from "../src/types/param.ts";
+import { DenoDoc } from "./parser/src/deno-doc.model.ts";
+import {
+  getParsedNames,
+  getSchemeByDef,
+  ParsedNamesDocMap,
+} from "./parser/src/utils.ts";
+import { JsDocParse } from "./parser/src/js-doc-parser.ts";
 
 /**
  * For testing this builder use this editor:
@@ -101,28 +107,28 @@ export class AlosaurOpenApiBuilder<T> {
         const mediaType = produce.data.mediaType || "application/json";
 
         // Check type of produces
-        if(produce.data.type) {
+        if (produce.data.type) {
           response.content = {};
 
-          if(Array.isArray(produce.data.type)) {
+          if (Array.isArray(produce.data.type)) {
             const name = produce.data.type[0].name;
 
             response.content[mediaType] = {
-                schema: {
-                  type: "array",
-                  items: {
-                    $ref: GetShemeLinkAndRegister(name)
-                  }
-                }
-            }
+              schema: {
+                type: "array",
+                items: {
+                  $ref: GetShemeLinkAndRegister(name),
+                },
+              },
+            };
           } else {
             const name = produce.data.type.name;
 
             response.content[mediaType] = {
-                schema: {
-                  $ref: GetShemeLinkAndRegister(name)
-                }
-            }
+              schema: {
+                $ref: GetShemeLinkAndRegister(name),
+              },
+            };
           }
         }
 
@@ -139,10 +145,12 @@ export class AlosaurOpenApiBuilder<T> {
     operation.parameters = [] as oa.ParameterObject[];
 
     const controllerClassName: string = route.target.constructor.name;
-    const classDoc = this.namesDenoDocMap && this.namesDenoDocMap.controllers.get(controllerClassName);
-    const methodDoc = classDoc && classDoc.classDef && classDoc.classDef.methods.find(m => m.name === route.action);
+    const classDoc = this.namesDenoDocMap &&
+      this.namesDenoDocMap.controllers.get(controllerClassName);
+    const methodDoc = classDoc && classDoc.classDef &&
+      classDoc.classDef.methods.find((m) => m.name === route.action);
 
-    if(methodDoc && methodDoc.jsDoc) {
+    if (methodDoc && methodDoc.jsDoc) {
       const jsDoc = JsDocParse(methodDoc.jsDoc);
       operation.description = jsDoc.description;
     }
@@ -180,7 +188,7 @@ export class AlosaurOpenApiBuilder<T> {
           });
           break;
         case ParamType.Body:
-          if(methodDoc) {
+          if (methodDoc) {
             const schemeName = methodDoc.functionDef.params[index].tsType.repr;
 
             // TODO add media type for body
@@ -188,11 +196,11 @@ export class AlosaurOpenApiBuilder<T> {
               content: {
                 "application/json": {
                   schema: {
-                    $ref: GetShemeLinkAndRegister(schemeName)
-                  }
-                }
-              }
-            }
+                    $ref: GetShemeLinkAndRegister(schemeName),
+                  },
+                },
+              },
+            };
           }
           break;
       }
@@ -227,24 +235,23 @@ export class AlosaurOpenApiBuilder<T> {
     this.denoDocs = docs;
     this.namesDenoDocMap = getParsedNames(docs);
 
-       return this;
+    return this;
   }
 
   public addSchemeComponents(): AlosaurOpenApiBuilder<T> {
     const namesSets = getOpenApiMetadataArgsStorage().usableClassNamesSet;
 
-    if(!this.namesDenoDocMap) {
-      throw new Error("Run addDenoDocs before start scheme components!")
+    if (!this.namesDenoDocMap) {
+      throw new Error("Run addDenoDocs before start scheme components!");
     }
 
-    this.namesDenoDocMap!.classes.forEach(classObj => {
-      if(namesSets.has(classObj.name)) {
-      this.builder.addSchema(classObj.name, getSchemeByDef(classObj))
-
+    this.namesDenoDocMap!.classes.forEach((classObj) => {
+      if (namesSets.has(classObj.name)) {
+        this.builder.addSchema(classObj.name, getSchemeByDef(classObj));
       }
     });
 
-    this.namesDenoDocMap!.interfaces.forEach(interfaceObj => {
+    this.namesDenoDocMap!.interfaces.forEach((interfaceObj) => {
       if (namesSets.has(interfaceObj.name)) {
         this.builder.addSchema(interfaceObj.name, getSchemeByDef(interfaceObj));
       }
@@ -263,6 +270,6 @@ export class AlosaurOpenApiBuilder<T> {
  * @param name
  */
 function GetShemeLinkAndRegister(name: string): string {
-  getOpenApiMetadataArgsStorage().usableClassNamesSet.add(name)
+  getOpenApiMetadataArgsStorage().usableClassNamesSet.add(name);
   return "#/components/schemas/" + name;
 }
