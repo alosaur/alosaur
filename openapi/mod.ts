@@ -20,7 +20,7 @@ import {
   getShemeByEnumDef,
   ParsedNamesDocMap,
 } from "./parser/src/utils.ts";
-import {JsDocObject, JsDocParse} from "./parser/src/js-doc-parser.ts";
+import { JsDocObject, JsDocParse } from "./parser/src/js-doc-parser.ts";
 
 /**
  * For testing this builder use this editor:
@@ -151,7 +151,6 @@ export class AlosaurOpenApiBuilder<T> {
     const methodDoc = classDoc && classDoc.classDef &&
       classDoc.classDef.methods.find((m) => m.name === route.action);
 
-
     // Parse method docs
     let methodDocParsedJsDoc: JsDocObject;
 
@@ -198,26 +197,23 @@ export class AlosaurOpenApiBuilder<T> {
             const schemeName = methodDoc.functionDef.params[index].tsType.repr;
 
             const schema: oa.SchemaObject = {
-                    $ref: GetShemeLinkAndRegister(schemeName),
-                  };
+              $ref: GetShemeLinkAndRegister(schemeName),
+            };
 
-
-
-            if(methodDocParsedJsDoc && methodDocParsedJsDoc.RequestBody){
+            if (methodDocParsedJsDoc && methodDocParsedJsDoc.RequestBody) {
               operation.requestBody = {
-                content: {}
+                content: {},
               };
 
-              methodDocParsedJsDoc.RequestBody.forEach(mediaType => {
-                (operation.requestBody as any).content[mediaType] = {schema};
-              })
-
+              methodDocParsedJsDoc.RequestBody.forEach((mediaType) => {
+                (operation.requestBody as any).content[mediaType] = { schema };
+              });
             } else {
               operation.requestBody = {
                 content: {
-                  "application/json": {schema}
-                }
-              }
+                  "application/json": { schema },
+                },
+              };
             }
           }
           break;

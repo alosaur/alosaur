@@ -56,11 +56,11 @@ export function JsDocParse(doc: string): JsDocObject {
 
       case node.startsWith("@remarks"):
         result.remarks = getNodeString(node, "@remarks");
-        break
+        break;
 
       case node.startsWith("@RequestBody"):
-        if(!result.RequestBody) {
-          result.RequestBody = []
+        if (!result.RequestBody) {
+          result.RequestBody = [];
         }
         result.RequestBody.push(getNodeString(node, "@RequestBody"));
         break;
@@ -70,8 +70,8 @@ export function JsDocParse(doc: string): JsDocObject {
         break;
 
       case node.startsWith("@params"):
-        if(!result.params) {
-          result.params = []
+        if (!result.params) {
+          result.params = [];
         }
         result.params.push(getNodeString(node, "@params"));
         break;
