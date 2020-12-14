@@ -1,7 +1,7 @@
 /**
  *
  */
-export enum ProductTypeCategory {
+export enum ProductTypeEnum {
   shop,
   clothes,
   education,
@@ -12,5 +12,5 @@ export enum ProductTypeCategory {
  */
 export interface ProductType {
   id: number;
-  type: ProductTypeCategory;
+  type: ProductTypeEnum;
 }

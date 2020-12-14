@@ -2,6 +2,8 @@ import { DenoDoc } from "./deno-doc.model.ts";
 import * as oa from "../../builder/openapi-models.ts";
 import { JsDocObject, JsDocParse } from "./js-doc-parser.ts";
 import { getOpenApiMetadataArgsStorage } from "../../metadata/openapi-metadata.storage.ts";
+import TypeRef = DenoDoc.TypeRef;
+import TsType = DenoDoc.TsType;
 
 export interface ParsedNamesDocMap {
   classes: Map<string, DenoDoc.RootDef>;
@@ -145,23 +147,61 @@ function getSchemeFromProperty(prop: DenoDoc.Property): oa.SchemaObject {
     }
 
     if (prop.tsType.array.kind === "typeRef") {
-      result.items = {
-        $ref: GetShemeLinkAndRegister(prop.tsType.array.typeRef),
-      };
+      if (isStdTsType(prop.tsType)) {
+        result.items = {
+          type: "string",
+        };
+      } else {
+        result.items = {
+          $ref: GetShemeLinkAndRegister(prop.tsType.array.typeRef),
+        };
+      }
     }
   }
 
   if (prop.tsType.kind === "typeRef") {
-    result["$ref"] = GetShemeLinkAndRegister(prop.tsType.typeRef);
+    if (isStdTsType(prop.tsType)) {
+      result.type = "string";
+    } else {
+      result["$ref"] = GetShemeLinkAndRegister(prop.tsType.typeRef);
+    }
   }
   return result;
 }
 
-// TODO add all keywords
+function isStdTsType(ref: TsType): boolean {
+  switch (ref.repr) {
+    case "Object":
+    case "Date":
+    case "Symbol":
+    case "Map":
+    case "JSON":
+    case "RegExp":
+    case "String":
+    case "ArrayBuffer":
+    case "DataView":
+    case "Int8Array":
+    case "Uint8Array":
+    case "Uint8ClampedArray":
+    case "Int16Array":
+    case "Uint16Array":
+    case "Int32Array":
+    case "Uint32Array":
+    case "Float32Array":
+    case "Float64Array":
+      return true;
+  }
+
+  return false;
+}
+
 function getKeywordType(repr: string): string {
   switch (repr) {
     case "number":
+    case "bigint":
       return "integer";
+    case "any":
+      return "object";
     default:
       return repr;
   }
