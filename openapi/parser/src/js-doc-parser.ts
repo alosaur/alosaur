@@ -9,6 +9,13 @@ export interface JsDocObject {
   summary?: string;
   format?: string;
   params?: string[];
+
+  /**
+   * Request body media type uses in controllers
+   * application/json, application/xml, text/plain, etc
+   * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#requestBodyObject
+   */
+  RequestBody?: string[];
 }
 
 /**
@@ -49,6 +56,13 @@ export function JsDocParse(doc: string): JsDocObject {
 
       case node.startsWith("@remarks"):
         result.remarks = getNodeString(node, "@remarks");
+        break
+
+      case node.startsWith("@RequestBody"):
+        if(!result.RequestBody) {
+          result.RequestBody = []
+        }
+        result.RequestBody.push(getNodeString(node, "@RequestBody"));
         break;
 
       case node.startsWith("@summary"):
@@ -56,8 +70,10 @@ export function JsDocParse(doc: string): JsDocObject {
         break;
 
       case node.startsWith("@params"):
-        result.params ? result.params = [] : undefined;
-        result.params!.push(getNodeString(node, "@params"));
+        if(!result.params) {
+          result.params = []
+        }
+        result.params.push(getNodeString(node, "@params"));
         break;
 
       default:

@@ -55,6 +55,8 @@ export class ProductController {
    * Create product
    * @param product
    * @decorator Post
+   * @RequestBody application/xml
+   * @RequestBody application/json
    */
   @Post("/")
   @ProducesResponse(

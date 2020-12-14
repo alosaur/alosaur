@@ -20,7 +20,7 @@ import {
   getShemeByEnumDef,
   ParsedNamesDocMap,
 } from "./parser/src/utils.ts";
-import { JsDocParse } from "./parser/src/js-doc-parser.ts";
+import {JsDocObject, JsDocParse} from "./parser/src/js-doc-parser.ts";
 
 /**
  * For testing this builder use this editor:
@@ -151,11 +151,16 @@ export class AlosaurOpenApiBuilder<T> {
     const methodDoc = classDoc && classDoc.classDef &&
       classDoc.classDef.methods.find((m) => m.name === route.action);
 
+
+    // Parse method docs
+    let methodDocParsedJsDoc: JsDocObject;
+
     if (methodDoc && methodDoc.jsDoc) {
-      const jsDoc = JsDocParse(methodDoc.jsDoc);
-      operation.description = jsDoc.description;
+      methodDocParsedJsDoc = JsDocParse(methodDoc.jsDoc);
+      operation.description = methodDocParsedJsDoc.description;
     }
 
+    // Parse each route params
     route.params.forEach((param, index) => {
       switch (param.type) {
         case ParamType.Query:
@@ -192,16 +197,28 @@ export class AlosaurOpenApiBuilder<T> {
           if (methodDoc) {
             const schemeName = methodDoc.functionDef.params[index].tsType.repr;
 
-            // TODO add media type for body
-            operation.requestBody = {
-              content: {
-                "application/json": {
-                  schema: {
+            const schema: oa.SchemaObject = {
                     $ref: GetShemeLinkAndRegister(schemeName),
-                  },
-                },
-              },
-            };
+                  };
+
+
+
+            if(methodDocParsedJsDoc && methodDocParsedJsDoc.RequestBody){
+              operation.requestBody = {
+                content: {}
+              };
+
+              methodDocParsedJsDoc.RequestBody.forEach(mediaType => {
+                (operation.requestBody as any).content[mediaType] = {schema};
+              })
+
+            } else {
+              operation.requestBody = {
+                content: {
+                  "application/json": {schema}
+                }
+              }
+            }
           }
           break;
       }
