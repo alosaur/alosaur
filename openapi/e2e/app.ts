@@ -56,7 +56,7 @@ export class ProductController {
    * @param product
    * @decorator Post
    */
-  @Post()
+  @Post("/")
   @ProducesResponse(
     { code: 200, type: Product, description: "Product created" },
   )

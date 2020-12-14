@@ -17,6 +17,7 @@ import { DenoDoc } from "./parser/src/deno-doc.model.ts";
 import {
   getParsedNames,
   getSchemeByDef,
+  getShemeByEnumDef,
   ParsedNamesDocMap,
 } from "./parser/src/utils.ts";
 import { JsDocParse } from "./parser/src/js-doc-parser.ts";
@@ -254,6 +255,12 @@ export class AlosaurOpenApiBuilder<T> {
     this.namesDenoDocMap!.interfaces.forEach((interfaceObj) => {
       if (namesSets.has(interfaceObj.name)) {
         this.builder.addSchema(interfaceObj.name, getSchemeByDef(interfaceObj));
+      }
+    });
+
+    this.namesDenoDocMap!.enums.forEach((enumDef) => {
+      if (namesSets.has(enumDef.name)) {
+        this.builder.addSchema(enumDef.name, getShemeByEnumDef(enumDef));
       }
     });
 

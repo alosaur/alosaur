@@ -7,12 +7,14 @@ export interface ParsedNamesDocMap {
   classes: Map<string, DenoDoc.RootDef>;
   interfaces: Map<string, DenoDoc.RootDef>;
   controllers: Map<string, DenoDoc.RootDef>;
+  enums: Map<string, DenoDoc.RootDef>;
 }
 
 export function getParsedNames(doc: DenoDoc.RootDef[]): ParsedNamesDocMap {
   const classes = new Map<string, DenoDoc.RootDef>();
   const interfaces = new Map<string, DenoDoc.RootDef>();
   const controllers = new Map<string, DenoDoc.RootDef>();
+  const enums = new Map<string, DenoDoc.RootDef>();
 
   function findRootDefByDoc(doc: DenoDoc.RootDef[]) {
     for (let i = 0; i < doc.length; i++) {
@@ -40,13 +42,17 @@ export function getParsedNames(doc: DenoDoc.RootDef[]): ParsedNamesDocMap {
         if (currentDoc.kind === "interface") {
           interfaces.set(currentDoc.name, currentDoc);
         }
+
+        if (currentDoc.kind === "enum") {
+          enums.set(currentDoc.name, currentDoc);
+        }
       }
     }
   }
 
   findRootDefByDoc(doc);
 
-  return { classes, controllers, interfaces };
+  return { classes, controllers, interfaces, enums };
 }
 
 export function getSchemeByDef(def: DenoDoc.RootDef): oa.SchemaObject {
@@ -78,6 +84,27 @@ export function getSchemeByDef(def: DenoDoc.RootDef): oa.SchemaObject {
         result.properties![property.name] = propertyResult;
       },
     );
+  }
+
+  return result;
+}
+
+export function getShemeByEnumDef(def: DenoDoc.RootDef): oa.SchemaObject {
+  let result: oa.SchemaObject = {};
+
+  const jsDoc = def.jsDoc && JsDocParse(def.jsDoc);
+
+  if (jsDoc) {
+    result = getSchemeFromJsDoc(jsDoc);
+  }
+
+  result.type = "string";
+
+  if (def.enumDef) {
+    result.enum = [];
+    def.enumDef.members.forEach((member) => {
+      result.enum!.push(member.name);
+    });
   }
 
   return result;

@@ -9,6 +9,7 @@ export namespace DenoDoc {
     variableDef: VariableDef;
     importDef: ImportDef;
     interfaceDef: InterfaceDef;
+    enumDef: EnumDef;
   }
 
   export interface ImportDef {
@@ -17,8 +18,18 @@ export namespace DenoDoc {
     def: RootDef[];
   }
 
+  export interface EnumDef {
+    members: EnumMember[];
+  }
+
+  export interface EnumMember {
+    name: string;
+    jsDoc: string;
+  }
+
   export type Kind =
     | "array"
+    | "enum"
     | "keyword"
     | "import"
     | "interface"

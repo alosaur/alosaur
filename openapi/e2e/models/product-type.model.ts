@@ -1,6 +1,16 @@
 /**
+ *
+ */
+export enum ProductTypeCategory {
+  shop,
+  clothes,
+  education,
+}
+
+/**
  * Type of product
  */
 export interface ProductType {
-  id?: number;
+  id: number;
+  type: ProductTypeCategory;
 }

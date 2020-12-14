@@ -111,8 +111,19 @@
         "properties": {
           "id": {
             "type": "integer"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ProductTypeCategory"
           }
         }
+      },
+      "ProductTypeCategory": {
+        "type": "string",
+        "enum": [
+          "shop",
+          "clothes",
+          "education"
+        ]
       }
     },
     "responses": {},
