@@ -12,6 +12,12 @@ export function getOpenApiMetadataArgsStorage<TState>(): OpenApiArgsStorage<
   return (global as any).OpenApiMetadataArgsStorage;
 }
 
+export function clearOpenApiMetadataArgsStorage(): void {
+  if (!(global as any).OpenApiMetadataArgsStorage) {
+    (global as any).OpenApiMetadataArgsStorage = null;
+  }
+}
+
 /**
  * Produces response data
  */

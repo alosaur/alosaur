@@ -1,6 +1,8 @@
 import { assertEquals } from "../../src/deps_test.ts";
 import { settings } from "../../examples/basic/app-settings.ts";
 import { AlosaurOpenApiBuilder } from "../mod.ts";
+import {clearMetadataArgsStorage} from "../../src/mod.ts";
+import {clearOpenApiMetadataArgsStorage} from "../metadata/openapi-metadata.storage.ts";
 const { test } = Deno;
 
 /**
@@ -8,7 +10,7 @@ const { test } = Deno;
  */
 test({
   name: "[openapi] basic server should generate docs",
-  async fn(): Promise<void> {
+  fn() {
     const spec = AlosaurOpenApiBuilder.create(settings)
       .registerControllers()
       .addTitle("Basic Application")
@@ -18,6 +20,8 @@ test({
         url: "http://localhost:8000",
         description: "Local server",
       }).getSpec();
+
+
 
     assertEquals(spec.openapi, "3.0.0");
 
@@ -31,6 +35,5 @@ test({
       expectedquerykeys.length,
     );
 
-    // TODO(irustm) add full tests after implement type reference
   },
 });

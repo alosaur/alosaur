@@ -19,3 +19,5 @@ jobs:
               run: deno fmt --check 
             - name: Test
               run: deno test -A --config ./src/tsconfig.lib.json
+            - name: Snaphot test OpenApi e2e
+                run: deno test -A --config ./src/tsconfig.lib.json openapi/e2e/openapi-e2e-test.ts
