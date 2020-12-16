@@ -15,7 +15,7 @@ test({
       .addDenoDocs(docs)
       .registerControllers()
       .addSchemeComponents()
-      .addTitle("Product Application")
+      .addTitle("Product Application2")
       .addVersion("1.0.0")
       .addDescription("Example Alosaur OpenApi generate")
       .addServer({
@@ -24,7 +24,7 @@ test({
       });
 
     const f = Deno.openSync(
-      "./openapi/e2e/openapi.snapshot.json",
+      "./openapi/e2e/openapi.text.snapshot",
       { read: true },
     );
     const buffer = Deno.readAllSync(f);
