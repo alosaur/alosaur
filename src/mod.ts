@@ -40,6 +40,12 @@ export function getMetadataArgsStorage<TState>(): MetadataArgsStorage<TState> {
   return (global as any).routingControllersMetadataArgsStorage;
 }
 
+export function clearMetadataArgsStorage(): void {
+  if ((global as any).routingControllersMetadataArgsStorage) {
+    (global as any).routingControllersMetadataArgsStorage = null;
+  }
+}
+
 export function getViewRenderConfig(): ViewRenderConfig {
   return (global as any).viewRenderConfig;
 }
