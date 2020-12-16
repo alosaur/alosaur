@@ -22,6 +22,11 @@ export class Product {
    */
   type?: ProductType;
 
+  /**
+   * @maximum 100
+   */
+  count?: number;
+
   description?: string;
 
   isPrimary?: boolean;
