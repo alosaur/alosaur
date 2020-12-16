@@ -1,8 +1,8 @@
 import { assertEquals } from "../../src/deps_test.ts";
 import { settings } from "../../examples/basic/app-settings.ts";
 import { AlosaurOpenApiBuilder } from "../mod.ts";
-import {clearMetadataArgsStorage} from "../../src/mod.ts";
-import {clearOpenApiMetadataArgsStorage} from "../metadata/openapi-metadata.storage.ts";
+import { clearMetadataArgsStorage } from "../../src/mod.ts";
+import { clearOpenApiMetadataArgsStorage } from "../metadata/openapi-metadata.storage.ts";
 const { test } = Deno;
 
 /**
@@ -21,8 +21,6 @@ test({
         description: "Local server",
       }).getSpec();
 
-
-
     assertEquals(spec.openapi, "3.0.0");
 
     // Check if all method are present in the path
@@ -34,6 +32,5 @@ test({
       expectedquerykeys.filter((item) => querykeys.includes(item)).length,
       expectedquerykeys.length,
     );
-
   },
 });
