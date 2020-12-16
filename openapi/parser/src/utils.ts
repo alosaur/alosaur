@@ -1,6 +1,10 @@
 import { DenoDoc } from "./deno-doc.model.ts";
 import * as oa from "../../builder/openapi-models.ts";
-import { JsDocObject, JsDocParse } from "./js-doc-parser.ts";
+import {
+  JsDocObject,
+  JsDocParse,
+  PropertyJsDocParse,
+} from "./js-doc-parser.ts";
 import { getOpenApiMetadataArgsStorage } from "../../metadata/openapi-metadata.storage.ts";
 import TypeRef = DenoDoc.TypeRef;
 import TsType = DenoDoc.TsType;
@@ -76,11 +80,16 @@ export function getSchemeByDef(def: DenoDoc.RootDef): oa.SchemaObject {
     properties.filter((p) => p.accessibility !== "private").forEach(
       (property) => {
         let propertyResult: oa.SchemaObject = {};
-        const propertyJsDoc = property.jsDoc && JsDocParse(def.jsDoc);
 
-        if (propertyJsDoc) {
-          propertyResult = getSchemeFromJsDoc(property.jsDoc);
+        const stdJsDoc = property.jsDoc && JsDocParse(property.jsDoc);
+
+        if (stdJsDoc) {
+          propertyResult = getSchemeFromJsDoc(stdJsDoc);
+          const propertyJsDoc = PropertyJsDocParse(property.jsDoc);
+
+          propertyResult = { ...propertyResult, ...propertyJsDoc as any };
         }
+
         const propertyScheme = getSchemeFromProperty(property);
         propertyResult = { ...propertyResult, ...propertyScheme };
         result.properties![property.name] = propertyResult;
