@@ -6,7 +6,6 @@ import {
   PropertyJsDocParse,
 } from "./js-doc-parser.ts";
 import { getOpenApiMetadataArgsStorage } from "../../metadata/openapi-metadata.storage.ts";
-import TypeRef = DenoDoc.TypeRef;
 import TsType = DenoDoc.TsType;
 
 export interface ParsedNamesDocMap {
