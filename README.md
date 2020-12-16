@@ -149,7 +149,7 @@ And run
 
 [Example](https://github.com/alosaur/alosaur/tree/master/basic/)
 
-[Example with parse type reference]((https://github.com/alosaur/alosaur/tree/master/openapi/e2e/))
+[Example with parse type reference](https://github.com/alosaur/alosaur/tree/master/openapi/e2e/)
 
 Basic example:
 ```ts
