@@ -37,6 +37,10 @@ Run all tests:
 
 `deno test -A --config ./src/tsconfig.lib.json`
 
+### How to run examples in project folder?
+
+`deno run -A --config ./src/tsconfig.lib.json examples/di/app.ts`
+
 ## Before submiting PR
 
 Run `deno fmt` for formating your code.
