@@ -6,5 +6,5 @@ import { Component } from "@angular/core";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  versionDeno = Deno.version.deno;
+  public versionDeno = Deno.version.deno;
 }
