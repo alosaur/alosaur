@@ -1,4 +1,3 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
 import { ServerRequest } from "../deps.ts";
 
 export async function getBody(request: ServerRequest) {
@@ -9,7 +8,7 @@ export async function getBody(request: ServerRequest) {
 
     switch (contentType) {
       case "application/json":
-          return JSON.parse(bodyString);
+        return JSON.parse(bodyString);
 
       case "application/x-www-form-urlencoded":
         let formElements: { [key: string]: string } = {};
@@ -26,14 +25,14 @@ export async function getBody(request: ServerRequest) {
         }
 
         return formElements;
-        
 
       // TODO: handle other content types (maybe get a list?)
+
       default:
         return body;
     }
   } catch (e) {
-    log.warning(e);
+    console.warn(e);
     return undefined;
   }
 }

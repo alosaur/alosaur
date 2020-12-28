@@ -1,12 +1,12 @@
-import { Controller } from '../../../../mod.ts';
-import { Get } from '../../../../src/decorator/Get.ts';
-import { UserService } from '../../services/user.service.ts';
+import { Controller } from "../../../../mod.ts";
+import { Get } from "../../../../src/decorator/Get.ts";
+import { UserService } from "../../services/user.service.ts";
 
-@Controller('/home')
+@Controller("/home")
 export class HomeController {
-  constructor(private service: UserService) {  }
+  constructor(private service: UserService) {}
 
-  @Get('/users')
+  @Get("/users")
   async text() {
     return await this.service.getUsers();
   }

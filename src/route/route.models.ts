@@ -1,1 +1,4 @@
-export type RouteParam = {i: number, el: string};
+export interface RouteParam {
+  i: number;
+  el: string;
+}

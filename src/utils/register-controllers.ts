@@ -1,72 +1,82 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
-import { getMetadataArgsStorage, ObjectKeyAny } from '../mod.ts';
-import { container } from '../injection/index.ts';
-import { RouteMetadata } from '../metadata/route.ts';
-import { ControllerMetadataArgs } from '../metadata/controller.ts';
+import { getMetadataArgsStorage, ObjectKeyAny } from "../mod.ts";
+import { RouteMetadata } from "../metadata/route.ts";
+import { ControllerMetadataArgs } from "../metadata/controller.ts";
 
+/** Registering controllers */
 export function registerControllers(
-    controllers: ControllerMetadataArgs[] = [],
-    classes: ObjectKeyAny[] = [],
-    addToRoute: (route: RouteMetadata) => void,
-    logging: boolean = true,
+  controllers: ControllerMetadataArgs[] = [],
+  classes: ObjectKeyAny[] = [],
+  addToRoute: (route: RouteMetadata) => void,
+  logging: boolean = true,
 ) {
-    // TODO: add two route Map (with route params / exact match)
-    // example: new Map(); key = route, value = object
+  // TODO: add two route Map (with route params / exact match)
+  // example: new Map(); key = route, value = object
 
-    controllers.forEach((controller) => {
-        const actions = getMetadataArgsStorage().actions.filter((action) => action.target === controller.target);
-        const params = getMetadataArgsStorage().params.filter((param) => param.target === controller.target);
+  const container = getMetadataArgsStorage().container;
 
-        // TODO: if obj not in classes
-        // resolve from DI
-        const target: ObjectKeyAny = container.resolve(controller.target as any);
-        classes.push(target);
+  controllers.forEach((controller) => {
+    const actions = getMetadataArgsStorage().actions.filter((action) =>
+      action.target === controller.target
+    );
+    const params = getMetadataArgsStorage().params.filter((param) =>
+      param.target === controller.target
+    );
 
-        if (logging) {
-            log.debug(`The "${ controller.target.name || controller.target.constructor.name }" controller has been registered.`);
-        }
+    // TODO: if obj not in classes
+    // resolve from DI
+    const target: ObjectKeyAny = container.resolve(controller.target as any);
+    classes.push(target);
 
-        let areaRoute = ``;
+    if (logging) {
+      console.debug(
+        `The "${controller.target.name ||
+          controller.target.constructor.name}" controller has been registered.`,
+      );
+    }
 
-        if (controller.area !== undefined && controller.area.baseRoute) {
-            areaRoute = controller.area.baseRoute;
-        }
+    let areaRoute: string = "";
 
-        actions.forEach((action) => {
-            let fullRoute: string = areaRoute;
+    if (controller.area !== undefined && controller.area.baseRoute) {
+      areaRoute = controller.area.baseRoute;
+    }
 
-            if (controller.route) {
-                fullRoute += controller.route;
-            }
+    actions.forEach((action) => {
+      let fullRoute: string = areaRoute;
 
-            const regexpRoute: RegExp | undefined = action.route instanceof RegExp ? action.route : undefined;
+      if (controller.route) {
+        fullRoute += controller.route;
+      }
 
-            if (!regexpRoute && action.route) {
-                fullRoute += action.route;
-            }
+      const regexpRoute: RegExp | undefined = action.route instanceof RegExp
+        ? action.route
+        : undefined;
 
-            if (fullRoute === "") {
-                fullRoute = "/";
-            }
+      if (!regexpRoute && action.route) {
+        fullRoute += action.route;
+      }
 
-            const metaRoute: RouteMetadata = {
-                baseRoute: areaRoute,
-                route: fullRoute,
-                regexpRoute,
-                target: target,
-                areaObject: controller.area && controller.area.target,
-                actionObject: action.object,
-                controllerObject: controller.target,
-                action: action.method,
-                method: action.type,
-                params: params.filter((param) => param.method === action.method),
-            };
+      if (fullRoute === "") {
+        fullRoute = "/";
+      }
 
-            if (logging) {
-                log.debug(`The "${ metaRoute.route }" route has been registered.`);
-            }
+      const metaRoute: RouteMetadata = {
+        baseRoute: areaRoute,
+        route: fullRoute,
+        regexpRoute,
+        target: target,
+        areaObject: controller.area && controller.area.target,
+        actionObject: action.object,
+        controllerObject: controller.target,
+        action: action.method,
+        method: action.type,
+        params: params.filter((param) => param.method === action.method),
+      };
 
-            addToRoute(metaRoute);
-        });
+      if (logging) {
+        console.debug(`The "${metaRoute.route}" route has been registered.`);
+      }
+
+      addToRoute(metaRoute);
     });
+  });
 }

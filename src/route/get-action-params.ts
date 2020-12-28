@@ -5,21 +5,17 @@ import { Context } from "../models/context.ts";
 
 type ArgumentValue = any;
 
-/**
- * Gets action params for routes 
- * @param context 
- * @param route 
- */
+/** Gets route action params */
 export async function getActionParams<T>(
   context: Context<T>,
   route: RouteMetadata,
   transformConfigMap?: TransformConfigMap,
 ): Promise<ArgumentValue[]> {
-  const args: ArgumentValue[] = [];
+  if (route.params.length == 0) {
+    return [];
+  }
 
-  // const body
-  const queryParams = findSearchParams(context.request.url);
-  const cookies = getCookies(context.request.serverRequest) || {};
+  const args: ArgumentValue[] = [];
   const params = route.params.sort((a, b) => a.index - b.index);
 
   // fill params to resolve
@@ -28,6 +24,8 @@ export async function getActionParams<T>(
 
     switch (param.type) {
       case "query":
+        const queryParams = getQueryParams(context.request.url);
+
         if (queryParams && param.name) {
           const paramsArgs = queryParams.get(param.name);
           args.push(paramsArgs ? paramsArgs : undefined);
@@ -38,6 +36,7 @@ export async function getActionParams<T>(
 
       case "cookie":
         if (param.name) {
+          const cookies = getCookies(context.request.serverRequest) || {};
           args.push(cookies[param.name]);
         } else {
           args.push(undefined);
@@ -61,6 +60,10 @@ export async function getActionParams<T>(
         args.push(context.response);
         break;
 
+      case "context":
+        args.push(context);
+        break;
+
       case "route-param":
         if (route.routeParams && param.name) {
           args.push(route.routeParams[param.name]);
@@ -74,20 +77,16 @@ export async function getActionParams<T>(
         break;
     }
   }
-  return new Promise((resolve) => resolve(args));
+  return args;
 }
-/**
- * Finds query search params from full url
- * @param url 
- */
-export function findSearchParams(url: string): URLSearchParams | undefined {
-  if (url == undefined) return undefined;
 
-  const searchs = url.split("?")[1];
+/** Gets URL query params */
+export function getQueryParams(url: string): URLSearchParams | undefined {
+  const params = url.split("?")[1];
 
-  if (searchs == undefined) return undefined;
+  if (!params) return undefined;
 
-  return new URLSearchParams(searchs);
+  return new URLSearchParams(params);
 }
 
 function getTransformedParam(

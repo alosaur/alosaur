@@ -42,7 +42,7 @@ export function resolvePath(rootPath: string, relativePath?: string): string {
     root = Deno.cwd();
   }
 
-  if (path == null) {
+  if (path === undefined) {
     throw new TypeError("Argument relativePath is required.");
   }
 

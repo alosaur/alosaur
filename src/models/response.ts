@@ -1,10 +1,10 @@
-import { Content } from '../renderer/content.ts';
+import { Content } from "../renderer/content.ts";
 type ResponseBody = Uint8Array | Deno.Reader | string | any;
 
 export interface ActionResult {
   headers: Headers;
   body?: ResponseBody;
-  status?: number,
+  status?: number;
   __isActionResult: boolean;
 }
 
@@ -17,6 +17,7 @@ export class Response {
   public error?: Error;
 
   private immediately: boolean = false;
+  private notRespond: boolean = false;
 
   public setImmediately(): void {
     this.immediately = true;
@@ -26,12 +27,20 @@ export class Response {
     return this.immediately;
   }
 
+  public setNotRespond(): void {
+    this.notRespond = true;
+  }
+
+  public isNotRespond(): boolean {
+    return this.notRespond;
+  }
+
   public getRaw() {
     return {
       headers: this.headers,
       body: this.body,
-      status: this.status
-    }
+      status: this.status,
+    };
   }
 
   public getMergedResult() {
@@ -49,7 +58,9 @@ export class Response {
     }
 
     // merge headers
-    response.headers = new Headers([...response.headers, ...this.headers]);
+    for (const pair of this.headers.entries()) {
+      response.headers.set(pair[0], pair[1]);
+    }
 
     delete response.__isActionResult;
 

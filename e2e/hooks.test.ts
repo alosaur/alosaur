@@ -1,5 +1,5 @@
-import { assertEquals, assert } from "../src/deps_test.ts";
-import { startServer, killServer } from "./test.utils.ts";
+import { assert, assertEquals } from "../src/deps_test.ts";
+import { killServer, startServer } from "./test.utils.ts";
 import { itLog } from "./test.utils.ts";
 const { test } = Deno;
 
@@ -199,8 +199,7 @@ test({
  * https://github.com/alosaur/alosaur/issues/65
  */
 test({
-  name:
-    "[http] life cycle post hooks should run 4 times",
+  name: "[http] life cycle post hooks should run 4 times",
   async fn(): Promise<void> {
     await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000/life-cycle/";

@@ -1,9 +1,9 @@
 import { contentType } from "../deps.ts";
-import { ActionResult } from '../models/response.ts';
+import { ActionResult } from "../models/response.ts";
 
-/**
- * Render json, number, boolean, or string content
- */
+const textEncoder = new TextEncoder();
+
+/** Render JSON or other content such as strings, numbers, booleans */
 export function Content(
   result?: string | number | boolean | Object,
   status: number = 200,
@@ -16,12 +16,12 @@ export function Content(
     case "boolean":
     case "number":
       headers.set("content-type", contentType("file.json") as string);
-      body = new TextEncoder().encode(JSON.stringify(result));
+      body = textEncoder.encode(JSON.stringify(result));
       break;
 
     default:
       headers.set("content-type", contentType("text/html") as string);
-      body = new TextEncoder().encode(result || "");
+      body = textEncoder.encode(result || "");
       break;
   }
 

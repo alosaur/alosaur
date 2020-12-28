@@ -1,20 +1,20 @@
-import { AreaMetadataArgs } from './area.ts';
-import { BusinessType } from '../types/business.ts';
-import { ControllerMetadataArgs } from './controller.ts';
-import { ActionMetadataArgs } from './action.ts';
-import { HookTarget } from '../models/hook.ts';
+import { AreaMetadataArgs } from "./area.ts";
+import { BusinessType } from "../types/business.ts";
+import { ControllerMetadataArgs } from "./controller.ts";
+import { ActionMetadataArgs } from "./action.ts";
+import { HookTarget } from "../models/hook.ts";
 
 /**
  * Hook metadata used to storage information about registered hooks.
  */
-export interface HookMetadataArgs<TState,TPayload> {
-
+export interface HookMetadataArgs<TState, TPayload> {
   area?: AreaMetadataArgs;
   controller?: ControllerMetadataArgs;
   action?: ActionMetadataArgs;
 
-  object: Object, // object of declaration
-  
+  object: Object // object of declaration
+  ;
+
   /**
    * Indicates object which is used by this hook.
    */
@@ -33,10 +33,10 @@ export interface HookMetadataArgs<TState,TPayload> {
   /**
    * Instance of hook
    */
-  instance: HookTarget<TState,TPayload>;
+  instance: HookTarget<TState, TPayload>;
 
   /**
    * Payload for hook instance
    */
-  payload?: any
+  payload?: any;
 }

@@ -1,14 +1,23 @@
-export { serve, Server, ServerRequest, Response } from 'https://deno.land/std@0.56.0/http/server.ts';
 export {
-    normalize,
-    basename,
-    extname,
-    parse,
-    sep,
-    join,
-    resolve,
-    isAbsolute,
-} from 'https://deno.land/std@0.56.0/path/mod.ts';
+  serve,
+  Server,
+  ServerRequest,
+} from "https://deno.land/std@0.80.0/http/server.ts";
+export type {
+  HTTPOptions,
+  Response,
+} from "https://deno.land/std@0.80.0/http/server.ts";
+export { getCookies } from "https://deno.land/std@0.80.0/http/cookie.ts";
 
-export { getCookies } from 'https://deno.land/std@0.56.0/http/cookie.ts';
-export { contentType } from 'https://deno.land/x/media_types@v2.3.5/mod.ts';
+export {
+  basename,
+  extname,
+  isAbsolute,
+  join,
+  normalize,
+  parse,
+  resolve,
+  sep,
+} from "https://deno.land/std@0.80.0/path/mod.ts";
+
+export { contentType } from "https://deno.land/x/media_types@v2.5.1/mod.ts";

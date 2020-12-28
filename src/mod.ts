@@ -1,6 +1,5 @@
-import * as log from "https://deno.land/std@0.56.0/log/mod.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { serve, Server } from "./deps.ts";
+import { HTTPOptions, serve, Server } from "./deps.ts";
 import { getAction } from "./route/get-action.ts";
 import { getActionParams } from "./route/get-action-params.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
@@ -11,10 +10,10 @@ import { RouteMetadata } from "./metadata/route.ts";
 import { registerAreas } from "./utils/register-areas.ts";
 import { registerControllers } from "./utils/register-controllers.ts";
 import { getStaticFile } from "./utils/get-static-file.ts";
-import { MiddlewareTarget } from "./models/middleware-target.ts";
+import { IMiddleware } from "./models/middleware-target.ts";
 import {
-  TransformConfigMap,
   TransformConfig,
+  TransformConfigMap,
 } from "./models/transform-config.ts";
 
 import { HookMetadataArgs } from "./metadata/hook.ts";
@@ -24,6 +23,9 @@ import { AppSettings } from "./models/app-settings.ts";
 import { getHooksForAction } from "./route/get-hooks.ts";
 import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
+import { container as defaultContainer } from "./injection/index.ts";
+import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
+import { SecurityContext } from "./security/context/security-context.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -36,6 +38,12 @@ export function getMetadataArgsStorage<TState>(): MetadataArgsStorage<TState> {
   }
 
   return (global as any).routingControllersMetadataArgsStorage;
+}
+
+export function clearMetadataArgsStorage(): void {
+  if ((global as any).routingControllersMetadataArgsStorage) {
+    (global as any).routingControllersMetadataArgsStorage = null;
+  }
 }
 
 export function getViewRenderConfig(): ViewRenderConfig {
@@ -53,7 +61,8 @@ async function resolveHooks<TState, TPayload>(
 ): Promise<boolean> {
   const resolvedHooks = new Set<HookMetadataArgs<TState, TPayload>>();
 
-  if (hooks !== undefined && hooks.length > 0) {
+  if (hasHooks(hooks)) {
+    // @ts-ignore: Object is possibly 'undefined'.
     for (const hook of hooks) {
       const action: Function | undefined = (hook as any).instance[actionName];
 
@@ -85,6 +94,12 @@ async function resolveHooks<TState, TPayload>(
   return false;
 }
 
+function hasHooks<TState = any, TPayload = any>(
+  hooks?: HookMetadataArgs<TState, TPayload>[],
+): boolean {
+  return hooks !== undefined && hooks.length > 0;
+}
+
 async function runHooks<TState, TPayload>(
   context: Context<TState>,
   actionName: HookMethod,
@@ -110,18 +125,23 @@ function hasHooksAction<TState, TPayload>(
 
 export class App<TState> {
   private classes: ObjectKeyAny[] = [];
-  private metadata: MetadataArgsStorage<TState>;
+  private readonly metadata: MetadataArgsStorage<TState>;
   private routes: RouteMetadata[] = [];
 
   private staticConfig: StaticFilesConfig | undefined = undefined;
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
   private transformConfigMap?: TransformConfigMap | undefined = undefined;
   private globalErrorHandler?: (ctx: Context<TState>, error: Error) => void;
+  private isSecurityContext: boolean = false;
 
   private server: Server | undefined = undefined;
 
   constructor(settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
+
+    this.metadata.container = settings.container || defaultContainer;
+
+    this.sortMiddlewares(settings);
 
     registerAreas(this.metadata);
     registerControllers(
@@ -131,20 +151,36 @@ export class App<TState> {
       settings.logging,
     );
 
-    if (settings) {
-      this.useStatic(settings.staticConfig);
-      this.useViewRender(settings.viewRenderConfig);
+    this.useStatic(settings.staticConfig);
+    this.useViewRender(settings.viewRenderConfig);
+  }
+
+  // Sort middlewares by app settings
+  private sortMiddlewares(settings: AppSettings) {
+    if (settings.middlewares) {
+      let middlewares: MiddlewareMetadataArgs<TState>[] = [];
+
+      for (let middleware of settings.middlewares) {
+        middlewares.push(
+          this.metadata.middlewares.find((m) =>
+            m.object === middleware
+          ) as MiddlewareMetadataArgs<TState>,
+        );
+      }
+      this.metadata.middlewares = middlewares;
     }
   }
 
-  async listen(address: string = ":8000"): Promise<Server> {
+  async listen(address: string | HTTPOptions = ":8000"): Promise<Server> {
     const server: Server = serve(address);
     this.server = server;
 
-    console.log(`Server start in ${address}`);
+    console.log("Server start in", address);
 
     for await (const req of server) {
-      const context = new Context<TState>(req);
+      const context = this.isSecurityContext
+        ? new SecurityContext<TState>(req)
+        : new Context<TState>(req);
       try {
         // Get middlewares in request
         const middlewares = this.metadata.middlewares.filter((m) =>
@@ -156,114 +192,130 @@ export class App<TState> {
           await middleware.target.onPreRequest(context);
         }
 
+        if (context.response.isNotRespond()) {
+          continue;
+        }
+
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getRaw());
+          req.respond(context.response.getRaw());
           continue;
         }
 
         // try getting static file
-        if (await getStaticFile(context, this.staticConfig)) {
-          await req.respond(context.response.getRaw());
+        if (
+          this.staticConfig && await getStaticFile(context, this.staticConfig)
+        ) {
+          req.respond(context.response.getRaw());
           continue;
-        } else {
-          const action = getAction(
-            this.routes,
-            context.request.method,
-            context.request.url,
+        }
+
+        const action = getAction(
+          this.routes,
+          context.request.method,
+          context.request.url,
+        );
+
+        if (action !== null) {
+          const hooks = getHooksForAction(this.metadata.hooks, action);
+
+          // try resolve hooks
+          if (
+            hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
+          ) {
+            continue;
+          }
+
+          // Get arguments in this action
+          const args = await getActionParams(
+            context,
+            action,
+            this.transformConfigMap,
           );
 
-          if (action !== null) {
-            const hooks = getHooksForAction(this.metadata.hooks, action);
-
-            // try resolve hooks
-            if (await resolveHooks(context, "onPreAction", hooks)) {
-              continue;
-            }
-
-            // Get arguments in this action
-            const args = await getActionParams(
-              context,
-              action,
-              this.transformConfigMap,
+          try {
+            // Get Action result from controller method
+            context.response.result = await action.target[action.action](
+              ...args,
             );
-
-            try {
-              // Get Action result from controller method
-              context.response.result = await action.target[action.action](
-                ...args,
-              );
-            } catch (error) {
-              context.response.error = error;
-
-              // try resolve hooks
-              if (hasHooksAction("onCatchAction", hooks) && await resolveHooks(context, "onCatchAction", hooks)) {
-                continue;
-              } else {
-                // Resolve every post middleware if error was not caught
-                for (const middleware of middlewares) {
-                  await middleware.target.onPostRequest(context);
-                }
-
-                if (context.response.isImmediately()) {
-                  await req.respond(context.response.getMergedResult());
-                  continue;
-                }
-
-                throw error;
-              }
-            }
+          } catch (error) {
+            context.response.error = error;
 
             // try resolve hooks
-            if (await resolveHooks(context, "onPostAction", hooks)) {
+            if (
+              hasHooks(hooks) &&
+              hasHooksAction("onCatchAction", hooks) &&
+              await resolveHooks(context, "onCatchAction", hooks)
+            ) {
               continue;
+            } else {
+              // Resolve every post middleware if error was not caught
+              for (const middleware of middlewares) {
+                //@ts-ignore
+                await middleware.target.onPostRequest(context);
+              }
+
+              if (context.response.isImmediately()) {
+                req.respond(context.response.getMergedResult());
+                continue;
+              }
+
+              throw error;
             }
+          }
+
+          // try resolve hooks
+          if (
+            hasHooks(hooks) &&
+            await resolveHooks(context, "onPostAction", hooks)
+          ) {
+            continue;
           }
         }
 
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
         // Resolve every post middleware
         for (const middleware of middlewares) {
+          //@ts-ignore
           await middleware.target.onPostRequest(context);
         }
 
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
         if (context.response.result === undefined) {
           context.response.result = notFoundAction();
 
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
-        await req.respond(context.response.getMergedResult());
+        req.respond(context.response.getMergedResult());
       } catch (error) {
         if (this.globalErrorHandler) {
           this.globalErrorHandler(context, error);
 
           if (context.response.isImmediately()) {
-            await req.respond(context.response.getMergedResult());
+            req.respond(context.response.getMergedResult());
             continue;
           }
         }
 
         if (context.response.isImmediately()) {
-          await req.respond(context.response.getMergedResult());
+          req.respond(context.response.getMergedResult());
           continue;
         }
 
-        // 
         if (!(error instanceof HttpError)) {
-          log.error(error);
+          console.error(error);
         }
 
-        await req.respond(Content(error, error.httpCode || 500));
+        req.respond(Content(error, error.httpCode || 500));
       }
     }
 
@@ -274,8 +326,12 @@ export class App<TState> {
     if (this.server) {
       this.server.close();
     } else {
-      log.warning("Server is not listening");
+      console.warn("Server is not listening");
     }
+  }
+
+  public useSecurityContext(): void {
+    this.isSecurityContext = true;
   }
 
   public useStatic(config?: StaticFilesConfig): void {
@@ -306,14 +362,16 @@ export class App<TState> {
     this.metadata.middlewares.push({
       type: "middleware",
       target: builder,
+      object: builder,
       route: /\//,
     });
   }
 
-  public use(route: RegExp, middleware: MiddlewareTarget<TState>): void {
+  public use(route: RegExp, middleware: IMiddleware<TState>): void {
     this.metadata.middlewares.push({
       type: "middleware",
       target: middleware,
+      object: middleware,
       route,
     });
   }
