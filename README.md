@@ -120,7 +120,7 @@ And run
 -   [x] Add std exceptions
 -   [x] Add CI with minimal tests.
 -   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
--   [ ] Add OpenAPI type reference
+-   [x] Add OpenAPI type reference
 -   [x] Add Hooks example
 -   [x] Add WebSocket
 -   [x] Add SSE
