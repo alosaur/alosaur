@@ -24,6 +24,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - [ ] Response cashe store, attribute
 - [ ] CLI (generate blank app, build openapi, tests and more)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with Alosaur openapi
+- [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
 
 Q4 2020 – Oct-Dec
