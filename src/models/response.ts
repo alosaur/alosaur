@@ -5,7 +5,7 @@ export interface ActionResult {
   headers: Headers;
   body?: ResponseBody;
   status?: number;
-  __isActionResult: boolean;
+  __isActionResult: true;
 }
 
 export class Response {

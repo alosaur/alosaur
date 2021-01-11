@@ -21,7 +21,7 @@ export function UseHook<TState, TPayload>(
       object,
       target: object.constructor,
       method: methodName,
-      instance: metadata.container.resolve(hook as any), // TODO(irustm) resolve hook only request
+      instance: metadata.container.resolve(hook as any), // TODO(irustm) resolve hook only send per request
       payload,
     });
   };
