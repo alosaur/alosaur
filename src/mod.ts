@@ -151,6 +151,8 @@ export class App<TState> {
       settings.logging,
     );
 
+    // TODO register hooks with container, resolve
+
     this.useStatic(settings.staticConfig);
     this.useViewRender(settings.viewRenderConfig);
   }

@@ -16,7 +16,6 @@ export class MemoryResponseCacheStore implements ResponseCacheStore {
   }
 
   get(hash: string): Promise<any> {
-    this.cacheMap.get(hash);
-    return Promise.resolve();
+    return Promise.resolve(this.cacheMap.get(hash));
   }
 }

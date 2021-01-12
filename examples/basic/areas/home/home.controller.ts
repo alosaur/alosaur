@@ -12,6 +12,7 @@ import {
   Res,
 } from "../../../../src/decorator/mod.ts";
 import { Request, Response } from "../../../../mod.ts";
+import {delay} from "../../../_utils/test.utils.ts";
 
 @Controller("/home")
 export class HomeController {
@@ -94,10 +95,3 @@ export class HomeController {
   }
 }
 
-function delay(duration: number): Promise<void> {
-  return new Promise<void>(function (resolve, reject) {
-    setTimeout(function () {
-      resolve();
-    }, duration);
-  });
-}

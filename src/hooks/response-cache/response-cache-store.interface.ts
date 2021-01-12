@@ -1,3 +1,5 @@
+export const ResponseCacheStoreToken = "ResponseCacheStoreToken";
+
 export interface ResponseCacheStore {
   /**
      * Create hash in store
