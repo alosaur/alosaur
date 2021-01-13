@@ -12,7 +12,7 @@ import {
   Res,
 } from "../../../../src/decorator/mod.ts";
 import { Request, Response } from "../../../../mod.ts";
-import {delay} from "../../../_utils/test.utils.ts";
+import { delay } from "../../../_utils/test.utils.ts";
 
 @Controller("/home")
 export class HomeController {
@@ -94,4 +94,3 @@ export class HomeController {
     return id;
   }
 }
-

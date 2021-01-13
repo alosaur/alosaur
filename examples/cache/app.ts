@@ -1,4 +1,4 @@
-import {App, InternalDependencyContainer} from "../../mod.ts";
+import { App, InternalDependencyContainer } from "../../mod.ts";
 import { CoreArea } from "./areas/core.area.ts";
 
 // const container = new InternalDependencyContainer();
