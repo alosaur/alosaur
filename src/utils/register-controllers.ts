@@ -4,7 +4,7 @@ import { registerProviders } from "./register-providers.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";
 import { registerHooks } from "./register-hooks.ts";
 import { BusinessType } from "../types/business.ts";
-import { registerAction, registerActions } from "./register-actions.ts";
+import { registerAction } from "./register-actions.ts";
 
 /**
  * Registering controllers

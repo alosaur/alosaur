@@ -67,7 +67,7 @@ export class ProductController {
 }
 
 @Area({
-  controllers: [ProductController]
+  controllers: [ProductController],
 })
 export class ProductArea {}
 
