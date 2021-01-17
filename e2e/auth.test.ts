@@ -53,25 +53,29 @@ test({
         "sid=",
         "",
       ).split(", ");
-      const sid = cookies[0];
-      const sign = cookies[1].replace("sid-s=", "");
+      const sid = cookies[0].split(";")[0];
+      const sign = cookies[1].replace("sid-s=", "").split(";")[0];
 
       assert(sid);
       assert(sign);
 
       const headers = new Headers();
-      headers.append("sid", sid);
-      headers.append("sid-s", sign);
+      headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
+      headers.append("Content-Type", "text/plain");
 
-      // const responseAuth = await fetch("http://localhost:8000/home/protected", {
-      //   method: 'GET',
-      //   headers: headers,
-      //   redirect: 'error'
-      // });
+      const responseAuth = await fetch("http://localhost:8000/home/protected", {
+        method: "GET",
+        headers: headers,
+        credentials: "include",
+      });
 
-      // assertEquals(responseAuth.status, 200);
-      // console.log(responseAuth)
-      // assertEquals(await responseAuth.text(), "Hi! this protected info. <br>  <a href='/account/logout'>logout</a>");
+      assertEquals(responseAuth.status, 200);
+      assertEquals(responseAuth.url, "http://localhost:8000/home/protected");
+
+      assertEquals(
+        await responseAuth.text(),
+        "Hi! this protected info. <br>  <a href='/account/logout'>logout</a>",
+      );
     } finally {
       killServer();
     }
