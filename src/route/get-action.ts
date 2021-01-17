@@ -49,6 +49,7 @@ export function getAction(
       actionObject: route.actionObject,
       target: route.target,
       action: route.action,
+      actionMetadata: route.actionMetadata,
       params: route.params,
       routeParams,
     } as RouteMetadata;

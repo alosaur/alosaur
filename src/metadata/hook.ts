@@ -12,8 +12,7 @@ export interface HookMetadataArgs<TState, TPayload> {
   controller?: ControllerMetadataArgs;
   action?: ActionMetadataArgs;
 
-  object: Object // object of declaration
-  ;
+  object: Object; // object of declaration
 
   /**
    * Indicates object which is used by this hook.
@@ -33,7 +32,12 @@ export interface HookMetadataArgs<TState, TPayload> {
   /**
    * Instance of hook
    */
-  instance: HookTarget<TState, TPayload>;
+  instance?: HookTarget<TState, TPayload>;
+
+  /**
+   * Class of hook
+   */
+  hookClass?: Function;
 
   /**
    * Payload for hook instance

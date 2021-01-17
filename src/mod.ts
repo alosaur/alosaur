@@ -20,12 +20,13 @@ import { HookMetadataArgs } from "./metadata/hook.ts";
 import { Context } from "./models/context.ts";
 import { notFoundAction } from "./renderer/not-found.ts";
 import { AppSettings } from "./models/app-settings.ts";
-import { getHooksForAction } from "./route/get-hooks.ts";
+import { getHooksFromAction } from "./route/get-hooks.ts";
 import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { SecurityContext } from "./security/context/security-context.ts";
+import { registerAppProviders } from "./utils/register-providers.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -143,13 +144,16 @@ export class App<TState> {
 
     this.sortMiddlewares(settings);
 
+    registerAppProviders(settings, this.metadata.container);
+
     registerAreas(this.metadata);
     registerControllers(
-      this.metadata.controllers,
+      this.metadata,
       this.classes,
       (route) => this.routes.push(route),
       settings.logging,
     );
+    // registerHooks(this.metadata);
 
     this.useStatic(settings.staticConfig);
     this.useViewRender(settings.viewRenderConfig);
@@ -216,7 +220,7 @@ export class App<TState> {
         );
 
         if (action !== null) {
-          const hooks = getHooksForAction(this.metadata.hooks, action);
+          const hooks = getHooksFromAction(action);
 
           // try resolve hooks
           if (

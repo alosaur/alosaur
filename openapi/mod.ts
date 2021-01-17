@@ -49,7 +49,7 @@ export class AlosaurOpenApiBuilder<T> {
   public registerControllers(): AlosaurOpenApiBuilder<T> {
     registerAreas(this.appMetadata);
     registerControllers(
-      this.appMetadata.controllers,
+      this.appMetadata,
       this.classes,
       (route: RouteMetadata) => {
         // '/app/home/test/:id/:name/detail' => '/app/home/test/{id}/{name}/detail'
