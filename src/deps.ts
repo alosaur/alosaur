@@ -2,12 +2,12 @@ export {
   serve,
   Server,
   ServerRequest,
-} from "https://deno.land/std@0.80.0/http/server.ts";
+} from "https://deno.land/std@0.83.0/http/server.ts";
 export type {
   HTTPOptions,
   Response,
-} from "https://deno.land/std@0.80.0/http/server.ts";
-export { getCookies } from "https://deno.land/std@0.80.0/http/cookie.ts";
+} from "https://deno.land/std@0.83.0/http/server.ts";
+export { getCookies } from "https://deno.land/std@0.83.0/http/cookie.ts";
 
 export {
   basename,
@@ -18,6 +18,6 @@ export {
   parse,
   resolve,
   sep,
-} from "https://deno.land/std@0.80.0/path/mod.ts";
+} from "https://deno.land/std@0.83.0/path/mod.ts";
 
-export { contentType } from "https://deno.land/x/media_types@v2.5.1/mod.ts";
+export { contentType } from "https://deno.land/x/media_types@v2.7.0/mod.ts";

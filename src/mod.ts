@@ -16,17 +16,19 @@ import {
   TransformConfigMap,
 } from "./models/transform-config.ts";
 
-import { HookMetadataArgs } from "./metadata/hook.ts";
 import { Context } from "./models/context.ts";
 import { notFoundAction } from "./renderer/not-found.ts";
 import { AppSettings } from "./models/app-settings.ts";
 import { getHooksFromAction } from "./route/get-hooks.ts";
-import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
 import { container as defaultContainer } from "./injection/index.ts";
-import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
+import {
+  MiddlewareMetadataArgs,
+} from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
 import { SERVER_REQUEST } from "./models/tokens.model.ts";
+import { hasHooks, hasHooksAction, resolveHooks } from "./utils/hook.utils.ts";
+import {SecurityContext} from "./security/context/security-context.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -51,77 +53,13 @@ export function getViewRenderConfig(): ViewRenderConfig {
   return (global as any).viewRenderConfig;
 }
 
-// TODO(irustm): move to hooks function
-/**
- * Run hooks function and return true if response is immediately
- */
-async function resolveHooks<TState, TPayload>(
-  context: Context<TState>,
-  actionName: HookMethod,
-  hooks?: HookMetadataArgs<TState, TPayload>[],
-): Promise<boolean> {
-  const resolvedHooks = new Set<HookMetadataArgs<TState, TPayload>>();
-
-  if (hasHooks(hooks)) {
-    // @ts-ignore: Object is possibly 'undefined'.
-    for (const hook of hooks) {
-      const action: Function | undefined = (hook as any).instance[actionName];
-
-      if (action !== undefined) {
-        await (hook as any).instance[actionName](context, hook.payload);
-
-        if (context.response.isImmediately()) {
-          let reverseActionName: HookMethod = actionName === "onCatchAction"
-            ? "onCatchAction"
-            : "onPostAction";
-
-          // run reverse resolved hooks
-          await runHooks(
-            context,
-            reverseActionName,
-            Array.from(resolvedHooks).reverse(),
-          );
-
-          await context.request.serverRequest.respond(
-            context.response.getMergedResult(),
-          );
-          return true;
-        }
-      }
-      resolvedHooks.add(hook);
-    }
-  }
-
-  return false;
-}
-
-function hasHooks<TState = any, TPayload = any>(
-  hooks?: HookMetadataArgs<TState, TPayload>[],
-): boolean {
-  return hooks !== undefined && hooks.length > 0;
-}
-
-async function runHooks<TState, TPayload>(
-  context: Context<TState>,
-  actionName: HookMethod,
-  hooks: HookMetadataArgs<TState, TPayload>[],
-) {
-  for (const hook of hooks) {
-    const action: Function | undefined = (hook as any).instance[actionName];
-
-    if (action !== undefined) {
-      await (hook as any).instance[actionName](context, hook.payload);
-    }
-  }
-}
-
-// TODO(irustm): move to hooks function
-function hasHooksAction<TState, TPayload>(
-  actionName: string,
-  hooks?: HookMetadataArgs<TState, TPayload>[],
-): boolean {
-  return !!(hooks &&
-    hooks.find((hook) => (hook as any).instance[actionName] !== undefined));
+// Get middlewares in request
+function getMiddlwareByUrl<T>(
+  middlewares: MiddlewareMetadataArgs<T>[],
+  url: string,
+): any[] {
+  if (middlewares.length === 0) return []; // for perf optimization
+  return middlewares.filter((m) => m.route.test(url));
 }
 
 export class App<TState> {
@@ -184,9 +122,9 @@ export class App<TState> {
       const context = this.metadata.container.resolve<Context<TState>>(Context);
 
       try {
-        // Get middlewares in request
-        const middlewares = this.metadata.middlewares.filter((m) =>
-          m.route.test(context.request.url)
+        const middlewares = getMiddlwareByUrl(
+          this.metadata.middlewares,
+          context.request.url,
         );
 
         // Resolve every pre middleware
