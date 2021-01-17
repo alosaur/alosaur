@@ -25,8 +25,8 @@ import { HookMethod } from "./models/hook.ts";
 import { HttpError } from "./http-error/HttpError.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
-import { SecurityContext } from "./security/context/security-context.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
+import { SERVER_REQUEST } from "./models/tokens.model.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -133,7 +133,6 @@ export class App<TState> {
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
   private transformConfigMap?: TransformConfigMap | undefined = undefined;
   private globalErrorHandler?: (ctx: Context<TState>, error: Error) => void;
-  private isSecurityContext: boolean = false;
 
   private server: Server | undefined = undefined;
 
@@ -153,7 +152,6 @@ export class App<TState> {
       (route) => this.routes.push(route),
       settings.logging,
     );
-    // registerHooks(this.metadata);
 
     this.useStatic(settings.staticConfig);
     this.useViewRender(settings.viewRenderConfig);
@@ -182,9 +180,9 @@ export class App<TState> {
     console.log("Server start in", address);
 
     for await (const req of server) {
-      const context = this.isSecurityContext
-        ? new SecurityContext<TState>(req)
-        : new Context<TState>(req);
+      this.metadata.container.register(SERVER_REQUEST, { useValue: req });
+      const context = this.metadata.container.resolve<Context<TState>>(Context);
+
       try {
         // Get middlewares in request
         const middlewares = this.metadata.middlewares.filter((m) =>
@@ -332,10 +330,6 @@ export class App<TState> {
     } else {
       console.warn("Server is not listening");
     }
-  }
-
-  public useSecurityContext(): void {
-    this.isSecurityContext = true;
   }
 
   public useStatic(config?: StaticFilesConfig): void {
