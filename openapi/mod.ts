@@ -41,7 +41,7 @@ export class AlosaurOpenApiBuilder<T> {
     return new AlosaurOpenApiBuilder(settings);
   }
 
-  constructor(settings: AppSettings) {
+  constructor(private readonly settings: AppSettings) {
     this.appMetadata = getMetadataArgsStorage();
     this.openApiMetadata = getOpenApiMetadataArgsStorage();
   }
