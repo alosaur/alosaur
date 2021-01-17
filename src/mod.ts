@@ -182,6 +182,7 @@ export class App<TState> {
     console.log("Server start in", address);
 
     for await (const req of server) {
+      // console.log(req);
       const context = this.isSecurityContext
         ? new SecurityContext<TState>(req)
         : new Context<TState>(req);
