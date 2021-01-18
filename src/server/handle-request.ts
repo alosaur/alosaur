@@ -201,14 +201,10 @@ export async function handleLiteServer<TState>(
           app.transformConfigMap,
         );
 
-        try {
-          // Get Action result from controller method
-          context.response.result = await action.target[action.action](
-            ...args,
-          );
-        } catch (error) {
-          context.response.error = error;
-        }
+        // Get Action result from controller method
+        context.response.result = await action.target[action.action](
+          ...args,
+        );
       }
 
       if (context.response.result === undefined) {
@@ -222,6 +218,11 @@ export async function handleLiteServer<TState>(
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);
+
+        if (context.response.isImmediately()) {
+          req.respond(context.response.getMergedResult());
+          continue;
+        }
       }
 
       if (context.response.isImmediately()) {
