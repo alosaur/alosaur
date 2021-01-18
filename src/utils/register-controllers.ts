@@ -1,10 +1,16 @@
 import { getMetadataArgsStorage, ObjectKeyAny } from "../mod.ts";
 import { RouteMetadata } from "../metadata/route.ts";
-import { ControllerMetadataArgs } from "../metadata/controller.ts";
+import { registerProviders } from "./register-providers.ts";
+import { MetadataArgsStorage } from "../metadata/metadata.ts";
+import { registerHooks } from "./register-hooks.ts";
+import { BusinessType } from "../types/business.ts";
+import { registerAction } from "./register-actions.ts";
 
-/** Registering controllers */
-export function registerControllers(
-  controllers: ControllerMetadataArgs[] = [],
+/**
+ * Registering controllers
+ */
+export function registerControllers<TState>(
+  metadata: MetadataArgsStorage<TState>,
   classes: ObjectKeyAny[] = [],
   addToRoute: (route: RouteMetadata) => void,
   logging: boolean = true,
@@ -12,9 +18,7 @@ export function registerControllers(
   // TODO: add two route Map (with route params / exact match)
   // example: new Map(); key = route, value = object
 
-  const container = getMetadataArgsStorage().container;
-
-  controllers.forEach((controller) => {
+  metadata.controllers.forEach((controller) => {
     const actions = getMetadataArgsStorage().actions.filter((action) =>
       action.target === controller.target
     );
@@ -22,9 +26,16 @@ export function registerControllers(
       param.target === controller.target
     );
 
+    controller.actions = actions;
+
+    registerProviders(controller, controller.area!.container!);
+    registerHooks(controller, metadata.hooks, BusinessType.Controller);
+
     // TODO: if obj not in classes
     // resolve from DI
-    const target: ObjectKeyAny = container.resolve(controller.target as any);
+    const target: ObjectKeyAny = controller.container!.resolve(
+      controller.target as any,
+    );
     classes.push(target);
 
     if (logging) {
@@ -41,6 +52,10 @@ export function registerControllers(
     }
 
     actions.forEach((action) => {
+      action.controller = controller;
+
+      registerAction(action, metadata.hooks);
+
       let fullRoute: string = areaRoute;
 
       if (controller.route) {
@@ -67,6 +82,7 @@ export function registerControllers(
         areaObject: controller.area && controller.area.target,
         actionObject: action.object,
         controllerObject: controller.target,
+        actionMetadata: action,
         action: action.method,
         method: action.type,
         params: params.filter((param) => param.method === action.method),

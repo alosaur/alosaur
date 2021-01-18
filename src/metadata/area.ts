@@ -1,3 +1,7 @@
+import { DependencyContainer } from "../injection/index.ts";
+import { ProviderDeclaration } from "../types/provider-declaration.ts";
+import { HookMetadataArgs } from "./hook.ts";
+
 export class AreaMetadata {
   target: Function;
   controllers?: Function[];
@@ -18,10 +22,17 @@ export interface AreaMetadataArgs {
    * Type, vase default
    */
   type: any;
+
   /**
+   * @Deprecated
    * Indicates object which is used by this area.
    */
   target: Function;
+
+  /**
+   * Indicates object which is used by this area.
+   */
+  object: Function;
 
   /**
    * Base route for all controllers registered in this area.
@@ -32,4 +43,19 @@ export interface AreaMetadataArgs {
    * All controllers in area
    */
   controllers: Function[] | undefined;
+
+  /**
+   * Providers declared in area
+   */
+  providers?: ProviderDeclaration[];
+
+  /**
+   * Container of area if providers is declared
+   */
+  container?: DependencyContainer;
+
+  /**
+   * Hooks for area
+   */
+  hooks: HookMetadataArgs<any, any>[];
 }

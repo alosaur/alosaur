@@ -7,7 +7,17 @@ Use session middleware
 const store = new MemoryStore();
 await store.init();
 
-app.useSecurityContext(); // need for create security context
+// App settings
+new App({
+    ...
+    providers: [{ // need for create security context
+        token: Context,
+        useClass: SecurityContext, 
+    }],
+    ...
+});
+
+
 app.use(/\//,  new SessionMiddleware(store, {secret: "6b911fd37cdf5c81d4c0adb1ab7fa822ed253ab0ad9aa18d77257c88b29b718e"}));
 
 

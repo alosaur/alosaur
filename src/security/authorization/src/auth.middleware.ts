@@ -1,7 +1,4 @@
-import {
-  MiddlewareTarget,
-  PreRequestMiddleware,
-} from "../../../models/middleware-target.ts";
+import { MiddlewareTarget } from "../../../models/middleware-target.ts";
 import { AuthenticationScheme } from "../../authentication/core/auth.interface.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 

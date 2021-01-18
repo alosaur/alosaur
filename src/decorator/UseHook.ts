@@ -1,10 +1,7 @@
 import { getMetadataArgsStorage } from "../mod.ts";
 import { BusinessType } from "../types/business.ts";
 import { HookTarget } from "../models/hook.ts";
-
-interface Type<T> extends Function {
-  new (...args: any[]): T;
-}
+import { Type } from "../types/type.ts";
 
 /**
  * Registers hook an area or controller or action.
@@ -21,7 +18,8 @@ export function UseHook<TState, TPayload>(
       object,
       target: object.constructor,
       method: methodName,
-      instance: metadata.container.resolve(hook as any), // TODO(irustm) resolve hook only request
+      hookClass: hook,
+      // instance: metadata.container.resolve(hook as any), // TODO(irustm) resolve hook only request
       payload,
     });
   };

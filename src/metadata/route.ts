@@ -1,4 +1,5 @@
 import { ParamMetadataArgs } from "./param.ts";
+import { ActionMetadataArgs } from "./action.ts";
 
 export interface RouteMetadata {
   baseRoute: string;
@@ -7,6 +8,7 @@ export interface RouteMetadata {
   areaObject?: Object;
   actionObject: Object;
   controllerObject: Object;
+  actionMetadata: ActionMetadataArgs;
   target: { [key: string]: any };
   action: string;
   method: string;
