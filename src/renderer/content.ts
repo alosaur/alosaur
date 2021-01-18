@@ -1,4 +1,3 @@
-import { contentType } from "../deps.ts";
 import { ActionResult } from "../models/response.ts";
 
 const textEncoder = new TextEncoder();
@@ -15,12 +14,12 @@ export function Content(
     case "object":
     case "boolean":
     case "number":
-      headers.set("content-type", contentType("file.json") as string);
+      headers.set("content-type", "application/json; charset=utf-8");
       body = textEncoder.encode(JSON.stringify(result));
       break;
 
     default:
-      headers.set("content-type", contentType("text/html") as string);
+      headers.set("content-type", "text/html; charset=UTF-8");
       body = textEncoder.encode(result || "");
       break;
   }

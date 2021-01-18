@@ -1,6 +1,7 @@
 import { assert } from "../deps_test.ts";
 import { getAction } from "./get-action.ts";
 import { RouteMetadata } from "../metadata/route.ts";
+import { ActionMetadataArgs } from "../metadata/action.ts";
 const { test } = Deno;
 
 test({
@@ -14,6 +15,7 @@ test({
         areaObject: {},
         controllerObject: {},
         actionObject: {},
+        actionMetadata: {} as ActionMetadataArgs,
         action: "test",
         method: "GET",
         params: [],
@@ -25,6 +27,7 @@ test({
         areaObject: {},
         controllerObject: {},
         actionObject: {},
+        actionMetadata: {} as ActionMetadataArgs,
         action: "test",
         method: "GET",
         params: [],

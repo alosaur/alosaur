@@ -66,7 +66,9 @@ export class ProductController {
   }
 }
 
-@Area()
+@Area({
+  controllers: [ProductController],
+})
 export class ProductArea {}
 
 export const ProductAppSettings: AppSettings = {
