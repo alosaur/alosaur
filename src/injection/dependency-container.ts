@@ -100,6 +100,23 @@ class InternalDependencyContainer implements DependencyContainer {
     return this;
   }
 
+  /**
+   * Uses only set immmediataly
+   * onlu uses in Alosaur
+   * @param token
+   * @param provider
+   */
+  public registerValue<T>(
+    token: InjectionToken<T>,
+    provider: ValueProvider<T>,
+  ): InternalDependencyContainer {
+    this._registry.set(
+      token,
+      { provider, options: { lifecycle: Lifecycle.Transient } },
+    );
+    return this;
+  }
+
   public registerType<T>(
     from: InjectionToken<T>,
     to: InjectionToken<T>,
