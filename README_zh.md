@@ -13,12 +13,19 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 -   **Dependency Injection** - 依赖注入，使用轻量级依赖项注入容器`microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
 -   **Render pages** 可以使用任意的模板引擎. [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
 
-
 **[帮助文档](https://github.com/alosaur/alosaur/tree/master/docs)**
 
 ---
 
 ## 开发计划
+
+2021年第1季度 - 1-3月
+
+- [ ] Response cashe store, attribute
+- [ ] CLI (generate blank app, build openapi, tests and more)
+- [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with Alosaur openapi
+- [ ] Background process, BackgroundService, WebJobs, cron
+- [ ] Docs website
 
 2020年第4季度 – 10-12月
 
@@ -46,6 +53,7 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+
 
 
 ## 一个简单的例子
@@ -96,10 +104,10 @@ tsconfig.app.json:
 
 # TODO
 
--   [x] Add render views: [Dejs](https://github.com/syumai/dejs) and [Handlebars](https://github.com/alosaur/handlebars)
--   [x] Add return value JSON
+-   [x] 增加模板渲染，支持[Dejs](https://github.com/syumai/dejs) 和[Handlebars](https://github.com/alosaur/handlebars)
+-   [x] 增加返回JSON类型的数据
 
--   Add decorators:
+-   增加装饰器:
 -   -   [x] `@Area`
 -   -   [x] `@QueryParam`
 -   -   [x] `@Param` param from url: `/:id`
@@ -112,46 +120,46 @@ tsconfig.app.json:
 -   -   [x] `@UseHook` for contoller and actions
 -   -   [x]  Support create custom decorators with app metadata
 
--   [x] Add middleware
--   [x] Add static middleware (example: app.useStatic)
--   [x] Add CORS middleware
--   [x] Add SPA middleware
--   [x] Add DI
--   [x] Add std exceptions
--   [x] Add CI with minimal tests.
--   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
--   [ ] Add OpenAPI type reference
--   [x] Add Hooks example
--   [x] Add WebSocket
--   [x] Add SSE
--   [x] Add validators example [class-validator](https://github.com/typestack/class-validator)
--   [ ] Add microservice connector with WASM
--   [x] Transfer to Alosaur github organization
--   [ ] Add docs and more examples
+-   [x] 增加中间件
+-   [x] 增加静态文件中间件 (例如: app.useStatic)
+-   [x] 增加CORS中间件
+-   [x] 增加SPA中间件
+-   [x] 增加依赖注入
+-   [x] 增加标准异常
+-   [x] 增加CI以及一些测试用例
+-   [x] 增加OpenAPI v3生成器 (参见 /examples/basic/openapi.ts)
+-   [ ] 增加OpenAPI类型引用
+-   [x] 增加钩子的例子
+-   [x] 增加WebSocket
+-   [x] 增加SSE
+-   [x] 增加类型校验的例子 [class-validator](https://github.com/typestack/class-validator)
+-   [ ] 增加微服务与WASM的连接器
+-   [x] 切换到Alosaur在github的组织
+-   [ ] 增加文档和更多的例子
 
-- Plugins & modules
+- 插件与模块
 
--  -   [x] Add [Angular](https://github.com/alosaur/angular_deno) render engine
--  -   [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
+-  -   [x] 增加[Angular](https://github.com/alosaur/angular_deno) 模板引擎
+-  -   [x] 增加CLI及示意图(https://github.com/alosaur/alosaur-schematics)
 
-- Examples
+- 范例
 
--  -   [x] Add basic example
--  -   [x] Add DI example
--  -   [x] Add static serve example
--  -   [x] Add Dejs view render example
--  -   [x] Add example with SQL drivers (PostgreSQL)
--  -   [x] Add basic example in Docker container
--  -   [x] Add WebSocket example
--  -   [ ] Add example with WASM
+-  -   [x] 增加基本使用范例
+-  -   [x] 增加依赖注入范例
+-  -   [x] 增加静态文件范例
+-  -   [x] 增加Dejs模板引擎范例
+-  -   [x] 增加SQL数据库范例 (PostgreSQL)
+-  -   [x] 增加基本使用范例，使用Docker技术
+-  -   [x] 增加WebSocket范例
+-  -   [ ] 增加WASM范例
 
 ## OpenAPI v3
 
-[Example](https://github.com/alosaur/alosaur/tree/master/basic/)
+[范例](https://github.com/alosaur/alosaur/tree/master/basic/)
 
-[Example with parse type reference](https://github.com/alosaur/alosaur/tree/master/openapi/e2e/)
+[引用类型解析的范例](https://github.com/alosaur/alosaur/tree/master/openapi/e2e/)
 
-Basic example:
+一个简单的例子:
 ```ts
 AlosaurOpenApiBuilder.create(settings)
   .registerControllers()
@@ -166,7 +174,7 @@ AlosaurOpenApiBuilder.create(settings)
 ```
 
 
-Generate OpenAPI file:
+生成OpenAPI文件:
 
 ```
 deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
