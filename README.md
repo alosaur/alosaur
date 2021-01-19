@@ -19,6 +19,14 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 ## Features roadmap
 
+2021 - Jan-March
+
+- [ ] Response cashe store, attribute
+- [ ] CLI (generate blank app, build openapi, tests and more)
+- [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with Alosaur openapi
+- [ ] Background process, BackgroundService, WebJobs, cron
+- [ ] Docs website
+
 Q4 2020 – Oct-Dec
 
 - [x] WebSocket
@@ -120,7 +128,7 @@ And run
 -   [x] Add std exceptions
 -   [x] Add CI with minimal tests.
 -   [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
--   [ ] Add OpenAPI type reference
+-   [x] Add OpenAPI type reference
 -   [x] Add Hooks example
 -   [x] Add WebSocket
 -   [x] Add SSE
@@ -400,7 +408,7 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 [Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.80.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.83.0/ws/mod.ts";
 import { Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {

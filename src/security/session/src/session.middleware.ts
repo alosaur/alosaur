@@ -1,15 +1,12 @@
 import * as secp from "https://deno.land/x/secp256k1/mod.ts";
-import {
-  MiddlewareTarget,
-  PreRequestMiddleware,
-} from "../../../models/middleware-target.ts";
+import { MiddlewareTarget } from "../../../models/middleware-target.ts";
 import { Context } from "../../../models/context.ts";
 import { SessionStore } from "./store/store.interface.ts";
 import { Session } from "./session.instance.ts";
 import {
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.80.0/http/cookie.ts";
+} from "https://deno.land/std@0.83.0/http/cookie.ts";
 import {
   SESSION_SIGNATURE_PREFIX_KEY,
   SessionOptions,

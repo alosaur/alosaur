@@ -61,6 +61,13 @@ For use Alosaur Authorization with CookiesScheme you need create session middlew
 
 app.ts:
 ```ts
+const app = new App({
+    providers: [{ // need for create security context
+        token: Context,
+        useClass: SecurityContext
+    }],
+});
+
 // create session store
 const sessionStore = new MemoryStore();
 await sessionStore.init();
@@ -71,11 +78,10 @@ const sessionMiddleware = new SessionMiddleware(sessionStore, {secret: 123456789
 // create auth middlware with schemes
 const authMiddleware = new AuthMiddleware([CookiesAuthentication.DefaultScheme]);
 
+
 app.use(new RegExp("/"), sessionMiddleware);
 app.use(new RegExp("/"), authMiddleware);
 
-// for create and use security context:
-app.useSecurityContext();
 
 ```
 
@@ -92,13 +98,18 @@ export const JWTscheme = new JwtBearerScheme("HS512", "secret_key", 30 * 24 * 60
 
 // and use JWTscheme in other cases, when need scheme
 
+
+const app = new App({
+    providers: [{ // need for create security context
+        token: Context,
+        useClass: SecurityContext
+    }],
+});
+
 // create auth middlware with schemes
 const authMiddleware = new AuthMiddleware([JWTscheme]);
 
 app.use(new RegExp("/"), authMiddleware);
-
-// for create and use security context:
-app.useSecurityContext();
 ```
 
 
@@ -114,7 +125,12 @@ For create this context you execute this action in App:
 
 app.ts:
 ```ts
-app.useSecurityContext();
+const app = new App({
+    providers: [{ // need for create security context
+        token: Context,
+        useClass: SecurityContext
+    }],
+});
 ```
 
 Example

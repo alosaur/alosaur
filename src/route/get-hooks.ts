@@ -30,6 +30,11 @@ export function getGroupedHooks<TState, TPayload>(
   return result;
 }
 
+/**
+ * Gets hooks in runtime
+ * @param hooks
+ * @param action
+ */
 export function getHooksForAction<TState, TPayload>(
   hooks: HookMetadataArgs<TState, TPayload>[],
   action: RouteMetadata,
@@ -37,6 +42,25 @@ export function getHooksForAction<TState, TPayload>(
   const group = getGrouped(hooks, action);
 
   return [...group.areaHooks, ...group.controllerHooks, ...group.actionHooks];
+}
+
+/**
+ * Gets hooks from metadata
+ * @param hooks
+ * @param action
+ */
+export function getHooksFromAction<TState, TPayload>(
+  action: RouteMetadata,
+): HookMetadataArgs<TState, TPayload>[] | undefined {
+  const metadata = action.actionMetadata;
+
+  const actionHooks = metadata.hooks || [];
+
+  return [
+    ...metadata.controller!.area!.hooks,
+    ...metadata.controller!.hooks,
+    ...actionHooks,
+  ];
 }
 
 function getGrouped<TState, TPayload>(

@@ -1,4 +1,3 @@
-import { contentType } from "../deps.ts";
 import { getViewRenderConfig } from "../mod.ts";
 import { ActionResult } from "../models/response.ts";
 
@@ -10,7 +9,7 @@ export async function View(
 ): Promise<ActionResult> {
   const headers = new Headers();
 
-  headers.set("content-type", contentType("text/html") as string);
+  headers.set("content-type", "text/html; charset=UTF-8");
   const renderConfig = getViewRenderConfig();
 
   return {

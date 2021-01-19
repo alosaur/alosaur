@@ -4,6 +4,7 @@ import { assert } from "../deps_test.ts";
 import { ParamType } from "../types/param.ts";
 import { Context } from "../models/context.ts";
 import { ServerRequest } from "../deps.ts";
+import { ActionMetadataArgs } from "../metadata/action.ts";
 
 const { test } = Deno;
 
@@ -16,6 +17,7 @@ const route: RouteMetadata = {
   method: "GET",
   action: "testQuery",
   areaObject: {},
+  actionMetadata: {} as ActionMetadataArgs,
   controllerObject: {},
   actionObject: {},
   params: [
