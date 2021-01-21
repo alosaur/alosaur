@@ -511,11 +511,11 @@ export class MyHook implements HookTarget<State, PayloadType> {
     context.response.result = Content({ error: { token: false } }, 403);
     context.response.setImmediately();
     // if response setted immediately no further action will be taken
-  }// this hook run after controller action
+  } // this hook run after controller action
 
   onPostAction(context: Context<State>, payload: PayloadType) {
     // you can filtered response result here
-  }// this hook run only throw exception in controller action
+  } // this hook run only throw exception in controller action
 
   onCatchAction(context: Context<State>, payload: PayloadType) {
   }
