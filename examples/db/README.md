@@ -5,15 +5,12 @@
 Run postgres database
 
 ```sh
-
 cd /examples/db
 
 docker-compose up -d
-
 ```
 
 Edit `database.ts` config
-
 
 Run application
 
