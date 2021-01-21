@@ -1,13 +1,24 @@
 ## Alosaur.Security.Session
 
 Use session middleware
+
 ```ts
 ...
 
 const store = new MemoryStore();
 await store.init();
 
-app.useSecurityContext(); // need for create security context
+// App settings
+new App({
+    ...
+    providers: [{ // need for create security context
+        token: Context,
+        useClass: SecurityContext, 
+    }],
+    ...
+});
+
+
 app.use(/\//,  new SessionMiddleware(store, {secret: "6b911fd37cdf5c81d4c0adb1ab7fa822ed253ab0ad9aa18d77257c88b29b718e"}));
 
 
@@ -26,10 +37,10 @@ public action(@Ctx() context: SecurityContext) {
     // and use your store
     await context.security.session.store.exist(sid);
 }
- 
 ```
 
 Store interface:
+
 ```ts
 /**
  * Store for sessions
@@ -84,11 +95,10 @@ export interface SessionStore {
    */
   clear(): Promise<void>;
 }
-
-
 ```
 
 Session options interface
+
 ```ts
 export interface SessionOptions {
   /** Security key for sign hash **/
@@ -111,5 +121,4 @@ export interface SessionOptions {
    * be sent along with cross-site requests. */
   sameSite?: SameSite;
 }
-
 ```

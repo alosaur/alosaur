@@ -7,46 +7,47 @@
 - [SPA middleware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
 - [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
 - [Database PostgreSQL](https://github.com/alosaur/alosaur/tree/master/examples/db)
-- Template render: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), and [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
+- Template render:
+  [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
+  [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars),
+  and [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 - [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 
-
 ## Simple example:
 
 ```typescript
-import { Controller, Get, Area, App } from 'https://deno.land/x/alosaur/mod.ts'
+import { App, Area, Controller, Get } from "https://deno.land/x/alosaur/mod.ts";
 
-@Controller('/home')
+@Controller("/home")
 export class HomeController {
-  @Get('/text')
+  @Get("/text")
   text() {
     return "Hello world";
   }
-  @Get('/json')
+  @Get("/json")
   json() {
-    return {"text":"test"};
+    return { "text": "test" };
   }
 }
+
 @Area({
-  controllers: [HomeController]
+  controllers: [HomeController],
 })
 export class HomeArea {
 }
 const app = new App({
-  areas: [HomeArea]
+  areas: [HomeArea],
 });
 
 app.listen();
 ```
 
-
 ## Set, get and delete cookie
 
-
 ```ts
-  import { Cookie, setCookie, getCookies, delCookie } from "https://deno.land/std/http/cookie.ts";
+import { Cookie, setCookie, getCookies, delCookie } from "https://deno.land/std/http/cookie.ts";
 
   ...
   @Get('/view')
