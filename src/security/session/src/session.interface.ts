@@ -1,4 +1,4 @@
-import { SameSite } from "https://deno.land/std@0.83.0/http/cookie.ts";
+import { SameSite } from "https://deno.land/std@0.84.0/http/cookie.ts";
 import { SessionStore } from "./store/store.interface.ts";
 
 export const SESSION_SIGNATURE_PREFIX_KEY = "-s";
