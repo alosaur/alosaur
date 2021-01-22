@@ -4,7 +4,7 @@ export const ResponseCacheStoreToken = "ResponseCacheStoreToken";
 
 export interface ResponseCachePayload {
   /**
-   * Time duration hash in ms
+   * Time duration cache in ms
    */
   duration: number;
 
