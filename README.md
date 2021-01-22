@@ -26,7 +26,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 2021 - Jan-March
 
-- [x] Response cashe store, attribute
+- [x] Response cache store, attribute
 - [ ] CLI (generate blank app, build openapi, tests and more)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
