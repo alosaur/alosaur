@@ -181,7 +181,7 @@ deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
 
 ```
 
-For support type references you can use JSDoc with Deno doc parse like this:
+为了支持类型引用，需要使用Deno的文档解析器解析JSDoc文档，范例如下:
 
 ```ts
 // Parse controllers. Input path to your application
@@ -195,26 +195,26 @@ const builder = AlosaurOpenApiBuilder.create(ProductAppSettings)
       ...
 ```
 
-How to teaching how to correctly assemble controllers?
+怎样才能正确的使用JsDoc语法描述一个控制器？
 
-You must put in the JsDoc decorator as **@decorator**
+需要使用JsDoc的装饰器，就像**@decorator**
 
-> ECMAScript decorators are sometimes an important part of an API contract. However, today the TypeScript compiler does not represent decorators in the .d.ts output files used by API consumers. The @decorator tag provides a workaround, enabling a decorator expression to be quoted in a doc comment.
+> ECMAScript的装饰器有时是一个API规范的重要部分，然而现代TypeScript编译器不会再使用.d.ts输出装饰器代码，而是使用@decorator标签代表，这样就是的装饰器表达式可以放在程序代码的注释里面。
 > https://tsdoc.org/pages/tags/decorator/
 
-Example:
+范例:
 ```ts
 @Controller()
 /**
- * Product controller
+ * Product控制器
  * @decorator Controller
  */
 export class ProductController {
   /**
-   * Gets product by id
-   * @summary action test
-   * @remarks Awesomeness!
-   * @param {id} The product id
+   * 通过id获取product
+   * @summary 测试
+   * @remarks 太棒了！
+   * @param {id} 产品id
    * @decorator Get
    */
   @Get("/:id")
@@ -224,11 +224,11 @@ export class ProductController {
 }
 ```
 
-You can also add what media types can be expected in the body. Use RequestBody param in JsDoc 
+在JsDoc中还可以通过RequestBody参数，指定期望传入什么类型的media type 
 
 ```ts
   /**
-   * Create product
+   * 创建产品
    * @param product
    * @decorator Post
    * @RequestBody application/xml
@@ -239,14 +239,14 @@ You can also add what media types can be expected in the body. Use RequestBody p
   }
 ```
 
-You can also add what types can be returned from a controller method. Use decorator ProducesResponse
+使用ProducesResponse装饰器指定从控制器方法返回的类型
 
 ```ts
 /**
- * Gets product by id
- * @summary action test
- * @remarks Awesomeness!
- * @param {id} The product id
+ * 根据id获取product
+ * @summary 测试
+ * @remarks 太棒了！
+ * @param {id} product id
  * @decorator Get
  */
 @Get("/:id")
@@ -258,11 +258,11 @@ GetById(@Param("id") id: string) {
 }
 ```
 
-To declare more information in types and models you can add other JsDoc parameters
+使用其他的JsDoc参数在类和模型中展示更多的信息
 
 ```ts
 /**
- * Entity of product
+ * product实体类
  */
 export class Product {
   /**
@@ -290,7 +290,7 @@ export class Product {
 }
 ```
 
-Alosaur openapi parser currently supports the following types and expressions:
+Alosaur的openapi解析器目前支持一下的类型和表达式：
 
 ```ts
 interface PropertyJsDocObject{
@@ -312,7 +312,7 @@ interface PropertyJsDocObject{
 }
 ```
 
-Keywords:
+关键字:
 
 ```ts
 export interface JsDocObject {
@@ -336,7 +336,7 @@ export interface JsDocObject {
 }
 ```
 
-Ts types, `Object
+TypeScript类型, `Object
 Date
 Symbol
 Map
@@ -356,11 +356,11 @@ Float32Array
 Float64Array`
 
 
-## Middleware
+## 中间件
 
-You can create middleware and register it in area or all application layer.
+在area或者其他的模块中，可以创建并注册中间件
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/middlewares/)
+[完整的示例](https://github.com/alosaur/alosaur/tree/master/middlewares/)
 
 ```ts
 @Middleware(new RegExp('/'))
@@ -383,7 +383,7 @@ export class Log implements MiddlewareTarget<TState> {
 }
 ```
 
-Register in app settings
+在应用程序的设置中进行注册
 
 ```ts
 const settings: AppSettings = {
@@ -392,7 +392,7 @@ const settings: AppSettings = {
 };
 ```
 
-or in app
+或者在app中直接使用
 
 ```ts
 const app = new App(settings);
@@ -401,11 +401,11 @@ app.use(/\//, new Log());
 ```
 
 
-### WebSocket middleware example
+### WebSocket中间件范例
 
-Use `context.response.setNotRespond()` for return the rest of the requests
+使用 `context.response.setNotRespond()` 返回剩余的请求信息
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
+[完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
 import { acceptWebSocket } from "https://deno.land/std@0.80.0/ws/mod.ts";
@@ -434,11 +434,11 @@ export class WebsocketMiddleware implements PreRequestMiddleware {
 
 ```
 
-### SSE middleware example
+### SSE中间件范例
 
-Use `context.response.setNotRespond()` for return the rest of the requests
+使用 `context.response.setNotRespond()` 返回剩余的请求信息
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/sse)
+[完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/sse)
 
 ```ts
 import { acceptSSE, Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
@@ -458,47 +458,47 @@ export class SseMiddleware implements PreRequestMiddleware {
 ```
 
 
-## Hooks
+## 钩子
 
-Hooks - middleware for area, controller and actions with supports DI container.
+钩子 - area、控制器和操作的中间件，支持依赖注入容器
 
-Hook in Alosaur there are three types: `onPreAction, onPostAction, onCatchAction`.
+Alosaur中的钩子有三种类型: `onPreAction, onPostAction, onCatchAction`.
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+[完整的范例](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
 ```typescript
-type PayloadType = string; // can use any type for payload
+type PayloadType = string; // payload可以是任意类型
 type State = any;
 
 export class MyHook implements HookTarget<State, PayloadType> {
 
-  // this hook run before controller action
+  // 这个钩子在控制器操作之前执行
   onPreAction(context: Context<State>, payload: PayloadType) {
-      // you can rewrite result and set request immediately
+      // 可以在这里重写输出结果，设置response并立即生效
       context.response.result = Content({error: {token: false}}, 403);
       context.response.setImmediately();
-      // if response setted immediately no further action will be taken
+      // 如果response被设置成立即生效，那么不会有其他的操作被执行
   };
   
-  // this hook run after controller action
+  // 这个钩子在控制器操作之后执行
   onPostAction(context: Context<State>, payload: PayloadType) {
-    // you can filtered response result here
+    // 可以在这里过滤response的输出结果
   };
   
-  // this hook run only throw exception in controller action
+  // 这个钩子当控制器操作抛出异常的时候执行
   onCatchAction(context: Context<State>, payload: PayloadType) {
   
   };
 }
 ```
 
-uses: 
+用法: 
 ```ts
-@UseHook(MyContollerHook) // or @UseHook(MyHook, 'payload') for all actions in controller
+@UseHook(MyContollerHook) // 或者使用 @UseHook(MyHook, 'payload') 为控制器的所有操作设置钩子
 @Controller()
 export class HomeController {
 
-    @UseHook(MyHook, 'payload') // only for one action
+    @UseHook(MyHook, 'payload') // 只为当前的操作设置钩子
     @Get('/')
     text(@Res() res: any) {
         return ``;
@@ -506,9 +506,9 @@ export class HomeController {
 }
 ```
 
-## Global error handler
+## 全局异常处理
 
-Errors that haven't been caught elsewhere get in here
+没有在其他地方捕获的异常通过下面的方式进行处理
 
 ```ts
 const app = new App(
@@ -516,7 +516,7 @@ const app = new App(
 );
 
 
-// added global error handler
+// 添加全局异常处理
 app.error((context: Context<any>, error: Error) => {
   context.response.result = Content("This page unprocessed error", (error as HttpError).httpCode || 500);
   context.response.setImmediately();
@@ -525,31 +525,31 @@ app.error((context: Context<any>, error: Error) => {
 
 
 
-## Action outputs: Content, View, Redirect
+## 控制器函数的返回类型: Content, View, Redirect
 
-There are 3 ways of information output
+控制器函数有三种返回类型
 
-- **Content** similar `return {};` by default Status 200 OK
-- **View** uses with template engine, `return View("index", model);`
-- **Redirect** and **RedirectPermanent** status 301,302 `return Redirect('/to/page')`
+- **Content** 类似 `return {};` 默认会返回`200 OK`
+- **View** 使用模板引擎渲染输出结果, `return View("index", model);`
+- **Redirect** 和 **RedirectPermanent** 返回HTTP 301,302 `return Redirect('/to/page')`
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/src/renderer)
+[完整的范例](https://github.com/alosaur/alosaur/tree/master/src/renderer)
 
 ```ts
 
-return {}; // return 200 status
+return {}; // 返回HTTP 200 
 
-// or
-return Content("Text or Model", 404); // return 404 status
+// 或者
+return Content("Text or Model", 404); // 返回HTTP 404
 
-// or 
-return View("page", 404); // return 404 status
+// 或者 
+return View("page", 404); // 返回HTTP 404 
 ```
 
-## Render pages
+## 页面渲染
 
-Alosaur can suppport any html renderer. All you have to do is define the rendering function in the settings.
-For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/angular_deno), [React](https://github.com/alosaur/react), [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
+Alosaur支持任何HTML渲染引擎. 你只需要在settings中定义一个渲染函数。
+例如 [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/angular_deno), [React](https://github.com/alosaur/react), [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 
 
 ```ts
@@ -558,7 +558,7 @@ For example [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs)
 // Basedir path
 const viewPath = `${Deno.cwd()}/examples/handlebars/views`;
 
-// Create Handlebars render
+// 创建Handlebars渲染引擎
 const handle = new Handlebars();
 
 app.useViewRender({
