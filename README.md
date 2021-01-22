@@ -26,7 +26,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 2021 - Jan-March
 
-- [ ] Response cashe store, attribute
+- [x] Response cashe store, attribute
 - [ ] CLI (generate blank app, build openapi, tests and more)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
@@ -126,29 +126,21 @@ And run
   [Handlebars](https://github.com/alosaur/handlebars)
 - [x] Add return value JSON
 
-- Add decorators:
--
-  - [x] `@Area`
--
-  - [x] `@QueryParam`
--
-  - [x] `@Param` param from url: `/:id`
--
-  - [x] `@Body`
--
-  - [x] `@Cookie`
--
-  - [x] `@Req`
--
-  - [x] `@Res`
--
-  - [x] `@Ctx`
--
-  - [x] `@Middleware` with regex route
--
-  - [x] `@UseHook` for contoller and actions
--
-  - [x] Support create custom decorators with app metadata
+Add decorators:
+
+- [x] `@Area`
+- [x] `@QueryParam`
+- [x] `@Param` param from url: `/:id`
+- [x] `@Body`
+- [x] `@Cookie`
+- [x] `@Req`
+- [x] `@Res`
+- [x] `@Ctx`
+- [x] `@Middleware` with regex route
+- [x] `@UseHook` for contoller and actions
+- [x] `@ResponseCache`
+
+- [x] Support create custom decorators with app metadata
 
 - [x] Add middleware
 - [x] Add static middleware (example: app.useStatic)
