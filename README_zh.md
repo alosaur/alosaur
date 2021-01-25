@@ -501,11 +501,11 @@ export class MyHook implements HookTarget<State, PayloadType> {
     context.response.result = Content({ error: { token: false } }, 403);
     context.response.setImmediately();
     // 如果response被设置成立即生效，那么不会有其他的操作被执行
-  }// 这个钩子在控制器操作之后执行
+  } // 这个钩子在控制器操作之后执行
 
   onPostAction(context: Context<State>, payload: PayloadType) {
     // 可以在这里过滤response的输出结果
-  }// 这个钩子当控制器操作抛出异常的时候执行
+  } // 这个钩子当控制器操作抛出异常的时候执行
 
   onCatchAction(context: Context<State>, payload: PayloadType) {
   }
