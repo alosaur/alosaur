@@ -546,9 +546,9 @@ return Content("Text or Model", 404); // 返回HTTP 404
 return View("page", 404); // 返回HTTP 404 
 ```
 
-## 页面渲染
+## 模板渲染
 
-Alosaur支持任何HTML渲染引擎. 你只需要在settings中定义一个渲染函数。
+Alosaur支持任何HTML模板引擎. 你只需要在settings中定义一个渲染函数。
 例如 [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs), [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars), [Angular](https://github.com/alosaur/angular_deno), [React](https://github.com/alosaur/react), [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 
 
@@ -571,7 +571,7 @@ app.useViewRender({
 
 ```
 
-Handlebars support custom config, [more about handlebars for deno](https://github.com/alosaur/handlebars)
+可以为Handlebars进行定制化的配置, [more about handlebars for deno](https://github.com/alosaur/handlebars)
 ```ts
  new Handlebars(
     {
@@ -587,13 +587,13 @@ Handlebars support custom config, [more about handlebars for deno](https://githu
 ```
 
 
-## Transformers and validators
+## 转换器与验证器
 
-You can use different transformers
+可以使用各种不同的类转换器
 
-For example `class-validator` and `class-transformer` for body.
+例如可以使用`class-validator` 和 `class-transformer`
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/validator)
+[完整范例](https://github.com/alosaur/alosaur/tree/master/examples/validator)
 
 post.model.ts:
 
@@ -632,7 +632,7 @@ import { PostModel } from './post.model.ts';
 const { validate } = validator;
 const { plainToClass } = transformer;
 
-// Create controller
+// 创建控制器
 @Controller()
 export class HomeController {
 
@@ -646,18 +646,18 @@ export class HomeController {
     }
 }
 
-// Declare controller in area
+// 在模块中声明控制器
 @Area({
     controllers: [HomeController],
 })
 export class HomeArea { }
 
-// Create app
+// 创建应用程序
 const app = new App({
     areas: [HomeArea],
 });
 
-// add transform function
+// 添加转换函数
 app.useTransform({
     type: 'body', // parse body params
     getTransform: (transform: any, body: any) => {
@@ -665,12 +665,12 @@ app.useTransform({
     }
 })
 
-// serve application
+// 启动监听
 app.listen();
 
 ```
 
-You can also use just a function instead of a transformer.
+也可以只使用一个函数，而不是转换器
 
 ```ts
 function parser(body): ParsedObject {
@@ -687,13 +687,13 @@ post(@Body(parser) data: ParsedObject) {
 ```
 
 
-## Custom Decorators
+## 自定义装饰器
 
-You can add any decorator and put it in a DI system.
+你可以自定义装饰器，然后纳入依赖注入系统中
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+[完整范例](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
-Example with hooks:
+钩子的例子:
 
 ```ts
 import {
@@ -708,11 +708,11 @@ import {
 type AuthorizeRoleType = string | undefined;
 
 /**
- * Authorize decorator with role
+ * 通过角色进行授权的装饰器
  */
 export function Authorize(role?: AuthorizeRoleType): Function {
   return function (object: any, methodName?: string) {
-    // add hook to global metadata
+    // 在全局metadata中增加钩子
     getMetadataArgsStorage().hooks.push({
       type: methodName ? BusinessType.Action : BusinessType.Controller,
       object,
@@ -737,7 +737,7 @@ export class AutorizeHook implements HookTarget<unknown, AuthorizeRoleType> {
 
 ```
 
-Then you can add anywhere you want. For example action of controller:
+你可以在任何地方使用你自定义的装饰器，例如在控制器函数中:
 
 ```ts
   // ..controller
@@ -751,10 +751,10 @@ Then you can add anywhere you want. For example action of controller:
 ```
 
 
-## Sponsors
+## 捐赠者
 
 <a  align="center" href="https://opencollective.com/libertyware-limited" target="_blank"><img src="https://images.opencollective.com/libertyware-limited/647a24a/logo/256.png" width="100"></a>
 
-### Backers
+### 请支持我们！
 
 <a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000"></a>
