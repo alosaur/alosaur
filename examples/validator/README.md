@@ -2,7 +2,6 @@ Start server:
 
 ```
 deno run -A --config ./src/tsconfig.lib.json examples/validator/app.ts
-
 ```
 
 Request POST data
@@ -45,8 +44,6 @@ Response:
 }
 ```
 
-
-
 Request POST data
 
 ```js
@@ -63,6 +60,7 @@ curl -X POST \
 ```
 
 Response:
+
 ```js
 {
     "data": {

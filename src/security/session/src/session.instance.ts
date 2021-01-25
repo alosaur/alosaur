@@ -1,7 +1,7 @@
 import { SessionInterface } from "./session.interface.ts";
 import { SessionStore } from "./store/store.interface.ts";
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
-import { createHash } from "https://deno.land/std@0.83.0/hash/mod.ts";
+import { createHash } from "https://deno.land/std@0.84.0/hash/mod.ts";
 
 /**
  * Object of session for job with store

@@ -1,6 +1,7 @@
 ## Alosaur.Security.Session
 
 Use session middleware
+
 ```ts
 ...
 
@@ -36,10 +37,10 @@ public action(@Ctx() context: SecurityContext) {
     // and use your store
     await context.security.session.store.exist(sid);
 }
- 
 ```
 
 Store interface:
+
 ```ts
 /**
  * Store for sessions
@@ -94,11 +95,10 @@ export interface SessionStore {
    */
   clear(): Promise<void>;
 }
-
-
 ```
 
 Session options interface
+
 ```ts
 export interface SessionOptions {
   /** Security key for sign hash **/
@@ -121,5 +121,4 @@ export interface SessionOptions {
    * be sent along with cross-site requests. */
   sameSite?: SameSite;
 }
-
 ```

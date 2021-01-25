@@ -4,7 +4,11 @@ It shows how to implement Alosaur Middleware for SSE.
 
 ```ts
 import { ChatHandler } from "./chat.handler.ts";
-import { acceptSSE, Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
+import {
+  acceptSSE,
+  Context,
+  PreRequestMiddleware,
+} from "https://deno.land/x/alosaur/mod.ts";
 
 export class SseMiddleware implements PreRequestMiddleware {
   async onPreRequest(context: Context) {
@@ -17,5 +21,4 @@ export class SseMiddleware implements PreRequestMiddleware {
     context.response.setNotRespond();
   }
 }
-
 ```

@@ -1,6 +1,6 @@
 import { PreRequestMiddleware } from "../../src/models/middleware-target.ts";
 import { Context } from "../../src/models/context.ts";
-import { acceptWebSocket } from "https://deno.land/std@0.83.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.84.0/ws/mod.ts";
 import { ChatHandler } from "./chat.handler.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
