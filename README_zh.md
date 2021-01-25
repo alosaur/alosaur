@@ -21,7 +21,7 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 2021年第1季度 - 1-3月
 
-- [ ] Response cashe store, attribute
+- [x] Response cashe store, attribute
 - [ ] CLI (generate blank app, build openapi, tests and more)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
@@ -53,8 +53,6 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
-
-
 
 ## 一个简单的例子
 
@@ -336,24 +334,8 @@ export interface JsDocObject {
 }
 ```
 
-TypeScript类型, `Object
-Date
-Symbol
-Map
-JSON
-RegExp
-String
-ArrayBuffer
-DataView
-Int8Array
-Uint8Array
-Uint8ClampedArray
-Int16Array
-Uint16Array
-Int32Array
-Uint32Array
-Float32Array
-Float64Array`
+TypeScript类型,
+`Object Date Symbol Map JSON RegExp String ArrayBuffer DataView Int8Array Uint8Array Uint8ClampedArray Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array`
 
 
 ## 中间件
@@ -388,7 +370,7 @@ export class Log implements MiddlewareTarget<TState> {
 ```ts
 const settings: AppSettings = {
     areas: [HomeArea, InfoArea],
-    middlewares: [Log], // The order in this array corresponds to the order of the run middleware
+    middlewares: [Log], // 中间件按照数组元素的先后顺序执行
 };
 ```
 
@@ -400,7 +382,6 @@ const app = new App(settings);
 app.use(/\//, new Log());
 ```
 
-
 ### WebSocket中间件范例
 
 使用 `context.response.setNotRespond()` 返回剩余的请求信息
@@ -409,7 +390,10 @@ app.use(/\//, new Log());
 
 ```ts
 import { acceptWebSocket } from "https://deno.land/std@0.80.0/ws/mod.ts";
-import { Context, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
+import {
+  Context,
+  PreRequestMiddleware,
+} from "https://deno.land/x/alosaur/mod.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
   onPreRequest(context: Context) {
