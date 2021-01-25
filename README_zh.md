@@ -1,40 +1,37 @@
 # Alosaur 🦖
 
-Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
+Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 ![test](https://github.com/alosaur/alosaur/workflows/test/badge.svg)
 ![sponsors](https://opencollective.com/alosaur/sponsors/badge.svg)
 
-- **Area** - these are the modules of your application.
-- **Controller** - are responsible for controlling the flow of the application
-  execution.
-- **Middleware** - provide a convenient mechanism for filtering HTTP requests
-  entering your application.
-- **Hooks** - middleware for area, controller and actions with support DI. Have
-  3 life cyclic functions: `onPreAction, onPostAction, onCatchAction`
-- **Decorators** - for query, cookie, parametrs, routes and etc.
-- **Dependency Injection** - for all controllers and hooks by default from
-  `microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
-- **Render pages** any template render engine.
-  [(more)](https://github.com/alosaur/alosaur#render-pages)
+- **Area** - 程序的模块。
+- **Controller** - 控制器，用来控制程序的运行流程。
+- **Middleware** - 中间件，提供一个机制，可以方便地过滤HTTP请求
+- **Hooks** - 钩子，可用于模块、控制器或任务，有三个生命周期函数：
+  `onPreAction, onPostAction, onCatchAction`。
+- **Decorators** - 装饰器，可用于SQL查询、cookie、参数、路由等。
+- **Dependency Injection** - 依赖注入，使用轻量级依赖项注入容器`microsoft/TSyringe`
+  ([more about alosaur injection](/src/injection)).
+- **Render pages** 可以使用任意的模板引擎.
+  [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
 
-**[中文README](https://github.com/alosaur/alosaur/README_zh.md)**
-**[Documentation](https://github.com/alosaur/alosaur/tree/master/docs)**
+**[帮助文档](https://github.com/alosaur/alosaur/tree/master/docs)**
 
 ---
 
-## Features roadmap
+## 开发计划
 
-2021 - Jan-March
+2021年第1季度 - 1-3月
 
-- [x] Response cache store, attribute
+- [x] Response cashe store, attribute
 - [ ] CLI (generate blank app, build openapi, tests and more)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
 
-Q4 2020 – Oct-Dec
+2020年第4季度 – 10-12月
 
 - [x] WebSocket
 - [x] SSE
@@ -51,26 +48,26 @@ Q4 2020 – Oct-Dec
 
 ---
 
-## Examples
+## 范例
 
-- [Basic + OpenAPI v3 generator (Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
-- [CORS middleware](https://github.com/alosaur/alosaur/tree/master/examples/cors)
-- [SPA middleware](https://github.com/alosaur/alosaur/tree/master/examples/spa)
-- [WebSocket middleware](https://github.com/alosaur/alosaur/tree/master/examples/ws)
-- [Static content middleware](https://github.com/alosaur/alosaur/tree/master/examples/static)
-- [Database PostgreSQL](https://github.com/alosaur/alosaur/tree/master/examples/db)
-- Template render:
-  [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
+- [基础范例与OpenAPI v3
+  生成器(Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
+- [CORS中间件](https://github.com/alosaur/alosaur/tree/master/examples/cors)
+- [SPA中间件](https://github.com/alosaur/alosaur/tree/master/examples/spa)
+- [WebSocket中间件](https://github.com/alosaur/alosaur/tree/master/examples/ws)
+- [静态文件中间件](https://github.com/alosaur/alosaur/tree/master/examples/static)
+- [PostgreSQL数据库](https://github.com/alosaur/alosaur/tree/master/examples/db)
+- 模板引擎: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
   [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars),
   [Angular](https://github.com/alosaur/alosaur/tree/master/examples/angular),
   [React](https://github.com/alosaur/alosaur/tree/master/examples/react),
   [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
-- [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
-- [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
+- [数据校验](https://github.com/alosaur/alosaur/tree/master/examples/validator)
+- [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
-- [Hooks](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+- [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
-## Simple example
+## 一个简单的例子
 
 app.ts:
 
@@ -90,13 +87,13 @@ export class HomeController {
   }
 }
 
-// Declare module
+// 定义模块
 @Area({
   controllers: [HomeController],
 })
 export class HomeArea {}
 
-// Create alosaur application
+// 创建 alosaur 应用程序
 const app = new App({
   areas: [HomeArea],
 });
@@ -115,7 +112,7 @@ tsconfig.app.json:
 }
 ```
 
-And run
+在命令行运行
 
 `deno run --allow-net --allow-read --config ./tsconfig.app.json app.ts`
 
@@ -123,77 +120,84 @@ And run
 
 # TODO
 
-- [x] Add render views: [Dejs](https://github.com/syumai/dejs) and
-  [Handlebars](https://github.com/alosaur/handlebars)
-- [x] Add return value JSON
+- [x] 增加模板渲染，支持[Dejs](https://github.com/syumai/dejs)
+  和[Handlebars](https://github.com/alosaur/handlebars)
+- [x] 增加返回JSON类型的数据
 
-Add decorators:
+- 增加装饰器:
+-
+  - [x] `@Area`
+-
+  - [x] `@QueryParam`
+-
+  - [x] `@Param` param from url: `/:id`
+-
+  - [x] `@Body`
+-
+  - [x] `@Cookie`
+-
+  - [x] `@Req`
+-
+  - [x] `@Res`
+-
+  - [x] `@Ctx`
+-
+  - [x] `@Middleware` with regex route
+-
+  - [x] `@UseHook` for contoller and actions
+-
+  - [x] Support create custom decorators with app metadata
 
-- [x] `@Area`
-- [x] `@QueryParam`
-- [x] `@Param` param from url: `/:id`
-- [x] `@Body`
-- [x] `@Cookie`
-- [x] `@Req`
-- [x] `@Res`
-- [x] `@Ctx`
-- [x] `@Middleware` with regex route
-- [x] `@UseHook` for contoller and actions
-- [x] `@ResponseCache`
+- [x] 增加中间件
+- [x] 增加静态文件中间件 (例如: app.useStatic)
+- [x] 增加CORS中间件
+- [x] 增加SPA中间件
+- [x] 增加依赖注入
+- [x] 增加标准异常
+- [x] 增加CI以及一些测试用例
+- [x] 增加OpenAPI v3生成器 (参见 /examples/basic/openapi.ts)
+- [ ] 增加OpenAPI类型引用
+- [x] 增加钩子的例子
+- [x] 增加WebSocket
+- [x] 增加SSE
+- [x] 增加类型校验的例子 [class-validator](https://github.com/typestack/class-validator)
+- [ ] 增加微服务与WASM的连接器
+- [x] 切换到Alosaur在github的组织
+- [ ] 增加文档和更多的例子
 
-- [x] Support create custom decorators with app metadata
-
-- [x] Add middleware
-- [x] Add static middleware (example: app.useStatic)
-- [x] Add CORS middleware
-- [x] Add SPA middleware
-- [x] Add DI
-- [x] Add std exceptions
-- [x] Add CI with minimal tests.
-- [x] Add OpenAPI v3 generator (see /examples/basic/openapi.ts)
-- [x] Add OpenAPI type reference
-- [x] Add Hooks example
-- [x] Add WebSocket
-- [x] Add SSE
-- [x] Add validators example
-  [class-validator](https://github.com/typestack/class-validator)
-- [ ] Add microservice connector with WASM
-- [x] Transfer to Alosaur github organization
-- [ ] Add docs and more examples
-
-- Plugins & modules
+- 插件与模块
 
 -
-  - [x] Add [Angular](https://github.com/alosaur/angular_deno) render engine
+  - [x] 增加[Angular](https://github.com/alosaur/angular_deno) 模板引擎
 -
-  - [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
+  - [x] 增加CLI及示意图(https://github.com/alosaur/alosaur-schematics)
 
-- Examples
+- 范例
 
 -
-  - [x] Add basic example
+  - [x] 增加基本使用范例
 -
-  - [x] Add DI example
+  - [x] 增加依赖注入范例
 -
-  - [x] Add static serve example
+  - [x] 增加静态文件范例
 -
-  - [x] Add Dejs view render example
+  - [x] 增加Dejs模板引擎范例
 -
-  - [x] Add example with SQL drivers (PostgreSQL)
+  - [x] 增加SQL数据库范例 (PostgreSQL)
 -
-  - [x] Add basic example in Docker container
+  - [x] 增加基本使用范例，使用Docker技术
 -
-  - [x] Add WebSocket example
+  - [x] 增加WebSocket范例
 -
-  - [ ] Add example with WASM
+  - [ ] 增加WASM范例
 
 ## OpenAPI v3
 
-[Example](https://github.com/alosaur/alosaur/tree/master/basic/)
+[范例](https://github.com/alosaur/alosaur/tree/master/basic/)
 
-[Example with parse type reference](https://github.com/alosaur/alosaur/tree/master/openapi/e2e/)
+[引用类型解析的范例](https://github.com/alosaur/alosaur/tree/master/openapi/e2e/)
 
-Basic example:
+一个简单的例子:
 
 ```ts
 AlosaurOpenApiBuilder.create(settings)
@@ -208,13 +212,13 @@ AlosaurOpenApiBuilder.create(settings)
   .saveToFile("./examples/basic/api.json");
 ```
 
-Generate OpenAPI file:
+生成OpenAPI文件:
 
 ```
 deno run -A --config ./src/tsconfig.lib.json examples/basic/openapi.ts
 ```
 
-For support type references you can use JSDoc with Deno doc parse like this:
+为了支持类型引用，需要使用Deno的文档解析器解析JSDoc文档，范例如下:
 
 ```ts
 // Parse controllers. Input path to your application
@@ -228,30 +232,27 @@ const builder = AlosaurOpenApiBuilder.create(ProductAppSettings)
       ...
 ```
 
-How to teaching how to correctly assemble controllers?
+怎样才能正确的使用JsDoc语法描述一个控制器？
 
-You must put in the JsDoc decorator as **@decorator**
+需要使用JsDoc的装饰器，就像**@decorator**
 
-> ECMAScript decorators are sometimes an important part of an API contract.
-> However, today the TypeScript compiler does not represent decorators in the
-> .d.ts output files used by API consumers. The @decorator tag provides a
-> workaround, enabling a decorator expression to be quoted in a doc comment.
+> ECMAScript的装饰器有时是一个API规范的重要部分，然而现代TypeScript编译器不会再使用.d.ts输出装饰器代码，而是使用@decorator标签代表，这样就是的装饰器表达式可以放在程序代码的注释里面。
 > https://tsdoc.org/pages/tags/decorator/
 
-Example:
+范例:
 
 ```ts
 @Controller()
 /**
- * Product controller
+ * Product控制器
  * @decorator Controller
  */
 export class ProductController {
   /**
-   * Gets product by id
-   * @summary action test
-   * @remarks Awesomeness!
-   * @param {id} The product id
+   * 通过id获取product
+   * @summary 测试
+   * @remarks 太棒了！
+   * @param {id} 产品id
    * @decorator Get
    */
   @Get("/:id")
@@ -261,12 +262,11 @@ export class ProductController {
 }
 ```
 
-You can also add what media types can be expected in the body. Use RequestBody
-param in JsDoc
+在JsDoc中还可以通过RequestBody参数，指定期望传入什么类型的media type
 
 ```ts
 /**
-   * Create product
+   * 创建产品
    * @param product
    * @decorator Post
    * @RequestBody application/xml
@@ -277,15 +277,14 @@ param in JsDoc
   }
 ```
 
-You can also add what types can be returned from a controller method. Use
-decorator ProducesResponse
+使用ProducesResponse装饰器指定从控制器方法返回的类型
 
 ```ts
 /**
- * Gets product by id
- * @summary action test
- * @remarks Awesomeness!
- * @param {id} The product id
+ * 根据id获取product
+ * @summary 测试
+ * @remarks 太棒了！
+ * @param {id} product id
  * @decorator Get
  */
 @Get("/:id")
@@ -297,12 +296,11 @@ GetById(@Param("id") id: string) {
 }
 ```
 
-To declare more information in types and models you can add other JsDoc
-parameters
+使用其他的JsDoc参数在类和模型中展示更多的信息
 
 ```ts
 /**
- * Entity of product
+ * product实体类
  */
 export class Product {
   /**
@@ -330,7 +328,7 @@ export class Product {
 }
 ```
 
-Alosaur openapi parser currently supports the following types and expressions:
+Alosaur的openapi解析器目前支持一下的类型和表达式：
 
 ```ts
 interface PropertyJsDocObject {
@@ -352,7 +350,7 @@ interface PropertyJsDocObject {
 }
 ```
 
-Keywords:
+关键字:
 
 ```ts
 export interface JsDocObject {
@@ -376,14 +374,14 @@ export interface JsDocObject {
 }
 ```
 
-Ts types,
+TypeScript类型,
 `Object Date Symbol Map JSON RegExp String ArrayBuffer DataView Int8Array Uint8Array Uint8ClampedArray Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array`
 
-## Middleware
+## 中间件
 
-You can create middleware and register it in area or all application layer.
+在area或者其他的模块中，可以创建并注册中间件
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/middlewares/)
+[完整的示例](https://github.com/alosaur/alosaur/tree/master/middlewares/)
 
 ```ts
 @Middleware(new RegExp("/"))
@@ -406,16 +404,16 @@ export class Log implements MiddlewareTarget<TState> {
 }
 ```
 
-Register in app settings
+在应用程序的设置中进行注册
 
 ```ts
 const settings: AppSettings = {
   areas: [HomeArea, InfoArea],
-  middlewares: [Log], // The order in this array corresponds to the order of the run middleware
+  middlewares: [Log], // 中间件按照数组元素的先后顺序执行
 };
 ```
 
-or in app
+或者在app中直接使用
 
 ```ts
 const app = new App(settings);
@@ -423,14 +421,14 @@ const app = new App(settings);
 app.use(/\//, new Log());
 ```
 
-### WebSocket middleware example
+### WebSocket中间件范例
 
-Use `context.response.setNotRespond()` for return the rest of the requests
+使用 `context.response.setNotRespond()` 返回剩余的请求信息
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
+[完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.84.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.80.0/ws/mod.ts";
 import {
   Context,
   PreRequestMiddleware,
@@ -458,11 +456,11 @@ export class WebsocketMiddleware implements PreRequestMiddleware {
 }
 ```
 
-### SSE middleware example
+### SSE中间件范例
 
-Use `context.response.setNotRespond()` for return the rest of the requests
+使用 `context.response.setNotRespond()` 返回剩余的请求信息
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/sse)
+[完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/sse)
 
 ```ts
 import {
@@ -484,44 +482,43 @@ export class SseMiddleware implements PreRequestMiddleware {
 }
 ```
 
-## Hooks
+## 钩子
 
-Hooks - middleware for area, controller and actions with supports DI container.
+钩子 - area、控制器和操作的中间件，支持依赖注入容器
 
-Hook in Alosaur there are three types:
-`onPreAction, onPostAction, onCatchAction`.
+Alosaur中的钩子有三种类型: `onPreAction, onPostAction, onCatchAction`.
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+[完整的范例](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
 ```typescript
-type PayloadType = string; // can use any type for payload
+type PayloadType = string; // payload可以是任意类型
 type State = any;
 
 export class MyHook implements HookTarget<State, PayloadType> {
-  // this hook run before controller action
+  // 这个钩子在控制器操作之前执行
   onPreAction(context: Context<State>, payload: PayloadType) {
-    // you can rewrite result and set request immediately
+    // 可以在这里重写输出结果，设置response并立即生效
     context.response.result = Content({ error: { token: false } }, 403);
     context.response.setImmediately();
-    // if response setted immediately no further action will be taken
-  } // this hook run after controller action
+    // 如果response被设置成立即生效，那么不会有其他的操作被执行
+  } // 这个钩子在控制器操作之后执行
 
   onPostAction(context: Context<State>, payload: PayloadType) {
-    // you can filtered response result here
-  } // this hook run only throw exception in controller action
+    // 可以在这里过滤response的输出结果
+  } // 这个钩子当控制器操作抛出异常的时候执行
 
   onCatchAction(context: Context<State>, payload: PayloadType) {
   }
 }
 ```
 
-uses:
+用法:
 
 ```ts
-@UseHook(MyContollerHook) // or @UseHook(MyHook, 'payload') for all actions in controller
+@UseHook(MyContollerHook) // 或者使用 @UseHook(MyHook, 'payload') 为控制器的所有操作设置钩子
 @Controller()
 export class HomeController {
-  @UseHook(MyHook, "payload") // only for one action
+  @UseHook(MyHook, "payload") // 只为当前的操作设置钩子
   @Get("/")
   text(@Res() res: any) {
     return ``;
@@ -529,16 +526,16 @@ export class HomeController {
 }
 ```
 
-## Global error handler
+## 全局异常处理
 
-Errors that haven't been caught elsewhere get in here
+没有在其他地方捕获的异常通过下面的方式进行处理
 
 ```ts
 const app = new App(
   // app settings
 );
 
-// added global error handler
+// 添加全局异常处理
 app.error((context: Context<any>, error: Error) => {
   context.response.result = Content(
     "This page unprocessed error",
@@ -548,31 +545,30 @@ app.error((context: Context<any>, error: Error) => {
 });
 ```
 
-## Action outputs: Content, View, Redirect
+## 控制器函数的返回类型: Content, View, Redirect
 
-There are 3 ways of information output
+控制器函数有三种返回类型
 
-- **Content** similar `return {};` by default Status 200 OK
-- **View** uses with template engine, `return View("index", model);`
-- **Redirect** and **RedirectPermanent** status 301,302
+- **Content** 类似 `return {};` 默认会返回`200 OK`
+- **View** 使用模板引擎渲染输出结果, `return View("index", model);`
+- **Redirect** 和 **RedirectPermanent** 返回HTTP 301,302
   `return Redirect('/to/page')`
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/src/renderer)
+[完整的范例](https://github.com/alosaur/alosaur/tree/master/src/renderer)
 
 ```ts
-return {}; // return 200 status
+return {}; // 返回HTTP 200
 
-// or
-return Content("Text or Model", 404); // return 404 status
+// 或者
+return Content("Text or Model", 404); // 返回HTTP 404
 
-// or
-return View("page", 404); // return 404 status
+// 或者
+return View("page", 404); // 返回HTTP 404
 ```
 
-## Render pages
+## 模板渲染
 
-Alosaur can suppport any html renderer. All you have to do is define the
-rendering function in the settings. For example
+Alosaur支持任何HTML模板引擎. 你只需要在settings中定义一个渲染函数。 例如
 [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
 [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars),
 [Angular](https://github.com/alosaur/angular_deno),
@@ -585,7 +581,7 @@ rendering function in the settings. For example
 // Basedir path
 const viewPath = `${Deno.cwd()}/examples/handlebars/views`;
 
-// Create Handlebars render
+// 创建Handlebars渲染引擎
 const handle = new Handlebars();
 
 app.useViewRender({
@@ -597,7 +593,7 @@ app.useViewRender({
 ...
 ```
 
-Handlebars support custom config,
+可以为Handlebars进行定制化的配置,
 [more about handlebars for deno](https://github.com/alosaur/handlebars)
 
 ```ts
@@ -614,13 +610,13 @@ new Handlebars(
 );
 ```
 
-## Transformers and validators
+## 转换器与验证器
 
-You can use different transformers
+可以使用各种不同的类转换器
 
-For example `class-validator` and `class-transformer` for body.
+例如可以使用`class-validator` 和 `class-transformer`
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/validator)
+[完整范例](https://github.com/alosaur/alosaur/tree/master/examples/validator)
 
 post.model.ts:
 
@@ -664,7 +660,7 @@ import { PostModel } from "./post.model.ts";
 const { validate } = validator;
 const { plainToClass } = transformer;
 
-// Create controller
+// 创建控制器
 @Controller()
 export class HomeController {
   @Post("/")
@@ -676,18 +672,18 @@ export class HomeController {
   }
 }
 
-// Declare controller in area
+// 在模块中声明控制器
 @Area({
   controllers: [HomeController],
 })
 export class HomeArea {}
 
-// Create app
+// 创建应用程序
 const app = new App({
   areas: [HomeArea],
 });
 
-// add transform function
+// 添加转换函数
 app.useTransform({
   type: "body", // parse body params
   getTransform: (transform: any, body: any) => {
@@ -695,11 +691,11 @@ app.useTransform({
   },
 });
 
-// serve application
+// 启动监听
 app.listen();
 ```
 
-You can also use just a function instead of a transformer.
+也可以只使用一个函数，而不是转换器
 
 ```ts
 function parser(body): ParsedObject {
@@ -714,13 +710,13 @@ post(@Body(parser) data: ParsedObject) {
 }
 ```
 
-## Custom Decorators
+## 自定义装饰器
 
-You can add any decorator and put it in a DI system.
+你可以自定义装饰器，然后纳入依赖注入系统中
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+[完整范例](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
-Example with hooks:
+钩子的例子:
 
 ```ts
 import {
@@ -735,11 +731,11 @@ import {
 type AuthorizeRoleType = string | undefined;
 
 /**
- * Authorize decorator with role
+ * 通过角色进行授权的装饰器
  */
 export function Authorize(role?: AuthorizeRoleType): Function {
   return function (object: any, methodName?: string) {
-    // add hook to global metadata
+    // 在全局metadata中增加钩子
     getMetadataArgsStorage().hooks.push({
       type: methodName ? BusinessType.Action : BusinessType.Controller,
       object,
@@ -763,7 +759,7 @@ export class AutorizeHook implements HookTarget<unknown, AuthorizeRoleType> {
 }
 ```
 
-Then you can add anywhere you want. For example action of controller:
+你可以在任何地方使用你自定义的装饰器，例如在控制器函数中:
 
 ```ts
 // ..controller
@@ -776,10 +772,10 @@ Then you can add anywhere you want. For example action of controller:
   }
 ```
 
-## Sponsors
+## 捐赠者
 
 <a  align="center" href="https://opencollective.com/libertyware-limited" target="_blank"><img src="https://images.opencollective.com/libertyware-limited/647a24a/logo/256.png" width="100"></a>
 
-### Backers
+### 请支持我们！
 
 <a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000"></a>
