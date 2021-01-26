@@ -103,7 +103,7 @@ const app = new App({
 app.listen();
 ```
 
-tsconfig.app.json:
+tsconfig.json:
 
 ```json
 {
@@ -116,7 +116,7 @@ tsconfig.app.json:
 
 And run
 
-`deno run --allow-net --allow-read --config ./tsconfig.app.json app.ts`
+`deno run --allow-net --allow-read --config ./tsconfig.json app.ts`
 
 ---
 
