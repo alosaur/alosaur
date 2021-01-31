@@ -1,4 +1,5 @@
 import { ParamType } from "../types/param.ts";
+import { RequestBodyParseOptions } from "../models/request.ts";
 
 export interface ParamMetadataArgs {
   type: ParamType;
@@ -8,4 +9,5 @@ export interface ParamMetadataArgs {
   index: number;
   name?: string;
   transform?: any;
+  bodyParseOptions?: RequestBodyParseOptions;
 }
