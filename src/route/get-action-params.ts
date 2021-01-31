@@ -1,7 +1,11 @@
 import { getCookies } from "../deps.ts";
 import { RouteMetadata } from "../metadata/route.ts";
-import { TransformConfigMap } from "../models/transform-config.ts";
+import {
+  TransformBodyOption,
+  TransformConfigMap,
+} from "../models/transform-config.ts";
 import { Context } from "../models/context.ts";
+import { RequestBodyParseOptions } from "../models/request.ts";
 
 type ArgumentValue = any;
 
@@ -44,12 +48,17 @@ export async function getActionParams<T>(
         break;
 
       case "body":
-        args.push(getTransformedParam(
-          await context.request.body(),
-          param.transform,
-          param.type,
-          transformConfigMap,
-        ));
+        args.push(
+          await getTransformedParam(
+            context,
+            {
+              transform: param.transform,
+              type: param.type,
+              config: transformConfigMap,
+            },
+            param.bodyParseOptions,
+          ),
+        );
         break;
 
       case "request":
@@ -89,15 +98,21 @@ export function getQueryParams(url: string): URLSearchParams | undefined {
   return new URLSearchParams(params);
 }
 
-function getTransformedParam(
-  body: any,
-  transform: any | Function,
-  type: string,
-  config?: TransformConfigMap,
-): any {
+async function getTransformedParam(
+  context: Context,
+  transformBodyOption: TransformBodyOption,
+  bodyParseOptions?: RequestBodyParseOptions,
+): Promise<any> {
+  const body = await context.request.body(bodyParseOptions);
+
+  const { config, transform, type } = transformBodyOption;
+
   if (config !== undefined && transform !== undefined) {
-    // @ts-ignore: Object is possibly 'null'.
-    return config.get(type).getTransform(transform, body);
+    const globalTransform = config.get(type);
+
+    if (globalTransform) {
+      return globalTransform.getTransform(transform, body);
+    }
   }
 
   if (transform) {

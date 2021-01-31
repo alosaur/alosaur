@@ -1,6 +1,18 @@
 import { ServerRequest } from "../deps.ts";
 import { getBody } from "../utils/get-body.ts";
 
+export interface RequestBodyParseOptions {
+  formData?: RequestBodyFormDataParseOptions;
+}
+
+export interface RequestBodyFormDataParseOptions {
+  maxMemory?: number;
+  parser?: (request: ServerRequest, contentType: string) => Promise<any>;
+}
+
+/**
+ * Request of context
+ */
 export class Request {
   public readonly url: string;
   public readonly headers: Headers;
@@ -14,9 +26,12 @@ export class Request {
     this.method = serverRequest.method;
   }
 
-  async body() {
+  /**
+   * Parse body with options
+   */
+  async body(options?: RequestBodyParseOptions) {
     if (!this._body) {
-      this._body = await getBody(this.serverRequest);
+      this._body = await getBody(this.serverRequest, options);
     }
 
     return this._body;
