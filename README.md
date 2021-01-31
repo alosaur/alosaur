@@ -64,7 +64,9 @@ Q4 2020 – Oct-Dec
   [Angular](https://github.com/alosaur/alosaur/tree/master/examples/angular),
   [React](https://github.com/alosaur/alosaur/tree/master/examples/react),
   [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
+
 - [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
+- [Body multipart/form-data parser](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [Hooks](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
@@ -611,6 +613,52 @@ new Handlebars(
     compilerOptions: undefined,
   },
 );
+```
+
+## Multipart form-data, upload files
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
+
+By default you can use `@Body` in action for read form-data with files.
+
+```ts
+import { FormFile } from "https://deno.land/std@0.84.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.84.0/fs/move.ts";
+
+...
+
+@Post()
+async formData(@Body() body: { [key: string]: FormFile | string }) {
+  const file: FormFile = body.file as FormFile;
+
+  if (file) {
+    const fileDest = "./examples/form-data/files/" + file.filename;
+
+    // write file if file has content in memory
+    if (file.content) {
+      await Deno.writeFile(fileDest, file.content!, { append: true });
+    } else if (file.tempfile) {
+      // move file if file has tempfile
+      move(file.tempfile, fileDest);
+    }
+
+    return "Uploaded";
+  }
+
+  return "File not exist";
+}
+```
+
+You can also add your custom parsing options in the decorator
+`@Body(NoopTransform, CustomBodyParser)`
+
+```ts
+const CustomBodyParser: RequestBodyParseOptions = {
+  formData: {
+    maxMemory: 100, // in mb by default 10mb for default parser
+    parser: func, // function of custom parser; (request: ServerRequest, contentType: string) => Promise<any>;
+  },
+};
 ```
 
 ## Transformers and validators
