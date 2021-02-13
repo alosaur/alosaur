@@ -8,6 +8,8 @@ export async function startServer(serverPath: string): Promise<void> {
       Deno.execPath(),
       "run",
       "-A",
+      "--importmap=imports.json",
+      "--unstable",
       "--config",
       "./src/tsconfig.lib.json",
       serverPath,

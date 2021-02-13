@@ -1,4 +1,4 @@
-import { Area, Content, Controller, Get, QueryParam } from "../../../mod.ts";
+import { Area, Content, Controller, Get, QueryParam } from "alosaur/mod.ts";
 
 @Controller("/home")
 export class HomeController {

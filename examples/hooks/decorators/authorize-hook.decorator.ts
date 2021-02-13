@@ -1,10 +1,12 @@
-import { getMetadataArgsStorage } from "../../../src/mod.ts";
-import { container } from "../../../src/injection/index.ts";
-import { BusinessType } from "../../../src/types/business.ts";
-import { HookTarget } from "../../../src/models/hook.ts";
-import { getQueryParams } from "../../../src/route/get-action-params.ts";
-import { Context } from "../../../src/models/context.ts";
-import { Content } from "../../../src/renderer/content.ts";
+import {
+  BusinessType,
+  container,
+  Content,
+  Context,
+  getMetadataArgsStorage,
+  HookTarget,
+} from "alosaur/mod.ts";
+import { getQueryParams } from "alosaur/src/route/get-action-params.ts";
 
 type AuthorizeRoleType = string | undefined;
 

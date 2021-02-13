@@ -1,5 +1,4 @@
-import { Controller } from "../../../../mod.ts";
-import { Get } from "../../../../src/decorator/Get.ts";
+import { Controller, Get } from "alosaur/mod.ts";
 import { delay } from "../../../_utils/test.utils.ts";
 
 @Controller("/info")

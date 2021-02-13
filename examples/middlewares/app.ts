@@ -1,4 +1,4 @@
-import { App } from "../../mod.ts";
+import { App } from "alosaur/mod.ts";
 import { settings } from "./app-settings.ts";
 
 // create application

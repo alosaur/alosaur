@@ -1,5 +1,4 @@
-import { HookTarget } from "../../../../src/models/hook.ts";
-import { Context } from "../../../../src/models/context.ts";
+import { Context, HookTarget } from "alosaur/mod.ts";
 
 export class ActionImmediatelyHook implements HookTarget<unknown, any> {
   async onPreAction(context: Context<unknown>, payload: any) {

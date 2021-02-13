@@ -1,4 +1,4 @@
-import { Controller, ForbiddenError } from "../../../../mod.ts";
+import { Controller, ForbiddenError } from "alosaur/mod.ts";
 import {
   Body,
   Cookie,
@@ -10,8 +10,8 @@ import {
   QueryParam,
   Req,
   Res,
-} from "../../../../src/decorator/mod.ts";
-import { Request, Response } from "../../../../mod.ts";
+} from "alosaur/mod.ts";
+import { Request, Response } from "alosaur/mod.ts";
 import { delay } from "../../../_utils/test.utils.ts";
 
 @Controller("/home")

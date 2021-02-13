@@ -1,7 +1,9 @@
-import { App } from "../../mod.ts";
+import { App } from "alosaur/mod.ts";
 import { CoreArea } from "./areas/core.area.ts";
-import { ResponseCacheStoreToken } from "../../src/hooks/response-cache/response-cache-store.interface.ts";
-import { MemoryResponseCacheStore } from "../../src/hooks/response-cache/memory-response-cache.store.ts";
+import {
+  MemoryResponseCacheStore,
+  ResponseCacheStoreToken,
+} from "alosaur/src/hooks/response-cache/mod.ts";
 
 const app = new App({
   areas: [CoreArea],

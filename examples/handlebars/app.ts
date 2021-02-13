@@ -7,7 +7,7 @@ import {
   QueryParam,
   View,
   ViewRenderConfig,
-} from "../../mod.ts";
+} from "alosaur/mod.ts";
 
 @Controller("")
 export class HomeController {

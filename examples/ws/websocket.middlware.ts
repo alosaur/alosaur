@@ -1,5 +1,4 @@
-import { PreRequestMiddleware } from "../../src/models/middleware-target.ts";
-import { Context } from "../../src/models/context.ts";
+import { Context, PreRequestMiddleware } from "alosaur/mod.ts";
 import { acceptWebSocket } from "https://deno.land/std@0.84.0/ws/mod.ts";
 import { ChatHandler } from "./chat.handler.ts";
 

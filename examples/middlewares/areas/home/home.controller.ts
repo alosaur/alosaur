@@ -1,4 +1,4 @@
-import { Context, Controller, Ctx, Get, QueryParam } from "../../../../mod.ts";
+import { Context, Controller, Ctx, Get, QueryParam } from "alosaur/mod.ts";
 
 @Controller("/home")
 export class HomeController {

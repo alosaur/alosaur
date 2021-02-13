@@ -1,4 +1,4 @@
-import { Singleton } from "../../../src/injection/decorators/index.ts";
+import { Singleton } from "alosaur/mod.ts";
 
 @Singleton()
 export class FooService {

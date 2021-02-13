@@ -1,7 +1,4 @@
-import { Singleton } from "../../../src/injection/decorators/index.ts";
-import { HookTarget } from "../../../src/models/hook.ts";
-import { Content } from "../../../src/renderer/content.ts";
-import { Context } from "../../../src/models/context.ts";
+import { Content, Context, HookTarget, Singleton } from "alosaur/mod.ts";
 import { FooService } from "../services/foo.service.ts";
 
 @Singleton()

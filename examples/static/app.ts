@@ -9,11 +9,11 @@ import {
   Area,
   Controller,
   Get,
+  Redirect,
   Req,
   Res,
   ServerRequest,
-} from "../../mod.ts";
-import { Redirect } from "../../src/renderer/redirect.ts";
+} from "alosaur/mod.ts";
 
 @Controller("/home")
 export class HomeController {
