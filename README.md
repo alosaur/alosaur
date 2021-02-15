@@ -830,4 +830,4 @@ Then you can add anywhere you want. For example action of controller:
 
 ### Backers
 
-<a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000"></a>
+<a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000&t"></a>
