@@ -27,7 +27,8 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 2021 - Jan-March
 
 - [x] Response cache store, attribute
-- [ ] CLI (generate blank app, build openapi, tests and more)
+- [x] CLI: [alosaur/cli](https://github.com/alosaur/cli) (generate blank app,
+  build openapi, tests and more)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
@@ -64,7 +65,9 @@ Q4 2020 – Oct-Dec
   [Angular](https://github.com/alosaur/alosaur/tree/master/examples/angular),
   [React](https://github.com/alosaur/alosaur/tree/master/examples/react),
   [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
+
 - [Body transform, validator](https://github.com/alosaur/alosaur/tree/master/examples/validator)
+- [Body multipart/form-data parser](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [Hooks](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
@@ -79,7 +82,7 @@ import {
   Area,
   Controller,
   Get,
-} from "https://deno.land/x/alosaur@v0.27.0/mod.ts";
+} from "https://deno.land/x/alosaur@v0.28.0/mod.ts";
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
@@ -613,6 +616,52 @@ new Handlebars(
 );
 ```
 
+## Multipart form-data, upload files
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
+
+By default you can use `@Body` in action for read form-data with files.
+
+```ts
+import { FormFile } from "https://deno.land/std@0.84.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.84.0/fs/move.ts";
+
+...
+
+@Post()
+async formData(@Body() body: { [key: string]: FormFile | string }) {
+  const file: FormFile = body.file as FormFile;
+
+  if (file) {
+    const fileDest = "./examples/form-data/files/" + file.filename;
+
+    // write file if file has content in memory
+    if (file.content) {
+      await Deno.writeFile(fileDest, file.content!, { append: true });
+    } else if (file.tempfile) {
+      // move file if file has tempfile
+      move(file.tempfile, fileDest);
+    }
+
+    return "Uploaded";
+  }
+
+  return "File not exist";
+}
+```
+
+You can also add your custom parsing options in the decorator
+`@Body(NoopTransform, CustomBodyParser)`
+
+```ts
+const CustomBodyParser: RequestBodyParseOptions = {
+  formData: {
+    maxMemory: 100, // in mb by default 10mb for default parser
+    parser: func, // function of custom parser; (request: ServerRequest, contentType: string) => Promise<any>;
+  },
+};
+```
+
 ## Transformers and validators
 
 You can use different transformers
@@ -781,4 +830,4 @@ Then you can add anywhere you want. For example action of controller:
 
 ### Backers
 
-<a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000"></a>
+<a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000&t"></a>

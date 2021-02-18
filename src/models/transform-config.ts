@@ -1,9 +1,14 @@
-export type TransformConfigMap = Map<
-  "body" | string,
-  TransformConfig
->;
+export type TransformTypeKeys = "body" | string;
+
+export type TransformConfigMap = Map<TransformTypeKeys, TransformConfig>;
 
 export interface TransformConfig {
-  type: "body" | string;
+  type: TransformTypeKeys;
   getTransform: any;
+}
+
+export interface TransformBodyOption {
+  transform: any | Function;
+  type: TransformTypeKeys;
+  config?: TransformConfigMap;
 }

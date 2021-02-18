@@ -1,5 +1,6 @@
-import { Content, Controller } from "../../../../mod.ts";
+import { Controller } from "../../../../mod.ts";
 import { Get } from "../../../../src/decorator/Get.ts";
+import { delay } from "../../../_utils/test.utils.ts";
 
 @Controller("/info")
 export class InfoController {
@@ -13,12 +14,4 @@ export class InfoController {
     await delay(500);
     return `Hello info2`;
   }
-}
-
-function delay(duration: number): Promise<any> {
-  return new Promise<void>(function (resolve, reject) {
-    setTimeout(function () {
-      resolve();
-    }, duration);
-  });
 }

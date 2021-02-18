@@ -1,4 +1,5 @@
 import { Content, Controller, Get } from "https://deno.land/x/alosaur/mod.ts";
+import { delay } from "../../../_utils/test.utils.ts";
 
 @Controller("/info")
 export class InfoController {
@@ -11,12 +12,4 @@ export class InfoController {
     await delay(500);
     return Content(`Hello info2`);
   }
-}
-
-function delay(duration: number): Promise<any> {
-  return new Promise<void>(function (resolve, reject) {
-    setTimeout(function () {
-      resolve();
-    }, duration);
-  });
 }

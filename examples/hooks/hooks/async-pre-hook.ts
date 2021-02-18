@@ -2,6 +2,7 @@ import { Singleton } from "../../../src/injection/decorators/index.ts";
 import { HookTarget } from "../../../src/models/hook.ts";
 import { Context } from "../../../src/models/context.ts";
 import { FooService } from "../services/foo.service.ts";
+import { delay } from "../../_utils/test.utils.ts";
 
 @Singleton()
 export class AsyncPreHook implements HookTarget<unknown, any> {
@@ -10,12 +11,4 @@ export class AsyncPreHook implements HookTarget<unknown, any> {
   async onPreAction(context: Context<unknown>, payload: any) {
     await delay(500);
   }
-}
-
-function delay(duration: number): Promise<any> {
-  return new Promise<void>(function (resolve, reject) {
-    setTimeout(function () {
-      resolve();
-    }, duration);
-  });
 }

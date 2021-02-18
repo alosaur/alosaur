@@ -8,6 +8,7 @@ export type {
   Response,
 } from "https://deno.land/std@0.84.0/http/server.ts";
 export { getCookies } from "https://deno.land/std@0.84.0/http/cookie.ts";
+export { MultipartReader } from "https://deno.land/std@0.84.0/mime/mod.ts";
 
 export {
   basename,

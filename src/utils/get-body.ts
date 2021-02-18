@@ -1,14 +1,20 @@
 import { ServerRequest } from "../deps.ts";
+import { getParsedFormData } from "./get-form-data.ts";
+import { TransformBodyOption } from "../models/transform-config.ts";
+import { RequestBodyParseOptions } from "../models/request.ts";
 
-export async function getBody(request: ServerRequest) {
+const decoder = new TextDecoder();
+
+export async function getBody(
+  request: ServerRequest,
+  options?: RequestBodyParseOptions,
+) {
   try {
-    let body = await Deno.readAll(request.body);
-    const bodyString = new TextDecoder("utf-8").decode(body);
     const contentType = request.headers.get("content-type");
 
     switch (contentType) {
       case "application/json":
-        return JSON.parse(bodyString);
+        return JSON.parse(decoder.decode(await Deno.readAll(request.body)));
 
       case "application/x-www-form-urlencoded":
         let formElements: { [key: string]: string } = {};
@@ -20,16 +26,36 @@ export async function getBody(request: ServerRequest) {
         *
         * Iterate over the entries of the form, for each entry add its key and value.
         */
-        for (const [key, value] of new URLSearchParams(bodyString).entries()) {
+        for (
+          const [key, value] of new URLSearchParams(
+            decoder.decode(await Deno.readAll(request.body)),
+          ).entries()
+        ) {
           formElements[key] = value;
         }
 
         return formElements;
 
-      // TODO: handle other content types (maybe get a list?)
+      case null:
+      case undefined:
+        return await Deno.readAll(request.body);
+
+        // TODO: handle other content types (maybe get a list?)
 
       default:
-        return body;
+        if (contentType.startsWith("multipart/form-data")) {
+          const formData = getParsedFormData(
+            request,
+            contentType,
+            options && options.formData,
+          );
+
+          if (formData) {
+            return formData;
+          }
+        }
+
+        return await Deno.readAll(request.body);
     }
   } catch (e) {
     console.warn(e);
