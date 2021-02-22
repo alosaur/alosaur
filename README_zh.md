@@ -372,7 +372,7 @@ TypeScript类型,
 
 ## 中间件
 
-在area或者其他的模块中，可以创建并注册中间件
+在模块或者程序的其他部分，可以创建并注册中间件
 
 [完整的示例](https://github.com/alosaur/alosaur/tree/master/middlewares/)
 
@@ -603,11 +603,11 @@ new Handlebars(
 );
 ```
 
-## Multipart form-data, upload files
+## HTML表单的multipart/form-data类型和文件上传
 
-[Full example](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
+[完整的范例](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
 
-By default you can use `@Body` in action for read form-data with files.
+默认情况下使用在控制器方法中使用`@Body`解析通过HTML表单上传的文件.
 
 ```ts
 import { FormFile } from "https://deno.land/std@0.84.0/mime/multipart.ts";
@@ -622,11 +622,11 @@ async formData(@Body() body: { [key: string]: FormFile | string }) {
   if (file) {
     const fileDest = "./examples/form-data/files/" + file.filename;
 
-    // write file if file has content in memory
+    // 如果在内存中有文件的缓存，那么把它写入到文件系统
     if (file.content) {
       await Deno.writeFile(fileDest, file.content!, { append: true });
     } else if (file.tempfile) {
-      // move file if file has tempfile
+      // 将上传的文件从临时文件中转移出来
       move(file.tempfile, fileDest);
     }
 
@@ -637,21 +637,21 @@ async formData(@Body() body: { [key: string]: FormFile | string }) {
 }
 ```
 
-You can also add your custom parsing options in the decorator
+我们也可以在这个装饰器中使用自定义函数解析上传的文件
 `@Body(NoopTransform, CustomBodyParser)`
 
 ```ts
 const CustomBodyParser: RequestBodyParseOptions = {
   formData: {
-    maxMemory: 100, // in mb by default 10mb for default parser
-    parser: func, // function of custom parser; (request: ServerRequest, contentType: string) => Promise<any>;
+    maxMemory: 100, // 解析器的缓存大小，默认为10mb
+    parser: func, // 通过自定义函数解析上传的文件 (request: ServerRequest, contentType: string) => Promise<any>;
   },
 };
 ```
 
 ## 转换器与验证器
 
-可以使用各种不同的类转换器
+我们可以使用各种不同的类转换器
 
 例如可以使用`class-validator` 和 `class-transformer`
 
@@ -751,11 +751,11 @@ post(@Body(parser) data: ParsedObject) {
 
 ## 自定义装饰器
 
-你可以自定义装饰器，然后纳入依赖注入系统中
+我们可以自定义装饰器，然后纳入依赖注入系统中
 
 [完整范例](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 
-钩子的例子:
+钩子的范例:
 
 ```ts
 import {
@@ -798,12 +798,12 @@ export class AutorizeHook implements HookTarget<unknown, AuthorizeRoleType> {
 }
 ```
 
-你可以在任何地方使用你自定义的装饰器，例如在控制器函数中:
+我们可以在任何地方使用你自定义的装饰器，例如在控制器函数中:
 
 ```ts
-// ..controller
+// ..控制器
 
-  // action
+  // 控制器函数
   @Authorize("admin")
   @Get("/protected")
   getAdminPage() {
