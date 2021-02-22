@@ -16,16 +16,15 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - **Render pages** 可以使用任意的模板引擎.
   [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
 
-**[帮助文档](https://github.com/alosaur/alosaur/tree/master/docs)**
-
 ---
 
 ## 开发计划
 
 2021年第1季度 - 1-3月
 
-- [x] Response cashe store, attribute
-- [ ] CLI (generate blank app, build openapi, tests and more)
+- [x] Response cache store, attribute
+- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序,
+  构建openapi, 测试等等)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
@@ -57,12 +56,15 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - [WebSocket中间件](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 - [静态文件中间件](https://github.com/alosaur/alosaur/tree/master/examples/static)
 - [PostgreSQL数据库](https://github.com/alosaur/alosaur/tree/master/examples/db)
-- 模板引擎: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
+- 模板引擎: 
+  [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
   [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars),
   [Angular](https://github.com/alosaur/alosaur/tree/master/examples/angular),
   [React](https://github.com/alosaur/alosaur/tree/master/examples/react),
   [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
+
 - [数据校验](https://github.com/alosaur/alosaur/tree/master/examples/validator)
+- [处理HTML 表单的multipart/form-data类型](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
 - [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
@@ -125,28 +127,19 @@ tsconfig.json:
 - [x] 增加返回JSON类型的数据
 
 - 增加装饰器:
--
-  - [x] `@Area`
--
-  - [x] `@QueryParam`
--
-  - [x] `@Param` param from url: `/:id`
--
-  - [x] `@Body`
--
-  - [x] `@Cookie`
--
-  - [x] `@Req`
--
-  - [x] `@Res`
--
-  - [x] `@Ctx`
--
-  - [x] `@Middleware` with regex route
--
-  - [x] `@UseHook` for contoller and actions
--
-  - [x] Support create custom decorators with app metadata
+- [x] `@Area`
+- [x] `@QueryParam`
+- [x] `@Param` param from url: `/:id`
+- [x] `@Body`
+- [x] `@Cookie`
+- [x] `@Req`
+- [x] `@Res`
+- [x] `@Ctx`
+- [x] `@Middleware` with regex route
+- [x] `@UseHook` for contoller and actions
+- [x] `@ResponseCache`
+
+- [x] Support create custom decorators with app metadata
 
 - [x] 增加中间件
 - [x] 增加静态文件中间件 (例如: app.useStatic)
@@ -250,7 +243,7 @@ const builder = AlosaurOpenApiBuilder.create(ProductAppSettings)
 export class ProductController {
   /**
    * 通过id获取product
-   * @summary 测试
+   * @summary 控制器方法测试
    * @remarks 太棒了！
    * @param {id} 产品id
    * @decorator Get
@@ -282,7 +275,7 @@ export class ProductController {
 ```ts
 /**
  * 根据id获取product
- * @summary 测试
+ * @summary 控制器方法测试
  * @remarks 太棒了！
  * @param {id} product id
  * @decorator Get
@@ -484,7 +477,7 @@ export class SseMiddleware implements PreRequestMiddleware {
 
 ## 钩子
 
-钩子 - area、控制器和操作的中间件，支持依赖注入容器
+钩子 - 模块、控制器和控制器方法的中间件，支持依赖注入容器
 
 Alosaur中的钩子有三种类型: `onPreAction, onPostAction, onCatchAction`.
 
@@ -495,17 +488,17 @@ type PayloadType = string; // payload可以是任意类型
 type State = any;
 
 export class MyHook implements HookTarget<State, PayloadType> {
-  // 这个钩子在控制器操作之前执行
+  // 这个钩子在控制器方法之前执行
   onPreAction(context: Context<State>, payload: PayloadType) {
     // 可以在这里重写输出结果，设置response并立即生效
     context.response.result = Content({ error: { token: false } }, 403);
     context.response.setImmediately();
     // 如果response被设置成立即生效，那么不会有其他的操作被执行
-  } // 这个钩子在控制器操作之后执行
+  } // 这个钩子在控制器方法之后执行
 
   onPostAction(context: Context<State>, payload: PayloadType) {
     // 可以在这里过滤response的输出结果
-  } // 这个钩子当控制器操作抛出异常的时候执行
+  } // 这个钩子当控制器方法抛出异常的时候执行
 
   onCatchAction(context: Context<State>, payload: PayloadType) {
   }
@@ -518,7 +511,7 @@ export class MyHook implements HookTarget<State, PayloadType> {
 @UseHook(MyContollerHook) // 或者使用 @UseHook(MyHook, 'payload') 为控制器的所有操作设置钩子
 @Controller()
 export class HomeController {
-  @UseHook(MyHook, "payload") // 只为当前的操作设置钩子
+  @UseHook(MyHook, "payload") // 只为当前的控制器方法设置钩子
   @Get("/")
   text(@Res() res: any) {
     return ``;
@@ -545,9 +538,9 @@ app.error((context: Context<any>, error: Error) => {
 });
 ```
 
-## 控制器函数的返回类型: Content, View, Redirect
+## 控制器方法的返回类型: Content, View, Redirect
 
-控制器函数有三种返回类型
+控制器方法有三种返回类型
 
 - **Content** 类似 `return {};` 默认会返回`200 OK`
 - **View** 使用模板引擎渲染输出结果, `return View("index", model);`
@@ -593,7 +586,7 @@ app.useViewRender({
 ...
 ```
 
-可以为Handlebars进行定制化的配置,
+可以为Handlebars进行配置,
 [more about handlebars for deno](https://github.com/alosaur/handlebars)
 
 ```ts
@@ -608,6 +601,52 @@ new Handlebars(
     compilerOptions: undefined,
   },
 );
+```
+
+## Multipart form-data, upload files
+
+[Full example](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
+
+By default you can use `@Body` in action for read form-data with files.
+
+```ts
+import { FormFile } from "https://deno.land/std@0.84.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.84.0/fs/move.ts";
+
+...
+
+@Post()
+async formData(@Body() body: { [key: string]: FormFile | string }) {
+  const file: FormFile = body.file as FormFile;
+
+  if (file) {
+    const fileDest = "./examples/form-data/files/" + file.filename;
+
+    // write file if file has content in memory
+    if (file.content) {
+      await Deno.writeFile(fileDest, file.content!, { append: true });
+    } else if (file.tempfile) {
+      // move file if file has tempfile
+      move(file.tempfile, fileDest);
+    }
+
+    return "Uploaded";
+  }
+
+  return "File not exist";
+}
+```
+
+You can also add your custom parsing options in the decorator
+`@Body(NoopTransform, CustomBodyParser)`
+
+```ts
+const CustomBodyParser: RequestBodyParseOptions = {
+  formData: {
+    maxMemory: 100, // in mb by default 10mb for default parser
+    parser: func, // function of custom parser; (request: ServerRequest, contentType: string) => Promise<any>;
+  },
+};
 ```
 
 ## 转换器与验证器
