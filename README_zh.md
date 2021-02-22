@@ -23,8 +23,8 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 2021年第1季度 - 1-3月
 
 - [x] Response cache store, attribute
-- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序,
-  构建openapi, 测试等等)
+- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi,
+  测试等等)
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
@@ -56,15 +56,15 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - [WebSocket中间件](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 - [静态文件中间件](https://github.com/alosaur/alosaur/tree/master/examples/static)
 - [PostgreSQL数据库](https://github.com/alosaur/alosaur/tree/master/examples/db)
-- 模板引擎: 
-  [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
+- 模板引擎: [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
   [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars),
   [Angular](https://github.com/alosaur/alosaur/tree/master/examples/angular),
   [React](https://github.com/alosaur/alosaur/tree/master/examples/react),
   [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 
 - [数据校验](https://github.com/alosaur/alosaur/tree/master/examples/validator)
-- [处理HTML 表单的multipart/form-data类型](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
+- [处理HTML
+  表单的multipart/form-data类型](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
 - [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
@@ -637,8 +637,7 @@ async formData(@Body() body: { [key: string]: FormFile | string }) {
 }
 ```
 
-我们也可以在这个装饰器中使用自定义函数解析上传的文件
-`@Body(NoopTransform, CustomBodyParser)`
+我们也可以在这个装饰器中使用自定义函数解析上传的文件 `@Body(NoopTransform, CustomBodyParser)`
 
 ```ts
 const CustomBodyParser: RequestBodyParseOptions = {
