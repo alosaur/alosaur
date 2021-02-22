@@ -18,7 +18,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - **Render pages** any template render engine.
   [(more)](https://github.com/alosaur/alosaur#render-pages)
 
-[中文README](https://github.com/alosaur/alosaur/blob/master/README_zh.md)
+[中文说明](https://github.com/alosaur/alosaur/blob/master/README_zh.md)
 
 ---
 
