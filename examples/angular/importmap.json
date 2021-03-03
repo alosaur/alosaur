@@ -4,6 +4,6 @@
     "@angular/deno": "https://deno.land/x/angular_deno@v0.3.0/mod.ts",
     "@angular/deno/": "https://deno.land/x/angular_deno@v0.3.0/",
     "alosaur": "../",
-     "zone.js": "https://jspm.dev/zone.js/dist/zone"
+    "zone.js": "https://jspm.dev/zone.js/dist/zone"
   }
 }

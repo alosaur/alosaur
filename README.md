@@ -177,7 +177,7 @@ Add decorators:
   - [x] Add WebSocket example
 -
   - [ ] Add example with WASM
-  
+
 ## DI in Alosaur
 
 > Note: For injects instances you should emitDecoratorMetadata for run servers
@@ -186,13 +186,14 @@ tsconfig.json:
 
 ```json
 {
-    "compilerOptions": {
-        "emitDecoratorMetadata": true
-    }
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
 }
 ```
 
-Then run 
+Then run
+
 ```
 deno run --allow-net --allow-read --config ./tsconfig.json app.ts
 ```
