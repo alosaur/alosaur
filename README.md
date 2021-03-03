@@ -106,20 +106,9 @@ const app = new App({
 app.listen();
 ```
 
-tsconfig.json:
-
-```json
-{
-    "compilerOptions": {
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
-    }
-}
-```
-
 And run
 
-`deno run --allow-net --allow-read --config ./tsconfig.json app.ts`
+`deno run --allow-net app.ts`
 
 ---
 
@@ -188,6 +177,26 @@ Add decorators:
   - [x] Add WebSocket example
 -
   - [ ] Add example with WASM
+
+## DI in Alosaur
+
+> Note: For injects instances you should emitDecoratorMetadata for run servers
+
+tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
+}
+```
+
+Then run
+
+```
+deno run --allow-net --allow-read --config ./tsconfig.json app.ts
+```
 
 ## OpenAPI v3
 

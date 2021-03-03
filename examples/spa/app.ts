@@ -1,4 +1,4 @@
-import { App, SpaBuilder } from "../../mod.ts";
+import { App, SpaBuilder } from "alosaur/mod.ts";
 import { HomeArea } from "./settings.ts";
 
 const app = new App({

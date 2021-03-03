@@ -1,9 +1,11 @@
-import { HookTarget } from "../../../src/models/hook.ts";
-import { Singleton } from "../../../src/injection/decorators/index.ts";
+import {
+  Content,
+  Context,
+  HookTarget,
+  HttpError,
+  Singleton,
+} from "alosaur/mod.ts";
 import { FooService } from "../services/foo.service.ts";
-import { Content } from "../../../src/renderer/content.ts";
-import { HttpError } from "../../../src/http-error/HttpError.ts";
-import { Context } from "../../../src/models/context.ts";
 
 type PayloadType = string[];
 

@@ -3,6 +3,7 @@
     "@angular/core": "https://jspm.dev/@angular/core@11",
     "@angular/deno": "https://deno.land/x/angular_deno@v0.3.0/mod.ts",
     "@angular/deno/": "https://deno.land/x/angular_deno@v0.3.0/",
-     "zone.js": "https://jspm.dev/zone.js/dist/zone"
+    "alosaur": "../",
+    "zone.js": "https://jspm.dev/zone.js/dist/zone"
   }
 }

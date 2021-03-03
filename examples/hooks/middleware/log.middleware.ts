@@ -1,6 +1,4 @@
-import { Middleware } from "../../../src/decorator/Middleware.ts";
-import { MiddlewareTarget } from "../../../src/models/middleware-target.ts";
-import { Context } from "../../../src/models/context.ts";
+import { Context, Middleware, MiddlewareTarget } from "alosaur/mod.ts";
 
 @Middleware(new RegExp("/"))
 export class Log implements MiddlewareTarget<unknown> {

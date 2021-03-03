@@ -1,7 +1,6 @@
-import { PreRequestMiddleware } from "../../src/models/middleware-target.ts";
-import { Context } from "../../src/models/context.ts";
+import { Context, PreRequestMiddleware } from "alosaur/mod.ts";
+import { acceptSSE } from "alosaur/src/sse/accept-sse.ts";
 import { ChatHandler } from "./chat.handler.ts";
-import { acceptSSE } from "../../src/sse/accept-sse.ts";
 
 export class SseMiddleware implements PreRequestMiddleware {
   async onPreRequest(context: Context) {

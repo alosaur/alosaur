@@ -1,7 +1,6 @@
 import validator from "https://jspm.dev/class-validator@0.8.5";
 
-const { Length, Contains, IsInt, Min, Max, IsEmail, IsFQDN, IsDate } =
-  validator;
+const { Length, Contains, IsInt, Min, Max, IsEmail } = validator;
 
 export class PostModel {
   @Length(10, 20)

@@ -1,6 +1,6 @@
+import { AppSettings } from "alosaur/mod.ts";
 import { HomeArea } from "./areas/home/home.area.ts";
 import { Increment1Middleware } from "./middlewares/increment1.middleware.ts";
-import { AppSettings } from "../../mod.ts";
 import { Increment2Middleware } from "./middlewares/increment2.middleware.ts";
 import { Increment0Middleware } from "./middlewares/increment0.middleware.ts";
 

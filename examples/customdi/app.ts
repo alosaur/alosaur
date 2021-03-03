@@ -1,5 +1,5 @@
 import { HomeArea } from "./areas/home/home.area.ts";
-import { App, InternalDependencyContainer } from "../../mod.ts";
+import { App, InternalDependencyContainer } from "alosaur/mod.ts";
 import { FooService } from "./services/foo.service.ts";
 
 const container = new InternalDependencyContainer();
