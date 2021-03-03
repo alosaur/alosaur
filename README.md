@@ -441,7 +441,7 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 [Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.84.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.89.0/ws/mod.ts";
 import {
   Context,
   PreRequestMiddleware,
@@ -632,8 +632,8 @@ new Handlebars(
 By default you can use `@Body` in action for read form-data with files.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.84.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.84.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.89.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.89.0/fs/move.ts";
 
 ...
 
