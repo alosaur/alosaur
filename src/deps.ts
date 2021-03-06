@@ -6,7 +6,7 @@ export {
 export type {
   HTTPOptions,
   Response,
-} from "https://deno.land/std@0.89.0/http/server.ts";
+} from "https://deno.land/std@0.87.0/http/server.ts";
 export { getCookies } from "https://deno.land/std@0.89.0/http/cookie.ts";
 export { MultipartReader } from "https://deno.land/std@0.89.0/mime/mod.ts";
 
