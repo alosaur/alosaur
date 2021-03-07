@@ -32,7 +32,7 @@ export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[]> {
     killed = true;
     process.kill(process.pid);
     // process.kill(Deno.Signal.SIGKILL);
-  }, 58000);
+  }, 120000);
 
   const [out, errOut] = await Promise.all([
     process.output(),

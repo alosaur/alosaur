@@ -1,5 +1,5 @@
 import { Context, PreRequestMiddleware } from "alosaur/mod.ts";
-import { acceptWebSocket } from "https://deno.land/std@0.89.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.87.0/ws/mod.ts";
 import { ChatHandler } from "./chat.handler.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {

@@ -610,8 +610,8 @@ new Handlebars(
 默认情况下使用在控制器方法中使用`@Body`解析通过HTML表单上传的文件.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.89.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.89.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.87.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.87.0/fs/move.ts";
 
 ...
 

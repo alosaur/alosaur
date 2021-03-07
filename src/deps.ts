@@ -7,8 +7,8 @@ export type {
   HTTPOptions,
   Response,
 } from "https://deno.land/std@0.87.0/http/server.ts";
-export { getCookies } from "https://deno.land/std@0.89.0/http/cookie.ts";
-export { MultipartReader } from "https://deno.land/std@0.89.0/mime/mod.ts";
+export { getCookies } from "https://deno.land/std@0.87.0/http/cookie.ts";
+export { MultipartReader } from "https://deno.land/std@0.87.0/mime/mod.ts";
 
 export {
   basename,
@@ -19,6 +19,6 @@ export {
   parse,
   resolve,
   sep,
-} from "https://deno.land/std@0.89.0/path/mod.ts";
+} from "https://deno.land/std@0.87.0/path/mod.ts";
 
 export { contentType } from "https://deno.land/x/media_types@v2.7.0/mod.ts";
