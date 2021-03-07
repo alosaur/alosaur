@@ -6,8 +6,10 @@ const GlobalFilesSet = new Set();
 
 // TODO Implement this with Deno,doc
 //  issue https://github.com/denoland/deno/issues/4531
-export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[] | any> {
-  if(GlobalFilesSet.has(path)) return undefined;
+export async function getDenoDoc(
+  path?: string,
+): Promise<DenoDoc.RootDef[] | any> {
+  if (GlobalFilesSet.has(path)) return undefined;
 
   GlobalFilesSet.add(path);
 
@@ -55,13 +57,11 @@ export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[] | any
   for (let i = 0; i < result.length; i++) {
     const object = result[i];
 
-
-
     if (object.kind === "import" && !GlobalFilesSet.has(object.importDef.src)) {
       const src: string = object.importDef.src;
 
       // skip declare
-      if(src.startsWith("http")) {
+      if (src.startsWith("http")) {
         GlobalFilesSet.add(src);
       } else {
         object.importDef.def = await getDenoDoc(src);
