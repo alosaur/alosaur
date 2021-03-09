@@ -49,7 +49,7 @@ export async function getDenoDoc(
   process.close();
   if (!status.success) {
     if (killed) throw new Error("Parse timed out");
-    throw new Error(new TextDecoder().decode(errOut));
+    throw new Error(decoder.decode(errOut));
   }
 
   const result = JSON.parse(decoder.decode(out));
