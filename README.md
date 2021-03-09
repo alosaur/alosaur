@@ -300,7 +300,7 @@ decorator ProducesResponse
  * @decorator Get
  */
 @Get("/:id")
-@ProducesResponse({ code: 200, type: Product, description: "Product founded" })
+@ProducesResponse({ code: 200, type: Product, description: "Product found" })
 @ProducesResponse({ code: 404, type: NotFoundResult, description: "Product has missing/invalid values" })
 @ProducesResponse({ code: 500, description: "Oops! Can't create your product right now" })
 GetById(@Param("id") id: string) {
