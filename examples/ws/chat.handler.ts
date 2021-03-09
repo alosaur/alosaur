@@ -1,7 +1,7 @@
 import {
   isWebSocketCloseEvent,
   WebSocket,
-} from "https://deno.land/std@0.87.0/ws/mod.ts";
+} from "https://deno.land/std@0.90.0/ws/mod.ts";
 
 const clients = new Map<number, WebSocket>();
 let clientId = 0;
