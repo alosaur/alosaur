@@ -173,7 +173,6 @@ app.listen();
 -
   - [ ] 增加WASM范例
 
-  
 ## DI in Alosaur
 
 > Note: For injects instances you should emitDecoratorMetadata for run servers
@@ -188,7 +187,8 @@ tsconfig.json:
 }
 ```
 
-Then run 
+Then run
+
 ```
 deno run --allow-net --allow-read --config ./tsconfig.json app.ts
 ```
@@ -208,6 +208,7 @@ tsconfig.json:
 ```
 
 在运行时指定配置文件
+
 ```
 deno run --allow-net --allow-read --config ./tsconfig.json app.ts
 ```
