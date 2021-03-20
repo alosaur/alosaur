@@ -103,20 +103,9 @@ const app = new App({
 app.listen();
 ```
 
-tsconfig.json:
-
-```json
-{
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
-}
-```
-
 在命令行运行
 
-`deno run --allow-net --allow-read --config ./tsconfig.json app.ts`
+`deno run --allow-net app.ts`
 
 ---
 
@@ -183,6 +172,46 @@ tsconfig.json:
   - [x] 增加WebSocket范例
 -
   - [ ] 增加WASM范例
+
+## DI in Alosaur
+
+> Note: For injects instances you should emitDecoratorMetadata for run servers
+
+tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
+}
+```
+
+Then run
+
+```
+deno run --allow-net --allow-read --config ./tsconfig.json app.ts
+```
+
+## 在alosaur中使用依赖注入
+
+> 注意: 为了能够在aloaur中使用依赖注入，需要设置emitDecoratorMetadata为true
+
+tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
+}
+```
+
+在运行时指定配置文件
+
+```
+deno run --allow-net --allow-read --config ./tsconfig.json app.ts
+```
 
 ## OpenAPI v3
 
@@ -281,7 +310,7 @@ export class ProductController {
  * @decorator Get
  */
 @Get("/:id")
-@ProducesResponse({ code: 200, type: Product, description: "Product founded" })
+@ProducesResponse({ code: 200, type: Product, description: "Product found" })
 @ProducesResponse({ code: 404, type: NotFoundResult, description: "Product has missing/invalid values" })
 @ProducesResponse({ code: 500, description: "Oops! Can't create your product right now" })
 GetById(@Param("id") id: string) {
