@@ -1,5 +1,4 @@
-import { Content, Controller, Inject, QueryParam } from "../../../../mod.ts";
-import { Get } from "../../../../src/decorator/Get.ts";
+import { Controller, Get, Inject, QueryParam } from "alosaur/mod.ts";
 import { FooService } from "../../services/foo.service.ts";
 
 @Controller("/home")

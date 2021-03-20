@@ -1,7 +1,6 @@
-import { Controller } from "../../../../src/decorator/Controller.ts";
-import { Get } from "../../../../src/decorator/Get.ts";
-import { Authorize } from "../../../../src/security/authorization/src/authorize.decorator.ts";
-import { CookiesAuthentication } from "../../../../src/security/authentication/cookies/src/cookies-authentication.ts";
+import { Controller, Get } from "alosaur/mod.ts";
+import { Authorize } from "alosaur/src/security/authorization/mod.ts";
+import { CookiesAuthentication } from "alosaur/src/security/authentication/mod.ts";
 
 const scheme = CookiesAuthentication.DefaultScheme;
 

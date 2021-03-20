@@ -1,7 +1,5 @@
-import { HookTarget } from "../../../src/models/hook.ts";
-import { getQueryParams } from "../../../src/route/get-action-params.ts";
-import { Content } from "../../../src/renderer/content.ts";
-import { Context } from "../../../src/models/context.ts";
+import { Content, Context, HookTarget } from "alosaur/mod.ts";
+import { getQueryParams } from "alosaur/src/route/get-action-params.ts";
 
 type PayloadType = string;
 

@@ -1,5 +1,5 @@
-import { Area, Controller, Get } from "../../../mod.ts";
-import { ResponseCache } from "../../../src/hooks/response-cache/mod.ts";
+import { Area, Controller, Get } from "alosaur/mod.ts";
+import { ResponseCache } from "alosaur/src/hooks/response-cache/mod.ts";
 import { delay } from "../../_utils/test.utils.ts";
 
 @Controller()

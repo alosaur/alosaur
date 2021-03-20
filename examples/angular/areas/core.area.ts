@@ -1,4 +1,4 @@
-import { Area, Controller, Get, View } from "../../../mod.ts";
+import { Area, Controller, Get, View } from "alosaur/mod.ts";
 
 @Controller()
 export class CoreController {

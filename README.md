@@ -106,20 +106,9 @@ const app = new App({
 app.listen();
 ```
 
-tsconfig.json:
-
-```json
-{
-    "compilerOptions": {
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
-    }
-}
-```
-
 And run
 
-`deno run --allow-net --allow-read --config ./tsconfig.json app.ts`
+`deno run --allow-net app.ts`
 
 ---
 
@@ -188,6 +177,26 @@ Add decorators:
   - [x] Add WebSocket example
 -
   - [ ] Add example with WASM
+
+## DI in Alosaur
+
+> Note: For injects instances you should emitDecoratorMetadata for run servers
+
+tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
+}
+```
+
+Then run
+
+```
+deno run --allow-net --allow-read --config ./tsconfig.json app.ts
+```
 
 ## OpenAPI v3
 
@@ -291,7 +300,7 @@ decorator ProducesResponse
  * @decorator Get
  */
 @Get("/:id")
-@ProducesResponse({ code: 200, type: Product, description: "Product founded" })
+@ProducesResponse({ code: 200, type: Product, description: "Product found" })
 @ProducesResponse({ code: 404, type: NotFoundResult, description: "Product has missing/invalid values" })
 @ProducesResponse({ code: 500, description: "Oops! Can't create your product right now" })
 GetById(@Param("id") id: string) {
@@ -432,7 +441,7 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 [Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.84.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.90.0/ws/mod.ts";
 import {
   Context,
   PreRequestMiddleware,
@@ -623,8 +632,8 @@ new Handlebars(
 By default you can use `@Body` in action for read form-data with files.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.84.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.84.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.90.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.90.0/fs/move.ts";
 
 ...
 

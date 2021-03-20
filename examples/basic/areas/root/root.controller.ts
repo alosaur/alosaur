@@ -1,5 +1,4 @@
-import { Controller } from "../../../../mod.ts";
-import { Get } from "../../../../src/decorator/Get.ts";
+import { Controller, Get } from "alosaur/mod.ts";
 
 @Controller()
 export class RootController {

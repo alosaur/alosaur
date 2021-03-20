@@ -1,4 +1,3 @@
-import { SameSite } from "https://deno.land/std@0.84.0/http/cookie.ts";
 import { SessionStore } from "./store/store.interface.ts";
 
 export const SESSION_SIGNATURE_PREFIX_KEY = "-s";
@@ -30,5 +29,5 @@ export interface SessionOptions {
   httpOnly?: boolean;
   /** Allows servers to assert that a cookie ought not to
    * be sent along with cross-site requests. */
-  sameSite?: SameSite;
+  sameSite?: "Strict" | "Lax" | "None";
 }

@@ -2,18 +2,18 @@ import {
   Cookie,
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.84.0/http/cookie.ts";
-import { Response } from "https://deno.land/std@0.84.0/http/server.ts";
+} from "https://deno.land/std@0.90.0/http/cookie.ts";
+import { Response } from "https://deno.land/std@0.90.0/http/server.ts";
 import {
   App,
   Area,
   Controller,
   Get,
+  Redirect,
   Req,
   Res,
   ServerRequest,
-} from "../../mod.ts";
-import { Redirect } from "../../src/renderer/redirect.ts";
+} from "alosaur/mod.ts";
 import { WebsocketMiddleware } from "./websocket.middlware.ts";
 
 @Controller("/home")

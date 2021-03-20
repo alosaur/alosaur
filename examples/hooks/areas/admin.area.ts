@@ -1,5 +1,4 @@
-import { Area, Controller, Get, Res } from "../../../mod.ts";
-import { UseHook } from "../../../src/decorator/UseHook.ts";
+import { Area, Controller, Get, UseHook } from "alosaur/mod.ts";
 import { TokenHook } from "../hooks/token-hook.ts";
 
 @Controller()

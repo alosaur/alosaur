@@ -1,7 +1,4 @@
-import { Controller, Delete, Put } from "../../../../mod.ts";
-import { Get } from "../../../../src/decorator/Get.ts";
-import { Post } from "../../../../src/decorator/Post.ts";
-import { Body } from "../../../../src/decorator/Body.ts";
+import { Body, Controller, Delete, Get, Post, Put } from "alosaur/mod.ts";
 
 @Controller("/home")
 export class HomeController {

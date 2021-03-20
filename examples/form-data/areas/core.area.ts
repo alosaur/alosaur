@@ -6,10 +6,10 @@ import {
   Ctx,
   Get,
   Post,
-} from "../../../mod.ts";
+} from "alosaur/mod.ts";
 
-import { FormFile } from "https://deno.land/std@0.84.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.84.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.90.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.90.0/fs/move.ts";
 
 @Controller()
 export class CoreController {

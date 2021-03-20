@@ -7,7 +7,7 @@ import {
   QueryParam,
   View,
   ViewRenderConfig,
-} from "../../mod.ts";
+} from "alosaur/mod.ts";
 import { normalize } from "../../src/package";
 
 @Controller("")

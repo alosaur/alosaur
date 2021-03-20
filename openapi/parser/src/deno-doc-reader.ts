@@ -6,8 +6,13 @@ const GlobalFilesSet = new Set();
 
 // TODO Implement this with Deno,doc
 //  issue https://github.com/denoland/deno/issues/4531
-export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[]> {
+export async function getDenoDoc(
+  path?: string,
+): Promise<DenoDoc.RootDef[] | any> {
+  if (GlobalFilesSet.has(path)) return undefined;
+
   GlobalFilesSet.add(path);
+
   const option = {
     cmd: [
       Deno.execPath(),
@@ -32,7 +37,7 @@ export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[]> {
     killed = true;
     process.kill(process.pid);
     // process.kill(Deno.Signal.SIGKILL);
-  }, 58000);
+  }, 120000);
 
   const [out, errOut] = await Promise.all([
     process.output(),
@@ -44,7 +49,7 @@ export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[]> {
   process.close();
   if (!status.success) {
     if (killed) throw new Error("Parse timed out");
-    throw new Error(new TextDecoder().decode(errOut));
+    throw new Error(decoder.decode(errOut));
   }
 
   const result = JSON.parse(decoder.decode(out));
@@ -53,40 +58,16 @@ export async function getDenoDoc(path?: string): Promise<DenoDoc.RootDef[]> {
     const object = result[i];
 
     if (object.kind === "import" && !GlobalFilesSet.has(object.importDef.src)) {
-      object.importDef.def = await getDenoDoc(object.importDef.src);
+      const src: string = object.importDef.src;
+
+      // skip declare
+      if (src.startsWith("http")) {
+        GlobalFilesSet.add(src);
+      } else {
+        object.importDef.def = await getDenoDoc(src);
+      }
     }
   }
 
   return result;
-}
-
-// Use it
-// let result = "";
-//
-//     for await (const line of readline(process)) {
-//         result+=line;
-//     }
-//
-//     const resultParsed = JSON.parse(result);
-//
-//     for (let i = 0; i < resultParsed; i++) {
-//         const object = resultParsed[i];
-//
-//         if(object.kind === "import") {
-//
-//         }
-//     }
-export async function* readline(
-  process: Deno.Process<Deno.RunOptions>,
-): AsyncGenerator<string> {
-  const reader = new TextProtoReader(new BufReader(process.stdout as any));
-
-  while (true) {
-    let line = await reader.readLine();
-    if (line === null) {
-      process.close();
-      break;
-    }
-    yield line;
-  }
 }

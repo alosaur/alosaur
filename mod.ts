@@ -16,6 +16,9 @@ export * from "./src/injection/index.ts";
 // Models
 export * from "./src/models/mod.ts";
 
+// Types
+export * from "./src/types/mod.ts";
+
 // SSE
 export * from "./src/sse/accept-sse.ts";
 
@@ -24,8 +27,8 @@ export {
   serve,
   Server,
   ServerRequest,
-} from "https://deno.land/std@0.84.0/http/server.ts";
-export type { HTTPOptions } from "https://deno.land/std@0.84.0/http/server.ts";
+} from "https://deno.land/std@0.90.0/http/server.ts";
+export type { HTTPOptions } from "https://deno.land/std@0.90.0/http/server.ts";
 
 // Version
 export * from "./src/version.ts";
