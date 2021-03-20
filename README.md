@@ -3,7 +3,7 @@
 Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 ![test](https://github.com/alosaur/alosaur/workflows/test/badge.svg)
-![sponsors](https://opencollective.com/alosaur/sponsors/badge.svg&t=1)
+![sponsors](https://opencollective.com/alosaur/sponsors/badge.svg)
 
 - **Area** - these are the modules of your application.
 - **Controller** - are responsible for controlling the flow of the application
