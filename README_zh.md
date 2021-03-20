@@ -181,9 +181,9 @@ tsconfig.json:
 
 ```json
 {
-    "compilerOptions": {
-        "emitDecoratorMetadata": true
-    }
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
 }
 ```
 
@@ -201,9 +201,9 @@ tsconfig.json:
 
 ```json
 {
-    "compilerOptions": {
-        "emitDecoratorMetadata": true
-    }
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
 }
 ```
 
