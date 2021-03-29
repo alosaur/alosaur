@@ -24,15 +24,22 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 ## Features roadmap
 
-2021 - Jan-March
+2021
 
-- [x] Response cache store, attribute
-- [x] CLI: [alosaur/cli](https://github.com/alosaur/cli) (generate blank app,
-  build openapi, tests and more)
+Apr - May
+
+- [ ] Microservices
+- [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
+
+Jan-March
+
+- [x] Response cache store, attribute
+- [x] CLI: [alosaur/cli](https://github.com/alosaur/cli) (generate blank app,
+  build openapi, tests and more)
 
 Q4 2020 – Oct-Dec
 
