@@ -24,15 +24,22 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 ## Features roadmap
 
-2021 - Jan-March
+2021
 
-- [x] Response cache store, attribute
-- [x] CLI: [alosaur/cli](https://github.com/alosaur/cli) (generate blank app,
-  build openapi, tests and more)
+Apr - May
+
+- [ ] Microservices
+- [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
+
+Jan-March
+
+- [x] Response cache store, attribute
+- [x] CLI: [alosaur/cli](https://github.com/alosaur/cli) (generate blank app,
+  build openapi, tests and more)
 
 Q4 2020 – Oct-Dec
 
@@ -839,4 +846,4 @@ Then you can add anywhere you want. For example action of controller:
 
 ### Backers
 
-<a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000&t"></a>
+<a href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/backers.svg?width=1000&t=1"></a>
