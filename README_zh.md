@@ -20,15 +20,22 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 ## 开发计划
 
-2021年第1季度 - 1-3月
+2021年
 
-- [x] Response cache store, attribute
-- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi,
-  测试等等)
+4月-5月
+
+- [ ] Microservices
+- [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
+
+1月-3月
+
+- [x] Response cache store, attribute
+- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi,
+  测试等等)
 
 2020年第4季度 – 10-12月
 
