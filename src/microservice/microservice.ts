@@ -61,6 +61,7 @@ export class Microservice<TState> {
 
   public async listen() {
     // listen server and run actions by event
-    return this.server.serve();
+    console.log("Start listen");
+    return this.server.listen();
   }
 }

@@ -1,4 +1,4 @@
-const conn = await Deno.connect({ port: 8081 });
+const conn = await Deno.connect({ hostname: "localhost", port: 4500 });
 
 let i = 0;
 
@@ -7,7 +7,7 @@ setInterval(async () => {
   await conn.write(new TextEncoder().encode("1 test message " + i));
 }, 1000);
 
-const conn2 = await Deno.connect({ port: 8081 });
+const conn2 = await Deno.connect({ hostname: "localhost", port: 4500 });
 
 let i2 = 0;
 

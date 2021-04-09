@@ -18,8 +18,8 @@ export class TcpServer {
     this.init();
   }
 
-  public async *serve() {
-    this.listen();
+  public async serve() {
+    await this.listen();
   }
 
   public async listen() {
@@ -72,7 +72,7 @@ export class TcpServer {
       for await (const r of Deno.iter(conn)) {
         const text = decoder.decode(r);
 
-        this.serve().next();
+        // this.serve().next();
 
         console.log(conn.rid, text);
       }
@@ -88,16 +88,3 @@ export class TcpServer {
   private init() {
   }
 }
-
-// const server = new Server();
-//
-// server.listen();
-//
-// setInterval(() => {
-//     const response = new TextEncoder().encode(
-//         "HTTP/1.1 200 OK\r\nContent-Length: 12\r\n\r\nHello Worl1d\n",
-//     );
-//
-//     server.sendAll(response);
-// }, 1000)
-//
