@@ -22,6 +22,54 @@ function getMiddlwareByUrl<T>(
   return middlewares.filter((m) => m.route.test(url));
 }
 
+/**
+ * Gets deno native http bindigs
+ * lite server without: static config, catch requests
+ */
+export async function handleNativeServer<TState>(
+  listener: Deno.Listener,
+  app: App<TState>,
+) {
+  for await (const conn of listener) {
+    (async () => {
+      const requests = Deno.serveHttp(conn);
+      for await (const request of requests) {
+        const req = request.request;
+        const respondWith = request.respondWith;
+
+        const context = new Context(req);
+
+        try {
+          const action = getAction(
+            app.routes,
+            context.request.method,
+            context.request.url,
+          );
+
+          if (action !== null) {
+            // Get arguments in this action
+            const args = await getActionParams(
+              context,
+              action,
+              app.transformConfigMap,
+            );
+
+            // Get Action result from controller method
+            context.response.result = await action.target[action.action](
+              ...args,
+            );
+          }
+
+          const res = context.response.getMergedResult();
+          respondWith(res.body);
+        } catch (error) {
+          // TODO handle error response
+        }
+      }
+    })();
+  }
+}
+
 export async function handleFullServer<TState>(
   server: Server,
   metadata: MetadataArgsStorage<TState>,

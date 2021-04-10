@@ -17,7 +17,11 @@ import { AppSettings } from "./models/app-settings.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
-import { handleFullServer, handleLiteServer } from "./server/handle-request.ts";
+import {
+  handleFullServer,
+  handleLiteServer,
+  handleNativeServer,
+} from "./server/handle-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -109,19 +113,32 @@ export class App<TState> {
     }
   }
 
-  async listen(address: string | HTTPOptions = ":8000"): Promise<Server> {
-    const server: Server = serve(address);
-    this.server = server;
-
-    console.log("Server start in", address);
-
-    if (this.isRunFullServer()) {
-      await handleFullServer(server, this.metadata, this);
-    } else {
-      await handleLiteServer(server, this);
+  async listen(addr: string | HTTPOptions = ":8000"): Promise<any> {
+    if (typeof addr === "string") {
+      addr = _parseAddrFromStr(addr);
     }
 
-    return server;
+    const listener = Deno.listen(addr);
+
+    console.log("Server start in", addr);
+
+    const runNativeServer = false;
+    if (runNativeServer) {
+      // Run deno/http
+      await handleNativeServer(listener, this);
+    } else {
+      // Run std/http
+      const server = new Server(listener);
+      this.server = server;
+
+      if (this.isRunFullServer()) {
+        await handleFullServer(server, this.metadata, this);
+      } else {
+        await handleLiteServer(server, this);
+      }
+    }
+
+    return;
   }
 
   private isRunFullServer(): boolean {
@@ -189,4 +206,38 @@ export class App<TState> {
   ): void {
     this._globalErrorHandler = globalErrorHandler;
   }
+}
+
+
+// from std/http
+/**
+ * Parse addr from string
+ *
+ *     const addr = "::1:8000";
+ *     parseAddrFromString(addr);
+ *
+ * @param addr Address string
+ */
+export function _parseAddrFromStr(addr: string): HTTPOptions {
+  let url: URL;
+  try {
+    const host = addr.startsWith(":") ? `0.0.0.0${addr}` : addr;
+    url = new URL(`http://${host}`);
+  } catch {
+    throw new TypeError("Invalid address.");
+  }
+  if (
+    url.username ||
+    url.password ||
+    url.pathname != "/" ||
+    url.search ||
+    url.hash
+  ) {
+    throw new TypeError("Invalid address.");
+  }
+
+  return {
+    hostname: url.hostname,
+    port: url.port === "" ? 80 : Number(url.port),
+  };
 }
