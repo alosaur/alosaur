@@ -7,14 +7,14 @@ jobs:
         runs-on: ubuntu-16.04
         strategy:
             matrix:
-                deno: [1.8.1]
+                deno: ["nightly"]
         name: Deno ${{ matrix.deno }}
         steps:
             - uses: actions/checkout@master
             - name: Setup deno
               uses: denolib/setup-deno@master
               with:
-                  deno-version: canary
+                  deno-version: ${{ matrix.deno }}
             - name: fmt check
               run: deno fmt --check 
             - name: Test
