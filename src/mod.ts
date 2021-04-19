@@ -17,11 +17,8 @@ import { AppSettings } from "./models/app-settings.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
-import {
-  handleFullServer,
-  handleLiteServer,
-  handleNativeServer,
-} from "./server/handle-request.ts";
+import { handleFullServer, handleLiteServer } from "./server/handle-request.ts";
+import { handleNativeServer } from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -113,19 +110,26 @@ export class App<TState> {
     }
   }
 
-  async listen(addr: string | HTTPOptions = ":8000"): Promise<any> {
+  async listen(
+    addr: string | HTTPOptions = ":8000",
+    customListener?: Deno.Listener,
+  ): Promise<any> {
     if (typeof addr === "string") {
       addr = _parseAddrFromStr(addr);
     }
 
-    const listener = Deno.listen(addr);
+    const listener = customListener || Deno.listen(addr);
 
     console.log("Server start in", addr);
 
-    const runNativeServer = false;
-    if (runNativeServer) {
+    if (customListener) {
       // Run deno/http
-      await handleNativeServer(listener, this);
+      await handleNativeServer(
+        listener,
+        this,
+        this.metadata,
+        this.isRunFullServer(),
+      );
     } else {
       // Run std/http
       const server = new Server(listener);
