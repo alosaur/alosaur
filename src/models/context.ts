@@ -11,7 +11,7 @@ export class Context<T = any> {
 
   public state?: T;
 
-  constructor(@Inject(SERVER_REQUEST) serverRequest: ServerRequest) {
+  constructor(@Inject(SERVER_REQUEST) serverRequest: ServerRequest | any) {
     this.request = new Request(serverRequest);
     this.response = new Response();
   }
