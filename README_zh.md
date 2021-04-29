@@ -20,15 +20,22 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 ## 开发计划
 
-2021年第1季度 - 1-3月
+2021年
 
-- [x] Response cache store, attribute
-- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi,
-  测试等等)
+4月-5月
+
+- [ ] Microservices
+- [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
+
+1月-3月
+
+- [x] Response cache store, attribute
+- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi,
+  测试等等)
 
 2020年第4季度 – 10-12月
 
@@ -450,7 +457,7 @@ app.use(/\//, new Log());
 [完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.90.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.93.0/ws/mod.ts";
 import {
   Context,
   PreRequestMiddleware,
@@ -639,8 +646,8 @@ new Handlebars(
 默认情况下使用在控制器方法中使用`@Body`解析通过HTML表单上传的文件.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.90.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.90.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.93.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.93.0/fs/move.ts";
 
 ...
 
