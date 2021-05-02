@@ -1,45 +1,72 @@
-const conn = await Deno.connect({ hostname: "localhost", port: 4500 });
-const delimenter = "#";
+/**
+ * TCP microservice client with lazy connect to service
+ */
+export class MsTcpClient {
+  private readonly delimiter = "#";
+  private readonly decoder = new TextDecoder();
 
-let i = 0;
+  private async connect(): Promise<Deno.Conn> {
+    if (!this._connect) {
+      this._connect = await Deno.connect(this.options);
+    }
+
+    return this._connect;
+  }
+
+  private _connect?: Deno.Conn;
+
+  /**
+   * Creates instance
+   * @param options
+   */
+  constructor(private readonly options: Deno.ConnectOptions) {}
+
+  /**
+   * Send pattern request
+   * @param pattern
+   * @param payload
+   */
+  async send(pattern: Object, payload: any) {
+    const conn = await this.connect();
+
+    const req = JSON.stringify(pattern) + this.delimiter +
+      JSON.stringify(payload);
+
+    await conn.write(new TextEncoder().encode(req));
+
+    // TODO create read all buffer
+    const buffer = new Uint8Array(1024 * 1024);
+    const nread = await conn.read(buffer);
+    let result;
+    if (nread !== null) {
+      result = this.decoder.decode(buffer.subarray(0, nread));
+    }
+
+    return result;
+  }
+
+  /**
+   * Emit publish event
+   * @param event
+   * @param payload
+   */
+  async emit(event: string, payload: any) {
+    const conn = await this.connect();
+    const req = event + this.delimiter + JSON.stringify(payload);
+    await conn.write(new TextEncoder().encode(req));
+  }
+}
+
+/// Example of this client
+const client1 = new MsTcpClient({ hostname: "localhost", port: 4500 });
+const client2 = new MsTcpClient({ hostname: "localhost", port: 4500 });
 
 setInterval(async () => {
-  i++;
-
-  const pattern = { cmd: "sum" };
-  const data = [1, 2, 3];
-
-  const req = JSON.stringify(pattern) + delimenter + JSON.stringify(data);
-
-  await conn.write(new TextEncoder().encode(req));
-
-  const res = new Uint8Array(124 * 1024);
-  const nread = await conn.read(res);
-  if (nread !== null) {
-    // conn.close();
-    const page = new TextDecoder().decode(res.subarray(0, nread));
-    console.log("page:", page);
-  }
+  const resp = await client1.send({ cmd: "sum" }, [1, 2, 3, 4]);
+  console.log("client1", resp);
 }, 1000);
 
-const conn2 = await Deno.connect({ hostname: "localhost", port: 4500 });
-
-let i2 = 0;
-
 setInterval(async () => {
-  i2++;
-  const pattern = { cmd: "sum" };
-  const data = [1, 2, 3, 4, 5];
-
-  const req = JSON.stringify(pattern) + delimenter + JSON.stringify(data);
-
-  await conn2.write(new TextEncoder().encode(req));
-
-  const res = new Uint8Array(124 * 1024);
-  const nread = await conn2.read(res);
-  if (nread !== null) {
-    // conn.close();
-    const page = new TextDecoder().decode(res.subarray(0, nread));
-    console.log("page2:", page);
-  }
+  const resp = await client2.emit("created", "test created payload");
+  console.log("client2", resp);
 }, 200);
