@@ -1,10 +1,10 @@
-import { Content, Context, HookTarget } from "alosaur/mod.ts";
+import { Content, HookTarget, HttpContext } from "alosaur/mod.ts";
 import { getQueryParams } from "alosaur/src/route/get-action-params.ts";
 
 type PayloadType = string;
 
 export class TokenHook implements HookTarget<unknown, PayloadType> {
-  onPreAction(context: Context<unknown>, payload: PayloadType) {
+  onPreAction(context: HttpContext<unknown>, payload: PayloadType) {
     // TODO: move queryParams to context.request
     const queryParams = getQueryParams(context.request.url);
 

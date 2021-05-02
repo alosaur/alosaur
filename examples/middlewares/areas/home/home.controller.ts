@@ -1,4 +1,4 @@
-import { Context, Controller, Ctx, Get, QueryParam } from "alosaur/mod.ts";
+import { Controller, Ctx, Get, HttpContext, QueryParam } from "alosaur/mod.ts";
 
 @Controller("/home")
 export class HomeController {
@@ -6,7 +6,7 @@ export class HomeController {
   text(
     @QueryParam("name") name: string,
     @QueryParam("test") test: string,
-    @Ctx() context: Context,
+    @Ctx() context: HttpContext,
   ) {
     return context.state;
   }

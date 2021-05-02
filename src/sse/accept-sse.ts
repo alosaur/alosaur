@@ -1,9 +1,9 @@
 import { STATUS_TEXT } from "https://deno.land/std@0.95.0/http/http_status.ts";
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 import { assert } from "../deps_test.ts";
 
 export async function acceptSSE(
-  context: Context,
+  context: HttpContext,
 ): Promise<(data: string, retry?: number) => Promise<number>> {
   const { w: bufWriter } = context.request.serverRequest;
 

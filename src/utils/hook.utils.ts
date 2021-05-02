@@ -1,4 +1,4 @@
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 import { HookMethod } from "../models/hook.ts";
 import { HookMetadataArgs } from "../metadata/hook.ts";
 
@@ -8,7 +8,7 @@ import { HookMetadataArgs } from "../metadata/hook.ts";
  * Run hooks function and return true if response is immediately
  */
 export async function resolveHooks<TState, TPayload>(
-  context: Context<TState>,
+  context: HttpContext<TState>,
   actionName: HookMethod,
   hooks?: HookMetadataArgs<TState, TPayload>[],
 ): Promise<boolean> {
@@ -54,7 +54,7 @@ export function hasHooks<TState = any, TPayload = any>(
 }
 
 export async function runHooks<TState, TPayload>(
-  context: Context<TState>,
+  context: HttpContext<TState>,
   actionName: HookMethod,
   hooks: HookMetadataArgs<TState, TPayload>[],
 ) {

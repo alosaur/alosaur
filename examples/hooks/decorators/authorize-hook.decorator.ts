@@ -2,9 +2,9 @@ import {
   BusinessType,
   container,
   Content,
-  Context,
   getMetadataArgsStorage,
   HookTarget,
+  HttpContext,
 } from "alosaur/mod.ts";
 import { getQueryParams } from "alosaur/src/route/get-action-params.ts";
 
@@ -27,7 +27,7 @@ export function Authorize(role?: AuthorizeRoleType): Function {
 }
 
 export class AutorizeHook implements HookTarget<unknown, AuthorizeRoleType> {
-  onPreAction(context: Context<unknown>, role: AuthorizeRoleType) {
+  onPreAction(context: HttpContext<unknown>, role: AuthorizeRoleType) {
     const queryParams = getQueryParams(context.request.url);
 
     if (queryParams == undefined || queryParams.get("role") !== role) {

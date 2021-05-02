@@ -4,14 +4,14 @@ import {
   TransformBodyOption,
   TransformConfigMap,
 } from "../models/transform-config.ts";
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 import { RequestBodyParseOptions } from "../models/request.ts";
 
 type ArgumentValue = any;
 
 /** Gets route action params */
 export async function getActionParams<T>(
-  context: Context<T>,
+  context: HttpContext<T>,
   route: RouteMetadata,
   transformConfigMap?: TransformConfigMap,
 ): Promise<ArgumentValue[]> {
@@ -99,7 +99,7 @@ export function getQueryParams(url: string): URLSearchParams | undefined {
 }
 
 async function getTransformedParam(
-  context: Context,
+  context: HttpContext,
   transformBodyOption: TransformBodyOption,
   bodyParseOptions?: RequestBodyParseOptions,
 ): Promise<any> {

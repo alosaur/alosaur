@@ -1,4 +1,4 @@
-import { App, Context } from "alosaur/mod.ts";
+import { App, HttpContext } from "alosaur/mod.ts";
 import { AccountArea } from "./areas/account/account.area.ts";
 import { HomeArea } from "./areas/home/home.area.ts";
 import { AuthMiddleware } from "alosaur/src/security/authorization/src/auth.middleware.ts";
@@ -13,7 +13,7 @@ const app = new App({
   areas: [AccountArea, HomeArea],
   logging: false,
   providers: [{
-    token: Context,
+    token: HttpContext,
     useClass: SecurityContext,
   }],
 });

@@ -2,16 +2,16 @@ import { MiddlewareTarget } from "../models/middleware-target.ts";
 import { StaticFilesConfig } from "../models/static-config.ts";
 import { send } from "../static/send.ts";
 import { getStaticFile } from "../utils/get-static-file.ts";
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 
 export class SpaBuilder<TState> implements MiddlewareTarget<TState> {
   constructor(private staticConfig: StaticFilesConfig) {}
 
-  onPreRequest(context: Context<TState>) {
+  onPreRequest(context: HttpContext<TState>) {
     return null;
   }
 
-  onPostRequest(context: Context<TState>): Promise<void> {
+  onPostRequest(context: HttpContext<TState>): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (await getStaticFile(context, this.staticConfig, false)) {
         context.response.setImmediately();

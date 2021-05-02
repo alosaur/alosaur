@@ -1,10 +1,10 @@
 import { getPathNameFromUrl } from "../route/route.utils.ts";
 import { send } from "../static/send.ts";
 import { StaticFilesConfig } from "../models/static-config.ts";
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 
 export async function getStaticFile<T>(
-  context: Context<T>,
+  context: HttpContext<T>,
   staticConfig?: StaticFilesConfig,
   showError: boolean = true,
 ) {

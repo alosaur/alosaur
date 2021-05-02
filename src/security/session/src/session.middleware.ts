@@ -1,6 +1,6 @@
 import * as secp from "https://deno.land/x/secp256k1/mod.ts";
 import { MiddlewareTarget } from "../../../models/middleware-target.ts";
-import { Context } from "../../../models/context.ts";
+import { HttpContext } from "../../../models/http-context.ts";
 import { SessionStore } from "./store/store.interface.ts";
 import { Session } from "./session.instance.ts";
 import {
@@ -104,7 +104,7 @@ export class SessionMiddleware implements MiddlewareTarget {
 
   private async setSessionIdCookie(
     sessionIdHash: string,
-    context: Context,
+    context: HttpContext,
   ): Promise<void> {
     const sign = await secp.sign(sessionIdHash, this.options.secret);
 

@@ -1,9 +1,9 @@
-import { Context, PreRequestMiddleware } from "alosaur/mod.ts";
+import { HttpContext, PreRequestMiddleware } from "alosaur/mod.ts";
 import { acceptWebSocket } from "https://deno.land/std@0.95.0/ws/mod.ts";
 import { ChatHandler } from "./chat.handler.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
-  onPreRequest(context: Context) {
+  onPreRequest(context: HttpContext) {
     const { conn, r: bufReader, w: bufWriter, headers } =
       context.request.serverRequest;
 

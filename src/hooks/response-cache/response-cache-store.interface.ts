@@ -1,4 +1,4 @@
-import { Context } from "../../models/context.ts";
+import { HttpContext } from "../../models/http-context.ts";
 
 export const ResponseCacheStoreToken = "ResponseCacheStoreToken";
 
@@ -11,7 +11,7 @@ export interface ResponseCachePayload {
   /**
    * Function for gets hash by context, default hash by serverRequest.url
    */
-  getHash?: (context: Context) => string;
+  getHash?: (context: HttpContext) => string;
 }
 
 export interface ResponseCacheResult<T> {
