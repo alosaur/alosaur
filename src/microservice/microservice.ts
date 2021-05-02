@@ -1,4 +1,4 @@
-import { TcpServer, TcpServerConfig } from "./server/server.ts";
+import { TcpContext, TcpServer, TcpServerConfig } from "./server/server.ts";
 import { registerAreas } from "../utils/register-areas.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";
 import {
@@ -10,6 +10,9 @@ import { registerAppProviders } from "../utils/register-providers.ts";
 import { ProviderDeclaration } from "../types/provider-declaration.ts";
 import { registerControllers } from "../utils/register-controllers.ts";
 import { RouteMetadata } from "../metadata/route.ts";
+import { getHooksFromAction } from "../route/get-hooks.ts";
+import { hasHooks, hasHooksAction, resolveHooks } from "../utils/hook.utils.ts";
+import { getMsActionParams } from "../route/get-action-params.ts";
 
 export enum MicroserviceType {
   TCP,
@@ -72,26 +75,81 @@ export class Microservice<TState> {
   }
 
   private async handler(rid: number, r: BufferSource) {
+    const context = new TcpContext();
+
     const req = this.decoder.decode(r);
     const [pattern, data] = req.split(this.delimeter);
 
+    // Gets only one action
     const action = this.actions.find((action) =>
       action.eventOrPattern === pattern
     );
 
-    // TODO add hooks
+    let actionResult;
+
     if (action) {
-      const serializedObject = JSON.parse(data);
-      const result = JSON.stringify(
-        await action.target[action.action](serializedObject),
+      const hooks = getHooksFromAction(action);
+
+      // try resolve onPreAction hooks
+      if (
+        hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
+      ) {
+        // TODO may be run respond to reader?
+        return;
+      }
+
+      let body = {};
+      try {
+        body = JSON.parse(data);
+      } catch {}
+
+      // Get arguments in this action
+      const args = await getMsActionParams(
+        context,
+        action,
+        body,
       );
-      const response = this.encoder.encode(pattern + this.delimeter + result);
 
-      await this.server.send(rid, response);
+      try {
+        // Get Action result from controller method
+        actionResult = JSON.stringify(
+          await action.target[action.action](...args),
+        );
+        const response = this.encoder.encode(
+          pattern + this.delimeter + actionResult,
+        );
 
-      console.log(await action.target[action.action]());
+        await this.server.send(rid, response);
+
+        return;
+      } catch (error) {
+        context.response.error = error;
+
+        // try resolve hooks
+        if (
+          hasHooks(hooks) &&
+          hasHooksAction("onCatchAction", hooks) &&
+          await resolveHooks(context, "onCatchAction", hooks)
+        ) {
+          // TODO may be run respond to reader?
+          return;
+        }
+      }
+
+      // try resolve hooks
+      if (
+        hasHooks(hooks) && await resolveHooks(context, "onPostAction", hooks)
+      ) {
+        // TODO may be run respond to reader?
+        return;
+      }
     }
 
-    // console.log(pattern, data)
+    if (!actionResult) {
+      const response404 = this.encoder.encode(
+        pattern + this.delimeter + "not found",
+      );
+      await this.server.send(rid, response404);
+    }
   }
 }

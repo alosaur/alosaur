@@ -6,6 +6,7 @@ import {
 } from "../models/transform-config.ts";
 import { HttpContext } from "../models/http-context.ts";
 import { RequestBodyParseOptions } from "../models/request.ts";
+import { Context } from "../models/context.ts";
 
 type ArgumentValue = any;
 
@@ -79,6 +80,43 @@ export async function getActionParams<T>(
         } else {
           args.push(undefined);
         }
+        break;
+
+      default:
+        args.push(undefined);
+        break;
+    }
+  }
+  return args;
+}
+
+/**
+ * Gets microservice action params
+ * Supported only '@Ctx' and '@Body'
+ */
+export async function getMsActionParams<T>(
+  context: Context<T>,
+  route: RouteMetadata,
+  body: any,
+): Promise<ArgumentValue[]> {
+  if (route.params.length == 0) {
+    return [];
+  }
+
+  const args: ArgumentValue[] = [];
+  const params = route.params.sort((a, b) => a.index - b.index);
+
+  // fill params to resolve
+  for (let i = 0; i < params.length; i++) {
+    const param = params[i];
+
+    switch (param.type) {
+      case "body":
+        args.push(body);
+        break;
+
+      case "context":
+        args.push(context);
         break;
 
       default:

@@ -1,6 +1,7 @@
 import { HttpContext } from "../models/http-context.ts";
 import { HookMethod } from "../models/hook.ts";
 import { HookMetadataArgs } from "../metadata/hook.ts";
+import { Context } from "../models/context.ts";
 
 // type HookActionName = "onCatchAction" | "onPostAction" | "onPreAction";
 
@@ -8,7 +9,7 @@ import { HookMetadataArgs } from "../metadata/hook.ts";
  * Run hooks function and return true if response is immediately
  */
 export async function resolveHooks<TState, TPayload>(
-  context: HttpContext<TState>,
+  context: Context<TState>,
   actionName: HookMethod,
   hooks?: HookMetadataArgs<TState, TPayload>[],
 ): Promise<boolean> {
@@ -34,9 +35,11 @@ export async function resolveHooks<TState, TPayload>(
             Array.from(resolvedHooks).reverse(),
           );
 
-          await context.request.serverRequest.respond(
-            context.response.getMergedResult(),
-          );
+          if (context instanceof HttpContext) {
+            await context.request.serverRequest.respond(
+              context.response.getMergedResult(),
+            );
+          }
           return true;
         }
       }
@@ -47,6 +50,15 @@ export async function resolveHooks<TState, TPayload>(
   return false;
 }
 
+// export async function resolveHttpHooks<TState, TPayload><TState, TPayload>(
+//     context: HttpContext<TState>,
+//     actionName: HookMethod,
+//     hooks?: HookMetadataArgs<TState, TPayload>[],
+// ): Promise<boolean>
+// {
+//
+// }
+
 export function hasHooks<TState = any, TPayload = any>(
   hooks?: HookMetadataArgs<TState, TPayload>[],
 ): boolean {
@@ -54,7 +66,7 @@ export function hasHooks<TState = any, TPayload = any>(
 }
 
 export async function runHooks<TState, TPayload>(
-  context: HttpContext<TState>,
+  context: Context<TState>,
   actionName: HookMethod,
   hooks: HookMetadataArgs<TState, TPayload>[],
 ) {

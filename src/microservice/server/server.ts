@@ -1,3 +1,5 @@
+import { Context } from "../../models/context.ts";
+
 export interface TcpServerConfig {
   hostname: string;
   port: number;
@@ -8,7 +10,7 @@ export class TcpRequest {
   }
 }
 
-export class TcpContext {
+export class TcpContext<T = any> extends Context<T> {
 }
 
 export class TcpServer {

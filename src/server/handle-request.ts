@@ -70,7 +70,7 @@ export async function handleFullServer<TState>(
       if (action !== null) {
         const hooks = getHooksFromAction(action);
 
-        // try resolve hooks
+        // try resolve onPreAction hooks
         if (
           hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
         ) {
