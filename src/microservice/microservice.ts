@@ -36,6 +36,10 @@ export class Microservice<TState> {
   private readonly server: TcpServer;
   private readonly classes: ObjectKeyAny[] = [];
   private readonly actions: RouteMetadata[] = [];
+  private readonly delimeter = "#";
+
+  private readonly encoder = new TextEncoder();
+  private readonly decoder = new TextDecoder();
 
   constructor(settings: MicroserviceSettings) {
     this.metadata = getMetadataArgsStorage();
@@ -62,6 +66,32 @@ export class Microservice<TState> {
   public async listen() {
     // listen server and run actions by event
     console.log("Start listen");
-    return this.server.listen();
+    return this.server.listen((rid: number, r: BufferSource) =>
+      this.handler(rid, r)
+    );
+  }
+
+  private async handler(rid: number, r: BufferSource) {
+    const req = this.decoder.decode(r);
+    const [pattern, data] = req.split(this.delimeter);
+
+    const action = this.actions.find((action) =>
+      action.eventOrPattern === pattern
+    );
+
+    // TODO add hooks
+    if (action) {
+      const serializedObject = JSON.parse(data);
+      const result = JSON.stringify(
+        await action.target[action.action](serializedObject),
+      );
+      const response = this.encoder.encode(pattern + this.delimeter + result);
+
+      await this.server.send(rid, response);
+
+      console.log(await action.target[action.action]());
+    }
+
+    // console.log(pattern, data)
   }
 }

@@ -1,12 +1,13 @@
 import { Area } from "../../src/decorator/Area.ts";
 import { Controller } from "../../src/decorator/Controller.ts";
-import { Event } from "../../src/microservice/decorator/Event.ts";
 import { TcpContext } from "../../src/microservice/server/server.ts";
+import { MPattern } from "../../src/microservice/decorator/Pattern.ts";
 
 @Controller()
 export class HomeController {
-  @Event("sum")
+  @MPattern({ cmd: "sum" })
   async sum(context: TcpContext) {
+    return 10;
   }
 }
 

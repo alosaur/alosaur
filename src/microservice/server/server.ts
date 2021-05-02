@@ -18,11 +18,7 @@ export class TcpServer {
     this.init();
   }
 
-  public async serve() {
-    await this.listen();
-  }
-
-  public async listen() {
+  public async listen(handler: Function) {
     const hostname = this.config.hostname;
     const port = this.config.port;
 
@@ -36,7 +32,7 @@ export class TcpServer {
 
         this.connections.set(conn.rid, conn);
 
-        this.handleConn(conn);
+        this.handleConn(conn, handler);
       } catch {
         break;
       }
@@ -65,16 +61,10 @@ export class TcpServer {
     }
   }
 
-  private async handleConn(conn: Deno.Conn) {
+  private async handleConn(conn: Deno.Conn, handler: Function) {
     try {
-      const decoder = new TextDecoder();
-
       for await (const r of Deno.iter(conn)) {
-        const text = decoder.decode(r);
-
-        // this.serve().next();
-
-        console.log(conn.rid, text);
+        handler(conn.rid, r);
       }
     } catch {
       console.log("error conn");

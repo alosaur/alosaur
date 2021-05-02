@@ -31,7 +31,7 @@ export interface ActionMetadataArgs {
   /**
    * Event or pattern, uses for microservice
    */
-  eventOrPattern?: string | Object;
+  eventOrPattern?: string;
 
   /**
    * Parent Controller
