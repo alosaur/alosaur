@@ -121,7 +121,6 @@ export class Microservice<TState> {
 
         await this.server.send(rid, response);
 
-        return;
       } catch (error) {
         context.response.error = error;
 
