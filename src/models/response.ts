@@ -59,7 +59,7 @@ export class Response {
 
     // merge headers
     for (const pair of this.headers.entries()) {
-      response.headers.set(pair[0], pair[1]);
+      response.headers.append(pair[0], pair[1]);
     }
 
     delete response.__isActionResult;

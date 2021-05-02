@@ -1,4 +1,4 @@
-import { STATUS_TEXT } from "https://deno.land/std@0.93.0/http/http_status.ts";
+import { STATUS_TEXT } from "https://deno.land/std@0.95.0/http/http_status.ts";
 import { Context } from "../models/context.ts";
 import { assert } from "../deps_test.ts";
 
