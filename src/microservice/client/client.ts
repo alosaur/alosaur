@@ -7,7 +7,7 @@ setInterval(async () => {
   i++;
 
   const pattern = { cmd: "sum" };
-  const data = { test: "message" };
+  const data = [1, 2, 3];
 
   const req = JSON.stringify(pattern) + delimenter + JSON.stringify(data);
 
@@ -29,7 +29,7 @@ let i2 = 0;
 setInterval(async () => {
   i2++;
   const pattern = { cmd: "sum" };
-  const data = { test: "message" };
+  const data = [1, 2, 3, 4, 5];
 
   const req = JSON.stringify(pattern) + delimenter + JSON.stringify(data);
 

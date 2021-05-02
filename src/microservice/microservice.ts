@@ -144,10 +144,12 @@ export class Microservice<TState> {
     }
 
     if (!actionResult) {
-      const response404 = this.encoder.encode(
-        pattern + this.delimeter + "not found",
+      await this.server.send(
+        rid,
+        this.encoder.encode(
+          pattern + this.delimeter + "not found",
+        ),
       );
-      await this.server.send(rid, response404);
     }
   }
 }
