@@ -7,11 +7,11 @@ const { test } = Deno;
  * Test cases
  */
 test({
-  name: "microservice app server  response 200, 404",
+  name: "microservice app server should response",
   async fn(): Promise<void> {
-    const process1 = await startServer(
-      "./examples/microservice/mservice/app.ts",
-    );
+    // const process1 = await startServer(
+    //   "./examples/microservice/mservice/app.ts",
+    // );
     const process2 = await startServer("./examples/microservice/app/app.ts");
 
     await delay(100);
@@ -25,7 +25,7 @@ test({
 
       assertEquals(text_r, "Hello world, 10");
     } finally {
-      killServer(process1);
+      // killServer(process1);
       killServer(process2);
     }
   },
