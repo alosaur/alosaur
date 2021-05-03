@@ -29,6 +29,11 @@ export interface ActionMetadataArgs {
   route?: string | RegExp;
 
   /**
+   * Event or pattern, uses for microservice
+   */
+  eventOrPattern?: string;
+
+  /**
    * Parent Controller
    */
   controller?: ControllerMetadataArgs;

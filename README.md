@@ -28,7 +28,8 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 Apr - May
 
-- [ ] Microservices
+- [x] Microservices (TCP)
+  [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
@@ -78,6 +79,7 @@ Q4 2020 – Oct-Dec
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [Hooks](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+- [microservice](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 
 ## Simple example
 
@@ -155,35 +157,12 @@ Add decorators:
 - [x] Add SSE
 - [x] Add validators example
   [class-validator](https://github.com/typestack/class-validator)
-- [ ] Add microservice connector with WASM
 - [x] Transfer to Alosaur github organization
 - [ ] Add docs and more examples
 
 - Plugins & modules
-
--
   - [x] Add [Angular](https://github.com/alosaur/angular_deno) render engine
--
   - [x] Add CLI with schematics (https://github.com/alosaur/alosaur-schematics)
-
-- Examples
-
--
-  - [x] Add basic example
--
-  - [x] Add DI example
--
-  - [x] Add static serve example
--
-  - [x] Add Dejs view render example
--
-  - [x] Add example with SQL drivers (PostgreSQL)
--
-  - [x] Add basic example in Docker container
--
-  - [x] Add WebSocket example
--
-  - [ ] Add example with WASM
 
 ## DI in Alosaur
 
@@ -450,12 +429,12 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 ```ts
 import { acceptWebSocket } from "https://deno.land/std@0.95.0/ws/mod.ts";
 import {
-  Context,
+  HttpContext,
   PreRequestMiddleware,
 } from "https://deno.land/x/alosaur/mod.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
-  onPreRequest(context: Context) {
+  onPreRequest(context: HttpContext) {
     const { conn, r: bufReader, w: bufWriter, headers } =
       context.request.serverRequest;
 
@@ -485,12 +464,12 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 ```ts
 import {
   acceptSSE,
-  Context,
+  HttpContext,
   PreRequestMiddleware,
 } from "https://deno.land/x/alosaur/mod.ts";
 
 export class SseMiddleware implements PreRequestMiddleware {
-  async onPreRequest(context: Context) {
+  async onPreRequest(context: HttpContext) {
     acceptSSE(context).then(ChatHandler) // execute chat
       .catch(async (e) => {
         console.error(`failed to accept sse: ${e}`);

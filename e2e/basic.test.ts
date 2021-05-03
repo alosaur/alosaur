@@ -10,7 +10,7 @@ const ContentTypeJson = "application/json; charset=utf-8";
 test({
   name: "[http] basic server, requests to home controller",
   async fn(): Promise<void> {
-    await startServer("./examples/basic/app.ts");
+    const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000/app/home";
 
     itLog("/app/home", true);
@@ -103,7 +103,7 @@ test({
       // TODO fix it
       // assertEquals(json.username, 'john');
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -114,7 +114,7 @@ test({
 test({
   name: "[http] basic server, requests to info controller",
   async fn(): Promise<void> {
-    await startServer("./examples/basic/app.ts");
+    const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000/test/info";
 
     itLog("/test/info", true);
@@ -138,7 +138,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(text, "Hello info");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -147,7 +147,7 @@ test({
   name:
     "[http] basic server, request to health controller to test undefined controller and action route",
   async fn(): Promise<void> {
-    await startServer("./examples/basic/app.ts");
+    const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000/health";
 
     itLog("/health", true);
@@ -161,7 +161,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(json.status, "pass");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -170,7 +170,7 @@ test({
   name:
     "[http] basic server, request to root controller to test empty full route",
   async fn(): Promise<void> {
-    await startServer("./examples/basic/app.ts");
+    const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000";
 
     itLog("root ''", true);
@@ -190,7 +190,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(text, "root page");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

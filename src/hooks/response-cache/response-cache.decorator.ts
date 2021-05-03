@@ -2,7 +2,7 @@ import { getMetadataArgsStorage } from "../../mod.ts";
 import { BusinessType } from "../../types/business.ts";
 import { Inject, Injectable } from "../../injection/index.ts";
 import { HookTarget } from "../../models/hook.ts";
-import { Context } from "../../models/context.ts";
+import { HttpContext } from "../../models/http-context.ts";
 import {
   ResponseCachePayload,
   ResponseCacheResult,
@@ -32,7 +32,10 @@ export class ResponseCacheHook implements HookTarget<unknown, unknown> {
   ) {
   }
 
-  async onPreAction(context: Context<unknown>, payload: ResponseCachePayload) {
+  async onPreAction(
+    context: HttpContext<unknown>,
+    payload: ResponseCachePayload,
+  ) {
     const hash = getHashByPayload(context, payload);
     const cacheResult: ResponseCacheResult<any> = await this.store.get(hash);
 
@@ -47,7 +50,10 @@ export class ResponseCacheHook implements HookTarget<unknown, unknown> {
     }
   }
 
-  async onPostAction(context: Context<unknown>, payload: ResponseCachePayload) {
+  async onPostAction(
+    context: HttpContext<unknown>,
+    payload: ResponseCachePayload,
+  ) {
     const hash = getHashByPayload(context, payload);
 
     const cacheResult: ResponseCacheResult<any> = {
@@ -60,13 +66,13 @@ export class ResponseCacheHook implements HookTarget<unknown, unknown> {
 }
 
 function getHashByPayload(
-  context: Context<unknown>,
+  context: HttpContext<unknown>,
   payload: ResponseCachePayload,
 ): string {
   return payload.getHash ? payload.getHash(context) : getHashByUrl(context);
 }
 
-const getHashByUrl = (context: Context) => {
+const getHashByUrl = (context: HttpContext) => {
   return context.request.serverRequest.url;
 };
 

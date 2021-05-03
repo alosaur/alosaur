@@ -7,7 +7,7 @@ const { test } = Deno;
 test({
   name: "[ws] GET / and /ws should serve html and connect to WebSocket",
   async fn(): Promise<void> {
-    await startServer("./examples/ws/app.ts");
+    const process = await startServer("./examples/ws/app.ts");
     const baseUrl = "http://localhost:8000";
 
     itLog("root ''", true);
@@ -42,7 +42,7 @@ test({
     } catch (err) {
       console.log(err);
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

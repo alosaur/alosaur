@@ -1,10 +1,10 @@
 import {
   Area,
   Body,
-  Context,
   Controller,
   Ctx,
   Get,
+  HttpContext,
   Post,
 } from "alosaur/mod.ts";
 
@@ -14,7 +14,7 @@ import { move } from "https://deno.land/std@0.95.0/fs/move.ts";
 @Controller()
 export class CoreController {
   @Get()
-  text(@Ctx() ctx: Context) {
+  text(@Ctx() ctx: HttpContext) {
     return "Hello world";
   }
 

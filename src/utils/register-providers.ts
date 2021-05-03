@@ -27,7 +27,7 @@ export function registerProviders<T = any>(
 }
 
 export function registerAppProviders<T = any>(
-  settings: AppSettings,
+  settings: { providers?: ProviderDeclaration[] },
   container: DependencyContainer,
 ) {
   if (settings.providers && settings.providers.length > 0) {
