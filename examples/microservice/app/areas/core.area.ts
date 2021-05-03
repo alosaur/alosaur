@@ -8,8 +8,8 @@ export class CoreController {
 
   @Get()
   async text() {
-    const resp = await this.client.send({ cmd: "sum" }, [1, 2, 3, 4]);
-    return "Hello world, " + resp;
+    const answer = await this.client.send({ cmd: "sum" }, [1, 2, 3, 4]);
+    return "Hello world, " + answer;
   }
 }
 
