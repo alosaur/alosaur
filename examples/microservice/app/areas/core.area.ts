@@ -1,6 +1,5 @@
-import { Area, Controller, Get } from "../../../../mod.ts";
-import { Inject } from "../../../../src/injection/index.ts";
-import { MsTcpClient } from "../../../../src/microservice/client/client.ts";
+import { Area, Controller, Get, Inject } from "alosaur/mod.ts";
+import { MsTcpClient } from "alosaur/microservice/mod.ts";
 
 @Controller()
 export class CoreController {

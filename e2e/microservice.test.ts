@@ -9,20 +9,6 @@ const { test } = Deno;
 test({
   name: "microservice app server should response",
   async fn(): Promise<void> {
-    const ls = Deno.run({
-      cmd: ["ls"],
-      stdout: "piped",
-      stderr: "inherit",
-    });
-
-    const decoder = new TextDecoder();
-    const r = new TextProtoReader(new BufReader(ls.stdout as any));
-    console.log("line", await r.readLine());
-    console.log("line", await r.readLine());
-    console.log("line", await r.readLine());
-    console.log("line", await r.readLine());
-    console.log("line", await r.readLine());
-
     const process1 = await startServer(
       "./examples/microservice/mservice/app.ts",
     );
@@ -41,7 +27,6 @@ test({
     } finally {
       killServer(process1);
       killServer(process2);
-      killServer(ls);
     }
   },
 });
