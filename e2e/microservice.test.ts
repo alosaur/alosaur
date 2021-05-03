@@ -1,4 +1,4 @@
-import {assertEquals, BufReader, TextProtoReader} from "../src/deps_test.ts";
+import { assertEquals, BufReader, TextProtoReader } from "../src/deps_test.ts";
 import { killServer, startServer } from "./test.utils.ts";
 import { delay } from "../examples/_utils/test.utils.ts";
 const { test } = Deno;
@@ -9,21 +9,19 @@ const { test } = Deno;
 test({
   name: "microservice app server should response",
   async fn(): Promise<void> {
-
     const ls = Deno.run({
-      cmd: ['ls'],
+      cmd: ["ls"],
       stdout: "piped",
       stderr: "inherit",
     });
 
     const decoder = new TextDecoder();
     const r = new TextProtoReader(new BufReader(ls.stdout as any));
-    console.log('line',  await r.readLine());
-    console.log('line',  await r.readLine());
-    console.log('line',  await r.readLine());
-    console.log('line',  await r.readLine());
-    console.log('line',  await r.readLine());
-
+    console.log("line", await r.readLine());
+    console.log("line", await r.readLine());
+    console.log("line", await r.readLine());
+    console.log("line", await r.readLine());
+    console.log("line", await r.readLine());
 
     const process1 = await startServer(
       "./examples/microservice/mservice/app.ts",
