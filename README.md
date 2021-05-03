@@ -79,7 +79,7 @@ Q4 2020 – Oct-Dec
 - [DI](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [Hooks](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
-- [microservice](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+- [Microservice](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 
 ## Simple example
 
