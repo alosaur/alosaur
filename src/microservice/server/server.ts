@@ -5,11 +5,6 @@ export interface TcpServerConfig {
   port: number;
 }
 
-export class TcpRequest {
-  constructor() {
-  }
-}
-
 export class TcpContext<T = any> extends Context<T> {
 }
 

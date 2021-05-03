@@ -54,7 +54,6 @@ export class Microservice<TState> {
     registerAppProviders(settings, this.metadata.container);
     registerAreas(this.metadata);
 
-    // TODO add action decorators, Event and
     // Register actions
     registerControllers(
       this.metadata,
@@ -63,6 +62,7 @@ export class Microservice<TState> {
       false,
     );
 
+    // TODO need context by Microservice type
     // create server, TCP by default
     this.server = new TcpServer(settings.config);
   }
@@ -76,6 +76,7 @@ export class Microservice<TState> {
   }
 
   private async handler(rid: number, r: BufferSource) {
+    // TODO need context by Microservice type
     const context = new TcpContext();
 
     const req = this.decoder.decode(r);

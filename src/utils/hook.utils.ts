@@ -50,15 +50,6 @@ export async function resolveHooks<TState, TPayload>(
   return false;
 }
 
-// export async function resolveHttpHooks<TState, TPayload><TState, TPayload>(
-//     context: HttpContext<TState>,
-//     actionName: HookMethod,
-//     hooks?: HookMetadataArgs<TState, TPayload>[],
-// ): Promise<boolean>
-// {
-//
-// }
-
 export function hasHooks<TState = any, TPayload = any>(
   hooks?: HookMetadataArgs<TState, TPayload>[],
 ): boolean {
