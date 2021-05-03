@@ -1,5 +1,6 @@
 import { assertEquals } from "../src/deps_test.ts";
 import { killServer, startServer } from "./test.utils.ts";
+import { delay } from "../examples/_utils/test.utils.ts";
 const { test } = Deno;
 
 /**
@@ -12,6 +13,9 @@ test({
       "./examples/microservice/mservice/app.ts",
     );
     const process2 = await startServer("./examples/microservice/app/app.ts");
+
+    await delay(100);
+
     const baseUrl = "http://localhost:8000";
 
     try {
