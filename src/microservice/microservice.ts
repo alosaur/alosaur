@@ -13,6 +13,7 @@ import { RouteMetadata } from "../metadata/route.ts";
 import { getHooksFromAction } from "../route/get-hooks.ts";
 import { hasHooks, hasHooksAction, resolveHooks } from "../utils/hook.utils.ts";
 import { getMsActionParams } from "../route/get-action-params.ts";
+import { RequestMethod } from "../types/request-method.ts";
 
 export enum MicroserviceType {
   TCP,
@@ -81,7 +82,7 @@ export class Microservice<TState> {
     const [pattern, data] = req.split(this.delimeter);
 
     // Gets only one action
-    const action = this.actions.find((action) =>
+    const action: RouteMetadata | undefined = this.actions.find((action) =>
       action.eventOrPattern === pattern
     );
 
@@ -119,7 +120,9 @@ export class Microservice<TState> {
           pattern + this.delimeter + actionResult,
         );
 
-        await this.server.send(rid, response);
+        if (action.actionMetadata.type === RequestMethod.Pattern) {
+          await this.server.send(rid, response);
+        }
       } catch (error) {
         context.response.error = error;
 
@@ -141,15 +144,6 @@ export class Microservice<TState> {
         // TODO may be run respond to reader?
         return;
       }
-    }
-
-    if (!actionResult) {
-      await this.server.send(
-        rid,
-        this.encoder.encode(
-          pattern + this.delimeter + "not found",
-        ),
-      );
     }
   }
 }

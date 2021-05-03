@@ -11,9 +11,9 @@ export class HomeController {
     return Array.isArray(body) ? body.reduce((acc, cur) => acc + cur, 0) : 0;
   }
 
-  @MEvent("created")
+  @MEvent("calculated")
   async event(@Body() body: string) {
-    console.log(body);
+    return body;
   }
 }
 

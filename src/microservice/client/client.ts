@@ -3,6 +3,7 @@
  */
 export class MsTcpClient {
   private readonly delimiter = "#";
+  private readonly encoder = new TextEncoder();
   private readonly decoder = new TextDecoder();
 
   private async connect(): Promise<Deno.Conn> {
@@ -32,7 +33,7 @@ export class MsTcpClient {
     const req = JSON.stringify(pattern) + this.delimiter +
       JSON.stringify(payload);
 
-    await conn.write(new TextEncoder().encode(req));
+    await conn.write(this.encoder.encode(req));
 
     // TODO create read all buffer
     const buffer = new Uint8Array(1024 * 1024);
@@ -42,7 +43,7 @@ export class MsTcpClient {
       result = this.decoder.decode(buffer.subarray(0, nread));
     }
 
-    return result;
+    return result ? result.split(this.delimiter)[1] : result;
   }
 
   /**
@@ -53,20 +54,14 @@ export class MsTcpClient {
   async emit(event: string, payload: any) {
     const conn = await this.connect();
     const req = event + this.delimiter + JSON.stringify(payload);
-    await conn.write(new TextEncoder().encode(req));
+    await conn.write(this.encoder.encode(req));
   }
 }
 
-/// Example of this client
-const client1 = new MsTcpClient({ hostname: "localhost", port: 4500 });
-const client2 = new MsTcpClient({ hostname: "localhost", port: 4500 });
-
-setInterval(async () => {
-  const resp = await client1.send({ cmd: "sum" }, [1, 2, 3, 4]);
-  console.log("client1", resp);
-}, 1000);
-
-setInterval(async () => {
-  const resp = await client2.emit("created", "test created payload");
-  console.log("client2", resp);
-}, 200);
+// / Example of this client
+// const client1 = new MsTcpClient({ hostname: "localhost", port: 4500 });
+//
+// setInterval(async () => {
+//   const resp = await client1.send({ cmd: "sum" }, [1, 2, 3, 4]);
+//   await client1.emit("calculated", resp);
+// }, 1000);
