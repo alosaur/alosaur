@@ -57,11 +57,3 @@ export class MsTcpClient {
     await conn.write(this.encoder.encode(req));
   }
 }
-
-// / Example of this client
-// const client1 = new MsTcpClient({ hostname: "localhost", port: 4500 });
-//
-// setInterval(async () => {
-//   const resp = await client1.send({ cmd: "sum" }, [1, 2, 3, 4]);
-//   await client1.emit("calculated", resp);
-// }, 1000);

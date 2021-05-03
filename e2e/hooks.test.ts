@@ -9,7 +9,7 @@ const { test } = Deno;
 test({
   name: "[http] hooks server should response 200, 404",
   async fn(): Promise<void> {
-    await startServer("./examples/hooks/app.ts");
+    const process = await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000";
 
     itLog("/", true);
@@ -43,7 +43,7 @@ test({
       assertEquals(json5.name, "BadRequestError");
       assertEquals(json5.description, "This description from catch hook");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -54,7 +54,7 @@ test({
 test({
   name: "[http] hooks should run order and setted immediately",
   async fn(): Promise<void> {
-    await startServer("./examples/hooks/app.ts");
+    const process = await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000";
 
     itLog("/", true);
@@ -82,7 +82,7 @@ test({
       assertEquals(r4.status, 200);
       assertEquals((await r4.text()), "many hook 2 page");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -93,7 +93,7 @@ test({
 test({
   name: "[http] token hooks for admin area",
   async fn(): Promise<void> {
-    await startServer("./examples/hooks/app.ts");
+    const process = await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000/admin/";
 
     itLog("/admin/", true);
@@ -122,7 +122,7 @@ test({
       assertEquals(r4.status, 200);
       assertEquals((await r4.text()), "admin about page");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -133,7 +133,7 @@ test({
 test({
   name: "[http] async hooks should response after 500ms",
   async fn(): Promise<void> {
-    await startServer("./examples/hooks/app.ts");
+    const process = await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000/";
 
     itLog("/", true);
@@ -150,7 +150,7 @@ test({
       // It
       assert((new Date().getTime() - date.getTime()) > 500);
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -163,7 +163,7 @@ test({
   name:
     "[http] post hooks should read request.body() and write result body more 2 times",
   async fn(): Promise<void> {
-    await startServer("./examples/hooks/app.ts");
+    const process = await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000/post-hook";
 
     itLog("/", true);
@@ -189,7 +189,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(result.fromPreHook, true);
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -201,7 +201,7 @@ test({
 test({
   name: "[http] life cycle post hooks should run 4 times",
   async fn(): Promise<void> {
-    await startServer("./examples/hooks/app.ts");
+    const process = await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000/life-cycle/";
 
     itLog("/", true);
@@ -220,7 +220,7 @@ test({
       assertEquals(result.fromControllerPreHook, true);
       assertEquals(result.fromAreaPreHook, true);
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

@@ -8,7 +8,7 @@ const { test } = Deno;
 test({
   name: "[http] auth server should redirect to login for protected url",
   async fn(): Promise<void> {
-    await startServer("./examples/auth/app.ts");
+    const process = await startServer("./examples/auth/app.ts");
     const baseUrl = "http://localhost:8000";
 
     try {
@@ -19,7 +19,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(response.url, "http://localhost:8000/account/login");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -27,7 +27,7 @@ test({
 test({
   name: "[http] auth server, should auth and gets protected info",
   async fn(): Promise<void> {
-    await startServer("./examples/auth/app.ts");
+    const process = await startServer("./examples/auth/app.ts");
     try {
       const formdata = new URLSearchParams();
       formdata.append("login", "admin");
@@ -77,7 +77,7 @@ test({
         "Hi! this protected info. <br>  <a href='/account/logout'>logout</a>",
       );
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

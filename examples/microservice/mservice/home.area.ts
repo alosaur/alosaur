@@ -1,8 +1,8 @@
-import { Area } from "../../src/decorator/Area.ts";
-import { Controller } from "../../src/decorator/Controller.ts";
-import { MPattern } from "../../src/microservice/decorator/Pattern.ts";
-import { Body } from "../../src/decorator/Body.ts";
-import { MEvent } from "../../src/microservice/decorator/Event.ts";
+import { Area } from "../../../src/decorator/Area.ts";
+import { Controller } from "../../../src/decorator/Controller.ts";
+import { MPattern } from "../../../src/microservice/decorator/Pattern.ts";
+import { Body } from "../../../src/decorator/Body.ts";
+import { MEvent } from "../../../src/microservice/decorator/Event.ts";
 
 @Controller()
 export class HomeController {

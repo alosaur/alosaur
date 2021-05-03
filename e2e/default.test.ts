@@ -8,7 +8,7 @@ const { test } = Deno;
 test({
   name: "[http] default server should response 200, 404",
   async fn(): Promise<void> {
-    await startServer("./examples/default/app.ts");
+    const process = await startServer("./examples/default/app.ts");
     const baseUrl = "http://localhost:8000";
 
     try {
@@ -27,7 +27,7 @@ test({
       assertEquals(text_r2, "Not found");
       assertEquals(text_r3, "Hello world");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });
@@ -35,7 +35,7 @@ test({
 test({
   name: "[http] default server should response with query",
   async fn(): Promise<void> {
-    await startServer("./examples/default/app.ts");
+    const process = await startServer("./examples/default/app.ts");
     const baseUrl = "http://localhost:8000";
 
     try {
@@ -45,7 +45,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(text, "Hey! john");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

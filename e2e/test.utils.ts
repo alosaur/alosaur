@@ -1,9 +1,9 @@
 import { assert, BufReader, TextProtoReader } from "../src/deps_test.ts";
 
-let server: Deno.Process;
+export async function startServer(serverPath: string): Promise<Deno.Process> {
+  let process: Deno.Process;
 
-export async function startServer(serverPath: string): Promise<void> {
-  server = Deno.run({
+  process = Deno.run({
     cmd: [
       Deno.execPath(),
       "run",
@@ -18,19 +18,20 @@ export async function startServer(serverPath: string): Promise<void> {
     stderr: "inherit",
   });
   // Once server is ready it will write to its stdout.
-  assert(server.stdout != null);
+  assert(process.stdout != null);
 
-  const r = new TextProtoReader(new BufReader(server.stdout as any));
+  const r = new TextProtoReader(new BufReader(process.stdout as any));
   let s = await r.readLine();
 
-  assert(s !== null && s.includes("Server start in"));
+  // assert(s !== null && s.includes("Server start in"));
+  assert(s !== null);
 
-  return Promise.resolve();
+  return Promise.resolve(process);
 }
 
-export function killServer(): void {
-  server.close();
-  (server.stdout as any)?.close();
+export function killServer(process: Deno.Process): void {
+  process.close();
+  (process.stdout as any)?.close();
 }
 
 export function itLog(s: string, firstIt = false): void {
