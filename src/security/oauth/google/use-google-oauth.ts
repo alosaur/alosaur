@@ -1,6 +1,6 @@
 import { App } from "../../../mod.ts";
-import { OauthMiddleware } from "../base/oauth-middleware.ts";
-import { OauthOptions } from "../base/oauth-options.ts";
+import { OAuthMiddleware } from "../base/oauth-middleware.ts";
+import { OAuthOptions } from "../base/oauth-options.ts";
 import { GoogleOauthDefaults } from "./google-oauth-defaults.ts";
 
 type DefaultsOptions =
@@ -12,7 +12,7 @@ type DefaultsOptions =
 
 export function UseGoogleOAuth(
   app: App<any>,
-  options: Omit<OauthOptions, DefaultsOptions>,
+  options: Omit<OAuthOptions, DefaultsOptions>,
 ) {
   const defaults = {
     callbackPath: GoogleOauthDefaults.callbackPath,
@@ -22,9 +22,9 @@ export function UseGoogleOAuth(
     scope: GoogleOauthDefaults.scope,
   };
 
-  const _options: OauthOptions = { ...defaults, ...options };
+  const _options: OAuthOptions = { ...defaults, ...options };
 
-  const middleware = new OauthMiddleware(_options);
+  const middleware = new OAuthMiddleware(_options);
 
-  app.use(new RegExp("/signin-google"), middleware);
+  app.use(new RegExp("^" + "/signin-google"), middleware);
 }

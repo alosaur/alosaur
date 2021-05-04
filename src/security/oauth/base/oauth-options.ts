@@ -1,4 +1,4 @@
-export interface OauthOptions {
+export interface OAuthOptions {
   /**
    * Haostame of app, this url uses in redirect uri (Ex: 'http://localhost:8000/signin-google')
    * @example http://localhost:8000
@@ -42,6 +42,7 @@ export interface OauthOptions {
 
   /**
    * Scopes for sending authorizationEndpoint
+   * @example 'profile email openid'
    */
   scope?: string;
 

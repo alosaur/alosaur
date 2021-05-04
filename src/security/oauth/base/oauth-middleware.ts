@@ -1,6 +1,6 @@
 import { MiddlewareTarget } from "../../../models/middleware-target.ts";
 import { SecurityContext } from "../../context/security-context.ts";
-import { OauthOptions } from "./oauth-options.ts";
+import { OAuthOptions } from "./oauth-options.ts";
 import { getParsedUrl } from "../../../route/route.utils.ts";
 import { OAuthHandler } from "./oauth-handler.ts";
 import { Redirect } from "../../../renderer/redirect.ts";
@@ -11,9 +11,9 @@ interface TokenResponse {
   refresh_token: string;
 }
 
-export class OauthMiddleware<TState> implements MiddlewareTarget<TState> {
+export class OAuthMiddleware<TState> implements MiddlewareTarget<TState> {
   constructor(
-    private readonly options: OauthOptions,
+    private readonly options: OAuthOptions,
     private readonly handler?: OAuthHandler,
   ) {
   }

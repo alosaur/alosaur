@@ -76,10 +76,12 @@ export class AccountController {
 
   @Get("/external-success")
   async externalSuccess(@Ctx() context: SecurityContext) {
+    // Gets user info from external auth
     const userinfo: any = await context.security!.session!.get(
-      "external_login_signin-google",
+      "external_login_signin-google", // key for gets information about login  external_login_<callbackPath>
     );
 
+    // for example you can authorize this user with credentional with google profile info.
     await context.security.auth.signInAsync<UserModel, unknown>(
       scheme,
       userinfo,
