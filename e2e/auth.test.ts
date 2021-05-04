@@ -12,7 +12,7 @@ test({
     const baseUrl = "http://localhost:8000";
 
     try {
-      const response = await fetch(baseUrl + "/home/protected");
+      const response = await fetch(baseUrl + "/protected");
 
       await response.arrayBuffer();
 
@@ -63,14 +63,14 @@ test({
       headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
       headers.append("Content-Type", "text/plain");
 
-      const responseAuth = await fetch("http://localhost:8000/home/protected", {
+      const responseAuth = await fetch("http://localhost:8000/protected", {
         method: "GET",
         headers: headers,
         credentials: "include",
       });
 
       assertEquals(responseAuth.status, 200);
-      assertEquals(responseAuth.url, "http://localhost:8000/home/protected");
+      assertEquals(responseAuth.url, "http://localhost:8000/protected");
 
       assertEquals(
         await responseAuth.text(),
