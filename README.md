@@ -53,8 +53,10 @@ Q4 2020 – Oct-Dec
     `identity`
   - [x] Authentication schemas (Cookies, JWT Bearer)
   - [x] Authorization decorators and hooks, roles, policy
-  - [ ] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
+  - [x] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
     etc, examples)
+    [Docs](https://github.com/alosaur/alosaur/tree/master/src/security/oauth),
+    [Example](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 - [x] OpenAPI type reference
 
 ---
@@ -80,6 +82,8 @@ Q4 2020 – Oct-Dec
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [Hooks](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 - [Microservice](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+- [Session manager, Authentification, OAuth, Google sign in and
+  more](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 
 ## Simple example
 
