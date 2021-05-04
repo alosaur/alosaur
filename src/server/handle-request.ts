@@ -49,7 +49,7 @@ export async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        req.respond(context.response.getRaw());
+        req.respond(context.response.getMergedResult());
         continue;
       }
 

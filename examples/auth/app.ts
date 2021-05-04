@@ -6,6 +6,7 @@ import { CookiesAuthentication } from "alosaur/src/security/authentication/cooki
 import { SessionMiddleware } from "alosaur/src/security/session/src/session.middleware.ts";
 import { MemoryStore } from "alosaur/src/security/session/src/store/memory.store.ts";
 import { SecurityContext } from "alosaur/src/security/context/security-context.ts";
+import { UseGoogleOAuth } from "../../src/security/oauth/mod.ts";
 
 const DAYS_30 = 30 * 24 * 60 * 60 * 1000;
 
@@ -31,5 +32,13 @@ const sessionMiddleware = new SessionMiddleware(
 
 app.use(new RegExp("/"), sessionMiddleware);
 app.use(new RegExp("/"), authMiddleware);
+
+UseGoogleOAuth(app, {
+  hostname: "http://localhost:8000",
+  clientId: "<your_client_id>",
+  clientSecret: "<your_client_secret>",
+  successLoginPath: "/account/external-success",
+  errorLoginPath: "/account/external-error",
+});
 
 app.listen();
