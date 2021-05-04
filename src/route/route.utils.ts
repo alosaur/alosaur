@@ -69,7 +69,7 @@ export function getPathNameFromUrl(url: string): string {
 const parsedUrlMap: Map<string, URL> = new Map<string, URL>();
 // TODO: use normal parser
 // need for parse
-function getParsedUrl(url: string): URL {
+export function getParsedUrl(url: string): URL {
   if (!parsedUrlMap.has(url)) {
     parsedUrlMap.set(url, new URL("http://localhost" + url));
   }
