@@ -1,6 +1,6 @@
 import { Server } from "../deps.ts";
 import { SERVER_REQUEST } from "../models/tokens.model.ts";
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 import { getStaticFile } from "../utils/get-static-file.ts";
 import { getAction } from "../route/get-action.ts";
 import { getHooksFromAction } from "../route/get-hooks.ts";
@@ -29,7 +29,9 @@ export async function handleFullServer<TState>(
 ) {
   for await (const req of server) {
     metadata.container.register(SERVER_REQUEST, { useValue: req });
-    const context = metadata.container.resolve<Context<TState>>(Context);
+    const context = metadata.container.resolve<HttpContext<TState>>(
+      HttpContext,
+    );
 
     try {
       const middlewares = getMiddlwareByUrl(
@@ -47,7 +49,7 @@ export async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        req.respond(context.response.getRaw());
+        req.respond(context.response.getMergedResult());
         continue;
       }
 
@@ -68,7 +70,7 @@ export async function handleFullServer<TState>(
       if (action !== null) {
         const hooks = getHooksFromAction(action);
 
-        // try resolve hooks
+        // try resolve onPreAction hooks
         if (
           hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
         ) {
@@ -176,7 +178,7 @@ export async function handleLiteServer<TState>(
   app: App<TState>,
 ) {
   for await (const req of server) {
-    const context = new Context(req);
+    const context = new HttpContext(req);
 
     try {
       // try getting static file

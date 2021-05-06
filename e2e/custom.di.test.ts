@@ -5,7 +5,7 @@ const { test } = Deno;
 test({
   name: "[http] Custom DI server should be run",
   async fn(): Promise<void> {
-    await startServer("./examples/customdi/app.ts");
+    const process = await startServer("./examples/customdi/app.ts");
     const baseUrl = "http://localhost:8000";
 
     itLog("root ''", true);
@@ -18,7 +18,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(text, "Hey! My name is Bar, alosaur");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

@@ -1,5 +1,5 @@
 import { MiddlewareTarget } from "../models/middleware-target.ts";
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 
 export class CorsBuilder<T> implements MiddlewareTarget<T> {
   private headers: Map<string, string>;
@@ -14,7 +14,7 @@ export class CorsBuilder<T> implements MiddlewareTarget<T> {
     this.allowAnyHeader = false;
   }
 
-  onPreRequest(context: Context<T>): Promise<void> {
+  onPreRequest(context: HttpContext<T>): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (this.allowAnyOrigin) {
         this.headers.set(
@@ -46,7 +46,7 @@ export class CorsBuilder<T> implements MiddlewareTarget<T> {
     });
   }
 
-  onPostRequest(context: Context<T>): Promise<void> {
+  onPostRequest(context: HttpContext<T>): Promise<void> {
     return new Promise<void>((resolve, rej) => {
       this.headers.forEach((el, key) => {
         context.response.headers.set(key, el);

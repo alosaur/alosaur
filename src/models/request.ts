@@ -14,6 +14,8 @@ export interface RequestBodyFormDataParseOptions {
  * Request of context
  */
 export class Request {
+  // TODO add parsed url type: URL
+
   public readonly url: string;
   public readonly headers: Headers;
   public readonly method: string;

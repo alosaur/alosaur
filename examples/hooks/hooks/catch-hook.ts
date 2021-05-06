@@ -1,7 +1,7 @@
 import {
   Content,
-  Context,
   HookTarget,
+  HttpContext,
   HttpError,
   Singleton,
 } from "alosaur/mod.ts";
@@ -13,7 +13,7 @@ type PayloadType = string[];
 export class CatchHook implements HookTarget<unknown, PayloadType> {
   constructor(private foo: FooService) {}
 
-  onCatchAction(context: Context<unknown>, payload: PayloadType) {
+  onCatchAction(context: HttpContext<unknown>, payload: PayloadType) {
     const error = context.response.error as HttpError;
 
     (error as any)["description"] = "This description from catch hook";

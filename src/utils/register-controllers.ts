@@ -86,6 +86,7 @@ export function registerControllers<TState>(
         action: action.method,
         method: action.type,
         params: params.filter((param) => param.method === action.method),
+        eventOrPattern: action.eventOrPattern,
       };
 
       if (logging) {

@@ -1,6 +1,7 @@
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 import { HookMethod } from "../models/hook.ts";
 import { HookMetadataArgs } from "../metadata/hook.ts";
+import { Context } from "../models/context.ts";
 
 // type HookActionName = "onCatchAction" | "onPostAction" | "onPreAction";
 
@@ -34,9 +35,11 @@ export async function resolveHooks<TState, TPayload>(
             Array.from(resolvedHooks).reverse(),
           );
 
-          await context.request.serverRequest.respond(
-            context.response.getMergedResult(),
-          );
+          if (context instanceof HttpContext) {
+            await context.request.serverRequest.respond(
+              context.response.getMergedResult(),
+            );
+          }
           return true;
         }
       }

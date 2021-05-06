@@ -27,7 +27,7 @@ export class AccountController {
   @Get("/login")
   getLogin(@Ctx() context: SecurityContext) {
     if (context.security.auth.identity()) {
-      return Redirect("/home/protected");
+      return Redirect("/protected");
     }
 
     return `<form method="post">
@@ -36,7 +36,12 @@ export class AccountController {
               <input type="text" name="login" placeholder="login" value="admin"><br>
               <input type="password" name="password" placeholder="password" value="admin"><br>
               <input type="submit">
-            </form>`;
+            </form>
+            <br>
+            <form action="/signin-google">
+                <input type="submit" value="Auth with Google" />
+            </form>
+`;
   }
 
   @Post("/login")
@@ -48,7 +53,7 @@ export class AccountController {
 
     if (user) {
       await context.security.auth.signInAsync<UserModel, unknown>(scheme, user);
-      return Redirect("/home/protected");
+      return Redirect("/protected");
     }
 
     return Redirect("/account/login");
@@ -67,6 +72,26 @@ export class AccountController {
     }
 
     return Content("", 401);
+  }
+
+  @Get("/external-success")
+  async externalSuccess(@Ctx() context: SecurityContext) {
+    // Gets user info from external auth
+    const userinfo: any = await context.security!.session!.get(
+      "external_login_signin-google", // key for gets information about login  external_login_<callbackPath>
+    );
+
+    // for example you can authorize this user with credentional with google profile info.
+    await context.security.auth.signInAsync<UserModel, unknown>(
+      scheme,
+      userinfo,
+    );
+    return Redirect("/protected");
+  }
+
+  @Get("/external-error")
+  async externalError(@Ctx() context: SecurityContext) {
+    return context.response.error;
   }
 
   @Get("/logout")

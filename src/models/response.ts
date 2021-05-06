@@ -8,16 +8,9 @@ export interface ActionResult {
   __isActionResult: true;
 }
 
-export class Response {
-  public readonly headers: Headers = new Headers();
-
-  public status?: number;
-  public body?: ResponseBody;
-  public result?: ActionResult | any;
+export class ImmediatelyResponse {
   public error?: Error;
-
   private immediately: boolean = false;
-  private notRespond: boolean = false;
 
   public setImmediately(): void {
     this.immediately = true;
@@ -26,6 +19,16 @@ export class Response {
   public isImmediately(): boolean {
     return this.immediately;
   }
+}
+
+export class Response extends ImmediatelyResponse {
+  public readonly headers: Headers = new Headers();
+
+  public status?: number;
+  public body?: ResponseBody;
+  public result?: ActionResult | any;
+
+  private notRespond: boolean = false;
 
   public setNotRespond(): void {
     this.notRespond = true;
@@ -59,7 +62,7 @@ export class Response {
 
     // merge headers
     for (const pair of this.headers.entries()) {
-      response.headers.set(pair[0], pair[1]);
+      response.headers.append(pair[0], pair[1]);
     }
 
     delete response.__isActionResult;

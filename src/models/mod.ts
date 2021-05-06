@@ -1,4 +1,4 @@
-export * from "./context.ts";
+export * from "./http-context.ts";
 export * from "./hook.ts";
 export * from "./request.ts";
 export * from "./response.ts";

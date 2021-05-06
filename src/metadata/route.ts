@@ -14,4 +14,5 @@ export interface RouteMetadata {
   method: string;
   params: ParamMetadataArgs[];
   routeParams?: { [key: string]: any };
+  eventOrPattern?: string;
 }

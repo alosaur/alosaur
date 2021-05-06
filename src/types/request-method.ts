@@ -5,4 +5,6 @@ export enum RequestMethod {
   Delete = "DELETE",
   Path = "PATCH",
   Options = "OPTIONS",
+  Event = "EVENT",
+  Pattern = "PATTERN",
 }

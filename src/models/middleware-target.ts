@@ -1,4 +1,4 @@
-import { Context } from "./context.ts";
+import { HttpContext } from "./http-context.ts";
 
 export type IMiddleware<TState = unknown> =
   | PreRequestMiddleware<TState>
@@ -6,14 +6,14 @@ export type IMiddleware<TState = unknown> =
   | MiddlewareTarget<TState>;
 
 export interface PreRequestMiddleware<TState = unknown> {
-  onPreRequest(context: Context<TState>): void;
+  onPreRequest(context: HttpContext<TState>): void;
 }
 
 export interface PostRequestMiddleware<TState = unknown> {
-  onPreRequest(context: Context<TState>): void;
+  onPreRequest(context: HttpContext<TState>): void;
 }
 
 export interface MiddlewareTarget<TState = unknown> {
-  onPreRequest(context: Context<TState>): void;
-  onPostRequest(context: Context<TState>): void;
+  onPreRequest(context: HttpContext<TState>): void;
+  onPostRequest(context: HttpContext<TState>): void;
 }

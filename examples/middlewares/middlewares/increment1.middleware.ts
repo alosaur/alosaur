@@ -1,11 +1,11 @@
-import { Context, Middleware, MiddlewareTarget } from "alosaur/mod.ts";
+import { HttpContext, Middleware, MiddlewareTarget } from "alosaur/mod.ts";
 
 @Middleware(new RegExp("/"))
 export class Increment1Middleware implements MiddlewareTarget<number> {
-  onPreRequest(context: Context<number>) {
+  onPreRequest(context: HttpContext<number>) {
     context.state = 1;
   }
 
-  onPostRequest(context: Context<number>) {
+  onPostRequest(context: HttpContext<number>) {
   }
 }
