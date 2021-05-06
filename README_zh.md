@@ -459,12 +459,12 @@ app.use(/\//, new Log());
 ```ts
 import { acceptWebSocket } from "https://deno.land/std@0.95.0/ws/mod.ts";
 import {
-  Context,
+  HttpContext,
   PreRequestMiddleware,
 } from "https://deno.land/x/alosaur/mod.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
-  onPreRequest(context: Context) {
+  onPreRequest(context: HttpContext) {
     const { conn, r: bufReader, w: bufWriter, headers } =
       context.request.serverRequest;
 
@@ -494,12 +494,12 @@ export class WebsocketMiddleware implements PreRequestMiddleware {
 ```ts
 import {
   acceptSSE,
-  Context,
+  HttpContext,
   PreRequestMiddleware,
 } from "https://deno.land/x/alosaur/mod.ts";
 
 export class SseMiddleware implements PreRequestMiddleware {
-  async onPreRequest(context: Context) {
+  async onPreRequest(context: HttpContext) {
     acceptSSE(context).then(ChatHandler) // execute chat
       .catch(async (e) => {
         console.error(`failed to accept sse: ${e}`);
