@@ -49,8 +49,10 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
     `identity`
   - [x] Authentication schemas (Cookies, JWT Bearer)
   - [x] Authorization decorators and hooks, roles, policy
-  - [ ] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
+  - [x] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
     etc, examples)
+    [文档](https://github.com/alosaur/alosaur/tree/master/src/security/oauth),
+    [范例](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 - [x] OpenAPI type reference
 
 ---
