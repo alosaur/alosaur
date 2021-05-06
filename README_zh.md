@@ -42,7 +42,7 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 - [x] WebSocket
 - [x] SSE
-- [ ] Add
+- [x] Add
   [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
   - [x] Identifications middlwares like session
   - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`,
