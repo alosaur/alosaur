@@ -79,7 +79,8 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 - [微服务](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
-- [会话管理器, 认证与授权, OAuth, Google登录等](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
+- [会话管理器, 认证与授权, OAuth,
+  Google登录等](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 
 ## 一个简单的例子
 
