@@ -24,7 +24,8 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 4月-5月
 
-- [ ] Microservices
+- [x] 微服务 (TCP)
+  [范例](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
@@ -75,6 +76,8 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+- [微服务](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+- [会话管理器, 认证与授权, OAuth, Google登录等](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 
 ## 一个简单的例子
 
@@ -150,35 +153,12 @@ app.listen();
 - [x] 增加WebSocket
 - [x] 增加SSE
 - [x] 增加类型校验的例子 [class-validator](https://github.com/typestack/class-validator)
-- [ ] 增加微服务与WASM的连接器
 - [x] 切换到Alosaur在github的组织
 - [ ] 增加文档和更多的例子
 
 - 插件与模块
-
--
   - [x] 增加[Angular](https://github.com/alosaur/angular_deno) 模板引擎
--
   - [x] 增加CLI及示意图(https://github.com/alosaur/alosaur-schematics)
-
-- 范例
-
--
-  - [x] 增加基本使用范例
--
-  - [x] 增加依赖注入范例
--
-  - [x] 增加静态文件范例
--
-  - [x] 增加Dejs模板引擎范例
--
-  - [x] 增加SQL数据库范例 (PostgreSQL)
--
-  - [x] 增加基本使用范例，使用Docker技术
--
-  - [x] 增加WebSocket范例
--
-  - [ ] 增加WASM范例
 
 ## DI in Alosaur
 
