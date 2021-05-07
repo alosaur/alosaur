@@ -46,7 +46,7 @@ Q4 2020 – Oct-Dec
 
 - [x] WebSocket
 - [x] SSE
-- [ ] Add
+- [x] Add
   [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
   - [x] Identifications middlwares like session
   - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`,
