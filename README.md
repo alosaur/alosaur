@@ -20,9 +20,8 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 [中文说明](https://github.com/alosaur/alosaur/blob/master/README_zh.md)
 
-
-How do I use Alosaur in Deno Deploy?
-Use the light version of Alosaur: [Alosaur Lite](https://github.com/alosaur/alosaur-lite)
+How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
+[Alosaur Lite](https://github.com/alosaur/alosaur-lite)
 
 ---
 
