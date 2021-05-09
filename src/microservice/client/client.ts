@@ -3,6 +3,8 @@
  */
 export class MsTcpClient {
   private readonly delimiter = "#";
+  private readonly endOfMessage = "\n";
+
   private readonly encoder = new TextEncoder();
   private readonly decoder = new TextDecoder();
 
@@ -31,7 +33,7 @@ export class MsTcpClient {
     const conn = await this.connect();
 
     const req = JSON.stringify(pattern) + this.delimiter +
-      JSON.stringify(payload);
+      JSON.stringify(payload) + this.endOfMessage;
 
     await conn.write(this.encoder.encode(req));
 
@@ -43,7 +45,7 @@ export class MsTcpClient {
       result = this.decoder.decode(buffer.subarray(0, nread));
     }
 
-    return result ? result.split(this.delimiter)[1] : result;
+    return result && result.split(this.delimiter)[1].slice(0, -1);
   }
 
   /**

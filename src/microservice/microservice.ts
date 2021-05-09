@@ -41,6 +41,7 @@ export class Microservice<TState> {
   private readonly classes: ObjectKeyAny[] = [];
   private readonly actions: RouteMetadata[] = [];
   private readonly delimeter = "#";
+  private readonly endOfMessage = "\n";
 
   private readonly encoder = new TextEncoder();
   private readonly decoder = new TextDecoder();
@@ -118,7 +119,7 @@ export class Microservice<TState> {
           await action.target[action.action](...args),
         );
         const response = this.encoder.encode(
-          pattern + this.delimeter + actionResult,
+          pattern + this.delimeter + actionResult + this.endOfMessage,
         );
 
         if (action.actionMetadata.type === RequestMethod.Pattern) {
