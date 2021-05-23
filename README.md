@@ -29,8 +29,6 @@ How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
 
 2021
 
-Apr - May
-
 - [x] Microservices (TCP)
   [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [ ] CLI: run applications
