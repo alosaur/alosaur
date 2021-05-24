@@ -16,13 +16,14 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - **Render pages** 可以使用任意的模板引擎.
   [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
 
+想要尝试一下在[Deno Deploy](https://deno.com/deploy)中使用Alosaur框架吗?
+使用[Alosaur轻量版](https://github.com/alosaur/alosaur-lite)
+
 ---
 
 ## 开发计划
 
 2021年
-
-4月-5月
 
 - [x] 微服务 (TCP)
   [范例](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
