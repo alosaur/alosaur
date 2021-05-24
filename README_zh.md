@@ -440,7 +440,7 @@ app.use(/\//, new Log());
 [完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.95.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.97.0/ws/mod.ts";
 import {
   HttpContext,
   PreRequestMiddleware,
@@ -629,8 +629,8 @@ new Handlebars(
 默认情况下使用在控制器方法中使用`@Body`解析通过HTML表单上传的文件.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.95.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.95.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.97.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.97.0/fs/move.ts";
 
 ...
 

@@ -20,13 +20,14 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 [中文说明](https://github.com/alosaur/alosaur/blob/master/README_zh.md)
 
+How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
+[Alosaur Lite](https://github.com/alosaur/alosaur-lite)
+
 ---
 
 ## Features roadmap
 
 2021
-
-Apr - May
 
 - [x] Microservices (TCP)
   [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
@@ -431,7 +432,7 @@ Use `context.response.setNotRespond()` for return the rest of the requests
 [Full example](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.95.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.97.0/ws/mod.ts";
 import {
   HttpContext,
   PreRequestMiddleware,
@@ -622,8 +623,8 @@ new Handlebars(
 By default you can use `@Body` in action for read form-data with files.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.95.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.95.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.97.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.97.0/fs/move.ts";
 
 ...
 
