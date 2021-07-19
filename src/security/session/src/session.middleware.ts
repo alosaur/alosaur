@@ -6,7 +6,7 @@ import { Session } from "./session.instance.ts";
 import {
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.98.0/http/cookie.ts";
+} from "https://deno.land/std@0.102.0/http/cookie.ts";
 import {
   SESSION_SIGNATURE_PREFIX_KEY,
   SessionOptions,
