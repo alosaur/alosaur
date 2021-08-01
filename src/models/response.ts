@@ -12,6 +12,9 @@ export class ImmediatelyResponse {
   public error?: Error;
   private immediately: boolean = false;
 
+  /**
+   * It uses for immediately send response without run other Hook, Middlewares
+   */
   public setImmediately(): void {
     this.immediately = true;
   }
@@ -30,6 +33,10 @@ export class Response extends ImmediatelyResponse {
 
   private notRespond: boolean = false;
 
+  /**
+   * It is necessary to return the rest of the requests by standard
+   * Can be uses in WebSocket and SSE middlewares
+   */
   public setNotRespond(): void {
     this.notRespond = true;
   }
@@ -38,6 +45,9 @@ export class Response extends ImmediatelyResponse {
     return this.notRespond;
   }
 
+  /**
+   *  Get current response object
+   */
   public getRaw() {
     return {
       headers: this.headers,
@@ -46,6 +56,9 @@ export class Response extends ImmediatelyResponse {
     };
   }
 
+  /**
+   * Merge results before send from server
+   */
   public getMergedResult() {
     if (this.body !== undefined) {
       return this.getRaw();
