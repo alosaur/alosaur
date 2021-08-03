@@ -2,6 +2,8 @@
 
 Contains the security and authorization middlewares for Alosaur
 
+[More about Alosaur Session](https://github.com/alosaur/alosaur/tree/master/src/security/session)
+
 [More about Alosaur Authorization &
 Authentication](https://github.com/alosaur/alosaur/tree/master/src/security/authorization)
 
