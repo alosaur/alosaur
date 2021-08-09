@@ -191,7 +191,7 @@ deno run --allow-net --allow-read --config ./tsconfig.json app.ts
 
 ## OpenAPI v3
 
-[Example](https://github.com/alosaur/alosaur/tree/master/basic/)
+[Example](https://github.com/alosaur/alosaur/tree/master/examples/basic)
 
 [Example with parse type reference](https://github.com/alosaur/alosaur/tree/master/openapi/e2e/)
 
