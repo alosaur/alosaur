@@ -19,12 +19,6 @@ const Contacts = () => (
 
 export const getPage = (path: string, model: Object) => {
   return ReactDOMServer.renderToString(
-    path === "contacts"
-      ? (
-        <Contacts />
-      )
-      : (
-        <Home />
-      ),
+    path === "contacts" ? <Contacts /> : <Home />,
   );
 };
