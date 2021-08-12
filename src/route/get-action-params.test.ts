@@ -2,7 +2,7 @@ import { RouteMetadata } from "../metadata/route.ts";
 import { getActionParams } from "./get-action-params.ts";
 import { assert } from "../deps_test.ts";
 import { ParamType } from "../types/param.ts";
-import { Context } from "../models/context.ts";
+import { HttpContext } from "../models/http-context.ts";
 import { ServerRequest } from "../deps.ts";
 import { ActionMetadataArgs } from "../metadata/action.ts";
 
@@ -48,7 +48,7 @@ const route: RouteMetadata = {
 test({
   name: "testGetActionParamsMultiQuery",
   async fn() {
-    const context = new Context({
+    const context = new HttpContext({
       url: "/home/test/testQuery?a=a&b=b&c=c",
       headers: new Headers(),
     } as ServerRequest);
@@ -63,7 +63,7 @@ test({
 test({
   name: "testGetActionParamsMultiQueryWithoutOneParam",
   async fn() {
-    const context = new Context({
+    const context = new HttpContext({
       url: "/home/test/testQuery?c=c&a=a",
       headers: new Headers(),
     } as ServerRequest);
@@ -78,7 +78,7 @@ test({
 test({
   name: "testGetActionParamsMultiQueryWithOneParam",
   async fn() {
-    const context = new Context({
+    const context = new HttpContext({
       url: "/home/test/testQuery?c=c",
       headers: new Headers(),
     } as ServerRequest);

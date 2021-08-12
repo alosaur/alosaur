@@ -8,7 +8,7 @@ const { test } = Deno;
 test({
   name: "[http] spa server, requests to info controller",
   async fn(): Promise<void> {
-    await startServer("./examples/spa/app.ts");
+    const process = await startServer("./examples/spa/app.ts");
     const baseUrl = "http://localhost:8000";
 
     itLog("/", true);
@@ -38,7 +38,7 @@ test({
 
       assertEquals(response.status, 200);
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

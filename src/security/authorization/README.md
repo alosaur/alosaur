@@ -44,7 +44,7 @@ export interface AuthenticationScheme {
 
 #### CookiesScheme
 
-Contains types that enable support for ookies based authentication.
+Contains types that enable support for Cookies based authentication.
 
 You can use default CookiesAuthentication.DefaultScheme with signIn url. or
 extends from CookiesScheme for create other cases, for example extend

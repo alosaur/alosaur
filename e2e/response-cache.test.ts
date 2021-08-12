@@ -8,7 +8,7 @@ const { test } = Deno;
 test({
   name: "[http] cache should should give the next response instantly",
   async fn(): Promise<void> {
-    await startServer("./examples/cache/app.ts");
+    const process = await startServer("./examples/cache/app.ts");
     const baseUrl = "http://localhost:8000";
 
     try {
@@ -34,7 +34,7 @@ test({
 
       assert((perf2 - perf1 - 200) > perf4 - perf3);
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

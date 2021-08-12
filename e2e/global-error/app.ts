@@ -1,5 +1,5 @@
 import { App, Content, HttpError } from "../../mod.ts";
-import { Context } from "../../src/models/context.ts";
+import { HttpContext } from "../../src/models/http-context.ts";
 import { HomeArea } from "./settings.ts";
 
 const app = new App({
@@ -8,7 +8,7 @@ const app = new App({
 });
 
 // global error handler
-app.error((context: Context<any>, error: Error) => {
+app.error((context: HttpContext<any>, error: Error) => {
   context.response.result = Content(
     "This page unprocessed error",
     (error as HttpError).httpCode || 500,

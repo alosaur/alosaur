@@ -7,7 +7,7 @@ import {
   SESSION_SIGNATURE_PREFIX_KEY,
   SessionInterface,
 } from "../../../session/src/session.interface.ts";
-import { deleteCookie } from "https://deno.land/std@0.93.0/http/cookie.ts";
+import { deleteCookie } from "https://deno.land/std@0.102.0/http/cookie.ts";
 import { SecurityContext } from "../../../context/security-context.ts";
 import { Redirect } from "../../../../renderer/redirect.ts";
 
@@ -34,7 +34,7 @@ export class CookiesScheme implements AuthenticationScheme {
     identity: Identity<I>,
     claims?: AuthClaims,
   ): Promise<R> {
-    const session = getSession(context);
+    const session = CookieGetSession(context);
     await session.set(IdentityKey, identity);
     await this.setIdentity(context);
 
@@ -42,7 +42,7 @@ export class CookiesScheme implements AuthenticationScheme {
   }
 
   public async signOutAsync<T, R>(context: SecurityContext): Promise<R> {
-    const session = getSession(context);
+    const session = CookieGetSession(context);
     const sid = session.sessionId;
     await session.store.delete(sid);
     context.security.auth.identity = () => undefined;
@@ -66,7 +66,7 @@ export class CookiesScheme implements AuthenticationScheme {
   }
 }
 
-function getSession(context: SecurityContext): SessionInterface {
+export function CookieGetSession(context: SecurityContext): SessionInterface {
   if (context.security.session) {
     return context.security.session;
   } else {

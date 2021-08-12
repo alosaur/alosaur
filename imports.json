@@ -1,5 +1,6 @@
 {
   "imports": {
-    "alosaur/": "./"
+    "alosaur/": "./",
+    "alosaur/microservice/": "./src/microservice/"
   }
 }

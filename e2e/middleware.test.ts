@@ -8,7 +8,7 @@ const { test } = Deno;
 test({
   name: "[http] middleware test",
   async fn(): Promise<void> {
-    await startServer("./examples/middlewares/app.ts");
+    const process = await startServer("./examples/middlewares/app.ts");
     const baseUrl = "http://localhost:8000/app/home";
 
     itLog("/app/home", true);
@@ -23,7 +23,7 @@ test({
       assertEquals(response.status, 200);
       assertEquals(text, "8");
     } finally {
-      killServer();
+      killServer(process);
     }
   },
 });

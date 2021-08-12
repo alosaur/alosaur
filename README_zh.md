@@ -16,15 +16,17 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - **Render pages** 可以使用任意的模板引擎.
   [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
 
+想要尝试一下在[Deno Deploy](https://deno.com/deploy)中使用Alosaur框架吗?
+使用[Alosaur轻量版](https://github.com/alosaur/alosaur-lite)
+
 ---
 
 ## 开发计划
 
 2021年
 
-4月-5月
-
-- [ ] Microservices
+- [x] 微服务 (TCP)
+  [范例](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
   Alosaur openapi
@@ -41,15 +43,17 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 - [x] WebSocket
 - [x] SSE
-- [ ] Add
+- [x] Add
   [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
   - [x] Identifications middlwares like session
   - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`,
     `identity`
   - [x] Authentication schemas (Cookies, JWT Bearer)
   - [x] Authorization decorators and hooks, roles, policy
-  - [ ] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
+  - [x] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
     etc, examples)
+    [文档](https://github.com/alosaur/alosaur/tree/master/src/security/oauth),
+    [范例](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 - [x] OpenAPI type reference
 
 ---
@@ -75,6 +79,9 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
+- [微服务](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+- [会话管理器, 认证与授权, OAuth,
+  Google登录等](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 
 ## 一个简单的例子
 
@@ -150,35 +157,12 @@ app.listen();
 - [x] 增加WebSocket
 - [x] 增加SSE
 - [x] 增加类型校验的例子 [class-validator](https://github.com/typestack/class-validator)
-- [ ] 增加微服务与WASM的连接器
 - [x] 切换到Alosaur在github的组织
 - [ ] 增加文档和更多的例子
 
 - 插件与模块
-
--
   - [x] 增加[Angular](https://github.com/alosaur/angular_deno) 模板引擎
--
   - [x] 增加CLI及示意图(https://github.com/alosaur/alosaur-schematics)
-
-- 范例
-
--
-  - [x] 增加基本使用范例
--
-  - [x] 增加依赖注入范例
--
-  - [x] 增加静态文件范例
--
-  - [x] 增加Dejs模板引擎范例
--
-  - [x] 增加SQL数据库范例 (PostgreSQL)
--
-  - [x] 增加基本使用范例，使用Docker技术
--
-  - [x] 增加WebSocket范例
--
-  - [ ] 增加WASM范例
 
 ## DI in Alosaur
 
@@ -457,14 +441,14 @@ app.use(/\//, new Log());
 [完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.93.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.102.0/ws/mod.ts";
 import {
-  Context,
+  HttpContext,
   PreRequestMiddleware,
 } from "https://deno.land/x/alosaur/mod.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
-  onPreRequest(context: Context) {
+  onPreRequest(context: HttpContext) {
     const { conn, r: bufReader, w: bufWriter, headers } =
       context.request.serverRequest;
 
@@ -494,12 +478,12 @@ export class WebsocketMiddleware implements PreRequestMiddleware {
 ```ts
 import {
   acceptSSE,
-  Context,
+  HttpContext,
   PreRequestMiddleware,
 } from "https://deno.land/x/alosaur/mod.ts";
 
 export class SseMiddleware implements PreRequestMiddleware {
-  async onPreRequest(context: Context) {
+  async onPreRequest(context: HttpContext) {
     acceptSSE(context).then(ChatHandler) // execute chat
       .catch(async (e) => {
         console.error(`failed to accept sse: ${e}`);
@@ -646,8 +630,8 @@ new Handlebars(
 默认情况下使用在控制器方法中使用`@Body`解析通过HTML表单上传的文件.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.93.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.93.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.102.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.102.0/fs/move.ts";
 
 ...
 

@@ -12,7 +12,7 @@ import {
   TransformConfigMap,
 } from "./models/transform-config.ts";
 
-import { Context } from "./models/context.ts";
+import { HttpContext } from "./models/http-context.ts";
 import { AppSettings } from "./models/app-settings.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
@@ -55,11 +55,14 @@ export class App<TState> {
   public _transformConfigMap?: TransformConfigMap;
 
   public get globalErrorHandler():
-    | ((ctx: Context<TState>, error: Error) => void)
+    | ((ctx: HttpContext<TState>, error: Error) => void)
     | undefined {
     return this._globalErrorHandler;
   }
-  private _globalErrorHandler?: (ctx: Context<TState>, error: Error) => void;
+  private _globalErrorHandler?: (
+    ctx: HttpContext<TState>,
+    error: Error,
+  ) => void;
 
   public get routes(): RouteMetadata[] {
     return this._routes;
@@ -206,7 +209,7 @@ export class App<TState> {
    * Create one global error handler
    */
   public error(
-    globalErrorHandler: (ctx: Context<TState>, error: Error) => void,
+    globalErrorHandler: (ctx: HttpContext<TState>, error: Error) => void,
   ): void {
     this._globalErrorHandler = globalErrorHandler;
   }

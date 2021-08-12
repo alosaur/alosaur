@@ -14,16 +14,20 @@ export interface RequestBodyFormDataParseOptions {
  * Request of context
  */
 export class Request {
+  // TODO add parsed url type: URL
+
   public readonly url: string;
   public readonly headers: Headers;
   public readonly method: string;
+  public readonly serverRequest: ServerRequest;
 
   private _body: any;
 
-  constructor(public readonly serverRequest: ServerRequest) {
+  constructor(serverRequest: ServerRequest) {
     this.url = serverRequest.url;
     this.headers = serverRequest.headers;
     this.method = serverRequest.method;
+    this.serverRequest = serverRequest;
   }
 
   /**

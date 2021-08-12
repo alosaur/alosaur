@@ -4,11 +4,11 @@ import { CookiesAuthentication } from "alosaur/src/security/authentication/mod.t
 
 const scheme = CookiesAuthentication.DefaultScheme;
 
-@Controller("/home")
+@Controller("")
 export class HomeController {
-  @Get("/")
+  @Get("")
   getText() {
-    return "Hello world! <a href='/home/protected'>go to protected page</a>";
+    return "Hello world! <a href='/protected'>go to protected page</a>";
   }
 
   @Authorize(scheme)
