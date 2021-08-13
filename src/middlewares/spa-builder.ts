@@ -20,18 +20,19 @@ export class SpaBuilder<TState> implements MiddlewareTarget<TState> {
           context.response.result === undefined && this.staticConfig.index &&
           !hasUrlExtension(context.request.url)
         ) {
-          if (
-            await send(
-              {
-                request: context.request.serverRequest,
-                response: context.response,
-              },
-              this.staticConfig.index,
-              this.staticConfig,
-            )
-          ) {
-            context.response.setImmediately();
-          }
+          // TODO(native) send files
+          // if (
+          //   await send(
+          //     {
+          //       request: context.request.serverRequest,
+          //       response: context.response,
+          //     },
+          //     this.staticConfig.index,
+          //     this.staticConfig,
+          //   )
+          // ) {
+          //   context.response.setImmediately();
+          // }
         }
       }
       resolve();

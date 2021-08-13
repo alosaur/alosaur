@@ -18,6 +18,6 @@ jobs:
             - name: fmt check
               run: deno fmt --check 
             - name: Test
-              run: deno test -A --config ./src/tsconfig.lib.json --importmap=imports.json --unstable
+              run: deno test -A --config ./src/tsconfig.lib.json --importmap=imports.json
             - name: Snaphot test OpenApi e2e
-              run: deno test -A --config ./src/tsconfig.lib.json openapi/e2e/openapi-e2e-test.ts --importmap=imports.json --unstable
+              run: deno test -A --config ./src/tsconfig.lib.json openapi/e2e/openapi-e2e-test.ts --importmap=imports.json

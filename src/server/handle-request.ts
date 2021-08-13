@@ -13,6 +13,8 @@ import { App } from "../mod.ts";
 import { MiddlewareMetadataArgs } from "../metadata/middleware.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";
 
+// TODO(native) remove this file
+
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
   middlewares: MiddlewareMetadataArgs<T>[],
@@ -178,6 +180,7 @@ export async function handleLiteServer<TState>(
   app: App<TState>,
 ) {
   for await (const req of server) {
+    // @ts-ignore
     const context = new HttpContext(req);
 
     try {

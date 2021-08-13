@@ -6,7 +6,8 @@ import {
   getNumericDate,
 } from "https://deno.land/x/djwt@v1.9/mod.ts";
 import { Algorithm } from "https://deno.land/x/djwt@v1.9/_algorithm.ts";
-import { verify as verifySignature } from "https://deno.land/x/djwt@v1.9/_signature.ts";
+// TODO https://github.com/timonson/djwt/issues/53
+// import { verify as verifySignature } from "https://deno.land/x/djwt@v1.9/_signature.ts";
 import { Content } from "../../../../renderer/content.ts";
 
 const DAYS_30 = 30 * 24 * 60 * 60 * 1000;
@@ -89,16 +90,17 @@ async function safeVerifyJWT(
 ): Promise<any> {
   const { header, payload, signature } = decode(jwt);
 
-  if (
-    !(await verifySignature({
-      signature,
-      key,
-      algorithm: header.alg,
-      signingInput: jwt.slice(0, jwt.lastIndexOf(".")),
-    }))
-  ) {
-    return undefined;
-  }
+  // TODO https://github.com/timonson/djwt/issues/53
+  // if (
+  //   !(await verifySignature({
+  //     signature,
+  //     key,
+  //     algorithm: header.alg,
+  //     signingInput: jwt.slice(0, jwt.lastIndexOf(".")),
+  //   }))
+  // ) {
+  //   return undefined;
+  // }
 
   return payload;
 }

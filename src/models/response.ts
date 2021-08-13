@@ -24,7 +24,7 @@ export class ImmediatelyResponse {
   }
 }
 
-export class Response extends ImmediatelyResponse {
+export class AlosaurResponse extends ImmediatelyResponse {
   public readonly headers: Headers = new Headers();
 
   public status?: number;

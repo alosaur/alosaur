@@ -11,7 +11,7 @@ import {
   Req,
   Res,
 } from "alosaur/mod.ts";
-import { Request, Response } from "alosaur/mod.ts";
+import { AlosaurRequest, AlosaurResponse } from "alosaur/mod.ts";
 import { delay } from "../../../_utils/test.utils.ts";
 
 @Controller("/home")
@@ -27,8 +27,8 @@ export class HomeController {
 
   @Get("/json")
   json(
-    @Req() request: Request,
-    @Res() response: Response,
+    @Req() request: AlosaurRequest,
+    @Res() response: AlosaurResponse,
     @QueryParam("name") name: string,
   ) {
     return response.getRaw();

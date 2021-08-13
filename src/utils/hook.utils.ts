@@ -2,6 +2,7 @@ import { HttpContext } from "../models/http-context.ts";
 import { HookMethod } from "../models/hook.ts";
 import { HookMetadataArgs } from "../metadata/hook.ts";
 import { Context } from "../models/context.ts";
+import { ActionResult } from "../models/response.ts";
 
 // type HookActionName = "onCatchAction" | "onPostAction" | "onPreAction";
 
@@ -36,9 +37,9 @@ export async function resolveHooks<TState, TPayload>(
           );
 
           if (context instanceof HttpContext) {
-            await context.request.serverRequest.respond(
-              context.response.getMergedResult(),
-            );
+            const respondWith =
+              (context.request.serverRequest as any).respondWith;
+            respondWith(getResponse(context.response.getMergedResult()));
           }
           return true;
         }
@@ -76,4 +77,12 @@ export function hasHooksAction<TState, TPayload>(
 ): boolean {
   return !!(hooks &&
     hooks.find((hook) => (hook as any).instance[actionName] !== undefined));
+}
+
+// TODO(native) actualize with response type Response
+function getResponse(result: ActionResult): Response {
+  return new Response(result.body, {
+    status: result.status,
+    headers: result.headers,
+  });
 }

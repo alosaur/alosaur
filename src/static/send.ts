@@ -66,7 +66,7 @@ export interface SendOptions {
 }
 
 interface RequestResponse {
-  request: ServerRequest;
+  request: any;
   response: Response;
 }
 

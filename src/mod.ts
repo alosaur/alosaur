@@ -125,7 +125,7 @@ export class App<TState> {
 
     console.log("Server start in", addr);
 
-    if (customListener) {
+    if (listener) {
       // Run deno/http
       await handleNativeServer(
         listener,
@@ -133,17 +133,21 @@ export class App<TState> {
         this.metadata,
         this.isRunFullServer(),
       );
-    } else {
-      // Run std/http
-      const server = new Server(listener);
-      this.server = server;
-
-      if (this.isRunFullServer()) {
-        await handleFullServer(server, this.metadata, this);
-      } else {
-        await handleLiteServer(server, this);
-      }
     }
+
+    // TODO(native) remove
+
+    // else {
+    //   // Run std/http
+    //   const server = new Server(listener);
+    //   this.server = server;
+    //
+    //   if (this.isRunFullServer()) {
+    //     await handleFullServer(server, this.metadata, this);
+    //   } else {
+    //     await handleLiteServer(server, this);
+    //   }
+    // }
 
     return;
   }

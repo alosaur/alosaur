@@ -3,7 +3,6 @@ import { getActionParams } from "./get-action-params.ts";
 import { assert } from "../deps_test.ts";
 import { ParamType } from "../types/param.ts";
 import { HttpContext } from "../models/http-context.ts";
-import { ServerRequest } from "../deps.ts";
 import { ActionMetadataArgs } from "../metadata/action.ts";
 
 const { test } = Deno;
@@ -49,9 +48,12 @@ test({
   name: "testGetActionParamsMultiQuery",
   async fn() {
     const context = new HttpContext({
-      url: "/home/test/testQuery?a=a&b=b&c=c",
-      headers: new Headers(),
-    } as ServerRequest);
+      request: {
+        url: "/home/test/testQuery?a=a&b=b&c=c",
+        headers: new Headers(),
+      } as Request,
+      respondWith: () => Promise.resolve(),
+    });
     const params = await getActionParams(context, route);
 
     assert(params[0] === "a");
@@ -64,9 +66,12 @@ test({
   name: "testGetActionParamsMultiQueryWithoutOneParam",
   async fn() {
     const context = new HttpContext({
-      url: "/home/test/testQuery?c=c&a=a",
-      headers: new Headers(),
-    } as ServerRequest);
+      request: {
+        url: "/home/test/testQuery?c=c&a=a",
+        headers: new Headers(),
+      } as Request,
+      respondWith: () => Promise.resolve(),
+    });
     const params = await getActionParams(context, route);
 
     assert(params[0] === "a");
@@ -79,9 +84,12 @@ test({
   name: "testGetActionParamsMultiQueryWithOneParam",
   async fn() {
     const context = new HttpContext({
-      url: "/home/test/testQuery?c=c",
-      headers: new Headers(),
-    } as ServerRequest);
+      request: {
+        url: "/home/test/testQuery?c=c",
+        headers: new Headers(),
+      } as Request,
+      respondWith: () => Promise.resolve(),
+    });
     const params = await getActionParams(context, route);
 
     assert(params[0] === undefined);

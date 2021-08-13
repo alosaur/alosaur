@@ -1,5 +1,4 @@
 import { App } from "../mod.ts";
-import { Context } from "../models/context.ts";
 import { getAction } from "../route/get-action.ts";
 import { getActionParams } from "../route/get-action-params.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";
@@ -11,8 +10,8 @@ import { notFoundAction } from "../renderer/not-found.ts";
 import { HttpError } from "../http-error/HttpError.ts";
 import { Content } from "../renderer/content.ts";
 import { MiddlewareMetadataArgs } from "../metadata/middleware.ts";
-import { Server } from "../deps.ts";
 import { ActionResult } from "../models/response.ts";
+import { HttpContext } from "../models/http-context.ts";
 
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
@@ -51,11 +50,12 @@ async function handleFullServer<TState>(
 ) {
   const requests = Deno.serveHttp(conn);
   for await (const request of requests) {
-    const req = request.request;
     const respondWith = request.respondWith;
 
-    metadata.container.register(SERVER_REQUEST, { useValue: req });
-    const context = metadata.container.resolve<Context<TState>>(Context);
+    metadata.container.register(SERVER_REQUEST, { useValue: request });
+    const context = metadata.container.resolve<HttpContext<TState>>(
+      HttpContext,
+    );
 
     try {
       const middlewares = getMiddlwareByUrl(
@@ -207,7 +207,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
     const req = request.request;
     const respondWith = request.respondWith;
 
-    const context = new Context(req);
+    const context = new HttpContext(request);
 
     try {
       // try getting static file

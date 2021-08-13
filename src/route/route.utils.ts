@@ -71,7 +71,7 @@ const parsedUrlMap: Map<string, URL> = new Map<string, URL>();
 // need for parse
 export function getParsedUrl(url: string): URL {
   if (!parsedUrlMap.has(url)) {
-    parsedUrlMap.set(url, new URL("http://localhost" + url));
+    parsedUrlMap.set(url, new URL(url));
   }
   return parsedUrlMap.get(url) as URL;
 }

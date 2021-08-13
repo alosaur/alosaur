@@ -1,4 +1,4 @@
-import { MultipartReader, ServerRequest } from "../deps.ts";
+import { MultipartReader } from "../deps.ts";
 import { RequestBodyFormDataParseOptions } from "../models/request.ts";
 
 /**
@@ -8,7 +8,7 @@ import { RequestBodyFormDataParseOptions } from "../models/request.ts";
  * @param option
  */
 export function getParsedFormData(
-  request: ServerRequest,
+  request: Request,
   contentType: string,
   option?: RequestBodyFormDataParseOptions,
 ) {
@@ -31,29 +31,31 @@ export function getParsedFormData(
  * @param maxMemory in MB
  */
 export async function getFormData(
-  request: ServerRequest,
+  request: Request,
   contentType: string,
   maxMemory: number,
 ) {
   const match = contentType.match(/boundary=([^\s]+)/);
 
-  if (match) {
-    const boundary = match[1];
-
-    const reader = new MultipartReader(
-      request.body,
-      boundary,
-    );
-
-    const form = await reader.readForm(mbToBytes(maxMemory));
-    const data: { [key: string]: any } = {};
-
-    for (const [key, value] of form.entries()) {
-      data[key] = value;
-    }
-
-    return data;
-  }
+  // TODO(native)
+  // TODO implement this with multipart data
+  // if (match) {
+  //   const boundary = match[1];
+  //
+  //   const reader = new MultipartReader(
+  //     request.body,
+  //     boundary,
+  //   );
+  //
+  //   const form = await reader.readForm(mbToBytes(maxMemory));
+  //   const data: { [key: string]: any } = {};
+  //
+  //   for (const [key, value] of form.entries()) {
+  //     data[key] = value;
+  //   }
+  //
+  //   return data;
+  // }
 
   return;
 }
