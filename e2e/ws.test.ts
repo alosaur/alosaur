@@ -29,7 +29,6 @@ test({
       await new Promise<void>((resolve, reject) => {
         ws.onmessage = ((message) => {
           assertEquals(message.data, "Connected: [1]");
-
           ws.onmessage = ((message: { data: string }) => {
             assertEquals(message.data, "[1]: Hello");
             ws.close();

@@ -1,18 +1,17 @@
-import { Request } from "./request.ts";
-import { Response } from "./response.ts";
-import { ServerRequest } from "../deps.ts";
+import { AlosaurResponse } from "./response.ts";
 import { Inject, Injectable } from "../injection/index.ts";
 import { SERVER_REQUEST } from "./tokens.model.ts";
 import { Context } from "./context.ts";
+import { AlosaurRequest, NativeRequest } from "./request.ts";
 
 @Injectable()
 export class HttpContext<T = any> extends Context<T> {
-  public readonly request: Request;
-  public readonly response: Response;
+  public readonly request: AlosaurRequest;
+  public readonly response: AlosaurResponse;
 
-  constructor(@Inject(SERVER_REQUEST) serverRequest: ServerRequest) {
+  constructor(@Inject(SERVER_REQUEST) serverRequest: NativeRequest) {
     super();
-    this.request = new Request(serverRequest);
-    this.response = new Response();
+    this.request = new AlosaurRequest(serverRequest);
+    this.response = new AlosaurResponse();
   }
 }

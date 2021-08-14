@@ -23,7 +23,7 @@ export class SpaBuilder<TState> implements MiddlewareTarget<TState> {
           if (
             await send(
               {
-                request: context.request.serverRequest,
+                request: context.request.serverRequest.request,
                 response: context.response,
               },
               this.staticConfig.index,

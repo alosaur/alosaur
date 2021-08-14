@@ -11,7 +11,7 @@ import {
   Req,
   Res,
 } from "alosaur/mod.ts";
-import { Request, Response } from "alosaur/mod.ts";
+import { AlosaurRequest, AlosaurResponse } from "alosaur/mod.ts";
 import { delay } from "../../../_utils/test.utils.ts";
 
 @Controller("/home")
@@ -27,8 +27,8 @@ export class HomeController {
 
   @Get("/json")
   json(
-    @Req() request: Request,
-    @Res() response: Response,
+    @Req() request: AlosaurRequest,
+    @Res() response: AlosaurResponse,
     @QueryParam("name") name: string,
   ) {
     return response.getRaw();
@@ -92,5 +92,13 @@ export class HomeController {
   async delete(@Param("id") id: number) {
     await delay(500);
     return id;
+  }
+
+  @Get("/response-test")
+  async responseTest() {
+    return new Response("Object created", {
+      status: 201,
+      headers: new Headers([["x-alosaur-header", "test"]]),
+    });
   }
 }

@@ -9,6 +9,8 @@ export type {
 } from "https://deno.land/std@0.102.0/http/server.ts";
 export { getCookies } from "https://deno.land/std@0.102.0/http/cookie.ts";
 export { MultipartReader } from "https://deno.land/std@0.102.0/mime/mod.ts";
+export { readerFromStreamReader } from "https://deno.land/std@0.102.0/io/streams.ts";
+export { Buffer } from "https://deno.land/std@0.102.0/io/buffer.ts";
 
 export {
   basename,

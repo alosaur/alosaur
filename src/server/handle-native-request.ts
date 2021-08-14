@@ -1,17 +1,17 @@
-import { Server } from "../deps.ts";
-import { SERVER_REQUEST } from "../models/tokens.model.ts";
-import { HttpContext } from "../models/http-context.ts";
-import { getStaticFile } from "../utils/get-static-file.ts";
+import { App } from "../mod.ts";
 import { getAction } from "../route/get-action.ts";
+import { getActionParams } from "../route/get-action-params.ts";
+import { MetadataArgsStorage } from "../metadata/metadata.ts";
+import { SERVER_REQUEST } from "../models/tokens.model.ts";
+import { getStaticFile } from "../utils/get-static-file.ts";
 import { getHooksFromAction } from "../route/get-hooks.ts";
 import { hasHooks, hasHooksAction, resolveHooks } from "../utils/hook.utils.ts";
-import { getActionParams } from "../route/get-action-params.ts";
 import { notFoundAction } from "../renderer/not-found.ts";
 import { HttpError } from "../http-error/HttpError.ts";
 import { Content } from "../renderer/content.ts";
-import { App } from "../mod.ts";
 import { MiddlewareMetadataArgs } from "../metadata/middleware.ts";
-import { MetadataArgsStorage } from "../metadata/metadata.ts";
+import { ActionResult } from "../models/response.ts";
+import { HttpContext } from "../models/http-context.ts";
 
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
@@ -22,13 +22,37 @@ function getMiddlwareByUrl<T>(
   return middlewares.filter((m) => m.route.test(url));
 }
 
-export async function handleFullServer<TState>(
-  server: Server,
-  metadata: MetadataArgsStorage<TState>,
+/**
+ * Gets deno native http bindigs
+ * lite server without: static config, catch requests
+ */
+export async function handleNativeServer<TState>(
+  listener: Deno.Listener,
   app: App<TState>,
+  metadata: MetadataArgsStorage<TState>,
+  runFullServer: boolean,
 ) {
-  for await (const req of server) {
-    metadata.container.register(SERVER_REQUEST, { useValue: req });
+  if (runFullServer) {
+    for await (const conn of listener) {
+      handleFullServer(conn, app, metadata);
+    }
+  } else {
+    for await (const conn of listener) {
+      handleLiteServer(conn, app);
+    }
+  }
+}
+
+async function handleFullServer<TState>(
+  conn: Deno.Conn,
+  app: App<TState>,
+  metadata: MetadataArgsStorage<TState>,
+) {
+  const requests = Deno.serveHttp(conn);
+  for await (const request of requests) {
+    const respondWith = request.respondWith;
+
+    metadata.container.register(SERVER_REQUEST, { useValue: request });
     const context = metadata.container.resolve<HttpContext<TState>>(
       HttpContext,
     );
@@ -36,7 +60,7 @@ export async function handleFullServer<TState>(
     try {
       const middlewares = getMiddlwareByUrl(
         metadata.middlewares,
-        context.request.url,
+        context.request.parserUrl.pathname,
       );
 
       // Resolve every pre middleware
@@ -49,7 +73,9 @@ export async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        req.respond(context.response.getMergedResult());
+        respondWith(
+          getResponse({ body: context.response.getRaw() } as ActionResult),
+        );
         continue;
       }
 
@@ -57,7 +83,9 @@ export async function handleFullServer<TState>(
       if (
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
-        req.respond(context.response.getRaw());
+        respondWith(
+          getResponse(context.response.getRaw() as ActionResult),
+        );
         continue;
       }
 
@@ -70,7 +98,7 @@ export async function handleFullServer<TState>(
       if (action !== null) {
         const hooks = getHooksFromAction(action);
 
-        // try resolve onPreAction hooks
+        // try resolve hooks
         if (
           hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
         ) {
@@ -107,7 +135,7 @@ export async function handleFullServer<TState>(
             }
 
             if (context.response.isImmediately()) {
-              req.respond(context.response.getMergedResult());
+              respondWith(getResponse(context.response.getMergedResult()));
               continue;
             }
 
@@ -125,7 +153,7 @@ export async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        req.respond(context.response.getMergedResult());
+        respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
@@ -136,30 +164,30 @@ export async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        req.respond(context.response.getMergedResult());
+        respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
-        req.respond(context.response.getMergedResult());
+        respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
-      req.respond(context.response.getMergedResult());
+      respondWith(getResponse(context.response.getMergedResult()));
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);
 
         if (context.response.isImmediately()) {
-          req.respond(context.response.getMergedResult());
+          respondWith(getResponse(context.response.getMergedResult()));
           continue;
         }
       }
 
       if (context.response.isImmediately()) {
-        req.respond(context.response.getMergedResult());
+        respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
@@ -167,25 +195,28 @@ export async function handleFullServer<TState>(
         console.error(error);
       }
 
-      req.respond(Content(error, error.httpCode || 500));
+      respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
   }
 }
 
-// TODO make 1 function
-export async function handleLiteServer<TState>(
-  server: Server,
-  app: App<TState>,
-) {
-  for await (const req of server) {
-    const context = new HttpContext(req);
+async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
+  const requests = Deno.serveHttp(conn);
+
+  for await (const request of requests) {
+    const req = request.request;
+    const respondWith = request.respondWith;
+
+    const context = new HttpContext(request);
 
     try {
       // try getting static file
       if (
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
-        req.respond(context.response.getRaw());
+        respondWith(
+          getResponse(({ body: context.response.getRaw() } as ActionResult)),
+        );
         continue;
       }
 
@@ -212,23 +243,23 @@ export async function handleLiteServer<TState>(
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
-        req.respond(context.response.getMergedResult());
+        respondWith(getResponse((context.response.getMergedResult())));
         continue;
       }
 
-      req.respond(context.response.getMergedResult());
+      respondWith(getResponse((context.response.getMergedResult())));
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);
 
         if (context.response.isImmediately()) {
-          req.respond(context.response.getMergedResult());
+          respondWith(getResponse(context.response.getMergedResult()));
           continue;
         }
       }
 
       if (context.response.isImmediately()) {
-        req.respond(context.response.getMergedResult());
+        respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
@@ -236,7 +267,14 @@ export async function handleLiteServer<TState>(
         console.error(error);
       }
 
-      req.respond(Content(error, error.httpCode || 500));
+      respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
   }
+}
+
+function getResponse(result: ActionResult): Response {
+  return new Response(result.body, {
+    status: result.status,
+    headers: result.headers,
+  });
 }

@@ -17,7 +17,7 @@ import { AppSettings } from "./models/app-settings.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
-import { handleFullServer, handleLiteServer } from "./server/handle-request.ts";
+import { handleNativeServer } from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -112,19 +112,33 @@ export class App<TState> {
     }
   }
 
-  async listen(address: string | HTTPOptions = ":8000"): Promise<Server> {
-    const server: Server = serve(address);
-    this.server = server;
-
-    console.log("Server start in", address);
-
-    if (this.isRunFullServer()) {
-      await handleFullServer(server, this.metadata, this);
-    } else {
-      await handleLiteServer(server, this);
+  /**
+   * Listen requests on server with support custom listener
+   * @param address
+   * @param customListener
+   */
+  async listen(
+    address: string | HTTPOptions = ":8000",
+    customListener?: Deno.Listener,
+  ): Promise<any> {
+    if (typeof address === "string") {
+      address = _parseAddrFromStr(address);
     }
 
-    return server;
+    const listener = customListener || Deno.listen(address);
+
+    if (listener) {
+      console.log("Server start in", address);
+
+      // Run deno/http
+      await handleNativeServer(
+        listener,
+        this,
+        this.metadata,
+        this.isRunFullServer(),
+      );
+    }
+    return;
   }
 
   private isRunFullServer(): boolean {
@@ -192,4 +206,37 @@ export class App<TState> {
   ): void {
     this._globalErrorHandler = globalErrorHandler;
   }
+}
+
+// from std/http
+/**
+ * Parse addr from string
+ *
+ *     const addr = "::1:8000";
+ *     parseAddrFromString(addr);
+ *
+ * @param addr Address string
+ */
+export function _parseAddrFromStr(addr: string): HTTPOptions {
+  let url: URL;
+  try {
+    const host = addr.startsWith(":") ? `0.0.0.0${addr}` : addr;
+    url = new URL(`http://${host}`);
+  } catch {
+    throw new TypeError("Invalid address.");
+  }
+  if (
+    url.username ||
+    url.password ||
+    url.pathname != "/" ||
+    url.search ||
+    url.hash
+  ) {
+    throw new TypeError("Invalid address.");
+  }
+
+  return {
+    hostname: url.hostname,
+    port: url.port === "" ? 80 : Number(url.port),
+  };
 }

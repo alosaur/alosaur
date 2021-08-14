@@ -630,17 +630,18 @@ import { move } from "https://deno.land/std@0.102.0/fs/move.ts";
 
 @Post()
 async formData(@Body() body: { [key: string]: FormFile | string }) {
-  const file: FormFile = body.file as FormFile;
+  const files: FormFile[] = body.file as FormFile[];
+  const firstFile = files && files[0];
 
-  if (file) {
-    const fileDest = "./examples/form-data/files/" + file.filename;
+  if (firstFile) {
+    const fileDest = "./examples/form-data/files/" + firstFile.filename;
 
     // write file if file has content in memory
-    if (file.content) {
-      await Deno.writeFile(fileDest, file.content!, { append: true });
-    } else if (file.tempfile) {
+    if (firstFile.content) {
+      await Deno.writeFile(fileDest, firstFile.content!, { append: true });
+    } else if (firstFile.tempfile) {
       // move file if file has tempfile
-      move(file.tempfile, fileDest);
+      move(firstFile.tempfile, fileDest);
     }
 
     return "Uploaded";

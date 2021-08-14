@@ -6,6 +6,7 @@ import {
   getNumericDate,
 } from "https://deno.land/x/djwt@v1.9/mod.ts";
 import { Algorithm } from "https://deno.land/x/djwt@v1.9/_algorithm.ts";
+// TODO https://github.com/timonson/djwt/issues/53
 import { verify as verifySignature } from "https://deno.land/x/djwt@v1.9/_signature.ts";
 import { Content } from "../../../../renderer/content.ts";
 
@@ -24,7 +25,7 @@ export class JwtBearerScheme implements AuthenticationScheme {
   }
 
   async authenticate(context: SecurityContext): Promise<void> {
-    const headers = context.request.serverRequest.headers;
+    const headers = context.request.serverRequest.request.headers;
 
     const headAuthorization = headers.get(AuthorizationHeader);
     const headAccept = headers.get(AcceptHeader);
@@ -89,6 +90,8 @@ async function safeVerifyJWT(
 ): Promise<any> {
   const { header, payload, signature } = decode(jwt);
 
+  // TODO https://github.com/timonson/djwt/issues/53
+  //  Argument of type '"jwk"' is not assignable to parameter of type '"raw"'.
   if (
     !(await verifySignature({
       signature,

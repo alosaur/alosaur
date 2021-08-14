@@ -3,10 +3,10 @@ import { getParsedFormData } from "./get-form-data.ts";
 import { TransformBodyOption } from "../models/transform-config.ts";
 import { RequestBodyParseOptions } from "../models/request.ts";
 
-const decoder = new TextDecoder();
+// const decoder = new TextDecoder();
 
 export async function getBody(
-  request: ServerRequest,
+  request: Request,
   options?: RequestBodyParseOptions,
 ) {
   try {
@@ -14,10 +14,10 @@ export async function getBody(
 
     switch (contentType) {
       case "application/json":
-        return JSON.parse(decoder.decode(await Deno.readAll(request.body)));
+        return await request.json();
 
       case "application/x-www-form-urlencoded":
-        let formElements: { [key: string]: string } = {};
+        let formElements: { [key: string]: File | string } = {};
 
         /*
         * URLSearchParams is designed to work with the query string of a URL.
@@ -27,9 +27,7 @@ export async function getBody(
         * Iterate over the entries of the form, for each entry add its key and value.
         */
         for (
-          const [key, value] of new URLSearchParams(
-            decoder.decode(await Deno.readAll(request.body)),
-          ).entries()
+          const [key, value] of await request.formData()
         ) {
           formElements[key] = value;
         }
@@ -38,7 +36,7 @@ export async function getBody(
 
       case null:
       case undefined:
-        return await Deno.readAll(request.body);
+        return request.body;
 
         // TODO: handle other content types (maybe get a list?)
 
@@ -55,7 +53,7 @@ export async function getBody(
           }
         }
 
-        return await Deno.readAll(request.body);
+        return request.body;
     }
   } catch (e) {
     console.warn(e);

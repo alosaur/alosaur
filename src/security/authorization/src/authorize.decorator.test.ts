@@ -1,4 +1,3 @@
-import { ServerRequest } from "../../../deps.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 import { assert, assertEquals } from "../../../deps_test.ts";
 import { AutorizeHook } from "./authorize.decorator.ts";
@@ -19,13 +18,15 @@ const sessionMiddleware = new SessionMiddleware(
 
 const authMiddleware = new AuthMiddleware([CookieScheme]);
 
-const req = new ServerRequest();
-req.headers = new Headers();
+const req = new Request("http://localhost:8000");
 
 test({
   name: "[Auth] AutorizeHook failed test",
   async fn() {
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
 
     const result = await hook.onPreAction(context, { scheme: CookieScheme });
 
@@ -36,7 +37,10 @@ test({
 test({
   name: "[Auth] AutorizeHook default test",
   async fn() {
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(CookieScheme, { id: 1 });
@@ -49,7 +53,10 @@ test({
 test({
   name: "[Auth] AutorizeHook right roles test",
   async fn() {
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
@@ -68,7 +75,10 @@ test({
 test({
   name: "[Auth] AutorizeHook failed roles test",
   async fn() {
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
@@ -87,7 +97,10 @@ test({
 test({
   name: "[Auth] AutorizeHook failed if not auth user test",
   async fn() {
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
 
     const result = await hook.onPreAction(
@@ -102,10 +115,12 @@ test({
 test({
   name: "[Auth] AutorizeHook roles right in second request",
   async fn() {
-    const req = new ServerRequest();
-    req.headers = new Headers();
+    const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
     await authMiddleware.onPreRequest(context);
 
@@ -124,11 +139,13 @@ test({
     assert(sid);
     assert(sign);
 
-    const req2 = new ServerRequest();
-    req2.headers = new Headers();
+    const req2 = new Request("http://localhost:8000");
     req2.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext(req2);
+    const context2 = new SecurityContext({
+      request: req2,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context2);
     await authMiddleware.onPreRequest(context2);
 
@@ -149,10 +166,12 @@ test({
 test({
   name: "[Auth] AutorizeHook roles failed in second request",
   async fn() {
-    const req = new ServerRequest();
-    req.headers = new Headers();
+    const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
     await authMiddleware.onPreRequest(context);
 
@@ -171,12 +190,14 @@ test({
     assert(sid);
     assert(sign);
 
-    const req2 = new ServerRequest();
-    req2.headers = new Headers();
+    const req2 = new Request("http://localhost:8000");
     // without session cookie
     // req2.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext(req2);
+    const context2 = new SecurityContext({
+      request: req2,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context2);
     await authMiddleware.onPreRequest(context2);
 
@@ -192,7 +213,10 @@ test({
 test({
   name: "[Auth] AutorizeHook payload, true",
   async fn() {
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
@@ -218,7 +242,10 @@ test({
 test({
   name: "[Auth] AutorizeHook payload, false",
   async fn() {
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(

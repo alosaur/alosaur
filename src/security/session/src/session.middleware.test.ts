@@ -1,6 +1,5 @@
 import { SessionMiddleware } from "./session.middleware.ts";
 import { MemoryStore } from "./store/memory.store.ts";
-import { ServerRequest } from "../../../deps.ts";
 import { assert, assertEquals } from "../../../deps_test.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 
@@ -17,10 +16,12 @@ test({
     );
 
     // first unsession request
-    const req = new ServerRequest();
-    req.headers = new Headers();
+    const req = new Request("http://localhost:8000/");
 
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
 
     await middleware.onPreRequest(context);
     await context.security.session!.set("testVal", 1);
@@ -38,14 +39,20 @@ test({
     // second session request with sid
     req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext(req);
+    const context2 = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await middleware.onPreRequest(context2);
 
     assertEquals(await context2.security.session!.get("testVal"), 1);
 
     // third request without sid
-    req.headers = new Headers();
-    const context3 = new SecurityContext(req);
+    const req3 = new Request("http://localhost:8000");
+    const context3 = new SecurityContext({
+      request: req3,
+      respondWith: () => Promise.resolve(),
+    });
     await middleware.onPreRequest(context3);
 
     assertEquals(await context3.security.session!.get("testVal"), undefined);
@@ -61,10 +68,12 @@ test({
     );
 
     // first unsession request
-    const req = new ServerRequest();
-    req.headers = new Headers();
+    const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
 
     await middleware.onPreRequest(context);
 
@@ -81,10 +90,12 @@ test({
     );
 
     // first unsession request
-    const req = new ServerRequest();
-    req.headers = new Headers();
+    const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext(req);
+    const context = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
 
     await middleware.onPreRequest(context);
     await context.security.session!.set("testVal", 1);
@@ -104,7 +115,10 @@ test({
     // second session request with sid
     req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext(req);
+    const context2 = new SecurityContext({
+      request: req,
+      respondWith: () => Promise.resolve(),
+    });
     await middleware.onPreRequest(context2);
 
     assertEquals(await context2.security.session!.get("testVal"), undefined);
