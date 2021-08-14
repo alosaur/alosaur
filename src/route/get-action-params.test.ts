@@ -49,7 +49,7 @@ test({
   async fn() {
     const context = new HttpContext({
       request: {
-        url: "/home/test/testQuery?a=a&b=b&c=c",
+        url: "http://localhost:8000/home/test/testQuery?a=a&b=b&c=c",
         headers: new Headers(),
       } as Request,
       respondWith: () => Promise.resolve(),
@@ -67,7 +67,7 @@ test({
   async fn() {
     const context = new HttpContext({
       request: {
-        url: "/home/test/testQuery?c=c&a=a",
+        url: "http://localhost:8000/home/test/testQuery?c=c&a=a",
         headers: new Headers(),
       } as Request,
       respondWith: () => Promise.resolve(),
@@ -85,7 +85,7 @@ test({
   async fn() {
     const context = new HttpContext({
       request: {
-        url: "/home/test/testQuery?c=c",
+        url: "http://localhost:8000/home/test/testQuery?c=c",
         headers: new Headers(),
       } as Request,
       respondWith: () => Promise.resolve(),

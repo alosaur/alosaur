@@ -16,7 +16,7 @@ export class WebsocketMiddleware implements PreRequestMiddleware {
       .then(ChatHandler)
       .catch(async (e) => {
         console.error(`failed to accept websocket: ${e}`);
-        await context.request.serverRequest.respond({ status: 400 });
+        await context.request.serverRequest.respondWith({ status: 400 });
       });
 
     context.response.setNotRespond();

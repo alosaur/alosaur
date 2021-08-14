@@ -8,7 +8,7 @@ test({
   fn() {
     const builder = new CorsBuilder();
     const context = new HttpContext({
-      request: new Request(""),
+      request: new Request("http://localhost:8000"),
       respondWith: () => Promise.resolve(),
     });
 
