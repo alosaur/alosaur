@@ -112,19 +112,24 @@ export class App<TState> {
     }
   }
 
+  /**
+   * Listen requests on server with support custom listener
+   * @param address
+   * @param customListener
+   */
   async listen(
-    addr: string | HTTPOptions = ":8000",
+    address: string | HTTPOptions = ":8000",
     customListener?: Deno.Listener,
   ): Promise<any> {
-    if (typeof addr === "string") {
-      addr = _parseAddrFromStr(addr);
+    if (typeof address === "string") {
+      address = _parseAddrFromStr(address);
     }
 
-    const listener = customListener || Deno.listen(addr);
-
-    console.log("Server start in", addr);
+    const listener = customListener || Deno.listen(address);
 
     if (listener) {
+      console.log("Server start in", address);
+
       // Run deno/http
       await handleNativeServer(
         listener,
@@ -133,21 +138,6 @@ export class App<TState> {
         this.isRunFullServer(),
       );
     }
-
-    // TODO(native) remove
-
-    // else {
-    //   // Run std/http
-    //   const server = new Server(listener);
-    //   this.server = server;
-    //
-    //   if (this.isRunFullServer()) {
-    //     await handleFullServer(server, this.metadata, this);
-    //   } else {
-    //     await handleLiteServer(server, this);
-    //   }
-    // }
-
     return;
   }
 
