@@ -33,8 +33,8 @@ test({
         params: [],
       },
     ];
-    const actionWithName = getAction(routes, "GET", "/test/name");
-    const actionWithIdName = getAction(routes, "GET", "/test/2/name");
+    const actionWithName = getAction(routes, "GET", "http://localhost:8000/test/name");
+    const actionWithIdName = getAction(routes, "GET", "http://localhost:8000/test/2/name");
 
     assert(
       actionWithName && actionWithName.routeParams &&

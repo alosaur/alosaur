@@ -16,9 +16,7 @@ test({
     );
 
     // first unsession request
-    const req = new Request({
-      headers: new Headers(),
-    } as RequestInfo);
+    const req = new Request("http://localhost:8000/");
 
     const context = new SecurityContext({
       request: req,
@@ -50,9 +48,7 @@ test({
     assertEquals(await context2.security.session!.get("testVal"), 1);
 
     // third request without sid
-    const req3 = new Request({
-      headers: new Headers(),
-    } as RequestInfo);
+    const req3 = new Request("http://localhost:8000");
     const context3 = new SecurityContext({
       request: req3,
       respondWith: () => Promise.resolve(),
@@ -72,9 +68,7 @@ test({
     );
 
     // first unsession request
-    const req = new Request({
-      headers: new Headers(),
-    } as RequestInfo);
+    const req = new Request("http://localhost:8000");
 
     const context = new SecurityContext({
       request: req,
@@ -96,9 +90,7 @@ test({
     );
 
     // first unsession request
-    const req = new Request({
-      headers: new Headers(),
-    } as RequestInfo);
+    const req = new Request("http://localhost:8000");
 
     const context = new SecurityContext({
       request: req,

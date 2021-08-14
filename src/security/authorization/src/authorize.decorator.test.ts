@@ -19,6 +19,7 @@ const sessionMiddleware = new SessionMiddleware(
 const authMiddleware = new AuthMiddleware([CookieScheme]);
 
 const req = new Request({
+  url: "http://localhost:8000",
   headers: new Headers(),
 } as RequestInfo);
 
@@ -118,6 +119,7 @@ test({
   name: "[Auth] AutorizeHook roles right in second request",
   async fn() {
     const req = new Request({
+      url: "http://localhost:8000",
       headers: new Headers(),
     } as RequestInfo);
 
@@ -144,6 +146,7 @@ test({
     assert(sign);
 
     const req2 = new Request({
+      url: "http://localhost:8000",
       headers: new Headers(),
     } as RequestInfo);
     req2.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
@@ -173,6 +176,7 @@ test({
   name: "[Auth] AutorizeHook roles failed in second request",
   async fn() {
     const req = new Request({
+      url: "http://localhost:8000",
       headers: new Headers(),
     } as RequestInfo);
 
@@ -199,6 +203,7 @@ test({
     assert(sign);
 
     const req2 = new Request({
+      url: "http://localhost:8000",
       headers: new Headers(),
     } as RequestInfo);
     // without session cookie
