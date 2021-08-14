@@ -2,15 +2,15 @@ export {
   serve,
   Server,
   ServerRequest,
-} from "https://deno.land/std@0.102.0/http/server.ts";
+} from "https://deno.land/std@0.104.0/http/server.ts";
 export type {
   HTTPOptions,
   Response,
-} from "https://deno.land/std@0.102.0/http/server.ts";
-export { getCookies } from "https://deno.land/std@0.102.0/http/cookie.ts";
-export { MultipartReader } from "https://deno.land/std@0.102.0/mime/mod.ts";
-export { readerFromStreamReader } from "https://deno.land/std@0.102.0/io/streams.ts";
-export { Buffer } from "https://deno.land/std@0.102.0/io/buffer.ts";
+} from "https://deno.land/std@0.104.0/http/server.ts";
+export { getCookies } from "https://deno.land/std@0.104.0/http/cookie.ts";
+export { MultipartReader } from "https://deno.land/std@0.104.0/mime/mod.ts";
+export { readerFromStreamReader } from "https://deno.land/std@0.104.0/io/streams.ts";
+export { Buffer } from "https://deno.land/std@0.104.0/io/buffer.ts";
 
 export {
   basename,
@@ -21,6 +21,6 @@ export {
   parse,
   resolve,
   sep,
-} from "https://deno.land/std@0.102.0/path/mod.ts";
+} from "https://deno.land/std@0.104.0/path/mod.ts";
 
 export { contentType } from "https://deno.land/x/media_types@v2.7.1/mod.ts";
