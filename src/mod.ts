@@ -17,7 +17,6 @@ import { AppSettings } from "./models/app-settings.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
-import { handleFullServer, handleLiteServer } from "./server/handle-request.ts";
 import { handleNativeServer } from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };

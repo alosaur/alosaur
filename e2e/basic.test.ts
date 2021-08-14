@@ -194,3 +194,26 @@ test({
     }
   },
 });
+
+test({
+  name: "[http] basic server, return native response",
+  async fn(): Promise<void> {
+    const process = await startServer("./examples/basic/app.ts");
+
+    itLog("root ''", true);
+
+    try {
+      // It
+      itLog("\t 'app/home/response-test'");
+      let response = await fetch(
+        "http://localhost:8000/app/home/response-test",
+      );
+      let text = await response.text();
+      assertEquals(response.status, 201);
+      assertEquals(response.headers.get("x-alosaur-header"), "test");
+      assertEquals(text, "Object created");
+    } finally {
+      killServer(process);
+    }
+  },
+});

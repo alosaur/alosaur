@@ -79,7 +79,6 @@ export function hasHooksAction<TState, TPayload>(
     hooks.find((hook) => (hook as any).instance[actionName] !== undefined));
 }
 
-// TODO(native) actualize with response type Response
 function getResponse(result: ActionResult): Response {
   return new Response(result.body, {
     status: result.status,

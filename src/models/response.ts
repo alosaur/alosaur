@@ -29,7 +29,7 @@ export class AlosaurResponse extends ImmediatelyResponse {
 
   public status?: number;
   public body?: ResponseBody;
-  public result?: ActionResult | any;
+  public result?: ActionResult | Response | any;
 
   private notRespond: boolean = false;
 
@@ -49,6 +49,11 @@ export class AlosaurResponse extends ImmediatelyResponse {
    *  Get current response object
    */
   public getRaw() {
+    // Support response type
+    if (this.result instanceof Response) {
+      return this.result;
+    }
+
     return {
       headers: this.headers,
       body: this.body,
@@ -60,6 +65,11 @@ export class AlosaurResponse extends ImmediatelyResponse {
    * Merge results before send from server
    */
   public getMergedResult() {
+    // Support response type
+    if (this.result instanceof Response) {
+      return this.result;
+    }
+
     if (this.body !== undefined) {
       return this.getRaw();
     }

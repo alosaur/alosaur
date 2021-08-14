@@ -93,4 +93,12 @@ export class HomeController {
     await delay(500);
     return id;
   }
+
+  @Get("/response-test")
+  async responseTest() {
+    return new Response("Object created", {
+      status: 201,
+      headers: new Headers([["x-alosaur-header", "test"]]),
+    });
+  }
 }
