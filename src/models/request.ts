@@ -1,4 +1,5 @@
 import { getBody } from "../utils/get-body.ts";
+import { getParsedUrl } from "../route/route.utils.ts";
 
 export interface RequestBodyParseOptions {
   formData?: RequestBodyFormDataParseOptions;
@@ -16,9 +17,8 @@ export type NativeRequest = { request: Request; respondWith: AsyncFunction };
  * Request of context
  */
 export class AlosaurRequest {
-  // TODO add parsed url type: URL
-
   public readonly url: string;
+  public readonly parserUrl: URL;
   public readonly headers: Headers;
   public readonly method: string;
   public readonly serverRequest: NativeRequest;
@@ -27,6 +27,7 @@ export class AlosaurRequest {
 
   constructor(serverRequest: NativeRequest) {
     this.url = serverRequest.request.url;
+    this.parserUrl = getParsedUrl(this.url);
     this.headers = serverRequest.request.headers;
     this.method = serverRequest.request.method;
     this.serverRequest = serverRequest;

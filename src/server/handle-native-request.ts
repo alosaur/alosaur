@@ -60,7 +60,7 @@ async function handleFullServer<TState>(
     try {
       const middlewares = getMiddlwareByUrl(
         metadata.middlewares,
-        context.request.url,
+        context.request.parserUrl.pathname,
       );
 
       // Resolve every pre middleware

@@ -66,7 +66,7 @@ export interface SendOptions {
 }
 
 interface RequestResponse {
-  request: any;
+  request: Request;
   response: Response;
 }
 
@@ -86,6 +86,8 @@ async function exists(path: string): Promise<boolean> {
 function toUTCString(value: number): string {
   return new Date(value).toUTCString();
 }
+
+// TODO: implement send data with 'range'
 
 /** Asynchronously fulfill a response with a file from the local file
  * system. */

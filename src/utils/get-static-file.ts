@@ -26,7 +26,10 @@ export async function getStaticFile<T>(
 
   try {
     const filePath = await send(
-      { request: context.request.serverRequest, response: context.response },
+      {
+        request: context.request.serverRequest.request,
+        response: context.response,
+      },
       getPathNameFromUrl(url),
       staticConfig,
     );
