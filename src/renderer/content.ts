@@ -6,9 +6,9 @@ const textEncoder = new TextEncoder();
 export function Content(
   result?: string | number | boolean | Object,
   status: number = 200,
+  headers: Headers = new Headers(),
 ): ActionResult {
   let body;
-  const headers = new Headers();
 
   switch (typeof result) {
     case "object":
@@ -19,7 +19,8 @@ export function Content(
       break;
 
     default:
-      headers.set("content-type", "text/html; charset=UTF-8");
+      // Not need because Response by default add text/html
+      // headers.set("content-type", "text/html; charset=UTF-8");
       body = textEncoder.encode(result || "");
       break;
   }

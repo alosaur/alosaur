@@ -84,9 +84,9 @@ export class AlosaurResponse extends ImmediatelyResponse {
     }
 
     // merge headers
-    for (const pair of this.headers.entries()) {
-      response.headers.append(pair[0], pair[1]);
-    }
+    this.headers.forEach((value, key) => {
+      response.headers.append(key, value);
+    });
 
     delete response.__isActionResult;
 
