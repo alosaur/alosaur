@@ -33,6 +33,7 @@ export async function getStaticFile<T>(
       getPathNameFromUrl(url),
       staticConfig,
     );
+
     return !!filePath;
   } catch (error) {
     // TODO: exception

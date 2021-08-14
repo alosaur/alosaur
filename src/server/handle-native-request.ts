@@ -84,7 +84,7 @@ async function handleFullServer<TState>(
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
         respondWith(
-          getResponse({ body: context.response.getRaw() } as ActionResult),
+          getResponse(context.response.getRaw() as ActionResult),
         );
         continue;
       }

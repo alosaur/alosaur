@@ -1,33 +1,23 @@
 import {
-  Cookie,
   getCookies,
   setCookie,
 } from "https://deno.land/std@0.102.0/http/cookie.ts";
-import { Response } from "https://deno.land/std@0.102.0/http/server.ts";
-import {
-  App,
-  Area,
-  Controller,
-  Get,
-  Redirect,
-  Req,
-  Res,
-  ServerRequest,
-} from "alosaur/mod.ts";
+
+import { App, Area, Controller, Get, Redirect, Req, Res } from "alosaur/mod.ts";
 import { WebsocketMiddleware } from "./websocket.middlware.ts";
 
 @Controller("/home")
 export class HomeController {
   @Get("/")
   default(@Res() response: Response) {
-    const cookie: Cookie = { name: "name", value: "Cat" };
+    const cookie = { name: "name", value: "Cat" };
     setCookie(response, cookie);
 
     return Redirect("/home/text");
   }
 
   @Get("/text")
-  text(@Req() request: ServerRequest) {
+  text(@Req() request: Request) {
     const cookies = getCookies(request);
 
     return `Hey! ${cookies["name"]}`;

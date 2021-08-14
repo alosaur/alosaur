@@ -1,23 +1,20 @@
 import { HttpContext, PreRequestMiddleware } from "alosaur/mod.ts";
-import { acceptWebSocket } from "https://deno.land/std@0.102.0/ws/mod.ts";
 import { ChatHandler } from "./chat.handler.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
-  onPreRequest(context: HttpContext) {
-    const { conn, r: bufReader, w: bufWriter, headers } =
-      context.request.serverRequest;
+  async onPreRequest(context: HttpContext) {
+    const { request, respondWith } = context.request.serverRequest;
 
-    acceptWebSocket({
-      conn,
-      bufReader,
-      bufWriter,
-      headers,
-    })
-      .then(ChatHandler)
-      .catch(async (e) => {
-        console.error(`failed to accept websocket: ${e}`);
-        await context.request.serverRequest.respondWith({ status: 400 });
-      });
+    if (request.headers.get("upgrade") != "websocket") {
+      return respondWith(
+        new Response("not trying to upgrade as websocket.", { status: 400 }),
+      );
+    }
+
+    const { socket, response } = Deno.upgradeWebSocket(request);
+
+    ChatHandler(socket);
+    respondWith(response);
 
     context.response.setNotRespond();
   }
