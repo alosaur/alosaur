@@ -5,7 +5,6 @@ import { assertEquals } from "../../../../deps_test.ts";
 // import { JwtBearerScheme } from "./jwt-bearer.scheme.ts";
 // const { test } = Deno;
 
-
 // TODO(native)
 // TODO after https://github.com/timonson/djwt/issues/53
 //  Argument of type '"jwk"' is not assignable to parameter of type '"raw"'.
