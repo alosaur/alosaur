@@ -18,7 +18,9 @@ export type NativeRequest = { request: Request; respondWith: AsyncFunction };
  */
 export class AlosaurRequest {
   public readonly url: string;
-  public readonly parserUrl: URL;
+  public get parserUrl(): URL {
+    return getParsedUrl(this.url)
+  };
   public readonly headers: Headers;
   public readonly method: string;
   public readonly serverRequest: NativeRequest;
@@ -27,7 +29,6 @@ export class AlosaurRequest {
 
   constructor(serverRequest: NativeRequest) {
     this.url = serverRequest.request.url;
-    this.parserUrl = getParsedUrl(this.url);
     this.headers = serverRequest.request.headers;
     this.method = serverRequest.request.method;
     this.serverRequest = serverRequest;
