@@ -79,7 +79,6 @@ And run
 
 `deno run --allow-net app.ts`
 
-
 [More examples](https://github.com/alosaur/alosaur/tree/master/examples/)
 
 ## Sponsors
