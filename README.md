@@ -51,7 +51,7 @@ import {
   Area,
   Controller,
   Get,
-} from "https://deno.land/x/alosaur@v0.28.0/mod.ts";
+} from "https://deno.land/x/alosaur@v0.33.0/mod.ts";
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
