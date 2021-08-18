@@ -2,12 +2,10 @@ import { AuthenticationScheme, Identity } from "../../core/auth.interface.ts";
 import { SecurityContext } from "../../../context/security-context.ts";
 import {
   create,
-  decode,
   getNumericDate,
-} from "https://deno.land/x/djwt@v1.9/mod.ts";
-import { Algorithm } from "https://deno.land/x/djwt@v1.9/_algorithm.ts";
-// TODO https://github.com/timonson/djwt/issues/53
-import { verify as verifySignature } from "https://deno.land/x/djwt@v1.9/_signature.ts";
+  verify,
+} from "https://deno.land/x/djwt@v2.3/mod.ts";
+import { Algorithm } from "https://deno.land/x/djwt@v2.3/algorithm.ts";
 import { Content } from "../../../../renderer/content.ts";
 
 const DAYS_30 = 30 * 24 * 60 * 60 * 1000;
@@ -19,7 +17,7 @@ const AcceptTypeJSON = "application/json";
 export class JwtBearerScheme implements AuthenticationScheme {
   constructor(
     private readonly algorithm: Algorithm,
-    private readonly secret: string,
+    private readonly key: CryptoKey,
     private readonly expires: number = DAYS_30,
   ) {
   }
@@ -34,7 +32,7 @@ export class JwtBearerScheme implements AuthenticationScheme {
       const token = getBearerToken(headAuthorization);
 
       if (token) {
-        const payload = await safeVerifyJWT(token, this.secret);
+        const payload = await safeVerifyJWT(token, this.key);
 
         if (payload) {
           context.security.auth.identity = () => payload;
@@ -52,7 +50,7 @@ export class JwtBearerScheme implements AuthenticationScheme {
     const jwt = await create(
       { alg: this.algorithm, typ: "JWT" },
       { exp: getNumericDate(this.expires), ...identity },
-      this.secret,
+      this.key,
     );
     context.security.auth.identity = () => identity as any;
     return { access_token: jwt } as any;
@@ -86,22 +84,20 @@ function getBearerToken(authHeader: string): string | undefined {
 
 async function safeVerifyJWT(
   jwt: string,
-  key: string,
+  key: CryptoKey,
 ): Promise<any> {
-  const { header, payload, signature } = decode(jwt);
+  // if (
+  //   !(await verifySignature({
+  //     signature,
+  //     key,
+  //     algorithm: header.alg,
+  //     signingInput: jwt.slice(0, jwt.lastIndexOf(".")),
+  //   }))
+  // ) {
+  //   return undefined;
+  // }
+  //
+  // const [ header, payload, signature ] = decode(jwt);
 
-  // TODO https://github.com/timonson/djwt/issues/53
-  //  Argument of type '"jwk"' is not assignable to parameter of type '"raw"'.
-  if (
-    !(await verifySignature({
-      signature,
-      key,
-      algorithm: header.alg,
-      signingInput: jwt.slice(0, jwt.lastIndexOf(".")),
-    }))
-  ) {
-    return undefined;
-  }
-
-  return payload;
+  return await verify(jwt, key);
 }
