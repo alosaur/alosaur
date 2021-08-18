@@ -100,16 +100,15 @@ Contains types that enable support for JWT bearer based authentication.
 For signIn, and authentificate you can create instance of scheme.
 
 ```ts
-
 const key = await crypto.subtle.generateKey(
-    { name: "HMAC", hash: "SHA-512" },
-    true,
-    ["sign", "verify"],
+  { name: "HMAC", hash: "SHA-512" },
+  true,
+  ["sign", "verify"],
 );
 
 export const JWTscheme = new JwtBearerScheme(
   "HS512",
-    key,
+  key,
   30 * 24 * 60 * 60 * 1000,
 );
 //     private readonly algorithm: Algorithm,
