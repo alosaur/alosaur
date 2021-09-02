@@ -59,6 +59,9 @@ test({
       assertEquals(json.a, "a");
       assertEquals(json.b, "b");
       assertEquals(json.c, "c");
+      assertEquals(json.all.a, "a");
+      assertEquals(json.all.b, "b");
+      assertEquals(json.all.c, "c");
 
       // It
       itLog("\t /test");

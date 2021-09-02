@@ -41,6 +41,12 @@ const route: RouteMetadata = {
       index: 2,
       name: "c",
     },
+    {
+      type: ParamType.QueryObj,
+      target: target,
+      method: "GET",
+      index: 3,
+    },
   ],
 };
 
@@ -59,6 +65,9 @@ test({
     assert(params[0] === "a");
     assert(params[1] === "b");
     assert(params[2] === "c");
+    assert(params[3].a === "a");
+    assert(params[3].b === "b");
+    assert(params[3].c === "c");
   },
 });
 
@@ -77,6 +86,9 @@ test({
     assert(params[0] === "a");
     assert(params[1] === undefined);
     assert(params[2] === "c");
+    assert(params[3].a === "a");
+    assert(params[3].b === undefined);
+    assert(params[3].c === "c");
   },
 });
 
@@ -95,5 +107,27 @@ test({
     assert(params[0] === undefined);
     assert(params[1] === undefined);
     assert(params[2] === "c");
+    assert(params[3].a === undefined);
+    assert(params[3].b === undefined);
+    assert(params[3].c === "c");
+  },
+});
+
+test({
+  name: "testGetActionParamsMultiQueryWithoutAllParam",
+  async fn() {
+    const context = new HttpContext({
+      request: {
+        url: "http://localhost:8000/home/test/testQuery",
+        headers: new Headers(),
+      } as Request,
+      respondWith: () => Promise.resolve(),
+    });
+    const params = await getActionParams(context, route);
+
+    assert(params[0] === undefined);
+    assert(params[1] === undefined);
+    assert(params[2] === undefined);
+    assert(params[3] === undefined);
   },
 });
