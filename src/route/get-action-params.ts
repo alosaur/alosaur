@@ -39,6 +39,14 @@ export async function getActionParams<T>(
         }
         break;
 
+      case "query-obj":
+        const queryParams2 = getQueryParams(context.request.url);
+        if (queryParams2) {
+          const paramsObj = Object.fromEntries(queryParams2.entries());
+          args.push(Object.keys(paramsObj).length > 0 ? paramsObj : undefined);
+        }
+        break;
+
       case "cookie":
         if (param.name) {
           const cookies = getCookies(context.request.serverRequest.request) ||

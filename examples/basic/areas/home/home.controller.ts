@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   QueryParam,
+  QueryParams,
   Req,
   Res,
 } from "alosaur/mod.ts";
@@ -49,8 +50,9 @@ export class HomeController {
     @QueryParam("a") a: string,
     @QueryParam("b") b: string,
     @QueryParam("c") c: string,
+    @QueryParams() all: any,
   ) {
-    return { a, b, c };
+    return { a, b, c, all };
   }
 
   @Put("/query")
