@@ -2,7 +2,7 @@
 
 Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
-[Documentation](https://alosaur.github.io/)
+[Documentation](https://alosaur.com/)
 
 ![test](https://github.com/alosaur/alosaur/workflows/test/badge.svg)
 ![sponsors](https://opencollective.com/alosaur/sponsors/badge.svg)
