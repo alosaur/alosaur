@@ -21,25 +21,26 @@ import { handleNativeServer } from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
-const global: ObjectKeyAny = {};
+// Global object for register metadata on decorators
+const GLOBAL_META: ObjectKeyAny = {};
 
 export function getMetadataArgsStorage<TState>(): MetadataArgsStorage<TState> {
-  if (!(global as any).routingControllersMetadataArgsStorage) {
-    (global as any).routingControllersMetadataArgsStorage =
+  if (!(GLOBAL_META as any).routingControllersMetadataArgsStorage) {
+    (GLOBAL_META as any).routingControllersMetadataArgsStorage =
       new MetadataArgsStorage();
   }
 
-  return (global as any).routingControllersMetadataArgsStorage;
+  return (GLOBAL_META as any).routingControllersMetadataArgsStorage;
 }
 
 export function clearMetadataArgsStorage(): void {
-  if ((global as any).routingControllersMetadataArgsStorage) {
-    (global as any).routingControllersMetadataArgsStorage = null;
+  if ((GLOBAL_META as any).routingControllersMetadataArgsStorage) {
+    (GLOBAL_META as any).routingControllersMetadataArgsStorage = null;
   }
 }
 
 export function getViewRenderConfig(): ViewRenderConfig {
-  return (global as any).viewRenderConfig;
+  return (GLOBAL_META as any).viewRenderConfig;
 }
 
 export class App<TState> {
@@ -165,7 +166,7 @@ export class App<TState> {
   public useViewRender(config?: ViewRenderConfig): void {
     if (config && !this.viewRenderConfig) {
       this.viewRenderConfig = config;
-      (global as any).viewRenderConfig = config;
+      (GLOBAL_META as any).viewRenderConfig = config;
     }
   }
 
