@@ -3,13 +3,7 @@
  * with the MIT license.
  */
 
-import {
-  basename,
-  contentType,
-  extname,
-  parse,
-  sep,
-} from "../deps.ts";
+import { basename, contentType, extname, parse, sep } from "../deps.ts";
 import { isAbsolute, join, normalize, resolve } from "../deps.ts";
 
 // TODO move to library mode

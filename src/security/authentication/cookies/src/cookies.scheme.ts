@@ -47,7 +47,10 @@ export class CookiesScheme implements AuthenticationScheme {
     await session.store.delete(sid);
     context.security.auth.identity = () => undefined;
 
-    deleteCookie(context.response.headers, context.security.session!.sessionKey);
+    deleteCookie(
+      context.response.headers,
+      context.security.session!.sessionKey,
+    );
     deleteCookie(
       context.response.headers,
       session.sessionKey + SESSION_SIGNATURE_PREFIX_KEY,
