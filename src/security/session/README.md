@@ -76,7 +76,6 @@ export interface SessionStore {
   get(sid: string): Promise<any>;
 
   /**
-   *
    * @param sid SessionId
    * @param key string
    * @param value any

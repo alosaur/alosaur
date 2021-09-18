@@ -10,8 +10,8 @@ import {
 } from "../injection/index.ts";
 
 /**
-* Storage all metadatas read from decorators and app settings.
-*/
+ * Storage all metadatas read from decorators and app settings.
+ */
 export class MetadataArgsStorage<TState> {
   /**
    * Registered middlewares

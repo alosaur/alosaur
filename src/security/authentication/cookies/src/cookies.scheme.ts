@@ -7,7 +7,7 @@ import {
   SESSION_SIGNATURE_PREFIX_KEY,
   SessionInterface,
 } from "../../../session/src/session.interface.ts";
-import { deleteCookie } from "https://deno.land/std@0.104.0/http/cookie.ts";
+import { deleteCookie } from "https://deno.land/std@0.107.0/http/cookie.ts";
 import { SecurityContext } from "../../../context/security-context.ts";
 import { Redirect } from "../../../../renderer/redirect.ts";
 
@@ -47,9 +47,9 @@ export class CookiesScheme implements AuthenticationScheme {
     await session.store.delete(sid);
     context.security.auth.identity = () => undefined;
 
-    deleteCookie(context.response, context.security.session!.sessionKey);
+    deleteCookie(context.response.headers, context.security.session!.sessionKey);
     deleteCookie(
-      context.response,
+      context.response.headers,
       session.sessionKey + SESSION_SIGNATURE_PREFIX_KEY,
     );
 

@@ -6,7 +6,7 @@ import { Session } from "./session.instance.ts";
 import {
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.104.0/http/cookie.ts";
+} from "https://deno.land/std@0.107.0/http/cookie.ts";
 import {
   SESSION_SIGNATURE_PREFIX_KEY,
   SessionOptions,
@@ -92,7 +92,7 @@ export class SessionMiddleware implements MiddlewareTarget {
   }
 
   private getSessionIdCookie(context: SecurityContext): string | undefined {
-    const cookies = getCookies(context.request.serverRequest.request);
+    const cookies = getCookies(context.request.serverRequest.request.headers);
     const sidHash = cookies[this.cookieKey];
     const sign = cookies[this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY];
 
@@ -110,7 +110,7 @@ export class SessionMiddleware implements MiddlewareTarget {
 
     // set hash
     setCookie(
-      context.response,
+      context.response.headers,
       {
         path: "/",
         ...this.options,
@@ -120,7 +120,7 @@ export class SessionMiddleware implements MiddlewareTarget {
     );
     // set signature
     setCookie(
-      context.response,
+      context.response.headers,
       {
         path: "/",
         ...this.options,

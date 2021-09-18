@@ -1,6 +1,4 @@
-/**
- *
- */
+/**/
 export enum ProductTypeEnum {
   shop,
   clothes,

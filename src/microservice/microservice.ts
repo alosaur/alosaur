@@ -25,13 +25,13 @@ export interface MicroserviceSettings {
   config: TcpServerConfig;
 
   /**
-     * Custom DI container
-     */
+   * Custom DI container
+   */
   container?: DependencyContainer;
 
   /**
-     * Providers declared in microservice
-     */
+   * Providers declared in microservice
+   */
   providers?: ProviderDeclaration[];
 }
 

@@ -35,8 +35,9 @@ export async function getDenoDoc(
   // Zeit timeout is 60 seconds for pro tier: https://zeit.co/docs/v2/platform/limits
   const timer = setTimeout(() => {
     killed = true;
-    process.kill(process.pid);
-    // process.kill(Deno.Signal.SIGKILL);
+    // process.kill(process.pid);
+    // process.kill(Deno.Signal.SIGINT);
+    process.kill("2");
   }, 120000);
 
   const [out, errOut] = await Promise.all([

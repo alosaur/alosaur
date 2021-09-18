@@ -2,7 +2,7 @@
 
 /**
  * @description Represents the version of Alosaur
-**/
+ */
 export class Version {
   public readonly major: string;
   public readonly minor: string;

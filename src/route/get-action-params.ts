@@ -49,7 +49,7 @@ export async function getActionParams<T>(
 
       case "cookie":
         if (param.name) {
-          const cookies = getCookies(context.request.serverRequest.request) ||
+          const cookies = getCookies(context.request.serverRequest.request.headers) ||
             {};
           args.push(cookies[param.name]);
         } else {

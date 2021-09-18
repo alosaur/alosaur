@@ -26,12 +26,12 @@ export interface ResponseCacheStore {
   create<T>(hash: string, payload: ResponseCacheResult<T>): Promise<void>;
 
   /**
-     * Delete cache by hash
-     */
+   * Delete cache by hash
+   */
   delete(hash: string): Promise<void>;
 
   /**
-     * Get object value by hash
-     */
+   * Get object value by hash
+   */
   get<T>(hash: string): Promise<ResponseCacheResult<T>>;
 }
