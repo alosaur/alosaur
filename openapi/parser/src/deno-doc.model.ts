@@ -15,7 +15,7 @@ export namespace DenoDoc {
   export interface ImportDef {
     src: string;
     imported: string;
-    def: RootDef[];
+    def?: RootDef[];
   }
 
   export interface EnumDef {

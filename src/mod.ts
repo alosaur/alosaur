@@ -73,7 +73,7 @@ export class App<TState> {
 
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
 
-  // private server: Server | undefined = undefined;
+  private listener: Deno.Listener | undefined = undefined;
 
   constructor(private readonly settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
@@ -130,6 +130,9 @@ export class App<TState> {
     if (listener) {
       console.log("Server start in", address);
 
+      this.listener = listener;
+
+
       // Run deno/http
       await handleNativeServer(
         listener,
@@ -149,12 +152,11 @@ export class App<TState> {
   }
 
   public close(): void {
-    // TODO
-    // if (this.server) {
-    //   this.server.close();
-    // } else {
-    //   console.warn("Server is not listening");
-    // }
+    if (this.listener) {
+      this.listener.close();
+    } else {
+      console.warn("Server is not listening");
+    }
   }
 
   public useStatic(config?: StaticFilesConfig): void {
