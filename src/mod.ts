@@ -132,7 +132,6 @@ export class App<TState> {
 
       this.listener = listener;
 
-
       // Run deno/http
       await handleNativeServer(
         listener,
