@@ -15,4 +15,4 @@ export class Version {
   }
 }
 
-export const VERSION = new Version("0.33.0");
+export const VERSION = new Version("0.34.0");
