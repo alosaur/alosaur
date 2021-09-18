@@ -30,6 +30,13 @@
         ]
       }
     },
+    "/app/home/json/": {
+      "get": {
+        "tags": ["/app"],
+        "responses": { "200": { "description": "" } },
+        "parameters": []
+      }
+    },
     "/app/home/error": {
       "get": {
         "tags": ["/app"],
@@ -39,6 +46,15 @@
     },
     "/app/home/query": {
       "get": {
+        "tags": ["/app"],
+        "responses": { "200": { "description": "" } },
+        "parameters": [
+          { "name": "c", "in": "query", "schema": { "type": "string" } },
+          { "name": "b", "in": "query", "schema": { "type": "string" } },
+          { "name": "a", "in": "query", "schema": { "type": "string" } }
+        ]
+      },
+      "put": {
         "tags": ["/app"],
         "responses": { "200": { "description": "" } },
         "parameters": [
@@ -118,7 +134,42 @@
         ]
       }
     },
-    "/test/info/text": {
+    "/app/home/delete/{id}": {
+      "delete": {
+        "tags": ["/app"],
+        "responses": { "200": { "description": "" } },
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ]
+      }
+    },
+    "/app/home/response-test": {
+      "get": {
+        "tags": ["/app"],
+        "responses": { "200": { "description": "" } },
+        "parameters": []
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["/health"],
+        "responses": { "200": { "description": "" } },
+        "parameters": []
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [""],
+        "responses": { "200": { "description": "" } },
+        "parameters": []
+      }
+    },
+    "/test/info": {
       "get": {
         "tags": ["/test"],
         "responses": { "200": { "description": "" } },

@@ -1,27 +1,12 @@
-import { AlosaurOpenApiBuilder } from "../mod.ts";
-import { ProductAppSettings } from "./app.ts";
 import { assertEquals } from "../../src/deps_test.ts";
+import { OpenApiBuilder } from "./openapi-builder.ts";
 
 const { test } = Deno;
 
 test({
   name: "[openapi] snapshot test",
   async fn(): Promise<void> {
-    const docs = await AlosaurOpenApiBuilder.parseDenoDoc(
-      "./openapi/e2e/app.ts",
-    );
-
-    const builder = AlosaurOpenApiBuilder.create(ProductAppSettings)
-      .addDenoDocs(docs)
-      .registerControllers()
-      .addSchemeComponents()
-      .addTitle("Product Application2")
-      .addVersion("1.0.0")
-      .addDescription("Example Alosaur OpenApi generate")
-      .addServer({
-        url: "http://localhost:8000",
-        description: "Local server",
-      });
+    const builder = OpenApiBuilder;
 
     const f = Deno.openSync(
       "./openapi/e2e/openapi.text.snapshot",

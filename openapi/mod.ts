@@ -70,7 +70,9 @@ export class AlosaurOpenApiBuilder<T> {
     return this.builder.getSpec();
   }
 
-  public saveToFile(path: string = "./openapi.json"): AlosaurOpenApiBuilder<T> {
+  public saveToFile(
+    path: string = "./openapi.json",
+  ): AlosaurOpenApiBuilder<T> {
     Deno.writeTextFileSync(path, JSON.stringify(this.getSpec()));
     return this;
   }

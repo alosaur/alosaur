@@ -1,4 +1,3 @@
-import { BufReader, TextProtoReader } from "../../../src/deps_test.ts";
 import { DenoDoc } from "./deno-doc.model.ts";
 
 const decoder = new TextDecoder();
@@ -32,12 +31,18 @@ export async function getDenoDoc(
 
   let killed = false;
 
-  // Zeit timeout is 60 seconds for pro tier: https://zeit.co/docs/v2/platform/limits
-  const timer = setTimeout(() => {
-    killed = true;
-    process.kill(process.pid);
-    // process.kill(Deno.Signal.SIGKILL);
-  }, 120000);
+  // // Zeit timeout is 60 seconds for pro tier: https://zeit.co/docs/v2/platform/limits
+  // const timer = setTimeout(() => {
+  //   killed = true;
+  //   pids.delete(process.pid);
+  //   console.log(process.pid)
+  //
+  //   // process.kill(process.pid);
+  //   // process.kill(Deno.Signal.SIGINT);
+  //   // process.kill("2");
+  //   process.close();
+  //   (process.stdout as any)?.close();
+  // }, 4000);
 
   const [out, errOut] = await Promise.all([
     process.output(),
@@ -45,7 +50,7 @@ export async function getDenoDoc(
   ]);
 
   const status = await process.status();
-  clearTimeout(timer);
+  // clearTimeout(timer);
   process.close();
   if (!status.success) {
     if (killed) throw new Error("Parse timed out");

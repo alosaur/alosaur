@@ -1,4 +1,3 @@
-import { ServerRequest } from "../deps.ts";
 import { getParsedFormData } from "./get-form-data.ts";
 import { TransformBodyOption } from "../models/transform-config.ts";
 import { RequestBodyParseOptions } from "../models/request.ts";

@@ -3,7 +3,7 @@ export namespace DenoDoc {
     kind: Kind;
     name: string;
     location: Location;
-    jsDoc: string;
+    jsDoc?: JsDoc;
     classDef: ClassDef;
     typeAliasDef: TypeAliasDef;
     variableDef: VariableDef;
@@ -15,7 +15,7 @@ export namespace DenoDoc {
   export interface ImportDef {
     src: string;
     imported: string;
-    def: RootDef[];
+    def?: RootDef[];
   }
 
   export interface EnumDef {
@@ -24,7 +24,7 @@ export namespace DenoDoc {
 
   export interface EnumMember {
     name: string;
-    jsDoc: string;
+    jsDoc?: JsDoc;
   }
 
   export type Kind =
@@ -75,10 +75,16 @@ export namespace DenoDoc {
     implements: any[];
     typeParams: any[];
     superTypeParams: any[];
+    decorators: DecortorDef[];
+  }
+
+  export interface DecortorDef {
+    name: string;
+    location: Location;
   }
 
   export interface Method {
-    jsDoc: string;
+    jsDoc?: JsDoc;
     accessibility: string;
     optional: boolean;
     isAbstract: boolean;
@@ -146,7 +152,7 @@ export namespace DenoDoc {
   }
 
   export interface Property {
-    jsDoc?: any;
+    jsDoc?: JsDoc;
     tsType: TsType;
     readonly: boolean;
     accessibility: string;
@@ -168,5 +174,89 @@ export namespace DenoDoc {
   export interface Literal {
     kind: Kind;
     string: string;
+  }
+
+  export interface JsDoc {
+    doc?: string;
+    tags?: JsDocTag[];
+  }
+
+  export type JsDocTagKind =
+    | "callback"
+    | "constructor"
+    | "deprecated"
+    | "enum"
+    | "extends"
+    | "param"
+    | "public"
+    | "private"
+    | "property"
+    | "protected"
+    | "readonly"
+    | "return"
+    | "template"
+    | "this"
+    | "typedef"
+    | "type"
+    | "unsupported";
+
+  export type JsDocTag =
+    | JsDocTagOnly
+    | JsDocTagDoc
+    | JsDocTagNamed
+    | JsDocTagTyped
+    | JsDocTagNamedTyped
+    | JsDocTagParam
+    | JsDocTagReturn
+    | JsDocTagUnsupported;
+
+  export interface JsDocTagBase {
+    kind: JsDocTagKind;
+  }
+
+  export interface JsDocTagOnly extends JsDocTagBase {
+    kind: "constructor" | "public" | "private" | "protected" | "readonly";
+  }
+
+  export interface JsDocTagDoc extends JsDocTagBase {
+    kind: "deprecated";
+    doc?: string;
+  }
+
+  export interface JsDocTagNamed extends JsDocTagBase {
+    kind: "callback" | "template";
+    name: string;
+    doc?: string;
+  }
+
+  export interface JsDocTagTyped extends JsDocTagBase {
+    kind: "enum" | "extends" | "this" | "type";
+    type: string;
+    doc?: string;
+  }
+
+  export interface JsDocTagNamedTyped extends JsDocTagBase {
+    kind: "property" | "typedef";
+    name: string;
+    type: string;
+    doc?: string;
+  }
+
+  export interface JsDocTagParam extends JsDocTagBase {
+    kind: "param";
+    name: string;
+    type?: string;
+    doc?: string;
+  }
+
+  export interface JsDocTagReturn extends JsDocTagBase {
+    kind: "return";
+    type?: string;
+    doc?: string;
+  }
+
+  export interface JsDocTagUnsupported extends JsDocTagBase {
+    kind: "unsupported";
+    value: string;
   }
 }

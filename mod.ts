@@ -22,14 +22,6 @@ export * from "./src/types/mod.ts";
 // SSE
 export * from "./src/sse/accept-sse.ts";
 
-// Deps
-export {
-  serve,
-  Server,
-  ServerRequest,
-} from "https://deno.land/std@0.104.0/http/server.ts";
-export type { HTTPOptions } from "https://deno.land/std@0.104.0/http/server.ts";
-
 // Version
 export * from "./src/version.ts";
 

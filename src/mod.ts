@@ -1,5 +1,4 @@
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
-import { HTTPOptions, serve, Server } from "./deps.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
 import { ViewRenderConfig } from "./models/view-render-config.ts";
 import { CorsBuilder } from "./middlewares/cors-builder.ts";
@@ -74,7 +73,7 @@ export class App<TState> {
 
   private viewRenderConfig: ViewRenderConfig | undefined = undefined;
 
-  private server: Server | undefined = undefined;
+  private listener: Deno.Listener | undefined = undefined;
 
   constructor(private readonly settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
@@ -119,7 +118,7 @@ export class App<TState> {
    * @param customListener
    */
   async listen(
-    address: string | HTTPOptions = ":8000",
+    address: string | Deno.ListenOptions = ":8000",
     customListener?: Deno.Listener,
   ): Promise<any> {
     if (typeof address === "string") {
@@ -130,6 +129,8 @@ export class App<TState> {
 
     if (listener) {
       console.log("Server start in", address);
+
+      this.listener = listener;
 
       // Run deno/http
       await handleNativeServer(
@@ -150,8 +151,8 @@ export class App<TState> {
   }
 
   public close(): void {
-    if (this.server) {
-      this.server.close();
+    if (this.listener) {
+      this.listener.close();
     } else {
       console.warn("Server is not listening");
     }
@@ -179,8 +180,8 @@ export class App<TState> {
   }
 
   /**
-  * Deprecate
-  */
+   * Deprecate
+   */
   public useCors(builder: CorsBuilder<TState>): void {
     this.metadata.middlewares.push({
       type: "middleware",
@@ -218,7 +219,7 @@ export class App<TState> {
  *
  * @param addr Address string
  */
-export function _parseAddrFromStr(addr: string): HTTPOptions {
+export function _parseAddrFromStr(addr: string): Deno.ListenOptions {
   let url: URL;
   try {
     const host = addr.startsWith(":") ? `0.0.0.0${addr}` : addr;

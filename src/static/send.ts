@@ -3,14 +3,7 @@
  * with the MIT license.
  */
 
-import {
-  basename,
-  contentType,
-  extname,
-  parse,
-  sep,
-  ServerRequest,
-} from "../deps.ts";
+import { basename, contentType, extname, parse, sep } from "../deps.ts";
 import { isAbsolute, join, normalize, resolve } from "../deps.ts";
 
 // TODO move to library mode
@@ -31,7 +24,7 @@ export interface SendOptions {
   maxAge?: number;
 
   /** Tell the browser the resource is immutable and can be cached
-     * indefinitely. (defaults to `false`) */
+   * indefinitely. (defaults to `false`) */
   immutable?: boolean;
 
   /** Allow transfer of hidden files. (defaults to `false`) */
@@ -41,27 +34,27 @@ export interface SendOptions {
   root: string;
 
   /** Name of the index file to serve automatically when visiting the root
-     * location. (defaults to none) */
+   * location. (defaults to none) */
   index?: string;
 
   /** Try to serve the gzipped version of a file automatically when gzip is
-     * supported by a client and if the requested file with `.gz` extension
-     * exists. (defaults to `true`). */
+   * supported by a client and if the requested file with `.gz` extension
+   * exists. (defaults to `true`). */
   gzip?: boolean;
 
   /** Try to serve the brotli version of a file automatically when brotli is
-     * supported by a client and if the requested file with `.br` extension
-     * exists. (defaults to `true`) */
+   * supported by a client and if the requested file with `.br` extension
+   * exists. (defaults to `true`) */
   brotli?: boolean;
 
   /** If `true`, format the path to serve static file servers and not require a
-     * trailing slash for directories, so that you can do both `/directory` and
-     * `/directory/`. (defaults to `true`) */
+   * trailing slash for directories, so that you can do both `/directory` and
+   * `/directory/`. (defaults to `true`) */
   format?: boolean;
 
   /** Try to match extensions from passed array to search for file when no
-     * extension is sufficed in URL. First found is served. (defaults to
-     * `undefined`) */
+   * extension is sufficed in URL. First found is served. (defaults to
+   * `undefined`) */
   extensions?: string[];
 }
 
