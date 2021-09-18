@@ -35,8 +35,10 @@ export function getParsedNames(doc: DenoDoc.RootDef[]): ParsedNamesDocMap {
           // }
 
           if (
-            currentDoc.jsDoc &&
-            currentDoc.jsDoc.includes("@decorator Controller")
+            currentDoc.classDef?.decorators &&
+            currentDoc.classDef.decorators.some((d) =>
+              d.name === "Controller"
+            )
           ) {
             controllers.set(currentDoc.name, currentDoc);
           } else {
@@ -84,7 +86,8 @@ export function getSchemeByDef(def: DenoDoc.RootDef): oa.SchemaObject {
 
         if (stdJsDoc) {
           propertyResult = getSchemeFromJsDoc(stdJsDoc);
-          const propertyJsDoc = PropertyJsDocParse(property.jsDoc);
+          const propertyJsDoc = property.jsDoc &&
+            PropertyJsDocParse(property.jsDoc);
 
           propertyResult = { ...propertyResult, ...propertyJsDoc as any };
         }
@@ -102,10 +105,10 @@ export function getSchemeByDef(def: DenoDoc.RootDef): oa.SchemaObject {
 export function getShemeByEnumDef(def: DenoDoc.RootDef): oa.SchemaObject {
   let result: oa.SchemaObject = {};
 
-  const jsDoc = def.jsDoc && JsDocParse(def.jsDoc);
+  const jsDocParsed = def.jsDoc && JsDocParse(def.jsDoc);
 
-  if (jsDoc) {
-    result = getSchemeFromJsDoc(jsDoc);
+  if (jsDocParsed) {
+    result = getSchemeFromJsDoc(jsDocParsed);
   }
 
   result.type = "string";
@@ -120,15 +123,15 @@ export function getShemeByEnumDef(def: DenoDoc.RootDef): oa.SchemaObject {
   return result;
 }
 
-function getSchemeFromJsDoc(jsDoc: JsDocObject) {
+function getSchemeFromJsDoc(jsDocParsed: JsDocObject) {
   const result: oa.SchemaObject = {};
 
-  result.description = jsDoc.description;
-  result.example = jsDoc.example;
-  result.deprecated = jsDoc.deprecated;
-  result.default = jsDoc.default;
+  result.description = jsDocParsed.description;
+  result.example = jsDocParsed.example;
+  result.deprecated = jsDocParsed.deprecated;
+  result.default = jsDocParsed.default;
   // @ts-ignore
-  result.required = jsDoc.required;
+  result.required = jsDocParsed.required;
 
   return result;
 }

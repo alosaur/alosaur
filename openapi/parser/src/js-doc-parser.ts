@@ -1,3 +1,6 @@
+import { DenoDoc } from "./deno-doc.model.ts";
+import JsDoc = DenoDoc.JsDoc;
+
 export interface JsDocObject {
   example?: string;
   decorator?: string;
@@ -20,70 +23,83 @@ export interface JsDocObject {
 
 /**
  * Parse of jsdoc string
+ *  // TODO Parser supported only unsupported tags
+ *   https://github.com/denoland/deno_doc/blob/main/lib/types.d.ts#L210
  */
-export function JsDocParse(doc: string): JsDocObject {
+export function JsDocParse(doc?: JsDoc): JsDocObject {
   const result: JsDocObject = {};
   if (!doc) return result;
 
-  const nodes = doc.split("\n");
+  const nodes = doc.tags;
 
-  nodes.forEach((node) => {
-    node = node.trim();
-    switch (true) {
-      case node.startsWith("@example"):
-        result.example = getStringValue(node, "@example");
-        break;
+  nodes?.forEach((node) => {
+    if (node.kind === "unsupported") {
+      const value = node.value.trim();
 
-      case node.startsWith("@decorator"):
-        result.decorator = getStringValue(node, "@decorator");
-        break;
+      switch (true) {
+        case value.startsWith("@example"):
+          result.example = getStringValue(value, "@example");
+          break;
 
-      case node.startsWith("@default"):
-        result.default = getStringValue(node, "@default");
-        break;
+        case value.startsWith("@decorator"):
+          result.decorator = getStringValue(value, "@decorator");
+          break;
 
-      case node.startsWith("@description"):
-        result.description = getStringValue(node, "@description");
-        break;
+        case value.startsWith("@default"):
+          result.default = getStringValue(value, "@default");
+          break;
 
-      case node.startsWith("@deprecated"):
-        result.deprecated = true;
-        break;
+        case value.startsWith("@description"):
+          result.description = getStringValue(value, "@description");
+          break;
 
-      case node.startsWith("@required"):
-        result.required = true;
-        break;
+        case value.startsWith("@deprecated"):
+          result.deprecated = true;
+          break;
 
-      case node.startsWith("@remarks"):
-        result.remarks = getStringValue(node, "@remarks");
-        break;
+        case value.startsWith("@required"):
+          result.required = true;
+          break;
 
-      case node.startsWith("@RequestBody"):
-        if (!result.RequestBody) {
-          result.RequestBody = [];
-        }
-        result.RequestBody.push(getStringValue(node, "@RequestBody"));
-        break;
+        case value.startsWith("@remarks"):
+          result.remarks = getStringValue(value, "@remarks");
+          break;
 
-      case node.startsWith("@summary"):
-        result.summary = getStringValue(node, "@summary");
-        break;
+        case value.startsWith("@RequestBody"):
+          if (!result.RequestBody) {
+            result.RequestBody = [];
+          }
+          result.RequestBody.push(getStringValue(value, "@RequestBody"));
+          break;
 
-      case node.startsWith("@params"):
-        if (!result.params) {
-          result.params = [];
-        }
-        result.params.push(getStringValue(node, "@params"));
-        break;
+        case value.startsWith("@summary"):
+          result.summary = getStringValue(value, "@summary");
+          break;
 
-      default:
-        // if (!result.description) {
-        //   result.description = node.trim();
-        // }
-        break;
+        case value.startsWith("@params"):
+          if (!result.params) {
+            result.params = [];
+          }
+          result.params.push(getStringValue(value, "@params"));
+          break;
+
+        default:
+          // if (!result.description) {
+          //   result.description = node.trim();
+          // }
+          break;
+      }
+    } else if (node.kind === "param") {
+      if (!result.params) {
+        result.params = [];
+      }
+      result.params.push(node.name);
     }
   });
 
+  // if(!result.description) {
+  //   result.description = doc.doc;
+  // }
   return result;
 }
 
@@ -133,23 +149,27 @@ const JsDocProperties = [
 /**
  * Gets property validation from jsdoc
  */
-export function PropertyJsDocParse(doc: string): PropertyJsDocObject {
+export function PropertyJsDocParse(doc?: JsDoc): PropertyJsDocObject {
   const result: PropertyJsDocObject = {};
 
   if (!doc) return result;
 
-  const nodes = doc.split("\n");
+  const nodes = doc.tags;
 
-  nodes.forEach((node) => {
-    node = node.trim();
-    const prop = JsDocProperties.find((el) => node.startsWith("@" + el));
+  console.log(doc);
 
-    if (prop) {
-      result[prop as keyof PropertyJsDocObject] = getNormalizeString(
-        node,
-        "@" + prop,
-      );
-      console.log();
+  nodes?.forEach((node) => {
+    if (node.kind === "unsupported") {
+      const value = node.value.trim();
+
+      const prop = JsDocProperties.find((el) => value.startsWith("@" + el));
+
+      if (prop) {
+        result[prop as keyof PropertyJsDocObject] = getNormalizeString(
+          value,
+          "@" + prop,
+        );
+      }
     }
   });
 

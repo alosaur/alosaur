@@ -18,6 +18,7 @@ export class NotFoundResult {
 
 // ECMAScript decorators are sometimes an important part of an API contract. However, today the TypeScript compiler does not represent decorators in the .d.ts output files used by API consumers. The @decorator tag provides a workaround, enabling a decorator expression to be quoted in a doc comment.
 // https://tsdoc.org/pages/tags/decorator/
+// TODO remove this decorator
 
 @Controller()
 /**

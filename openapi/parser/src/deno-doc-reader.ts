@@ -1,4 +1,3 @@
-import { BufReader, TextProtoReader } from "../../../src/deps_test.ts";
 import { DenoDoc } from "./deno-doc.model.ts";
 
 const decoder = new TextDecoder();
@@ -37,7 +36,9 @@ export async function getDenoDoc(
     killed = true;
     // process.kill(process.pid);
     // process.kill(Deno.Signal.SIGINT);
-    process.kill("2");
+    // process.kill("2");
+    process.close();
+    (process.stdout as any)?.close();
   }, 120000);
 
   const [out, errOut] = await Promise.all([
