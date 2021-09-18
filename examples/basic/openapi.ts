@@ -1,6 +1,7 @@
 import { AlosaurOpenApiBuilder } from "alosaur/openapi/mod.ts";
 import { settings } from "./app-settings.ts";
 
+// Register without add deno doc
 AlosaurOpenApiBuilder.create(settings)
   .registerControllers()
   .addTitle("Basic Application")

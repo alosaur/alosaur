@@ -3,7 +3,6 @@ import JsDoc = DenoDoc.JsDoc;
 
 export interface JsDocObject {
   example?: string;
-  decorator?: string;
   default?: string;
   description?: string;
   deprecated?: boolean;
@@ -39,10 +38,6 @@ export function JsDocParse(doc?: JsDoc): JsDocObject {
       switch (true) {
         case value.startsWith("@example"):
           result.example = getStringValue(value, "@example");
-          break;
-
-        case value.startsWith("@decorator"):
-          result.decorator = getStringValue(value, "@decorator");
           break;
 
         case value.startsWith("@default"):
@@ -97,9 +92,9 @@ export function JsDocParse(doc?: JsDoc): JsDocObject {
     }
   });
 
-  // if(!result.description) {
-  //   result.description = doc.doc;
-  // }
+  if (!result.description) {
+    result.description = doc.doc;
+  }
   return result;
 }
 
@@ -155,8 +150,6 @@ export function PropertyJsDocParse(doc?: JsDoc): PropertyJsDocObject {
   if (!doc) return result;
 
   const nodes = doc.tags;
-
-  console.log(doc);
 
   nodes?.forEach((node) => {
     if (node.kind === "unsupported") {

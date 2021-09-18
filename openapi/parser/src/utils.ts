@@ -36,9 +36,7 @@ export function getParsedNames(doc: DenoDoc.RootDef[]): ParsedNamesDocMap {
 
           if (
             currentDoc.classDef?.decorators &&
-            currentDoc.classDef.decorators.some((d) =>
-              d.name === "Controller"
-            )
+            currentDoc.classDef.decorators.some((d) => d.name === "Controller")
           ) {
             controllers.set(currentDoc.name, currentDoc);
           } else {
