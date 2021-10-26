@@ -1,4 +1,4 @@
-import { renderFile } from "https://deno.land/x/dejs@0.3.5/mod.ts";
+import { renderFileToString } from "https://deno.land/x/dejs@0.10.1/mod.ts";
 import {
   App,
   Area,
@@ -8,7 +8,7 @@ import {
   View,
   ViewRenderConfig,
 } from "alosaur/mod.ts";
-import { normalize } from "../../src/package";
+import { normalize } from "https://deno.land/std@0.113.0/path/mod.ts";
 
 @Controller("")
 export class HomeController {
@@ -30,8 +30,13 @@ const app = new App({
 app.useViewRender({
   type: "dejs",
   basePath: `${Deno.cwd()}/examples/dejs/views/`,
-  getBody: (path: string, model: Object, config: ViewRenderConfig) =>
-    renderFile(normalize(`${config.basePath}${path}.ejs`), model),
+  getBody: async (path: string, model: Object, config: ViewRenderConfig) => {
+    const file = await renderFileToString(
+      normalize(`${config.basePath}${path}.ejs`),
+      model,
+    );
+    return file;
+  },
 });
 
 app.listen();

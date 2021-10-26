@@ -40,8 +40,10 @@ export function registerControllers<TState>(
 
     if (logging) {
       console.debug(
-        `The "${controller.target.name ||
-          controller.target.constructor.name}" controller has been registered.`,
+        `The "${
+          controller.target.name ||
+          controller.target.constructor.name
+        }" controller has been registered.`,
       );
     }
 

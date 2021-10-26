@@ -215,7 +215,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
         respondWith(
-          getResponse(({ body: context.response.getRaw() } as ActionResult)),
+          getResponse({ body: context.response.getRaw() } as ActionResult),
         );
         continue;
       }
@@ -243,11 +243,11 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
-        respondWith(getResponse((context.response.getMergedResult())));
+        respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
-      respondWith(getResponse((context.response.getMergedResult())));
+      respondWith(getResponse(context.response.getMergedResult()));
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);

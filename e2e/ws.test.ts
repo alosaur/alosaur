@@ -27,16 +27,16 @@ test({
       itLog("\t '/ws'");
       const ws = new WebSocket("ws://localhost:8000/ws");
       await new Promise<void>((resolve, reject) => {
-        ws.onmessage = ((message) => {
+        ws.onmessage = (message) => {
           assertEquals(message.data, "Connected: [1]");
-          ws.onmessage = ((message: { data: string }) => {
+          ws.onmessage = (message: { data: string }) => {
             assertEquals(message.data, "[1]: Hello");
             ws.close();
             reject();
             resolve();
-          });
+          };
           ws.send("Hello");
-        });
+        };
       });
     } catch (err) {
       console.log(err);

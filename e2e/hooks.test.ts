@@ -23,7 +23,7 @@ test({
       // It
       itLog("\t /");
       assertEquals(r1.status, 200);
-      assertEquals((await r1.text()), "main page");
+      assertEquals(await r1.text(), "main page");
 
       itLog("\t /error");
       assertEquals(r3.status, 403);
@@ -72,7 +72,7 @@ test({
 
       itLog("\t /many-hook-1?token=123");
       assertEquals(r2.status, 200);
-      assertEquals((await r2.text()), "many hook 1 page");
+      assertEquals(await r2.text(), "many hook 1 page");
 
       itLog("\t /many-hook-2");
       assertEquals(r3.status, 403);
@@ -80,7 +80,7 @@ test({
 
       itLog("\t /many-hook-2?token=123");
       assertEquals(r4.status, 200);
-      assertEquals((await r4.text()), "many hook 2 page");
+      assertEquals(await r4.text(), "many hook 2 page");
     } finally {
       killServer(process);
     }
@@ -111,7 +111,7 @@ test({
 
       itLog("\t /?token=123");
       assertEquals(r2.status, 200);
-      assertEquals((await r2.text()), "admin home page");
+      assertEquals(await r2.text(), "admin home page");
 
       // It
       itLog("\t /about/");
@@ -120,7 +120,7 @@ test({
 
       itLog("\t /about/?token=123");
       assertEquals(r4.status, 200);
-      assertEquals((await r4.text()), "admin about page");
+      assertEquals(await r4.text(), "admin about page");
     } finally {
       killServer(process);
     }
@@ -145,7 +145,7 @@ test({
       // It
       itLog("\t /await");
       assertEquals(r1.status, 200);
-      assertEquals((await r1.text()), "await page");
+      assertEquals(await r1.text(), "await page");
 
       // It
       assert((new Date().getTime() - date.getTime()) > 500);
