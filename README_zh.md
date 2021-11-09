@@ -26,10 +26,10 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 2021年
 
 - [x] 微服务 (TCP)
-  [范例](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+      [范例](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
-  Alosaur openapi
+      Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
 
@@ -37,23 +37,23 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 - [x] Response cache store, attribute
 - [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi,
-  测试等等)
+      测试等等)
 
 2020年第4季度 – 10-12月
 
 - [x] WebSocket
 - [x] SSE
 - [x] Add
-  [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
+      [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
   - [x] Identifications middlwares like session
   - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`,
-    `identity`
+        `identity`
   - [x] Authentication schemas (Cookies, JWT Bearer)
   - [x] Authorization decorators and hooks, roles, policy
   - [x] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
-    etc, examples)
-    [文档](https://github.com/alosaur/alosaur/tree/master/src/security/oauth),
-    [范例](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
+        etc, examples)
+        [文档](https://github.com/alosaur/alosaur/tree/master/src/security/oauth),
+        [范例](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 - [x] OpenAPI type reference
 
 ---
@@ -126,7 +126,7 @@ app.listen();
 # TODO
 
 - [x] 增加模板渲染，支持[Dejs](https://github.com/syumai/dejs)
-  和[Handlebars](https://github.com/alosaur/handlebars)
+      和[Handlebars](https://github.com/alosaur/handlebars)
 - [x] 增加返回JSON类型的数据
 
 - 增加装饰器:
@@ -441,7 +441,7 @@ app.use(/\//, new Log());
 [完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.113.0/ws/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.114.0/ws/mod.ts";
 import {
   HttpContext,
   PreRequestMiddleware,
@@ -630,8 +630,8 @@ new Handlebars(
 默认情况下使用在控制器方法中使用`@Body`解析通过HTML表单上传的文件.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.113.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.113.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.114.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.114.0/fs/move.ts";
 
 ...
 

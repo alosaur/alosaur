@@ -32,11 +32,11 @@ How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
 2021
 
 - [x] Microservices (TCP)
-  [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+      [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [x] Docs website
 - [ ] CLI: run applications
 - [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
-  Alosaur openapi
+      Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 
 ---

@@ -11,14 +11,14 @@ Authentication](https://github.com/alosaur/alosaur/tree/master/src/security/auth
 
 - [x] Identifications middlwares like session
   - [x] Sign session hash with
-    [noble-secp256k1](https://github.com/paulmillr/noble-secp256k1)
+        [noble-secp256k1](https://github.com/paulmillr/noble-secp256k1)
 - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`,
-  `identity`
+      `identity`
 - [x] Authentication schemas
   - [x] Cookies
   - [x] JWT
 - [x] External auth strategies.
-  [Docs](https://github.com/alosaur/alosaur/tree/master/src/security/oauth)
+      [Docs](https://github.com/alosaur/alosaur/tree/master/src/security/oauth)
   - [x] OAuth handler base
     - [x] Google
     - [ ] Facebook

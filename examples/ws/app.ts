@@ -1,7 +1,7 @@
 import {
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.113.0/http/cookie.ts";
+} from "https://deno.land/std@0.114.0/http/cookie.ts";
 
 import { App, Area, Controller, Get, Redirect, Req, Res } from "alosaur/mod.ts";
 import { WebsocketMiddleware } from "./websocket.middlware.ts";
