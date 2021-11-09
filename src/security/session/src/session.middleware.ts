@@ -1,4 +1,4 @@
-import * as secp from "https://deno.land/x/secp256k1/mod.ts";
+import * as secp from "https://deno.land/x/secp256k1@1.2.9/mod.ts";
 import { MiddlewareTarget } from "../../../models/middleware-target.ts";
 import { HttpContext } from "../../../models/http-context.ts";
 import { SessionStore } from "./store/store.interface.ts";

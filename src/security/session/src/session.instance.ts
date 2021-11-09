@@ -1,6 +1,6 @@
 import { SessionInterface } from "./session.interface.ts";
 import { SessionStore } from "./store/store.interface.ts";
-import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import { v4 } from "https://deno.land/std@0.114.0/uuid/mod.ts";
 import { createHash } from "https://deno.land/std@0.114.0/hash/mod.ts";
 
 /**
