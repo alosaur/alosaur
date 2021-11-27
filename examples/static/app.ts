@@ -2,8 +2,8 @@ import {
   Cookie,
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.114.0/http/cookie.ts";
-import { Response } from "https://deno.land/std@0.114.0/http/server.ts";
+} from "https://deno.land/std@0.116.0/http/cookie.ts";
+import { Response } from "https://deno.land/std@0.116.0/http/server.ts";
 import {
   App,
   Area,
