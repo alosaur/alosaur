@@ -29,8 +29,6 @@ How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
 
 ## Features roadmap
 
-2021
-
 - [x] Microservices (TCP)
       [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [x] Docs website
@@ -51,7 +49,7 @@ import {
   Area,
   Controller,
   Get,
-} from "https://deno.land/x/alosaur@v0.33.0/mod.ts";
+} from "https://deno.land/x/alosaur@v0.35.1/mod.ts";
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
