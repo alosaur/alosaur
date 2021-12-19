@@ -12,6 +12,10 @@ import { Content } from "../renderer/content.ts";
 import { MiddlewareMetadataArgs } from "../metadata/middleware.ts";
 import { ActionResult } from "../models/response.ts";
 import { HttpContext } from "../models/http-context.ts";
+import {
+  Handler,
+  serveListener,
+} from "https://deno.land/std@0.117.0/http/server.ts";
 
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
@@ -33,24 +37,22 @@ export async function handleNativeServer<TState>(
   runFullServer: boolean,
 ) {
   if (runFullServer) {
-    for await (const conn of listener) {
-      handleFullServer(conn, app, metadata);
-    }
+    // for await (const conn of listener) {
+    //   // handleFullServer(conn, app, metadata);
+    // }
   } else {
-    for await (const conn of listener) {
-      handleLiteServer(conn, app);
-    }
+    // for await (const conn of listener) {
+    serveListener(listener, handleLiteServer(app));
+    // }
   }
 }
 
-async function handleFullServer<TState>(
+function handleFullServer<TState>(
   conn: Deno.Conn,
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
-) {
-  const requests = Deno.serveHttp(conn);
-  for await (const request of requests) {
-    const respondWith = request.respondWith;
+): Handler {
+  return async function (request, connInfo) {
 
     metadata.container.register(SERVER_REQUEST, { useValue: request });
     const context = metadata.container.resolve<HttpContext<TState>>(
@@ -69,24 +71,19 @@ async function handleFullServer<TState>(
       }
 
       if (context.response.isNotRespond()) {
-        continue;
+        // not respond
+        // continue;
       }
 
       if (context.response.isImmediately()) {
-        respondWith(
-          getResponse({ body: context.response.getRaw() } as ActionResult),
-        );
-        continue;
+        return getResponse({ body: context.response.getRaw() } as ActionResult);
       }
 
       // try getting static file
       if (
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
-        respondWith(
-          getResponse(context.response.getRaw() as ActionResult),
-        );
-        continue;
+        return getResponse(context.response.getRaw() as ActionResult);
       }
 
       const action = getAction(
@@ -200,13 +197,8 @@ async function handleFullServer<TState>(
   }
 }
 
-async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
-  const requests = Deno.serveHttp(conn);
-
-  for await (const request of requests) {
-    const req = request.request;
-    const respondWith = request.respondWith;
-
+function handleLiteServer<TState>(app: App<TState>): Handler {
+  return async function (request, connInfo) {
     const context = new HttpContext(request);
 
     try {
@@ -214,10 +206,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       if (
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
-        respondWith(
-          getResponse(context.response.getRaw() as ActionResult),
-        );
-        continue;
+        return getResponse(context.response.getRaw() as ActionResult);
       }
 
       const action = getAction(
@@ -243,33 +232,30 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
-        respondWith(getResponse(context.response.getMergedResult()));
-        continue;
+        return getResponse(context.response.getMergedResult());
       }
 
-      respondWith(getResponse(context.response.getMergedResult()));
+      return getResponse(context.response.getMergedResult());
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);
 
         if (context.response.isImmediately()) {
-          respondWith(getResponse(context.response.getMergedResult()));
-          continue;
+          return getResponse(context.response.getMergedResult());
         }
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
-        continue;
+        return getResponse(context.response.getMergedResult());
       }
 
       if (!(error instanceof HttpError)) {
         console.error(error);
       }
 
-      respondWith(getResponse(Content(error, error.httpCode || 500)));
+      return getResponse(Content(error, error.httpCode || 500));
     }
-  }
+  };
 }
 
 function getResponse(result: ActionResult): Response {

@@ -10,8 +10,8 @@ export interface RequestBodyFormDataParseOptions {
   parser?: (request: Request, contentType: string) => Promise<any>;
 }
 
-type AsyncFunction = (response: Response) => Promise<void>;
-export type NativeRequest = { request: Request; respondWith: AsyncFunction };
+// type AsyncFunction = (response: Response) => Promise<void>;
+// export type NativeRequest = { request: Request; respondWith: AsyncFunction };
 
 /**
  * Request of context
@@ -23,14 +23,14 @@ export class AlosaurRequest {
   }
   public readonly headers: Headers;
   public readonly method: string;
-  public readonly serverRequest: NativeRequest;
+  public readonly serverRequest: Request;
 
   private _body: any;
 
-  constructor(serverRequest: NativeRequest) {
-    this.url = serverRequest.request.url;
-    this.headers = serverRequest.request.headers;
-    this.method = serverRequest.request.method;
+  constructor(serverRequest: Request) {
+    this.url = serverRequest.url;
+    this.headers = serverRequest.headers;
+    this.method = serverRequest.method;
     this.serverRequest = serverRequest;
   }
 
@@ -39,7 +39,7 @@ export class AlosaurRequest {
    */
   async body(options?: RequestBodyParseOptions) {
     if (!this._body) {
-      this._body = await getBody(this.serverRequest.request, options);
+      this._body = await getBody(this.serverRequest, options);
     }
 
     return this._body;
