@@ -43,6 +43,10 @@ export async function handleNativeServer<TState>(
   }
 }
 
+function respondWidthWrapper(respondWith: (r: Response | Promise<Response>)=> Promise<void>): (r: Response | Promise<Response>)=> Promise<void> {
+  return (res: Response | Promise<Response>) => respondWith(res).catch((e) => { console.error(`uncaught in respondWith`, e); })
+}
+
 async function handleFullServer<TState>(
   conn: Deno.Conn,
   app: App<TState>,
@@ -50,7 +54,7 @@ async function handleFullServer<TState>(
 ) {
   const requests = Deno.serveHttp(conn);
   for await (const request of requests) {
-    const respondWith = request.respondWith;
+    const respondWith = respondWidthWrapper(request.respondWith);
 
     metadata.container.register(SERVER_REQUEST, { useValue: request });
     const context = metadata.container.resolve<HttpContext<TState>>(
@@ -204,8 +208,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
   const requests = Deno.serveHttp(conn);
 
   for await (const request of requests) {
-    const req = request.request;
-    const respondWith = request.respondWith;
+    const respondWith = respondWidthWrapper(request.respondWith);
 
     const context = new HttpContext(request);
 
