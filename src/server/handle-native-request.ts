@@ -43,8 +43,13 @@ export async function handleNativeServer<TState>(
   }
 }
 
-function respondWidthWrapper(respondWith: (r: Response | Promise<Response>)=> Promise<void>): (r: Response | Promise<Response>)=> Promise<void> {
-  return (res: Response | Promise<Response>) => respondWith(res).catch((e) => { console.error(`uncaught in respondWith`, e); })
+function respondWidthWrapper(
+  respondWith: (r: Response | Promise<Response>) => Promise<void>,
+): (r: Response | Promise<Response>) => Promise<void> {
+  return (res: Response | Promise<Response>) =>
+    respondWith(res).catch((e) => {
+      console.error(`uncaught in respondWith`, e);
+    });
 }
 
 async function handleFullServer<TState>(
