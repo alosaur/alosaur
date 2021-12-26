@@ -38,7 +38,7 @@ export async function handleNativeServer<TState>(
 ) {
   if (runFullServer) {
     // for await (const conn of listener) {
-    //   // handleFullServer(conn, app, metadata);
+    serveListener(listener, handleFullServer(app, metadata));
     // }
   } else {
     // for await (const conn of listener) {
@@ -48,12 +48,10 @@ export async function handleNativeServer<TState>(
 }
 
 function handleFullServer<TState>(
-  conn: Deno.Conn,
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
 ): Handler {
-  return async function (request, connInfo) {
-
+  return async function (request, connInfo): Promise<Response> {
     metadata.container.register(SERVER_REQUEST, { useValue: request });
     const context = metadata.container.resolve<HttpContext<TState>>(
       HttpContext,
@@ -73,6 +71,7 @@ function handleFullServer<TState>(
       if (context.response.isNotRespond()) {
         // not respond
         // continue;
+        return new Response();
       }
 
       if (context.response.isImmediately()) {
@@ -99,7 +98,8 @@ function handleFullServer<TState>(
         if (
           hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
         ) {
-          continue;
+          // continue
+          return new Response();
         }
 
         // Get arguments in this action
@@ -123,7 +123,8 @@ function handleFullServer<TState>(
             hasHooksAction("onCatchAction", hooks) &&
             await resolveHooks(context, "onCatchAction", hooks)
           ) {
-            continue;
+            // continue
+            return new Response();
           } else {
             // Resolve every post middleware if error was not caught
             for (const middleware of middlewares) {
@@ -132,8 +133,7 @@ function handleFullServer<TState>(
             }
 
             if (context.response.isImmediately()) {
-              respondWith(getResponse(context.response.getMergedResult()));
-              continue;
+              return getResponse(context.response.getMergedResult());
             }
 
             throw error;
@@ -145,13 +145,14 @@ function handleFullServer<TState>(
           hasHooks(hooks) &&
           await resolveHooks(context, "onPostAction", hooks)
         ) {
-          continue;
+          // continue;
+          return new Response();
         }
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
-        continue;
+        return getResponse(context.response.getMergedResult());
+        // continue;
       }
 
       // Resolve every post middleware
@@ -161,40 +162,36 @@ function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
-        continue;
+        return getResponse(context.response.getMergedResult());
       }
 
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
-        respondWith(getResponse(context.response.getMergedResult()));
-        continue;
+        return getResponse(context.response.getMergedResult());
       }
 
-      respondWith(getResponse(context.response.getMergedResult()));
+      return getResponse(context.response.getMergedResult());
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);
 
         if (context.response.isImmediately()) {
-          respondWith(getResponse(context.response.getMergedResult()));
-          continue;
+          return getResponse(context.response.getMergedResult());
         }
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
-        continue;
+        return getResponse(context.response.getMergedResult());
       }
 
       if (!(error instanceof HttpError)) {
         console.error(error);
       }
 
-      respondWith(getResponse(Content(error, error.httpCode || 500)));
+      return getResponse(Content(error, error.httpCode || 500));
     }
-  }
+  };
 }
 
 function handleLiteServer<TState>(app: App<TState>): Handler {

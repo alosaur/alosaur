@@ -10,9 +10,6 @@ export interface RequestBodyFormDataParseOptions {
   parser?: (request: Request, contentType: string) => Promise<any>;
 }
 
-// type AsyncFunction = (response: Response) => Promise<void>;
-// export type NativeRequest = { request: Request; respondWith: AsyncFunction };
-
 /**
  * Request of context
  */
