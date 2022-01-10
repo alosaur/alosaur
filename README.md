@@ -81,7 +81,7 @@ And run
 
 ## Sponsors
 
-<a  align="center" href="https://opencollective.com/libertyware-limited" target="_blank"><img src="https://images.opencollective.com/libertyware-limited/647a24a/logo/256.png" width="100"></a>
+<a  align="center" href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/sponsors.svg?width=1000&t=2" width="200"></a>
 
 ### Backers
 
