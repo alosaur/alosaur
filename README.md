@@ -81,7 +81,7 @@ And run
 
 ## Sponsors
 
-<a  align="center" href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/sponsors.svg?width=1000&t=2" width="200"></a>
+<a align="center" href="https://opencollective.com/alosaur" target="_blank"><img src="https://opencollective.com/alosaur/sponsors.svg?width=1000&t=2" width="2000"></a>
 
 ### Backers
 
