@@ -43,12 +43,20 @@ export async function handleNativeServer<TState>(
   }
 }
 
-function respondWidthWrapper(
+function respondWithWrapper(
   respondWith: (r: Response | Promise<Response>) => Promise<void>,
+  conn: Deno.Conn,
 ): (r: Response | Promise<Response>) => Promise<void> {
   return (res: Response | Promise<Response>) =>
-    respondWith(res).catch((e) => {
-      console.error(`uncaught in respondWith`, e);
+    respondWith(res).catch(() => {
+      // respondWith() fails when the connection has already been closed, or there is some
+      // other error with responding on this connection that prompts us to
+      // close it and open a new connection.
+      try {
+        conn.close();
+      } catch {
+        // Connection has already been closed.
+      }
     });
 }
 
@@ -59,7 +67,7 @@ async function handleFullServer<TState>(
 ) {
   const requests = Deno.serveHttp(conn);
   for await (const request of requests) {
-    const respondWith = respondWidthWrapper(request.respondWith);
+    const respondWith = respondWithWrapper(request.respondWith, conn);
 
     metadata.container.register(SERVER_REQUEST, { useValue: request });
     const context = metadata.container.resolve<HttpContext<TState>>(
@@ -213,7 +221,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
   const requests = Deno.serveHttp(conn);
 
   for await (const request of requests) {
-    const respondWith = respondWidthWrapper(request.respondWith);
+    const respondWith = respondWithWrapper(request.respondWith, conn);
 
     const context = new HttpContext(request);
 
