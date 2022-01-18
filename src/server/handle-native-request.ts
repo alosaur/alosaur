@@ -91,7 +91,7 @@ async function handleFullServer<TState>(
 
       if (context.response.isImmediately()) {
         respondWith(
-          getResponse({ body: context.response.getRaw() } as ActionResult),
+          getResponse(context.response.getRaw() as ActionResult),
         );
         continue;
       }
