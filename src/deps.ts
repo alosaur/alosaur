@@ -14,4 +14,4 @@ export {
   sep,
 } from "https://deno.land/std@0.121.0/path/mod.ts";
 
-export { contentType } from "https://deno.land/x/media_types@v2.7.1/mod.ts";
+export { contentType } from "https://deno.land/x/media_types@v2.11.1/mod.ts";
