@@ -1,5 +1,5 @@
-import { Cookie, getCookies, setCookie } from "https://deno.land/std@0.116.0/http/cookie.ts";
-import { Response } from "https://deno.land/std@0.116.0/http/server.ts";
+import { Cookie, getCookies, setCookie } from "https://deno.land/std@0.121.0/http/cookie.ts";
+import { Response } from "https://deno.land/std@0.121.0/http/server.ts";
 import { App, Area, Controller, Get, Redirect, Req, Res, ServerRequest } from "alosaur/mod.ts";
 import { SseMiddleware } from "./sse.middlware.ts";
 

@@ -11,7 +11,7 @@ export async function startServer(serverPath: string): Promise<Deno.Process> {
       "--importmap=imports.json",
       "--unstable",
       "--config",
-      "./src/tsconfig.lib.json",
+      "deno.json",
       serverPath,
     ],
     stdout: "piped",
