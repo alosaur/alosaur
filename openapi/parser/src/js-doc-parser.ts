@@ -36,10 +36,6 @@ export function JsDocParse(doc?: JsDoc): JsDocObject {
       const value = node.value.trim();
 
       switch (true) {
-        case value.startsWith("@example"):
-          result.example = getStringValue(value, "@example");
-          break;
-
         case value.startsWith("@default"):
           result.default = getStringValue(value, "@default");
           break;
@@ -89,6 +85,8 @@ export function JsDocParse(doc?: JsDoc): JsDocObject {
         result.params = [];
       }
       result.params.push(node.name);
+    } else if (node.kind === "example") {
+      result.example = (node as DenoDoc.JsDocTagDoc).doc;
     }
   });
 
