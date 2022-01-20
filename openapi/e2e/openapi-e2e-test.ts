@@ -21,5 +21,3 @@ test({
     assertEquals(snapshot, JSON.stringify(builder.getSpec()));
   },
 });
-
-console.log();
