@@ -9,102 +9,100 @@ const ContentTypeJson = "application/json; charset=utf-8";
  */
 test({
   name: "[http] basic server, requests to home controller",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000/app/home";
 
-    itLog("/app/home", true);
-
     try {
       // It
-      itLog("\t /text?name=john&test=test");
+      await t.step("/text?name=john&test=test", async () => {
+        let response = await fetch(baseUrl + "/text?name=john&test=test");
+        let text = await response.text();
 
-      let response = await fetch(baseUrl + "/text?name=john&test=test");
-      let text = await response.text();
-
-      assertEquals(response.status, 200);
-      assertEquals(text, "Hello world, john test undefined");
-
-      // It
-      itLog("\t /json");
-
-      response = await fetch(baseUrl + "/json");
-      let json = await response.json();
-
-      assertEquals(response.headers.get("content-type"), ContentTypeJson);
-      assert(Object.keys(json)[0] == "headers");
+        assertEquals(response.status, 200);
+        assertEquals(text, "Hello world, john test undefined");
+      });
 
       // It
-      itLog("\t /error");
+      await t.step("/json", async () => {
+        let response = await fetch(baseUrl + "/json");
+        let json = await response.json();
 
-      response = await fetch(baseUrl + "/error");
-      console.log(response);
-
-      json = await response.json();
-
-      assertEquals(response.status, 403);
-      assertEquals(response.headers.get("content-type"), ContentTypeJson);
-      assertEquals(json.httpCode, 403);
-      assertEquals(json.name, "ForbiddenError");
-      assertEquals(json.message, "error");
+        assertEquals(response.headers.get("content-type"), ContentTypeJson);
+        assert(Object.keys(json)[0] == "headers");
+      });
 
       // It
-      itLog("\t /query?b=b&c=c&a=a");
+      await t.step("/error", async () => {
+        const response = await fetch(baseUrl + "/error");
 
-      response = await fetch(baseUrl + "/query?b=b&c=c&a=a");
-      json = await response.json();
+        const json = await response.json();
 
-      assertEquals(response.status, 200);
-      assertEquals(response.headers.get("content-type"), ContentTypeJson);
-      assertEquals(json.a, "a");
-      assertEquals(json.b, "b");
-      assertEquals(json.c, "c");
-      assertEquals(json.all.a, "a");
-      assertEquals(json.all.b, "b");
-      assertEquals(json.all.c, "c");
+        assertEquals(response.status, 403);
+        assertEquals(response.headers.get("content-type"), ContentTypeJson);
+        assertEquals(json.httpCode, 403);
+        assertEquals(json.name, "ForbiddenError");
+        assertEquals(json.message, "error");
+      });
 
       // It
-      itLog("\t /test");
+      await t.step("/query?b=b&c=c&a=a", async () => {
+        const response = await fetch(baseUrl + "/query?b=b&c=c&a=a");
+        const json = await response.json();
 
-      response = await fetch(baseUrl + "/test");
-      text = await response.text();
-
-      assertEquals(text, "test");
-
-      // It
-      itLog("\t /test/1");
-
-      response = await fetch(baseUrl + "/test/1");
-      text = await response.text();
-
-      assertEquals(text, "1");
-
-      // It
-      itLog("\t /test/1/john");
-
-      response = await fetch(baseUrl + "/test/1/john");
-      text = await response.text();
-
-      assertEquals(text, "1 john");
+        assertEquals(response.status, 200);
+        assertEquals(response.headers.get("content-type"), ContentTypeJson);
+        assertEquals(json.a, "a");
+        assertEquals(json.b, "b");
+        assertEquals(json.c, "c");
+        assertEquals(json.all.a, "a");
+        assertEquals(json.all.b, "b");
+        assertEquals(json.all.c, "c");
+      });
 
       // It
-      itLog("\t /test/1/john/detail");
+      await t.step("/test", async () => {
+        const response = await fetch(baseUrl + "/test");
+        const text = await response.text();
 
-      response = await fetch(baseUrl + "/test/1/john/detail");
-      text = await response.text();
-
-      assertEquals(text, "1 john this is details page");
+        assertEquals(text, "test");
+      });
 
       // It
-      itLog("\t /post");
+      await t.step("/test/1", async () => {
+        const response = await fetch(baseUrl + "/test/1");
+        const text = await response.text();
 
-      let body = JSON.stringify({ username: "john" });
-      response = await fetch(baseUrl + "/post", { method: "POST", body });
-      json = await response.json();
+        assertEquals(text, "1");
+      });
 
-      assertEquals(response.headers.get("content-type"), ContentTypeJson);
-      // TODO fix it
-      // assertEquals(json.username, 'john');
+      // It
+      await t.step("/test/1/john", async () => {
+        const response = await fetch(baseUrl + "/test/1/john");
+        const text = await response.text();
+        assertEquals(text, "1 john");
+      });
+
+      // It
+      // itLog("\t /test/1/john/detail");
+      await t.step("/test/1/john/detail", async () => {
+        const response = await fetch(baseUrl + "/test/1/john/detail");
+        const text = await response.text();
+
+        assertEquals(text, "1 john this is details page");
+      });
+
+      // It
+      // itLog("\t /post");
+      await t.step("/post", async () => {
+        let body = JSON.stringify({ username: "john" });
+        const response = await fetch(baseUrl + "/post", { method: "POST", body });
+        const json = await response.json();
+
+        assertEquals(response.headers.get("content-type"), ContentTypeJson);
+        // TODO fix it
+        // assertEquals(json.username, 'john');
+      });
     } finally {
       killServer(process);
     }
