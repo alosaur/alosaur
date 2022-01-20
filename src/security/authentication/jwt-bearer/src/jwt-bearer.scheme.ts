@@ -1,10 +1,6 @@
 import { AuthenticationScheme, Identity } from "../../core/auth.interface.ts";
 import { SecurityContext } from "../../../context/security-context.ts";
-import {
-  create,
-  getNumericDate,
-  verify,
-} from "https://deno.land/x/djwt@v2.3/mod.ts";
+import { create, getNumericDate, verify } from "https://deno.land/x/djwt@v2.3/mod.ts";
 import { Algorithm } from "https://deno.land/x/djwt@v2.3/algorithm.ts";
 import { Content } from "../../../../renderer/content.ts";
 

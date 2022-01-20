@@ -8,11 +8,7 @@ import {
 } from "./providers/index.ts";
 import Provider, { isProvider } from "./providers/provider.ts";
 import FactoryProvider from "./providers/factory-provider.ts";
-import InjectionToken, {
-  isConstructorToken,
-  isTokenDescriptor,
-  TokenDescriptor,
-} from "./providers/injection-token.ts";
+import InjectionToken, { isConstructorToken, isTokenDescriptor, TokenDescriptor } from "./providers/injection-token.ts";
 import TokenProvider from "./providers/token-provider.ts";
 import ValueProvider from "./providers/value-provider.ts";
 import ClassProvider from "./providers/class-provider.ts";
@@ -88,9 +84,7 @@ class InternalDependencyContainer implements DependencyContainer {
     ) {
       if (isValueProvider(provider) || isFactoryProvider(provider)) {
         throw new Error(
-          `Cannot use lifecycle "${
-            Lifecycle[options.lifecycle]
-          }" with ValueProviders or FactoryProviders`,
+          `Cannot use lifecycle "${Lifecycle[options.lifecycle]}" with ValueProviders or FactoryProviders`,
         );
       }
     }
@@ -229,8 +223,7 @@ class InternalDependencyContainer implements DependencyContainer {
     }
 
     const isSingleton = registration.options.lifecycle === Lifecycle.Singleton;
-    const isContainerScoped =
-      registration.options.lifecycle === Lifecycle.ContainerScoped;
+    const isContainerScoped = registration.options.lifecycle === Lifecycle.ContainerScoped;
 
     const returnInstance = isSingleton || isContainerScoped;
 
@@ -281,9 +274,7 @@ class InternalDependencyContainer implements DependencyContainer {
     }
 
     if (registrations) {
-      return registrations.map((item) =>
-        this.resolveRegistration<T>(item, context)
-      );
+      return registrations.map((item) => this.resolveRegistration<T>(item, context));
     }
 
     // No registration for this token, but since it's a constructor, return an instance
@@ -381,9 +372,7 @@ class InternalDependencyContainer implements DependencyContainer {
     context: ResolutionContext,
   ): T {
     if (ctor instanceof DelayedConstructor) {
-      return ctor.createProxy((target: constructor<T>) =>
-        this.resolve(target, context)
-      );
+      return ctor.createProxy((target: constructor<T>) => this.resolve(target, context));
     }
 
     if (ctor.length === 0) {
@@ -405,9 +394,7 @@ class InternalDependencyContainer implements DependencyContainer {
     return (param: ParamInfo, idx: number) => {
       try {
         if (isTokenDescriptor(param)) {
-          return param.multiple
-            ? this.resolveAll(param.token)
-            : this.resolve(param.token, context);
+          return param.multiple ? this.resolveAll(param.token) : this.resolve(param.token, context);
         }
         return this.resolve(param, context);
       } catch (e) {

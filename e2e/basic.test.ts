@@ -147,8 +147,7 @@ test({
 });
 
 test({
-  name:
-    "[http] basic server, request to health controller to test undefined controller and action route",
+  name: "[http] basic server, request to health controller to test undefined controller and action route",
   async fn(): Promise<void> {
     const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000/health";
@@ -170,8 +169,7 @@ test({
 });
 
 test({
-  name:
-    "[http] basic server, request to root controller to test empty full route",
+  name: "[http] basic server, request to root controller to test empty full route",
   async fn(): Promise<void> {
     const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000";

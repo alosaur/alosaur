@@ -1,9 +1,4 @@
-import {
-  assert,
-  assertEquals,
-  BufReader,
-  TextProtoReader,
-} from "../src/deps_test.ts";
+import { assert, assertEquals, BufReader, TextProtoReader } from "../src/deps_test.ts";
 import { itLog, killServer, startServer } from "./test.utils.ts";
 const { test } = Deno;
 

@@ -1,10 +1,6 @@
 import { DenoDoc } from "./deno-doc.model.ts";
 import * as oa from "../../builder/openapi-models.ts";
-import {
-  JsDocObject,
-  JsDocParse,
-  PropertyJsDocParse,
-} from "./js-doc-parser.ts";
+import { JsDocObject, JsDocParse, PropertyJsDocParse } from "./js-doc-parser.ts";
 import { getOpenApiMetadataArgsStorage } from "../../metadata/openapi-metadata.storage.ts";
 import TsType = DenoDoc.TsType;
 
@@ -70,9 +66,7 @@ export function getSchemeByDef(def: DenoDoc.RootDef): oa.SchemaObject {
   }
 
   // Parse properties
-  let properties = def.classDef
-    ? def.classDef.properties
-    : def.interfaceDef.properties;
+  let properties = def.classDef ? def.classDef.properties : def.interfaceDef.properties;
 
   if (properties) {
     result.properties = {};

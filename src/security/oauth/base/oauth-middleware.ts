@@ -58,8 +58,7 @@ export class OAuthMiddleware<TState> implements MiddlewareTarget<TState> {
 
         let userProfile;
 
-        const handlerProfile =
-          await (this.handler && this.handler.getProfileInfo(accessToken));
+        const handlerProfile = await (this.handler && this.handler.getProfileInfo(accessToken));
 
         if (handlerProfile) {
           userProfile = handlerProfile;

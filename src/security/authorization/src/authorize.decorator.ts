@@ -2,10 +2,7 @@ import { getMetadataArgsStorage } from "../../../mod.ts";
 import { HookTarget } from "../../../models/hook.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 import { BusinessType } from "../../../types/business.ts";
-import {
-  AuthenticationScheme,
-  Identity,
-} from "../../authentication/core/auth.interface.ts";
+import { AuthenticationScheme, Identity } from "../../authentication/core/auth.interface.ts";
 import { container } from "../../../injection/index.ts";
 import { AuthPolicy } from "./auth-policy.model.ts";
 
@@ -50,9 +47,7 @@ export class AutorizeHook implements
         await isPolicyValidResult(context, schemePayload.payload.policy);
     }
 
-    isAuthSuccess
-      ? schemePayload.scheme.onSuccessResult(context)
-      : schemePayload.scheme.onFailureResult(context);
+    isAuthSuccess ? schemePayload.scheme.onSuccessResult(context) : schemePayload.scheme.onFailureResult(context);
 
     return isAuthSuccess;
   }

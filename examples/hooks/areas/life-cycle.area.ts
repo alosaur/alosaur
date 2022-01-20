@@ -1,10 +1,4 @@
-import {
-  Area,
-  BadRequestError,
-  Controller,
-  Get,
-  UseHook,
-} from "alosaur/mod.ts";
+import { Area, BadRequestError, Controller, Get, UseHook } from "alosaur/mod.ts";
 import { AreaHook } from "../hooks/life-cycles/area.hook.ts";
 import { ControllerHook } from "./../hooks/life-cycles/controller.hook.ts";
 import { ActionHook } from "../hooks/life-cycles/action.hook.ts";

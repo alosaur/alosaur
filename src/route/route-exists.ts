@@ -1,9 +1,4 @@
-import {
-  getPathNameFromUrl,
-  getRouteFromFullPath,
-  getRouteWithRegex,
-  getRouteWithRouteParams,
-} from "./route.utils.ts";
+import { getPathNameFromUrl, getRouteFromFullPath, getRouteWithRegex, getRouteWithRouteParams } from "./route.utils.ts";
 import { RouteMetadata } from "../metadata/route.ts";
 
 export function routeExists(routes: RouteMetadata[], url: string): boolean {

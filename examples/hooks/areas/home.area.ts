@@ -1,12 +1,4 @@
-import {
-  Area,
-  BadRequestError,
-  Body,
-  Controller,
-  Get,
-  Post,
-  UseHook,
-} from "alosaur/mod.ts";
+import { Area, BadRequestError, Body, Controller, Get, Post, UseHook } from "alosaur/mod.ts";
 
 import { TokenHook } from "../hooks/token-hook.ts";
 import { CatchHook } from "../hooks/catch-hook.ts";

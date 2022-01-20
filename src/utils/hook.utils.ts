@@ -25,9 +25,7 @@ export async function resolveHooks<TState, TPayload>(
         await (hook as any).instance[actionName](context, hook.payload);
 
         if (context.response.isImmediately()) {
-          let reverseActionName: HookMethod = actionName === "onCatchAction"
-            ? "onCatchAction"
-            : "onPostAction";
+          let reverseActionName: HookMethod = actionName === "onCatchAction" ? "onCatchAction" : "onPostAction";
 
           // run reverse resolved hooks
           await runHooks(
@@ -37,8 +35,7 @@ export async function resolveHooks<TState, TPayload>(
           );
 
           if (context instanceof HttpContext) {
-            const respondWith =
-              (context.request.serverRequest as any).respondWith;
+            const respondWith = (context.request.serverRequest as any).respondWith;
             respondWith(getResponse(context.response.getMergedResult()));
           }
           return true;

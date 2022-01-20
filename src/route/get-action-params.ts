@@ -1,9 +1,6 @@
 import { getCookies } from "../deps.ts";
 import { RouteMetadata } from "../metadata/route.ts";
-import {
-  TransformBodyOption,
-  TransformConfigMap,
-} from "../models/transform-config.ts";
+import { TransformBodyOption, TransformConfigMap } from "../models/transform-config.ts";
 import { HttpContext } from "../models/http-context.ts";
 import { RequestBodyParseOptions } from "../models/request.ts";
 import { Context } from "../models/context.ts";
@@ -49,8 +46,7 @@ export async function getActionParams<T>(
 
       case "cookie":
         if (param.name) {
-          const cookies =
-            getCookies(context.request.serverRequest.request.headers) ||
+          const cookies = getCookies(context.request.serverRequest.request.headers) ||
             {};
           args.push(cookies[param.name]);
         } else {

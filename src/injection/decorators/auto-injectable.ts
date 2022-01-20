@@ -23,9 +23,7 @@ function autoInjectable(): (target: constructor<any>) => any {
             paramInfo.slice(args.length).map((type, index) => {
               try {
                 if (isTokenDescriptor(type)) {
-                  return type.multiple
-                    ? globalContainer.resolveAll(type.token)
-                    : globalContainer.resolve(type.token);
+                  return type.multiple ? globalContainer.resolveAll(type.token) : globalContainer.resolve(type.token);
                 }
                 return globalContainer.resolve(type);
               } catch (e) {

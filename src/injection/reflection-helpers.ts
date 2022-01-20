@@ -25,8 +25,7 @@ export function defineInjectionTokenMetadata(
     _propertyKey: string | symbol,
     parameterIndex: number,
   ): any {
-    const injectionTokens =
-      Reflect.getOwnMetadata(INJECTION_TOKEN_METADATA_KEY, target) || {};
+    const injectionTokens = Reflect.getOwnMetadata(INJECTION_TOKEN_METADATA_KEY, target) || {};
     injectionTokens[parameterIndex] = data;
     Reflect.defineMetadata(
       INJECTION_TOKEN_METADATA_KEY,

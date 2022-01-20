@@ -8,9 +8,8 @@ To run this example, run
 deno run  --unstable -A --config ./src/tsconfig.lib.json examples/eta/app.ts
 ```
 
-Alosaur will start a server at http://localhost:8000. Append the query `?name`
-to pass data into your template: try http://localhost:8000/?name=Ada or
-http://localhost:8000/?name=Alosaur%20user.
+Alosaur will start a server at http://localhost:8000. Append the query `?name` to pass data into your template: try
+http://localhost:8000/?name=Ada or http://localhost:8000/?name=Alosaur%20user.
 
 ![image](https://user-images.githubusercontent.com/25597854/92666064-72fec600-f2c5-11ea-9a70-1a93d6792c21.png)
 

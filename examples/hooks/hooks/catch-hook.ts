@@ -1,10 +1,4 @@
-import {
-  Content,
-  HookTarget,
-  HttpContext,
-  HttpError,
-  Singleton,
-} from "alosaur/mod.ts";
+import { Content, HookTarget, HttpContext, HttpError, Singleton } from "alosaur/mod.ts";
 import { FooService } from "../services/foo.service.ts";
 
 type PayloadType = string[];

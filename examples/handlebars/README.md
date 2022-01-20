@@ -2,15 +2,7 @@
 
 ```ts
 import { Handlebars } from "https://deno.land/x/handlebars@v0.2.2/mod.ts";
-import {
-  App,
-  Area,
-  Controller,
-  Get,
-  QueryParam,
-  View,
-  ViewRenderConfig,
-} from "https://deno.land/x/alosaur/mod.ts";
+import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from "https://deno.land/x/alosaur/mod.ts";
 
 @Controller("")
 export class HomeController {
@@ -46,8 +38,7 @@ const handle = new Handlebars({
 app.useViewRender({
   type: "handlebars",
   basePath: viewPath,
-  getBody: async (path: string, model: any, config: ViewRenderConfig) =>
-    await handle.renderView(path, model),
+  getBody: async (path: string, model: any, config: ViewRenderConfig) => await handle.renderView(path, model),
 });
 
 app.listen();
