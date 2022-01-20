@@ -2,5 +2,11 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
+  },
+  "fmt": {
+    "options": {
+      "useTabs": false,
+      "lineWidth": 120
+    }
   }
 }

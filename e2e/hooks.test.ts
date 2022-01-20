@@ -160,8 +160,7 @@ test({
  * https://github.com/alosaur/alosaur/issues/65
  */
 test({
-  name:
-    "[http] post hooks should read request.body() and write result body more 2 times",
+  name: "[http] post hooks should read request.body() and write result body more 2 times",
   async fn(): Promise<void> {
     const process = await startServer("./examples/hooks/app.ts");
     const baseUrl = "http://localhost:8000/post-hook";

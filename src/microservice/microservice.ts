@@ -1,10 +1,7 @@
 import { TcpContext, TcpServer, TcpServerConfig } from "./server/server.ts";
 import { registerAreas } from "../utils/register-areas.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";
-import {
-  container as defaultContainer,
-  DependencyContainer,
-} from "../injection/index.ts";
+import { container as defaultContainer, DependencyContainer } from "../injection/index.ts";
 import { getMetadataArgsStorage, ObjectKeyAny } from "../mod.ts";
 import { registerAppProviders } from "../utils/register-providers.ts";
 import { ProviderDeclaration } from "../types/provider-declaration.ts";
@@ -71,9 +68,7 @@ export class Microservice<TState> {
   public async listen() {
     // listen server and run actions by event
     console.log("Start listen");
-    return this.server.listen((rid: number, r: BufferSource) =>
-      this.handler(rid, r)
-    );
+    return this.server.listen((rid: number, r: BufferSource) => this.handler(rid, r));
   }
 
   private async handler(rid: number, r: BufferSource) {
@@ -84,9 +79,7 @@ export class Microservice<TState> {
     const [pattern, data] = req.split(this.delimeter);
 
     // Gets only one action
-    const action: RouteMetadata | undefined = this.actions.find((action) =>
-      action.eventOrPattern === pattern
-    );
+    const action: RouteMetadata | undefined = this.actions.find((action) => action.eventOrPattern === pattern);
 
     let actionResult;
 

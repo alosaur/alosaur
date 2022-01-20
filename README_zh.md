@@ -8,16 +8,12 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - **Area** - 程序的模块。
 - **Controller** - 控制器，用来控制程序的运行流程。
 - **Middleware** - 中间件，提供一个机制，可以方便地过滤HTTP请求
-- **Hooks** - 钩子，可用于模块、控制器或任务，有三个生命周期函数：
-  `onPreAction, onPostAction, onCatchAction`。
+- **Hooks** - 钩子，可用于模块、控制器或任务，有三个生命周期函数： `onPreAction, onPostAction, onCatchAction`。
 - **Decorators** - 装饰器，可用于SQL查询、cookie、参数、路由等。
-- **Dependency Injection** - 依赖注入，使用轻量级依赖项注入容器`microsoft/TSyringe`
-  ([more about alosaur injection](/src/injection)).
-- **Render pages** 可以使用任意的模板引擎.
-  [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
+- **Dependency Injection** - 依赖注入，使用轻量级依赖项注入容器`microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
+- **Render pages** 可以使用任意的模板引擎. [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
 
-想要尝试一下在[Deno Deploy](https://deno.com/deploy)中使用Alosaur框架吗?
-使用[Alosaur轻量版](https://github.com/alosaur/alosaur-lite)
+想要尝试一下在[Deno Deploy](https://deno.com/deploy)中使用Alosaur框架吗? 使用[Alosaur轻量版](https://github.com/alosaur/alosaur-lite)
 
 ---
 
@@ -25,33 +21,27 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 2021年
 
-- [x] 微服务 (TCP)
-      [范例](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+- [x] 微服务 (TCP) [范例](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [ ] CLI: run applications
-- [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
-      Alosaur openapi
+- [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 - [ ] Docs website
 
 1月-3月
 
 - [x] Response cache store, attribute
-- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi,
-      测试等等)
+- [x] 命令行工具: [alosaur/cli](https://github.com/alosaur/cli) (创建应用程序, 构建openapi, 测试等等)
 
 2020年第4季度 – 10-12月
 
 - [x] WebSocket
 - [x] SSE
-- [x] Add
-      [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
+- [x] Add [Alosaur security](https://github.com/alosaur/alosaur/tree/master/src/security).
   - [x] Identifications middlwares like session
-  - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`,
-        `identity`
+  - [x] SecurityContext: `context.security.auth.signOutAsync`, `signInAsync`, `identity`
   - [x] Authentication schemas (Cookies, JWT Bearer)
   - [x] Authorization decorators and hooks, roles, policy
-  - [x] External auth strategies, OAuth base handler (Google, Facebook, Twitter,
-        etc, examples)
+  - [x] External auth strategies, OAuth base handler (Google, Facebook, Twitter, etc, examples)
         [文档](https://github.com/alosaur/alosaur/tree/master/src/security/oauth),
         [范例](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 - [x] OpenAPI type reference
@@ -60,8 +50,7 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 
 ## 范例
 
-- [基础范例与OpenAPI v3
-  生成器(Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
+- [基础范例与OpenAPI v3生成器(Swagger)](https://github.com/alosaur/alosaur/tree/master/examples/basic)
 - [CORS中间件](https://github.com/alosaur/alosaur/tree/master/examples/cors)
 - [SPA中间件](https://github.com/alosaur/alosaur/tree/master/examples/spa)
 - [WebSocket中间件](https://github.com/alosaur/alosaur/tree/master/examples/ws)
@@ -74,26 +63,19 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
   [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 
 - [数据校验](https://github.com/alosaur/alosaur/tree/master/examples/validator)
-- [处理HTML
-  表单的multipart/form-data类型](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
+- [处理HTML表单的multipart/form-data类型](https://github.com/alosaur/alosaur/tree/master/examples/form-data)
 - [依赖注入](https://github.com/alosaur/alosaur/tree/master/examples/di)
 - [Docker](https://github.com/alosaur/alosaur/tree/master/examples/docker)
 - [钩子](https://github.com/alosaur/alosaur/tree/master/examples/hooks)
 - [微服务](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
-- [会话管理器, 认证与授权, OAuth,
-  Google登录等](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
+- [会话管理器, 认证与授权, OAuth,Google登录等](https://github.com/alosaur/alosaur/blob/master/examples/auth/app.ts)
 
 ## 一个简单的例子
 
 app.ts:
 
 ```typescript
-import {
-  App,
-  Area,
-  Controller,
-  Get,
-} from "https://deno.land/x/alosaur@v0.28.0/mod.ts";
+import { App, Area, Controller, Get } from "https://deno.land/x/alosaur@v0.28.0/mod.ts";
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
@@ -125,8 +107,7 @@ app.listen();
 
 # TODO
 
-- [x] 增加模板渲染，支持[Dejs](https://github.com/syumai/dejs)
-      和[Handlebars](https://github.com/alosaur/handlebars)
+- [x] 增加模板渲染，支持[Dejs](https://github.com/syumai/dejs) 和[Handlebars](https://github.com/alosaur/handlebars)
 - [x] 增加返回JSON类型的数据
 
 - 增加装饰器:
@@ -441,16 +422,12 @@ app.use(/\//, new Log());
 [完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/ws)
 
 ```ts
-import { acceptWebSocket } from "https://deno.land/std@0.116.0/ws/mod.ts";
-import {
-  HttpContext,
-  PreRequestMiddleware,
-} from "https://deno.land/x/alosaur/mod.ts";
+import { acceptWebSocket } from "https://deno.land/std@0.122.0/ws/mod.ts";
+import { HttpContext, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
   onPreRequest(context: HttpContext) {
-    const { conn, r: bufReader, w: bufWriter, headers } =
-      context.request.serverRequest;
+    const { conn, r: bufReader, w: bufWriter, headers } = context.request.serverRequest;
 
     acceptWebSocket({
       conn,
@@ -476,11 +453,7 @@ export class WebsocketMiddleware implements PreRequestMiddleware {
 [完整的示例](https://github.com/alosaur/alosaur/tree/master/examples/sse)
 
 ```ts
-import {
-  acceptSSE,
-  HttpContext,
-  PreRequestMiddleware,
-} from "https://deno.land/x/alosaur/mod.ts";
+import { acceptSSE, HttpContext, PreRequestMiddleware } from "https://deno.land/x/alosaur/mod.ts";
 
 export class SseMiddleware implements PreRequestMiddleware {
   async onPreRequest(context: HttpContext) {
@@ -564,8 +537,7 @@ app.error((context: Context<any>, error: Error) => {
 
 - **Content** 类似 `return {};` 默认会返回`200 OK`
 - **View** 使用模板引擎渲染输出结果, `return View("index", model);`
-- **Redirect** 和 **RedirectPermanent** 返回HTTP 301,302
-  `return Redirect('/to/page')`
+- **Redirect** 和 **RedirectPermanent** 返回HTTP 301,302 `return Redirect('/to/page')`
 
 [完整的范例](https://github.com/alosaur/alosaur/tree/master/src/renderer)
 
@@ -581,11 +553,9 @@ return View("page", 404); // 返回HTTP 404
 
 ## 模板渲染
 
-Alosaur支持任何HTML模板引擎. 你只需要在settings中定义一个渲染函数。 例如
-[Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
+Alosaur支持任何HTML模板引擎. 你只需要在settings中定义一个渲染函数。 例如 [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
 [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars),
-[Angular](https://github.com/alosaur/angular_deno),
-[React](https://github.com/alosaur/react),
+[Angular](https://github.com/alosaur/angular_deno), [React](https://github.com/alosaur/react),
 [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)
 
 ```ts
@@ -606,8 +576,7 @@ app.useViewRender({
 ...
 ```
 
-可以为Handlebars进行配置,
-[more about handlebars for deno](https://github.com/alosaur/handlebars)
+可以为Handlebars进行配置, [more about handlebars for deno](https://github.com/alosaur/handlebars)
 
 ```ts
 new Handlebars(
@@ -630,8 +599,8 @@ new Handlebars(
 默认情况下使用在控制器方法中使用`@Body`解析通过HTML表单上传的文件.
 
 ```ts
-import { FormFile } from "https://deno.land/std@0.116.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.116.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.122.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.122.0/fs/move.ts";
 
 ...
 
@@ -681,8 +650,7 @@ post.model.ts:
 ```ts
 import validator from "https://jspm.dev/class-validator@0.8.5";
 
-const { Length, Contains, IsInt, Min, Max, IsEmail, IsFQDN, IsDate } =
-  validator;
+const { Length, Contains, IsInt, Min, Max, IsEmail, IsFQDN, IsDate } = validator;
 
 export class PostModel {
   @Length(10, 20)
@@ -706,13 +674,7 @@ app.ts
 ```ts
 import validator from "https://jspm.dev/class-validator@0.8.5";
 import transformer from "https://jspm.dev/class-transformer@0.2.3";
-import {
-  App,
-  Area,
-  Body,
-  Controller,
-  Post,
-} from "https://deno.land/x/alosaur/mod.ts";
+import { App, Area, Body, Controller, Post } from "https://deno.land/x/alosaur/mod.ts";
 import { PostModel } from "./post.model.ts";
 
 const { validate } = validator;

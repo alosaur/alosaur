@@ -8,18 +8,10 @@ import { registerAreas } from "../src/utils/register-areas.ts";
 import { OpenApiBuilder } from "./builder/openapi-builder.ts";
 import * as oa from "./builder/openapi-models.ts";
 import { getDenoDoc } from "./parser/src/deno-doc-reader.ts";
-import {
-  getOpenApiMetadataArgsStorage,
-  OpenApiArgsStorage,
-} from "./metadata/openapi-metadata.storage.ts";
+import { getOpenApiMetadataArgsStorage, OpenApiArgsStorage } from "./metadata/openapi-metadata.storage.ts";
 import { ParamType } from "../src/types/param.ts";
 import { DenoDoc } from "./parser/src/deno-doc.model.ts";
-import {
-  getParsedNames,
-  getSchemeByDef,
-  getShemeByEnumDef,
-  ParsedNamesDocMap,
-} from "./parser/src/utils.ts";
+import { getParsedNames, getSchemeByDef, getShemeByEnumDef, ParsedNamesDocMap } from "./parser/src/utils.ts";
 import { JsDocObject, JsDocParse } from "./parser/src/js-doc-parser.ts";
 
 /**

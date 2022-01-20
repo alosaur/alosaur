@@ -73,8 +73,7 @@ export interface OAuthOptions {
 
 #### Success redirect
 
-After success login user redirected to successLoginPath, you should create this
-action, for example:
+After success login user redirected to successLoginPath, you should create this action, for example:
 
 ```ts
 @Get("/external-success")
@@ -117,8 +116,7 @@ UseGoogleOAuth(app, {
 
 ## Custom strategy?
 
-You can extends base classes OAuthMiddleware and OAuthHandler, or only rewrite
-custom options.
+You can extends base classes OAuthMiddleware and OAuthHandler, or only rewrite custom options.
 
 For example:
 

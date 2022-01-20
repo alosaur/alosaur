@@ -186,7 +186,9 @@ export namespace DenoDoc {
     | "constructor"
     | "deprecated"
     | "enum"
+    | "example"
     | "extends"
+    | "module"
     | "param"
     | "public"
     | "private"
@@ -215,11 +217,11 @@ export namespace DenoDoc {
   }
 
   export interface JsDocTagOnly extends JsDocTagBase {
-    kind: "constructor" | "public" | "private" | "protected" | "readonly";
+    kind: "constructor" | "public" | "private" | "protected" | "readonly" | "example";
   }
 
   export interface JsDocTagDoc extends JsDocTagBase {
-    kind: "deprecated";
+    kind: "deprecated" | "example";
     doc?: string;
   }
 

@@ -1,14 +1,6 @@
 import { renderFileToString } from "https://deno.land/x/dejs@0.10.1/mod.ts";
-import {
-  App,
-  Area,
-  Controller,
-  Get,
-  QueryParam,
-  View,
-  ViewRenderConfig,
-} from "alosaur/mod.ts";
-import { normalize } from "https://deno.land/std@0.116.0/path/mod.ts";
+import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from "alosaur/mod.ts";
+import { normalize } from "https://deno.land/std@0.122.0/path/mod.ts";
 
 @Controller("")
 export class HomeController {

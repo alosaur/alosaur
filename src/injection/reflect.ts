@@ -748,15 +748,13 @@ export namespace Reflect {
         : <V>() => MakeDictionary({} as HashMap<V>),
 
       has: downLevel
-        ? <V>(map: HashMap<V>, key: string | number | symbol) =>
-          hasOwn.call(map, key)
+        ? <V>(map: HashMap<V>, key: string | number | symbol) => hasOwn.call(map, key)
         : <V>(map: HashMap<V>, key: string | number | symbol) => key in map,
 
       get: downLevel
         ? <V>(map: HashMap<V>, key: string | number | symbol): V | undefined =>
           hasOwn.call(map, key) ? map[key as string | number] : undefined
-        : <V>(map: HashMap<V>, key: string | number | symbol): V | undefined =>
-          map[key as string | number],
+        : <V>(map: HashMap<V>, key: string | number | symbol): V | undefined => map[key as string | number],
     };
 
     // Load global or shim versions of Map, Set, and WeakMap
@@ -771,10 +769,7 @@ export namespace Reflect {
         typeof Set.prototype.entries === "function"
       ? Set
       : CreateSetPolyfill();
-    const _WeakMap: typeof WeakMap =
-      !usePolyfill && typeof WeakMap === "function"
-        ? WeakMap
-        : CreateWeakMapPolyfill();
+    const _WeakMap: typeof WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
 
     // [[Metadata]] internal slot
     // https://rbuckton.github.io/reflect-metadata/#ordinary-object-internal-methods-and-internal-slots
@@ -1850,8 +1845,7 @@ export namespace Reflect {
       const cacheSentinel = {};
       const arraySentinel: any[] = [];
 
-      class MapIterator<K, V, R extends (K | V | [K, V])>
-        implements IterableIterator<R> {
+      class MapIterator<K, V, R extends (K | V | [K, V])> implements IterableIterator<R> {
         private _keys: K[];
         private _values: V[];
         private _index = 0;
@@ -2038,9 +2032,7 @@ export namespace Reflect {
         }
         get(target: K): V {
           const table = GetOrCreateWeakMapTable<K>(target, /*create*/ false);
-          return table !== undefined
-            ? HashMap.get(table, this._key)
-            : undefined;
+          return table !== undefined ? HashMap.get(table, this._key) : undefined;
         }
         set(target: K, value: V): WeakMap<K, V> {
           const table = GetOrCreateWeakMapTable<K>(target, /*create*/ true);

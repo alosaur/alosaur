@@ -1,7 +1,4 @@
-import {
-  getOpenApiMetadataArgsStorage,
-  OpenApiActionData,
-} from "./openapi-metadata.storage.ts";
+import { getOpenApiMetadataArgsStorage, OpenApiActionData } from "./openapi-metadata.storage.ts";
 
 /**
  * Registers an action to be executed when request comes on a given route.

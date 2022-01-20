@@ -1,12 +1,12 @@
 import { AlosaurOpenApiBuilder } from "../mod.ts";
 import { ProductAppSettings } from "./app.ts";
 
+const docs = await AlosaurOpenApiBuilder.parseDenoDoc(
+  "./openapi/e2e/app.ts",
+);
+
 export const OpenApiBuilder = AlosaurOpenApiBuilder.create(ProductAppSettings)
-  .addDenoDocs(
-    await AlosaurOpenApiBuilder.parseDenoDoc(
-      "./openapi/e2e/app.ts",
-    ),
-  )
+  .addDenoDocs(docs)
   .registerControllers()
   .addSchemeComponents()
   .addTitle("Product Application2")

@@ -1,9 +1,5 @@
 import { SessionInterface } from "./session/src/session.interface.ts";
-import {
-  AuthenticationScheme,
-  AuthInterface,
-  Identity,
-} from "./authentication/core/auth.interface.ts";
+import { AuthenticationScheme, AuthInterface, Identity } from "./authentication/core/auth.interface.ts";
 import { SecurityContext } from "./context/security-context.ts";
 
 const noopIdentity = () => undefined;

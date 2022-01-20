@@ -1,12 +1,10 @@
 ## Authorization & Authentication
 
-[Example app with authorization &
-authentication](https://github.com/alosaur/alosaur/tree/master/examples/auth)
+[Example app with authorization &authentication](https://github.com/alosaur/alosaur/tree/master/examples/auth)
 
 #### AuthenticationScheme
 
-Need for use security context, authentificate, verify, signin, signout and more
-methods.
+Need for use security context, authentificate, verify, signin, signout and more methods.
 
 Now available CookiesAuthentication.DefaultScheme and JwtBearerScheme.
 
@@ -46,9 +44,8 @@ export interface AuthenticationScheme {
 
 Contains types that enable support for Cookies based authentication.
 
-You can use default CookiesAuthentication.DefaultScheme with signIn url. or
-extends from CookiesScheme for create other cases, for example extend
-onFailureResult
+You can use default CookiesAuthentication.DefaultScheme with signIn url. or extends from CookiesScheme for create other
+cases, for example extend onFailureResult
 
 ```ts
 export namespace CookiesAuthentication {
@@ -58,8 +55,7 @@ export namespace CookiesAuthentication {
 }
 ```
 
-For use Alosaur Authorization with CookiesScheme you need create session
-middleware.
+For use Alosaur Authorization with CookiesScheme you need create session middleware.
 
 [More about Alosaur session middleware](https://github.com/alosaur/alosaur/tree/master/src/security/session)
 
@@ -136,8 +132,7 @@ Note: JwtBearerScheme not suported signOut
 
 This context you can use in various methods and middlewares.
 
-SecurityContext extend Context and has methods: signInAsync, signOutAsync,
-identity.
+SecurityContext extend Context and has methods: signInAsync, signOutAsync, identity.
 
 For create this context you execute this action in App:
 
@@ -213,8 +208,7 @@ export class AuthService {
 
 ### Decorators
 
-`@Authorize(scheme, payload)` - Hook decorator for guard actions, controllers
-and areas.
+`@Authorize(scheme, payload)` - Hook decorator for guard actions, controllers and areas.
 
 ```ts
 @Authorize(CookiesAuthentication.DefaultScheme)

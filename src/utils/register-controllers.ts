@@ -19,12 +19,8 @@ export function registerControllers<TState>(
   // example: new Map(); key = route, value = object
 
   metadata.controllers.forEach((controller) => {
-    const actions = getMetadataArgsStorage().actions.filter((action) =>
-      action.target === controller.target
-    );
-    const params = getMetadataArgsStorage().params.filter((param) =>
-      param.target === controller.target
-    );
+    const actions = getMetadataArgsStorage().actions.filter((action) => action.target === controller.target);
+    const params = getMetadataArgsStorage().params.filter((param) => param.target === controller.target);
 
     controller.actions = actions;
 
@@ -64,9 +60,7 @@ export function registerControllers<TState>(
         fullRoute += controller.route;
       }
 
-      const regexpRoute: RegExp | undefined = action.route instanceof RegExp
-        ? action.route
-        : undefined;
+      const regexpRoute: RegExp | undefined = action.route instanceof RegExp ? action.route : undefined;
 
       if (!regexpRoute && action.route) {
         fullRoute += action.route;

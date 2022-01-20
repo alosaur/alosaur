@@ -1,15 +1,7 @@
-import {
-  Area,
-  Body,
-  Controller,
-  Ctx,
-  Get,
-  HttpContext,
-  Post,
-} from "alosaur/mod.ts";
+import { Area, Body, Controller, Ctx, Get, HttpContext, Post } from "alosaur/mod.ts";
 
-import { FormFile } from "https://deno.land/std@0.116.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.116.0/fs/move.ts";
+import { FormFile } from "https://deno.land/std@0.122.0/mime/multipart.ts";
+import { move } from "https://deno.land/std@0.122.0/fs/move.ts";
 
 @Controller()
 export class CoreController {

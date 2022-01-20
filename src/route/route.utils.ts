@@ -41,9 +41,7 @@ export const getRouteFromFullPath = (
   pathname: string,
   method?: string,
 ): RouteMetadata | undefined => {
-  return routes.find((r) =>
-    allowedMethod(r.method, method) && r.route === pathname
-  );
+  return routes.find((r) => allowedMethod(r.method, method) && r.route === pathname);
 };
 
 export const getRouteWithRegex = (

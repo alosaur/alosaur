@@ -1,5 +1,4 @@
-Response cashe is hook, for save response in first, and immidiately send data in
-next request.
+Response cashe is hook, for save response in first, and immidiately send data in next request.
 
 For use this hook provide, CasheStore in root:
 
@@ -29,7 +28,5 @@ And use decorator `@ResponseCache` in controller or action
 
 ResponseCachePayload
 
-- duration: number; Time duration cache in ms. Denotes how long the value from
-  the cache will be returned
-- getHash?: (context: Context) => string; Function for gets hash by context,
-  default hash by serverRequest.url
+- duration: number; Time duration cache in ms. Denotes how long the value from the cache will be returned
+- getHash?: (context: Context) => string; Function for gets hash by context, default hash by serverRequest.url

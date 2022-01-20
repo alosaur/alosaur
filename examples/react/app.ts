@@ -11,8 +11,7 @@ const app = new App({
 app.useViewRender({
   type: "react",
   basePath: `${Deno.cwd()}/examples/react/views/`,
-  getBody: async (path: string, model: Object, config: any) =>
-    await getPage(path, model),
+  getBody: async (path: string, model: Object, config: any) => await getPage(path, model),
 });
 
 app.listen();

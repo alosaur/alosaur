@@ -8,17 +8,14 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 ![sponsors](https://opencollective.com/alosaur/sponsors/badge.svg)
 
 - **Area** - these are the modules of your application.
-- **Controller** - are responsible for controlling the flow of the application
-  execution.
-- **Middleware** - provide a convenient mechanism for filtering HTTP requests
-  entering your application.
-- **Hooks** - middleware for area, controller and actions with support DI. Have
-  3 life cyclic functions: `onPreAction, onPostAction, onCatchAction`
+- **Controller** - are responsible for controlling the flow of the application execution.
+- **Middleware** - provide a convenient mechanism for filtering HTTP requests entering your application.
+- **Hooks** - middleware for area, controller and actions with support DI. Have 3 life cyclic functions:
+  `onPreAction, onPostAction, onCatchAction`
 - **Decorators** - for query, cookie, parametrs, routes and etc.
-- **Dependency Injection** - for all controllers and hooks by default from
-  `microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
-- **Render pages** any template render engine.
-  [(more)](https://github.com/alosaur/alosaur#render-pages)
+- **Dependency Injection** - for all controllers and hooks by default from `microsoft/TSyringe`
+  ([more about alosaur injection](/src/injection)).
+- **Render pages** any template render engine. [(more)](https://github.com/alosaur/alosaur#render-pages)
 
 [中文说明](https://github.com/alosaur/alosaur/blob/master/README_zh.md)
 
@@ -29,12 +26,10 @@ How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
 
 ## Features roadmap
 
-- [x] Microservices (TCP)
-      [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
+- [x] Microservices (TCP) [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
 - [x] Docs website
 - [ ] CLI: run applications
-- [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with
-      Alosaur openapi
+- [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with Alosaur openapi
 - [ ] Background process, BackgroundService, WebJobs, cron
 
 ---
@@ -44,12 +39,7 @@ How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
 app.ts:
 
 ```typescript
-import {
-  App,
-  Area,
-  Controller,
-  Get,
-} from "https://deno.land/x/alosaur@v0.35.1/mod.ts";
+import { App, Area, Controller, Get } from "https://deno.land/x/alosaur@v0.35.1/mod.ts";
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
