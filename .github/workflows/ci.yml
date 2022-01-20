@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-18.04
         strategy:
             matrix:
-                deno: [1.16.0]
+                deno: [1.18.0]
         name: Deno ${{ matrix.deno }}
         steps:
             - uses: actions/checkout@master
@@ -18,6 +18,6 @@ jobs:
             - name: fmt check
               run: deno fmt --check 
             - name: Test
-              run: deno test -A --config ./src/tsconfig.lib.json --importmap=imports.json
+              run: deno test -A --importmap=imports.json
             - name: Snaphot test OpenApi e2e
-              run: deno test -A --config ./src/tsconfig.lib.json openapi/e2e/openapi-e2e-test.ts --importmap=imports.json
+              run: deno test -A openapi/e2e/openapi-e2e-test.ts --importmap=imports.json
