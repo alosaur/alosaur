@@ -75,7 +75,7 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 app.ts:
 
 ```typescript
-import { App, Area, Controller, Get } from "https://deno.land/x/alosaur@v0.28.0/mod.ts";
+import { App, Area, Controller, Get } from "https://deno.land/x/alosaur@v0.36.0/mod.ts";
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
