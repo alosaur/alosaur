@@ -1,5 +1,5 @@
 import { assertEquals } from "../src/deps_test.ts";
-import { itLog, killServer, startServer } from "./test.utils.ts";
+import { killServer, startServer } from "./test.utils.ts";
 const { test } = Deno;
 
 /**
@@ -7,36 +7,28 @@ const { test } = Deno;
  */
 test({
   name: "[http] spa server, requests to info controller",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/spa/app.ts");
     const baseUrl = "http://localhost:8000";
 
-    itLog("/", true);
-
     try {
-      // It
-      itLog("\t ''");
-
-      let response = await fetch(baseUrl);
-      let text = await response.text();
-
+      // await t.step("/", async () => {
+      const response = await fetch(baseUrl);
+      const text = await response.text();
       assertEquals(response.status, 404);
+      // });
 
-      // It
-      itLog("\t '/www'");
+      await t.step("/www", async () => {
+        const response = await fetch(baseUrl + "/www");
+        const text = await response.text();
+        assertEquals(response.status, 200);
+      });
 
-      response = await fetch(baseUrl + "/www");
-      text = await response.text();
-
-      assertEquals(response.status, 200);
-
-      // It
-      itLog("\t '/www/spa-route'");
-
-      response = await fetch(baseUrl + "/www/spa-route");
-      text = await response.text();
-
-      assertEquals(response.status, 200);
+      await t.step("/www/spa-route", async () => {
+        const response = await fetch(baseUrl + "/www/spa-route");
+        const text = await response.text();
+        assertEquals(response.status, 200);
+      });
     } finally {
       killServer(process);
     }

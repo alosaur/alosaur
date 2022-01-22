@@ -1,4 +1,4 @@
-import { App, Area, Content, Controller, Get, HttpError } from "../../mod.ts";
+import { Area, Controller, Get } from "../../mod.ts";
 import { BadRequestError } from "../../src/http-error/BadRequestError.ts";
 
 @Controller()

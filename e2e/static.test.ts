@@ -1,5 +1,5 @@
 import { assertEquals } from "../src/deps_test.ts";
-import { itLog, killServer, startServer } from "./test.utils.ts";
+import { killServer, startServer } from "./test.utils.ts";
 const { test } = Deno;
 
 /**
@@ -7,29 +7,25 @@ const { test } = Deno;
  */
 test({
   name: "[http] static server, requests to index.html",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/static/app.ts");
     const baseUrl = "http://localhost:8000";
 
-    itLog("/", true);
-
     try {
-      // It
-      itLog("\t ''");
+      await t.step("/", async () => {
+        const response = await fetch(baseUrl);
+        const text = await response.text();
 
-      let response = await fetch(baseUrl);
-      let text = await response.text();
+        assertEquals(response.status, 404);
+      });
 
-      assertEquals(response.status, 404);
+      await t.step("/www/index.html", async () => {
+        const response = await fetch(baseUrl + "/www/index.html");
+        const text = await response.text();
 
-      // It
-      itLog("\t '/www/index.html'");
-
-      response = await fetch(baseUrl + "/www/index.html");
-      text = await response.text();
-
-      assertEquals(response.status, 200);
-      assertEquals(text, StaticIndexHtmlText);
+        assertEquals(response.status, 200);
+        assertEquals(text, StaticIndexHtmlText);
+      });
     } finally {
       killServer(process);
     }
