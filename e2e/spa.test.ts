@@ -13,9 +13,9 @@ test({
 
     try {
       // await t.step("/", async () => {
-        const response = await fetch(baseUrl);
-        const text = await response.text();
-        assertEquals(response.status, 404);
+      const response = await fetch(baseUrl);
+      const text = await response.text();
+      assertEquals(response.status, 404);
       // });
 
       await t.step("/www", async () => {
