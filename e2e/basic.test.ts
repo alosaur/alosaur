@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "../src/deps_test.ts";
-import { itLog, killServer, startServer } from "./test.utils.ts";
+import { killServer, startServer } from "./test.utils.ts";
 const { test } = Deno;
 
 const ContentTypeJson = "application/json; charset=utf-8";
@@ -84,7 +84,6 @@ test({
       });
 
       // It
-      // itLog("\t /test/1/john/detail");
       await t.step("/test/1/john/detail", async () => {
         const response = await fetch(baseUrl + "/test/1/john/detail");
         const text = await response.text();
@@ -93,7 +92,6 @@ test({
       });
 
       // It
-      // itLog("\t /post");
       await t.step("/post", async () => {
         let body = JSON.stringify({ username: "john" });
         const response = await fetch(baseUrl + "/post", { method: "POST", body });
@@ -114,30 +112,26 @@ test({
  */
 test({
   name: "[http] basic server, requests to info controller",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000/test/info";
 
-    itLog("/test/info", true);
-
     try {
-      // It
-      itLog("\t ''");
+      await t.step("/test/info", async () => {
+        const response = await fetch(baseUrl);
+        const text = await response.text();
 
-      let response = await fetch(baseUrl);
-      let text = await response.text();
+        assertEquals(response.status, 200);
+        assertEquals(text, "Hello info");
+      });
 
-      assertEquals(response.status, 200);
-      assertEquals(text, "Hello info");
+      await t.step("/test/info/", async () => {
+        const response = await fetch(baseUrl + "/");
+        const text = await response.text();
 
-      // It
-      itLog("\t '/'");
-
-      response = await fetch(baseUrl + "/");
-      text = await response.text();
-
-      assertEquals(response.status, 200);
-      assertEquals(text, "Hello info");
+        assertEquals(response.status, 200);
+        assertEquals(text, "Hello info");
+      });
     } finally {
       killServer(process);
     }
@@ -146,20 +140,18 @@ test({
 
 test({
   name: "[http] basic server, request to health controller to test undefined controller and action route",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000/health";
 
-    itLog("/health", true);
-
     try {
-      // It
-      itLog("\t ''");
-      const response = await fetch(baseUrl);
-      const json = await response.json();
+      await t.step("/health", async () => {
+        const response = await fetch(baseUrl);
+        const json = await response.json();
 
-      assertEquals(response.status, 200);
-      assertEquals(json.status, "pass");
+        assertEquals(response.status, 200);
+        assertEquals(json.status, "pass");
+      });
     } finally {
       killServer(process);
     }
@@ -168,26 +160,24 @@ test({
 
 test({
   name: "[http] basic server, request to root controller to test empty full route",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/basic/app.ts");
     const baseUrl = "http://localhost:8000";
 
-    itLog("root ''", true);
-
     try {
-      // It
-      itLog("\t ''");
-      let response = await fetch(baseUrl);
-      let text = await response.text();
-      assertEquals(response.status, 200);
-      assertEquals(text, "root page");
+      await t.step("", async () => {
+        const response = await fetch(baseUrl);
+        const text = await response.text();
+        assertEquals(response.status, 200);
+        assertEquals(text, "root page");
+      });
 
-      // It
-      itLog("\t '/'");
-      response = await fetch(`${baseUrl}/`);
-      text = await response.text();
-      assertEquals(response.status, 200);
-      assertEquals(text, "root page");
+      await t.step("/", async () => {
+        const response = await fetch(`${baseUrl}/`);
+        const text = await response.text();
+        assertEquals(response.status, 200);
+        assertEquals(text, "root page");
+      });
     } finally {
       killServer(process);
     }
@@ -196,21 +186,19 @@ test({
 
 test({
   name: "[http] basic server, return native response",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/basic/app.ts");
 
-    itLog("root ''", true);
-
     try {
-      // It
-      itLog("\t 'app/home/response-test'");
-      let response = await fetch(
-        "http://localhost:8000/app/home/response-test",
-      );
-      let text = await response.text();
-      assertEquals(response.status, 201);
-      assertEquals(response.headers.get("x-alosaur-header"), "test");
-      assertEquals(text, "Object created");
+      await t.step("app/home/response-test", async () => {
+        let response = await fetch(
+          "http://localhost:8000/app/home/response-test",
+        );
+        let text = await response.text();
+        assertEquals(response.status, 201);
+        assertEquals(response.headers.get("x-alosaur-header"), "test");
+        assertEquals(text, "Object created");
+      });
     } finally {
       killServer(process);
     }

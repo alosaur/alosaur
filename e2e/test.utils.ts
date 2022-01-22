@@ -33,7 +33,3 @@ export function killServer(process: Deno.Process): void {
   process.close();
   (process.stdout as any)?.close();
 }
-
-export function itLog(s: string, firstIt = false): void {
-  firstIt ? console.log("\n" + s) : console.log(s);
-}

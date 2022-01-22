@@ -1,5 +1,5 @@
 import { assertEquals } from "../src/deps_test.ts";
-import { itLog, killServer, startServer } from "./test.utils.ts";
+import { killServer, startServer } from "./test.utils.ts";
 const { test } = Deno;
 
 /**
@@ -7,21 +7,18 @@ const { test } = Deno;
  */
 test({
   name: "[http] middleware test",
-  async fn(): Promise<void> {
+  async fn(t): Promise<void> {
     const process = await startServer("./examples/middlewares/app.ts");
     const baseUrl = "http://localhost:8000/app/home";
 
-    itLog("/app/home", true);
-
     try {
-      // It
-      itLog("\t /test?name=john&test=test");
+      await t.step("/app/home/test?name=john&test=test", async () => {
+        const response = await fetch(baseUrl + "/test?name=john&test=test");
+        const text = await response.text();
 
-      let response = await fetch(baseUrl + "/test?name=john&test=test");
-      let text = await response.text();
-
-      assertEquals(response.status, 200);
-      assertEquals(text, "8");
+        assertEquals(response.status, 200);
+        assertEquals(text, "8");
+      });
     } finally {
       killServer(process);
     }
