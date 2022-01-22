@@ -29,8 +29,9 @@ test({
             assertEquals(message.data, "Connected: [1]");
             ws.onmessage = (message: { data: string }) => {
               assertEquals(message.data, "[1]: Hello");
+
               ws.close();
-              reject();
+              // reject();
               resolve();
             };
             ws.send("Hello");
