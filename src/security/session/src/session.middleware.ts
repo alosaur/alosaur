@@ -3,7 +3,7 @@ import { MiddlewareTarget } from "../../../models/middleware-target.ts";
 import { HttpContext } from "../../../models/http-context.ts";
 import { SessionStore } from "./store/store.interface.ts";
 import { Session } from "./session.instance.ts";
-import { getCookies, setCookie } from "https://deno.land/std@0.122.0/http/cookie.ts";
+import { getCookies, setCookie } from "https://deno.land/std@0.132.0/http/cookie.ts";
 import { SESSION_SIGNATURE_PREFIX_KEY, SessionOptions } from "./session.interface.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 
