@@ -202,8 +202,10 @@ types:
 
 ```TypeScript
 {
-  token: InjectionToken<T>;
-  useClass: constructor<T>;
+  token:
+  InjectionToken<T>;
+  useClass:
+  constructor<T>;
 }
 ```
 
@@ -214,8 +216,10 @@ constructor itself, unless of course you're making an alias (a class provider wh
 
 ```TypeScript
 {
-  token: InjectionToken<T>;
-  useValue: T
+  token:
+  InjectionToken<T>;
+  useValue:
+  T;
 }
 ```
 
@@ -226,8 +230,10 @@ a already been instantiated in a particular way.
 
 ```TypeScript
 {
-  token: InjectionToken<T>;
-  useFactory: FactoryFunction<T>;
+  token:
+  InjectionToken<T>;
+  useFactory:
+  FactoryFunction<T>;
 }
 ```
 
@@ -279,8 +285,10 @@ import { predicateAwareClassFactory } from "https://deno.land/x/alosaur/mod.ts";
 
 ```TypeScript
 {
-  token: InjectionToken<T>;
-  useToken: InjectionToken<T>;
+  token:
+  InjectionToken<T>;
+  useToken:
+  InjectionToken<T>;
 }
 ```
 
