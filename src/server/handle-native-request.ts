@@ -10,7 +10,7 @@ import { notFoundAction } from "../renderer/not-found.ts";
 import { HttpError } from "../http-error/HttpError.ts";
 import { Content } from "../renderer/content.ts";
 import { MiddlewareMetadataArgs } from "../metadata/middleware.ts";
-import { ActionResult } from "../models/response.ts";
+import { PrimitiveResponse } from "../models/response.ts";
 import { HttpContext } from "../models/http-context.ts";
 
 // Get middlewares in request
@@ -91,7 +91,7 @@ async function handleFullServer<TState>(
 
       if (context.response.isImmediately()) {
         respondWith(
-          getResponse(context.response.getRaw() as ActionResult),
+          getResponse(context.response.getMergedResult()),
         );
         continue;
       }
@@ -101,7 +101,7 @@ async function handleFullServer<TState>(
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
         respondWith(
-          getResponse(context.response.getRaw() as ActionResult),
+          getResponse(context.response.getMergedResult()),
         );
         continue;
       }
@@ -231,7 +231,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
         respondWith(
-          getResponse(context.response.getRaw() as ActionResult),
+          getResponse(context.response.getMergedResult()),
         );
         continue;
       }
@@ -288,7 +288,11 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
   }
 }
 
-function getResponse(result: ActionResult): Response {
+function getResponse(result: Response | PrimitiveResponse): Response {
+  if (result instanceof Response) {
+    return result;
+  }
+
   return new Response(result.body, {
     status: result.status,
     headers: result.headers,
