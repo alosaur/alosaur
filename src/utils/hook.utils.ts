@@ -2,7 +2,7 @@ import { HttpContext } from "../models/http-context.ts";
 import { HookMethod } from "../models/hook.ts";
 import { HookMetadataArgs } from "../metadata/hook.ts";
 import { Context } from "../models/context.ts";
-import { ActionResult } from "../models/response.ts";
+import { PrimitiveResponse } from "../models/response.ts";
 
 // type HookActionName = "onCatchAction" | "onPostAction" | "onPreAction";
 
@@ -76,7 +76,11 @@ export function hasHooksAction<TState, TPayload>(
     hooks.find((hook) => (hook as any).instance[actionName] !== undefined));
 }
 
-function getResponse(result: ActionResult): Response {
+function getResponse(result: Response | PrimitiveResponse): Response {
+  if (result instanceof Response) {
+    return result;
+  }
+
   return new Response(result.body, {
     status: result.status,
     headers: result.headers,
