@@ -80,7 +80,7 @@ export class AlosaurResponse extends ImmediatelyResponse {
       return {
         headers: this.headers,
         body: this.body,
-        status: this.status
+        status: this.status,
       };
     }
 
