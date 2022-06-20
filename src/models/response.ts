@@ -8,6 +8,12 @@ export interface ActionResult {
   __isActionResult: true;
 }
 
+export interface PrimitiveResponse {
+  headers: Headers;
+  body?: ResponseBody;
+  status?: number;
+}
+
 export class ImmediatelyResponse {
   public error?: Error;
   private immediately: boolean = false;
@@ -64,18 +70,22 @@ export class AlosaurResponse extends ImmediatelyResponse {
   /**
    * Merge results before send from server
    */
-  public getMergedResult() {
+  public getMergedResult(): Response | PrimitiveResponse {
     // Support response type
     if (this.result instanceof Response) {
       return this.result;
     }
 
     if (this.body !== undefined) {
-      return this.getRaw();
+      return {
+        headers: this.headers,
+        body: this.body,
+        status: this.status,
+      };
     }
 
     const result = this.result;
-    let response: any;
+    let response: PrimitiveResponse;
 
     if (result !== undefined && (result as ActionResult).__isActionResult) {
       response = result;
@@ -87,8 +97,6 @@ export class AlosaurResponse extends ImmediatelyResponse {
     this.headers.forEach((value, key) => {
       response.headers.append(key, value);
     });
-
-    delete response.__isActionResult;
 
     return response;
   }
