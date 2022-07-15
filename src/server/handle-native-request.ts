@@ -62,6 +62,12 @@ function respondWithWrapper(
     });
 }
 
+function tryCloseHttpConn(httpConn: Deno.HttpConn) {
+  if (!(<HttpConn> httpConn).managedResources.size) {
+    httpConn.close();
+  }
+}
+
 async function handleFullServer<TState>(
   conn: Deno.Conn,
   app: App<TState>,
@@ -88,6 +94,7 @@ async function handleFullServer<TState>(
       }
 
       if (context.response.isNotRespond()) {
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -95,6 +102,7 @@ async function handleFullServer<TState>(
         await respondWith(
           getResponse(context.response.getMergedResult()),
         );
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -105,6 +113,7 @@ async function handleFullServer<TState>(
         await respondWith(
           getResponse(context.response.getMergedResult()),
         );
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -121,6 +130,7 @@ async function handleFullServer<TState>(
         if (
           hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
         ) {
+          tryCloseHttpConn(requests);
           continue;
         }
 
@@ -145,6 +155,7 @@ async function handleFullServer<TState>(
             hasHooksAction("onCatchAction", hooks) &&
             await resolveHooks(context, "onCatchAction", hooks)
           ) {
+            tryCloseHttpConn(requests);
             continue;
           } else {
             // Resolve every post middleware if error was not caught
@@ -155,6 +166,7 @@ async function handleFullServer<TState>(
 
             if (context.response.isImmediately()) {
               await respondWith(getResponse(context.response.getMergedResult()));
+              tryCloseHttpConn(requests);
               continue;
             }
 
@@ -167,12 +179,14 @@ async function handleFullServer<TState>(
           hasHooks(hooks) &&
           await resolveHooks(context, "onPostAction", hooks)
         ) {
+          tryCloseHttpConn(requests);
           continue;
         }
       }
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -184,6 +198,7 @@ async function handleFullServer<TState>(
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -191,6 +206,7 @@ async function handleFullServer<TState>(
         context.response.result = notFoundAction();
 
         await respondWith(getResponse(context.response.getMergedResult()));
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -201,12 +217,14 @@ async function handleFullServer<TState>(
 
         if (context.response.isImmediately()) {
           await respondWith(getResponse(context.response.getMergedResult()));
+          tryCloseHttpConn(requests);
           continue;
         }
       }
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -217,9 +235,7 @@ async function handleFullServer<TState>(
       await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
-    if (!(<HttpConn> requests).managedResources.size) {
-      requests.close();
-    }
+    tryCloseHttpConn(requests);
   }
 }
 
@@ -239,6 +255,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         await respondWith(
           getResponse(context.response.getMergedResult()),
         );
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -266,6 +283,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         context.response.result = notFoundAction();
 
         await respondWith(getResponse(context.response.getMergedResult()));
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -276,12 +294,14 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
 
         if (context.response.isImmediately()) {
           await respondWith(getResponse(context.response.getMergedResult()));
+          tryCloseHttpConn(requests);
           continue;
         }
       }
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
+        tryCloseHttpConn(requests);
         continue;
       }
 
@@ -292,9 +312,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
-    if (!(<HttpConn> requests).managedResources.size) {
-      requests.close();
-    }
+    tryCloseHttpConn(requests);
   }
 }
 
