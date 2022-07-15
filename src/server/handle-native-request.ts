@@ -217,7 +217,7 @@ async function handleFullServer<TState>(
       await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
-    if (!(<HttpConn>requests).managedResources.size) {
+    if (!(<HttpConn> requests).managedResources.size) {
       requests.close();
     }
   }
@@ -292,7 +292,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
-    if (!(<HttpConn>requests).managedResources.size) {
+    if (!(<HttpConn> requests).managedResources.size) {
       requests.close();
     }
   }
