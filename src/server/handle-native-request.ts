@@ -13,6 +13,8 @@ import { MiddlewareMetadataArgs } from "../metadata/middleware.ts";
 import { PrimitiveResponse } from "../models/response.ts";
 import { HttpContext } from "../models/http-context.ts";
 
+type HttpConn = Deno.HttpConn & { managedResources: Set<Deno.RequestEvent> };
+
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
   middlewares: MiddlewareMetadataArgs<T>[],
@@ -214,6 +216,10 @@ async function handleFullServer<TState>(
 
       respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
+
+    if (!(<HttpConn>requests).managedResources.size) {
+      requests.close();
+    }
   }
 }
 
@@ -284,6 +290,10 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       }
 
       respondWith(getResponse(Content(error, error.httpCode || 500)));
+    }
+
+    if (!(<HttpConn>requests).managedResources.size) {
+      requests.close();
     }
   }
 }
