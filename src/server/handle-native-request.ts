@@ -92,7 +92,7 @@ async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        respondWith(
+        await respondWith(
           getResponse(context.response.getMergedResult()),
         );
         continue;
@@ -102,7 +102,7 @@ async function handleFullServer<TState>(
       if (
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
-        respondWith(
+        await respondWith(
           getResponse(context.response.getMergedResult()),
         );
         continue;
@@ -154,7 +154,7 @@ async function handleFullServer<TState>(
             }
 
             if (context.response.isImmediately()) {
-              respondWith(getResponse(context.response.getMergedResult()));
+              await respondWith(getResponse(context.response.getMergedResult()));
               continue;
             }
 
@@ -172,7 +172,7 @@ async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
+        await respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
@@ -183,30 +183,30 @@ async function handleFullServer<TState>(
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
+        await respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
-        respondWith(getResponse(context.response.getMergedResult()));
+        await respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
-      respondWith(getResponse(context.response.getMergedResult()));
+      await respondWith(getResponse(context.response.getMergedResult()));
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);
 
         if (context.response.isImmediately()) {
-          respondWith(getResponse(context.response.getMergedResult()));
+          await respondWith(getResponse(context.response.getMergedResult()));
           continue;
         }
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
+        await respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
@@ -214,7 +214,7 @@ async function handleFullServer<TState>(
         console.error(error);
       }
 
-      respondWith(getResponse(Content(error, error.httpCode || 500)));
+      await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
     if (!(<HttpConn>requests).managedResources.size) {
@@ -236,7 +236,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       if (
         app.staticConfig && await getStaticFile(context, app.staticConfig)
       ) {
-        respondWith(
+        await respondWith(
           getResponse(context.response.getMergedResult()),
         );
         continue;
@@ -265,23 +265,23 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
-        respondWith(getResponse(context.response.getMergedResult()));
+        await respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
-      respondWith(getResponse(context.response.getMergedResult()));
+      await respondWith(getResponse(context.response.getMergedResult()));
     } catch (error) {
       if (app.globalErrorHandler) {
         app.globalErrorHandler(context, error);
 
         if (context.response.isImmediately()) {
-          respondWith(getResponse(context.response.getMergedResult()));
+          await respondWith(getResponse(context.response.getMergedResult()));
           continue;
         }
       }
 
       if (context.response.isImmediately()) {
-        respondWith(getResponse(context.response.getMergedResult()));
+        await respondWith(getResponse(context.response.getMergedResult()));
         continue;
       }
 
@@ -289,7 +289,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         console.error(error);
       }
 
-      respondWith(getResponse(Content(error, error.httpCode || 500)));
+      await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
     if (!(<HttpConn>requests).managedResources.size) {
