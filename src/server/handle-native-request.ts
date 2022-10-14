@@ -18,7 +18,7 @@ type HttpConn = Deno.HttpConn & { managedResources: Set<number> };
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
   middlewares: MiddlewareMetadataArgs<T>[],
-  url: string,
+  url: string
 ): any[] {
   if (middlewares.length === 0) return []; // for perf optimization
   return middlewares.filter((m) => m.route.test(url));
@@ -32,17 +32,17 @@ export async function handleNativeServer<TState>(
   listener: Deno.Listener,
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
-  runFullServer: boolean,
+  runFullServer: boolean
 ) {
   const connections: Deno.Conn[] = [];
   const closeConnections = () => {
     for (const connection of connections) {
       try {
         connection.close();
-      // deno-lint-ignore no-empty
+        // deno-lint-ignore no-empty
       } catch {}
     }
-  }
+  };
 
   if (runFullServer) {
     for await (const conn of listener) {
@@ -61,7 +61,7 @@ export async function handleNativeServer<TState>(
 
 function respondWithWrapper(
   respondWith: (r: Response | Promise<Response>) => Promise<void>,
-  conn: Deno.Conn,
+  conn: Deno.Conn
 ): (r: Response | Promise<Response>) => Promise<void> {
   return (res: Response | Promise<Response>) =>
     respondWith(res).catch(() => {
@@ -77,7 +77,7 @@ function respondWithWrapper(
 }
 
 function tryCloseHttpConn(httpConn: Deno.HttpConn) {
-  if (!(<HttpConn> httpConn).managedResources.size) {
+  if (!(<HttpConn>httpConn).managedResources.size) {
     httpConn.close();
   }
 }
@@ -85,24 +85,29 @@ function tryCloseHttpConn(httpConn: Deno.HttpConn) {
 async function handleFullServer<TState>(
   conn: Deno.Conn,
   app: App<TState>,
-  metadata: MetadataArgsStorage<TState>,
+  metadata: MetadataArgsStorage<TState>
 ) {
   const requests = Deno.serveHttp(conn);
-  
+
   for await (const request of requests) {
     handleFullServerRequest(conn, app, metadata, request);
 
-    const reqs = <HttpConn>requests;
-    const poppedRequest = reqs.managedResources.values().next();
-    if (!poppedRequest.done && reqs.managedResources.delete(poppedRequest.value)) {
-      await new Promise(resolve => setTimeout(resolve, 10));
-      Deno.close(poppedRequest.value);
-    } else {
-      console.log('out');
-      return;
+    if (Deno.env.get("ALOSAUR_TEST")) {
+      const reqs = <HttpConn>requests;
+      const poppedRequest = reqs.managedResources.values().next();
+      if (
+        !poppedRequest.done &&
+        reqs.managedResources.delete(poppedRequest.value)
+      ) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        Deno.close(poppedRequest.value);
+      } else {
+        console.log("out");
+        return;
+      }
+
+      tryCloseHttpConn(requests);
     }
-    
-    tryCloseHttpConn(requests);
   }
 }
 
@@ -110,156 +115,146 @@ async function handleFullServerRequest<TState>(
   conn: Deno.Conn,
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
-  request: Deno.RequestEvent,
+  request: Deno.RequestEvent
 ) {
-    const respondWith = respondWithWrapper(request.respondWith, conn);
+  const respondWith = respondWithWrapper(request.respondWith, conn);
 
-    metadata.container.register(SERVER_REQUEST, { useValue: request });
-    const context = metadata.container.resolve<HttpContext<TState>>(
-      HttpContext,
+  metadata.container.register(SERVER_REQUEST, { useValue: request });
+  const context = metadata.container.resolve<HttpContext<TState>>(HttpContext);
+
+  try {
+    const middlewares = getMiddlwareByUrl(
+      metadata.middlewares,
+      context.request.parserUrl.pathname
     );
 
-    try {
-      const middlewares = getMiddlwareByUrl(
-        metadata.middlewares,
-        context.request.parserUrl.pathname,
-      );
+    // Resolve every pre middleware
+    for (const middleware of middlewares) {
+      await middleware.target.onPreRequest(context);
+    }
 
-      // Resolve every pre middleware
-      for (const middleware of middlewares) {
-        await middleware.target.onPreRequest(context);
-      }
+    if (context.response.isNotRespond()) {
+      return;
+    }
 
-      if (context.response.isNotRespond()) {
-        return;
-      }
+    if (context.response.isImmediately()) {
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
 
-      if (context.response.isImmediately()) {
-        await respondWith(
-          getResponse(context.response.getMergedResult()),
-        );
-        return;
-      }
+    // try getting static file
+    if (app.staticConfig && (await getStaticFile(context, app.staticConfig))) {
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
 
-      // try getting static file
+    const action = getAction(
+      app.routes,
+      context.request.method,
+      context.request.url
+    );
+
+    if (action !== null) {
+      const hooks = getHooksFromAction(action);
+
+      // try resolve hooks
       if (
-        app.staticConfig && await getStaticFile(context, app.staticConfig)
+        hasHooks(hooks) &&
+        (await resolveHooks(context, "onPreAction", hooks))
       ) {
-        await respondWith(
-          getResponse(context.response.getMergedResult()),
-        );
         return;
       }
 
-      const action = getAction(
-        app.routes,
-        context.request.method,
-        context.request.url,
+      // Get arguments in this action
+      const args = await getActionParams(
+        context,
+        action,
+        app.transformConfigMap
       );
 
-      if (action !== null) {
-        const hooks = getHooksFromAction(action);
-
-        // try resolve hooks
-        if (
-          hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
-        ) {
-          return;
-        }
-
-        // Get arguments in this action
-        const args = await getActionParams(
-          context,
-          action,
-          app.transformConfigMap,
-        );
-
-        try {
-          // Get Action result from controller method
-          context.response.result = await action.target[action.action](
-            ...args,
-          );
-        } catch (error) {
-          context.response.error = error;
-
-          // try resolve hooks
-          if (
-            hasHooks(hooks) &&
-            hasHooksAction("onCatchAction", hooks) &&
-            await resolveHooks(context, "onCatchAction", hooks)
-          ) {
-            return;
-          } else {
-            // Resolve every post middleware if error was not caught
-            for (const middleware of middlewares) {
-              //@ts-ignore
-              await middleware.target.onPostRequest(context);
-            }
-
-            if (context.response.isImmediately()) {
-              await respondWith(getResponse(context.response.getMergedResult()));
-              return;
-            }
-
-            throw error;
-          }
-        }
+      try {
+        // Get Action result from controller method
+        context.response.result = await action.target[action.action](...args);
+      } catch (error) {
+        context.response.error = error;
 
         // try resolve hooks
         if (
           hasHooks(hooks) &&
-          await resolveHooks(context, "onPostAction", hooks)
+          hasHooksAction("onCatchAction", hooks) &&
+          (await resolveHooks(context, "onCatchAction", hooks))
         ) {
           return;
+        } else {
+          // Resolve every post middleware if error was not caught
+          for (const middleware of middlewares) {
+            //@ts-ignore
+            await middleware.target.onPostRequest(context);
+          }
+
+          if (context.response.isImmediately()) {
+            await respondWith(getResponse(context.response.getMergedResult()));
+            return;
+          }
+
+          throw error;
         }
       }
 
-      if (context.response.isImmediately()) {
-        await respondWith(getResponse(context.response.getMergedResult()));
+      // try resolve hooks
+      if (
+        hasHooks(hooks) &&
+        (await resolveHooks(context, "onPostAction", hooks))
+      ) {
         return;
       }
-
-      // Resolve every post middleware
-      for (const middleware of middlewares) {
-        //@ts-ignore
-        await middleware.target.onPostRequest(context);
-      }
-
-      if (context.response.isImmediately()) {
-        await respondWith(getResponse(context.response.getMergedResult()));
-        return;
-      }
-
-      if (context.response.result === undefined) {
-        context.response.result = notFoundAction();
-
-        await respondWith(getResponse(context.response.getMergedResult()));
-        return;
-      }
-
-      await respondWith(getResponse(context.response.getMergedResult()));
-    } catch (error) {
-      if (app.globalErrorHandler) {
-        app.globalErrorHandler(context, error);
-
-        if (context.response.isImmediately()) {
-          await respondWith(getResponse(context.response.getMergedResult()));
-          return;
-        }
-      }
-
-      if (context.response.isImmediately()) {
-        await respondWith(getResponse(context.response.getMergedResult()));
-        return;
-      }
-
-      if (!(error instanceof HttpError)) {
-        console.error(error);
-      }
-
-      await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
+    if (context.response.isImmediately()) {
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
+
+    // Resolve every post middleware
+    for (const middleware of middlewares) {
+      //@ts-ignore
+      await middleware.target.onPostRequest(context);
+    }
+
+    if (context.response.isImmediately()) {
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
+
+    if (context.response.result === undefined) {
+      context.response.result = notFoundAction();
+
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
+
+    await respondWith(getResponse(context.response.getMergedResult()));
+  } catch (error) {
+    if (app.globalErrorHandler) {
+      app.globalErrorHandler(context, error);
+
+      if (context.response.isImmediately()) {
+        await respondWith(getResponse(context.response.getMergedResult()));
+        return;
+      }
+    }
+
+    if (context.response.isImmediately()) {
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
+
+    if (!(error instanceof HttpError)) {
+      console.error(error);
+    }
+
+    await respondWith(getResponse(Content(error, error.httpCode || 500)));
+  }
 }
 
 async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
@@ -273,18 +268,17 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
     try {
       // try getting static file
       if (
-        app.staticConfig && await getStaticFile(context, app.staticConfig)
+        app.staticConfig &&
+        (await getStaticFile(context, app.staticConfig))
       ) {
-        await respondWith(
-          getResponse(context.response.getMergedResult()),
-        );
+        await respondWith(getResponse(context.response.getMergedResult()));
         return;
       }
 
       const action = getAction(
         app.routes,
         context.request.method,
-        context.request.url,
+        context.request.url
       );
 
       if (action !== null) {
@@ -292,13 +286,11 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         const args = await getActionParams(
           context,
           action,
-          app.transformConfigMap,
+          app.transformConfigMap
         );
 
         // Get Action result from controller method
-        context.response.result = await action.target[action.action](
-          ...args,
-        );
+        context.response.result = await action.target[action.action](...args);
       }
 
       if (context.response.result === undefined) {
@@ -330,7 +322,6 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
 
       await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
-
   }
 }
 
