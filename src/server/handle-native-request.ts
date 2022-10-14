@@ -13,7 +13,7 @@ import { MiddlewareMetadataArgs } from "../metadata/middleware.ts";
 import { PrimitiveResponse } from "../models/response.ts";
 import { HttpContext } from "../models/http-context.ts";
 
-type HttpConn = Deno.HttpConn & { managedResources: Set<Deno.RequestEvent> };
+type HttpConn = Deno.HttpConn & { managedResources: Set<number> };
 
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
@@ -34,15 +34,29 @@ export async function handleNativeServer<TState>(
   metadata: MetadataArgsStorage<TState>,
   runFullServer: boolean,
 ) {
+  const connections: Deno.Conn[] = [];
+  const closeConnections = () => {
+    for (const connection of connections) {
+      try {
+        connection.close();
+      // deno-lint-ignore no-empty
+      } catch {}
+    }
+  }
+
   if (runFullServer) {
     for await (const conn of listener) {
+      connections.push(conn);
       handleFullServer(conn, app, metadata);
     }
   } else {
     for await (const conn of listener) {
+      connections.push(conn);
       handleLiteServer(conn, app);
     }
   }
+
+  return closeConnections;
 }
 
 function respondWithWrapper(
@@ -74,7 +88,30 @@ async function handleFullServer<TState>(
   metadata: MetadataArgsStorage<TState>,
 ) {
   const requests = Deno.serveHttp(conn);
+  
   for await (const request of requests) {
+    handleFullServerRequest(conn, app, metadata, request);
+
+    const reqs = <HttpConn>requests;
+    const poppedRequest = reqs.managedResources.values().next();
+    if (!poppedRequest.done && reqs.managedResources.delete(poppedRequest.value)) {
+      await new Promise(resolve => setTimeout(resolve, 10));
+      Deno.close(poppedRequest.value);
+    } else {
+      console.log('out');
+      return;
+    }
+    
+    tryCloseHttpConn(requests);
+  }
+}
+
+async function handleFullServerRequest<TState>(
+  conn: Deno.Conn,
+  app: App<TState>,
+  metadata: MetadataArgsStorage<TState>,
+  request: Deno.RequestEvent,
+) {
     const respondWith = respondWithWrapper(request.respondWith, conn);
 
     metadata.container.register(SERVER_REQUEST, { useValue: request });
@@ -94,16 +131,14 @@ async function handleFullServer<TState>(
       }
 
       if (context.response.isNotRespond()) {
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       if (context.response.isImmediately()) {
         await respondWith(
           getResponse(context.response.getMergedResult()),
         );
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       // try getting static file
@@ -113,8 +148,7 @@ async function handleFullServer<TState>(
         await respondWith(
           getResponse(context.response.getMergedResult()),
         );
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       const action = getAction(
@@ -130,8 +164,7 @@ async function handleFullServer<TState>(
         if (
           hasHooks(hooks) && await resolveHooks(context, "onPreAction", hooks)
         ) {
-          tryCloseHttpConn(requests);
-          continue;
+          return;
         }
 
         // Get arguments in this action
@@ -155,8 +188,7 @@ async function handleFullServer<TState>(
             hasHooksAction("onCatchAction", hooks) &&
             await resolveHooks(context, "onCatchAction", hooks)
           ) {
-            tryCloseHttpConn(requests);
-            continue;
+            return;
           } else {
             // Resolve every post middleware if error was not caught
             for (const middleware of middlewares) {
@@ -166,8 +198,7 @@ async function handleFullServer<TState>(
 
             if (context.response.isImmediately()) {
               await respondWith(getResponse(context.response.getMergedResult()));
-              tryCloseHttpConn(requests);
-              continue;
+              return;
             }
 
             throw error;
@@ -179,15 +210,13 @@ async function handleFullServer<TState>(
           hasHooks(hooks) &&
           await resolveHooks(context, "onPostAction", hooks)
         ) {
-          tryCloseHttpConn(requests);
-          continue;
+          return;
         }
       }
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       // Resolve every post middleware
@@ -198,16 +227,14 @@ async function handleFullServer<TState>(
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       if (context.response.result === undefined) {
         context.response.result = notFoundAction();
 
         await respondWith(getResponse(context.response.getMergedResult()));
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       await respondWith(getResponse(context.response.getMergedResult()));
@@ -217,15 +244,13 @@ async function handleFullServer<TState>(
 
         if (context.response.isImmediately()) {
           await respondWith(getResponse(context.response.getMergedResult()));
-          tryCloseHttpConn(requests);
-          continue;
+          return;
         }
       }
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       if (!(error instanceof HttpError)) {
@@ -235,8 +260,6 @@ async function handleFullServer<TState>(
       await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
-    tryCloseHttpConn(requests);
-  }
 }
 
 async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
@@ -255,8 +278,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         await respondWith(
           getResponse(context.response.getMergedResult()),
         );
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       const action = getAction(
@@ -283,8 +305,7 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
         context.response.result = notFoundAction();
 
         await respondWith(getResponse(context.response.getMergedResult()));
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       await respondWith(getResponse(context.response.getMergedResult()));
@@ -294,15 +315,13 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
 
         if (context.response.isImmediately()) {
           await respondWith(getResponse(context.response.getMergedResult()));
-          tryCloseHttpConn(requests);
-          continue;
+          return;
         }
       }
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
-        tryCloseHttpConn(requests);
-        continue;
+        return;
       }
 
       if (!(error instanceof HttpError)) {
@@ -312,7 +331,6 @@ async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
       await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
 
-    tryCloseHttpConn(requests);
   }
 }
 
