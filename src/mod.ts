@@ -6,14 +6,19 @@ import { RouteMetadata } from "./metadata/route.ts";
 import { registerAreas } from "./utils/register-areas.ts";
 import { registerControllers } from "./utils/register-controllers.ts";
 import { IMiddleware } from "./models/middleware-target.ts";
-import { TransformConfig, TransformConfigMap } from "./models/transform-config.ts";
+import {
+  TransformConfig,
+  TransformConfigMap,
+} from "./models/transform-config.ts";
 
 import { HttpContext } from "./models/http-context.ts";
 import { AppSettings } from "./models/app-settings.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
-import { handleNativeServer } from "./server/handle-native-request.ts";
+import {
+  handleNativeServer,
+} from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -22,7 +27,8 @@ const GLOBAL_META: ObjectKeyAny = {};
 
 export function getMetadataArgsStorage<TState>(): MetadataArgsStorage<TState> {
   if (!(GLOBAL_META as any).routingControllersMetadataArgsStorage) {
-    (GLOBAL_META as any).routingControllersMetadataArgsStorage = new MetadataArgsStorage();
+    (GLOBAL_META as any).routingControllersMetadataArgsStorage =
+      new MetadataArgsStorage();
   }
 
   return (GLOBAL_META as any).routingControllersMetadataArgsStorage;
@@ -56,7 +62,7 @@ export class App<TState> {
   }
   private _globalErrorHandler?: (
     ctx: HttpContext<TState>,
-    error: Error,
+    error: Error
   ) => void;
 
   public get routes(): RouteMetadata[] {
@@ -85,7 +91,7 @@ export class App<TState> {
       this.metadata,
       this.classes,
       (route) => this._routes.push(route),
-      settings.logging,
+      settings.logging
     );
 
     this.useStatic(settings.staticConfig);
@@ -99,7 +105,9 @@ export class App<TState> {
 
       for (let middleware of settings.middlewares) {
         middlewares.push(
-          this.metadata.middlewares.find((m) => m.object === middleware) as MiddlewareMetadataArgs<TState>,
+          this.metadata.middlewares.find(
+            (m) => m.object === middleware
+          ) as MiddlewareMetadataArgs<TState>
         );
       }
       this.metadata.middlewares = middlewares;
@@ -113,7 +121,7 @@ export class App<TState> {
    */
   async listen(
     address: string | Deno.ListenOptions = ":8000",
-    customListener?: Deno.Listener,
+    customListener?: Deno.Listener
   ): Promise<any> {
     if (typeof address === "string") {
       address = _parseAddrFromStr(address);
@@ -127,26 +135,31 @@ export class App<TState> {
       this.listener = listener;
 
       // Run deno/http
-      await handleNativeServer(
+      this.closeConnections = await handleNativeServer(
         listener,
         this,
         this.metadata,
-        this.isRunFullServer(),
+        this.isRunFullServer()
       );
     }
     return;
   }
 
+  private closeConnections?: () => void;
+
   private isRunFullServer(): boolean {
-    return !!(this.metadata.hooks.length > 0 ||
+    return !!(
+      this.metadata.hooks.length > 0 ||
       this.metadata.middlewares.length > 0 ||
-      this.settings.providers && this.settings.providers.length > 0 ||
-      this.settings.container);
+      (this.settings.providers && this.settings.providers.length > 0) ||
+      this.settings.container
+    );
   }
 
   public close(): void {
     if (this.listener) {
       this.listener.close();
+      this.closeConnections?.();
     } else {
       console.warn("Server is not listening");
     }
@@ -198,7 +211,7 @@ export class App<TState> {
    * Create one global error handler
    */
   public error(
-    globalErrorHandler: (ctx: HttpContext<TState>, error: Error) => void,
+    globalErrorHandler: (ctx: HttpContext<TState>, error: Error) => void
   ): void {
     this._globalErrorHandler = globalErrorHandler;
   }

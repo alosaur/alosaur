@@ -3,14 +3,14 @@ import { BusinessType } from "../../types/business.ts";
 import { Inject, Injectable } from "../../injection/index.ts";
 import { HookTarget } from "../../models/hook.ts";
 import { HttpContext } from "../../models/http-context.ts";
-import {
+import type {
   ResponseCachePayload,
   ResponseCacheResult,
   ResponseCacheStore,
-  ResponseCacheStoreToken,
 } from "./response-cache-store.interface.ts";
+import { ResponseCacheStoreToken } from "./response-cache-store.interface.ts";
 
-export function ResponseCache(payload: ResponseCachePayload): Function {
+export function ResponseCache(payload: ResponseCachePayload) {
   return function (object: any, methodName?: string) {
     // add hook to global metadata
     getMetadataArgsStorage().hooks.push({
@@ -28,13 +28,12 @@ export function ResponseCache(payload: ResponseCachePayload): Function {
 export class ResponseCacheHook implements HookTarget<unknown, unknown> {
   // TODO implement session store from DI
   constructor(
-    @Inject(ResponseCacheStoreToken) private readonly store: ResponseCacheStore,
-  ) {
-  }
+    @Inject(ResponseCacheStoreToken) private readonly store: ResponseCacheStore
+  ) {}
 
   async onPreAction(
     context: HttpContext<unknown>,
-    payload: ResponseCachePayload,
+    payload: ResponseCachePayload
   ) {
     const hash = getHashByPayload(context, payload);
     const cacheResult: ResponseCacheResult<any> = await this.store.get(hash);
@@ -52,7 +51,7 @@ export class ResponseCacheHook implements HookTarget<unknown, unknown> {
 
   async onPostAction(
     context: HttpContext<unknown>,
-    payload: ResponseCachePayload,
+    payload: ResponseCachePayload
   ) {
     const hash = getHashByPayload(context, payload);
 
@@ -67,7 +66,7 @@ export class ResponseCacheHook implements HookTarget<unknown, unknown> {
 
 function getHashByPayload(
   context: HttpContext<unknown>,
-  payload: ResponseCachePayload,
+  payload: ResponseCachePayload
 ): string {
   return payload.getHash ? payload.getHash(context) : getHashByUrl(context);
 }
@@ -81,5 +80,5 @@ function getNowExpiresTime(duration: number): number {
 }
 
 function getNowTime(): number {
-  return (new Date().getTime());
+  return new Date().getTime();
 }

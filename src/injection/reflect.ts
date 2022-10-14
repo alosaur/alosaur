@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 export type ObjectKeyAny = { [key: string]: any };
 
 /*! *****************************************************************************
@@ -1958,6 +1959,7 @@ export namespace Reflect {
         }
         private _find(key: K, insert?: boolean): number {
           if (this._cacheKey !== key) {
+            // @ts-ignore
             this._cacheIndex = this._keys.indexOf(this._cacheKey = key);
           }
           if (this._cacheIndex < 0 && insert) {
