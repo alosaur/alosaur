@@ -18,26 +18,26 @@ type HttpConn = Deno.HttpConn & { managedResources: Set<number> };
 const isConn = (conn: unknown): conn is Deno.Conn => {
   return (
     typeof conn === "object" &&
-    (<Record<string, unknown>>conn)?.rid !== undefined &&
-    (<Record<string, unknown>>conn)?.localAddr !== undefined &&
-    (<Record<string, unknown>>conn)?.remoteAddr !== undefined &&
-    (<Record<string, unknown>>conn)?.readable !== undefined &&
-    (<Record<string, unknown>>conn)?.writable !== undefined &&
-    (<Record<string, unknown>>conn)?.closeWrite !== undefined
+    (<Record<string, unknown>> conn)?.rid !== undefined &&
+    (<Record<string, unknown>> conn)?.localAddr !== undefined &&
+    (<Record<string, unknown>> conn)?.remoteAddr !== undefined &&
+    (<Record<string, unknown>> conn)?.readable !== undefined &&
+    (<Record<string, unknown>> conn)?.writable !== undefined &&
+    (<Record<string, unknown>> conn)?.closeWrite !== undefined
   );
 };
 
 const isHttpConn = (conn: unknown): conn is HttpConn => {
   return (
     typeof conn === "object" &&
-    (<Record<string, unknown>>conn)?.managedResources !== undefined
+    (<Record<string, unknown>> conn)?.managedResources !== undefined
   );
 };
 
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
   middlewares: MiddlewareMetadataArgs<T>[],
-  url: string
+  url: string,
 ): any[] {
   if (middlewares.length === 0) return []; // for perf optimization
   return middlewares.filter((m) => m.route.test(url));
@@ -52,7 +52,7 @@ export async function handleNativeServer<TState>(
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
   runFullServer: boolean,
-  resources: CloseResourceLike[]
+  resources: CloseResourceLike[],
 ) {
   for await (const conn of listener) {
     handleServerRequest(conn, app, metadata, runFullServer, resources);
@@ -62,7 +62,7 @@ export async function handleNativeServer<TState>(
 
 function respondWithWrapper(
   respondWith: (r: Response | Promise<Response>) => Promise<void>,
-  conn: Deno.Conn
+  conn: Deno.Conn,
 ): (r: Response | Promise<Response>) => Promise<void> {
   return (res: Response | Promise<Response>) =>
     respondWith(res).catch(() => {
@@ -79,7 +79,7 @@ function respondWithWrapper(
 
 function captureResources(
   resources: CloseResourceLike[],
-  connection: Deno.Conn | HttpConn
+  connection: Deno.Conn | HttpConn,
 ) {
   if (isConn(connection)) {
     resources.push(connection.close.bind(connection));
@@ -106,7 +106,7 @@ async function handleServerRequest<TState>(
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
   runFullServer: boolean,
-  resources: CloseResourceLike[]
+  resources: CloseResourceLike[],
 ) {
   const requests = Deno.serveHttp(conn);
 
@@ -117,7 +117,7 @@ async function handleServerRequest<TState>(
       handleLiteServerRequest(conn, app, request);
     }
 
-    captureResources(resources, <HttpConn>requests);
+    captureResources(resources, <HttpConn> requests);
   }
 }
 
@@ -125,7 +125,7 @@ async function handleFullServerRequest<TState>(
   conn: Deno.Conn,
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
-  request: Deno.RequestEvent
+  request: Deno.RequestEvent,
 ) {
   const respondWith = respondWithWrapper(request.respondWith, conn);
 
@@ -135,7 +135,7 @@ async function handleFullServerRequest<TState>(
   try {
     const middlewares = getMiddlwareByUrl(
       metadata.middlewares,
-      context.request.parserUrl.pathname
+      context.request.parserUrl.pathname,
     );
 
     // Resolve every pre middleware
@@ -161,7 +161,7 @@ async function handleFullServerRequest<TState>(
     const action = getAction(
       app.routes,
       context.request.method,
-      context.request.url
+      context.request.url,
     );
 
     if (action !== null) {
@@ -179,7 +179,7 @@ async function handleFullServerRequest<TState>(
       const args = await getActionParams(
         context,
         action,
-        app.transformConfigMap
+        app.transformConfigMap,
       );
 
       try {
@@ -270,7 +270,7 @@ async function handleFullServerRequest<TState>(
 async function handleLiteServerRequest<TState>(
   conn: Deno.Conn,
   app: App<TState>,
-  request: Deno.RequestEvent
+  request: Deno.RequestEvent,
 ) {
   const respondWith = respondWithWrapper(request.respondWith, conn);
 
@@ -286,7 +286,7 @@ async function handleLiteServerRequest<TState>(
     const action = getAction(
       app.routes,
       context.request.method,
-      context.request.url
+      context.request.url,
     );
 
     if (action !== null) {
@@ -294,7 +294,7 @@ async function handleLiteServerRequest<TState>(
       const args = await getActionParams(
         context,
         action,
-        app.transformConfigMap
+        app.transformConfigMap,
       );
 
       // Get Action result from controller method

@@ -12,7 +12,7 @@ export interface ISpecificationExtension {
 
 export class SpecificationExtension implements ISpecificationExtension {
   // Cannot constraint to "^x-" but can filter them later to access to them
-  [extensionName: string]: any
+  [extensionName: string]: any;
 
   static isValidExtension(extensionName: string) {
     return /^x\-/.test(extensionName);
@@ -21,7 +21,8 @@ export class SpecificationExtension implements ISpecificationExtension {
   getExtension(extensionName: string): any {
     if (!SpecificationExtension.isValidExtension(extensionName)) {
       throw new Error(
-        "Invalid specification extension: '" + extensionName +
+        "Invalid specification extension: '" +
+          extensionName +
           "'. Extensions must start with prefix 'x-",
       );
     }
@@ -33,7 +34,8 @@ export class SpecificationExtension implements ISpecificationExtension {
   addExtension(extensionName: string, payload: any): void {
     if (!SpecificationExtension.isValidExtension(extensionName)) {
       throw new Error(
-        "Invalid specification extension: '" + extensionName +
+        "Invalid specification extension: '" +
+          extensionName +
           "'. Extensions must start with prefix 'x-",
       );
     }

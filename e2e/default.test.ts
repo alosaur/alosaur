@@ -14,11 +14,11 @@ test({
 
     try {
       const r1 = await fetch(baseUrl + "/home/query-name");
-      console.log('closed r1');
+      console.log("closed r1");
       const r2 = await fetch(baseUrl + "/home/query-name/");
-      console.log('closed r2');
+      console.log("closed r2");
       const r3 = await fetch(baseUrl + "/");
-      console.log('closed r3');
+      console.log("closed r3");
       const text_r1 = await r1.text();
       const text_r2 = await r2.text();
       const text_r3 = await r3.text();

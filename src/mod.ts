@@ -6,10 +6,7 @@ import { RouteMetadata } from "./metadata/route.ts";
 import { registerAreas } from "./utils/register-areas.ts";
 import { registerControllers } from "./utils/register-controllers.ts";
 import { IMiddleware } from "./models/middleware-target.ts";
-import {
-  TransformConfig,
-  TransformConfigMap,
-} from "./models/transform-config.ts";
+import { TransformConfig, TransformConfigMap } from "./models/transform-config.ts";
 
 import { HttpContext } from "./models/http-context.ts";
 import { AppSettings } from "./models/app-settings.ts";
@@ -26,8 +23,7 @@ const GLOBAL_META: ObjectKeyAny = {};
 
 export function getMetadataArgsStorage<TState>(): MetadataArgsStorage<TState> {
   if (!(GLOBAL_META as any).routingControllersMetadataArgsStorage) {
-    (GLOBAL_META as any).routingControllersMetadataArgsStorage =
-      new MetadataArgsStorage();
+    (GLOBAL_META as any).routingControllersMetadataArgsStorage = new MetadataArgsStorage();
   }
 
   return (GLOBAL_META as any).routingControllersMetadataArgsStorage;
@@ -61,7 +57,7 @@ export class App<TState> {
   }
   private _globalErrorHandler?: (
     ctx: HttpContext<TState>,
-    error: Error
+    error: Error,
   ) => void;
 
   public get routes(): RouteMetadata[] {
@@ -90,7 +86,7 @@ export class App<TState> {
       this.metadata,
       this.classes,
       (route) => this._routes.push(route),
-      settings.logging
+      settings.logging,
     );
 
     this.useStatic(settings.staticConfig);
@@ -105,8 +101,8 @@ export class App<TState> {
       for (const middleware of settings.middlewares) {
         middlewares.push(
           this.metadata.middlewares.find(
-            (m) => m.object === middleware
-          ) as MiddlewareMetadataArgs<TState>
+            (m) => m.object === middleware,
+          ) as MiddlewareMetadataArgs<TState>,
         );
       }
       this.metadata.middlewares = middlewares;
@@ -120,7 +116,7 @@ export class App<TState> {
    */
   async listen(
     address: string | Deno.ListenOptions = ":8000",
-    customListener?: Deno.Listener
+    customListener?: Deno.Listener,
   ): Promise<any> {
     if (typeof address === "string") {
       address = _parseAddrFromStr(address);
@@ -168,7 +164,7 @@ export class App<TState> {
     while ((close = this.resourceClosers.pop()) !== undefined) {
       try {
         close();
-      // deno-lint-ignore no-empty
+        // deno-lint-ignore no-empty
       } catch {}
     }
   }
@@ -219,7 +215,7 @@ export class App<TState> {
    * Create one global error handler
    */
   public error(
-    globalErrorHandler: (ctx: HttpContext<TState>, error: Error) => void
+    globalErrorHandler: (ctx: HttpContext<TState>, error: Error) => void,
   ): void {
     this._globalErrorHandler = globalErrorHandler;
   }
