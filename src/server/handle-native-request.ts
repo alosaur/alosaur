@@ -34,29 +34,9 @@ export async function handleNativeServer<TState>(
   metadata: MetadataArgsStorage<TState>,
   runFullServer: boolean
 ) {
-  const connections: Deno.Conn[] = [];
-  const closeConnections = () => {
-    for (const connection of connections) {
-      try {
-        connection.close();
-        // deno-lint-ignore no-empty
-      } catch {}
-    }
-  };
-
-  if (runFullServer) {
-    for await (const conn of listener) {
-      connections.push(conn);
-      handleFullServer(conn, app, metadata);
-    }
-  } else {
-    for await (const conn of listener) {
-      connections.push(conn);
-      handleLiteServer(conn, app);
-    }
+  for await (const conn of listener) {
+    handleServerRequest(conn, app, metadata, runFullServer);
   }
-
-  return closeConnections;
 }
 
 function respondWithWrapper(
@@ -76,21 +56,20 @@ function respondWithWrapper(
     });
 }
 
-function tryCloseHttpConn(httpConn: Deno.HttpConn) {
-  if (!(<HttpConn>httpConn).managedResources.size) {
-    httpConn.close();
-  }
-}
-
-async function handleFullServer<TState>(
+async function handleServerRequest<TState>(
   conn: Deno.Conn,
   app: App<TState>,
-  metadata: MetadataArgsStorage<TState>
+  metadata: MetadataArgsStorage<TState>,
+  runFullServer: boolean
 ) {
   const requests = Deno.serveHttp(conn);
 
   for await (const request of requests) {
-    handleFullServerRequest(conn, app, metadata, request);
+    if (runFullServer) {
+      handleFullServerRequest(conn, app, metadata, request);
+    } else {
+      handleLiteServerRequest(conn, app, request);
+    }
 
     if (Deno.env.get("ALOSAUR_TEST")) {
       const reqs = <HttpConn>requests;
@@ -99,14 +78,13 @@ async function handleFullServer<TState>(
         !poppedRequest.done &&
         reqs.managedResources.delete(poppedRequest.value)
       ) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 50));
         Deno.close(poppedRequest.value);
-      } else {
-        console.log("out");
-        return;
       }
 
-      tryCloseHttpConn(requests);
+      if (!reqs.managedResources.size) {
+        reqs.close();
+      }
     }
   }
 }
@@ -257,71 +235,68 @@ async function handleFullServerRequest<TState>(
   }
 }
 
-async function handleLiteServer<TState>(conn: Deno.Conn, app: App<TState>) {
-  const requests = Deno.serveHttp(conn);
+async function handleLiteServerRequest<TState>(
+  conn: Deno.Conn,
+  app: App<TState>,
+  request: Deno.RequestEvent
+) {
+  const respondWith = respondWithWrapper(request.respondWith, conn);
 
-  for await (const request of requests) {
-    const respondWith = respondWithWrapper(request.respondWith, conn);
+  const context = new HttpContext(request);
 
-    const context = new HttpContext(request);
+  try {
+    // try getting static file
+    if (app.staticConfig && (await getStaticFile(context, app.staticConfig))) {
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
 
-    try {
-      // try getting static file
-      if (
-        app.staticConfig &&
-        (await getStaticFile(context, app.staticConfig))
-      ) {
-        await respondWith(getResponse(context.response.getMergedResult()));
-        return;
-      }
+    const action = getAction(
+      app.routes,
+      context.request.method,
+      context.request.url
+    );
 
-      const action = getAction(
-        app.routes,
-        context.request.method,
-        context.request.url
+    if (action !== null) {
+      // Get arguments in this action
+      const args = await getActionParams(
+        context,
+        action,
+        app.transformConfigMap
       );
 
-      if (action !== null) {
-        // Get arguments in this action
-        const args = await getActionParams(
-          context,
-          action,
-          app.transformConfigMap
-        );
+      // Get Action result from controller method
+      context.response.result = await action.target[action.action](...args);
+    }
 
-        // Get Action result from controller method
-        context.response.result = await action.target[action.action](...args);
-      }
-
-      if (context.response.result === undefined) {
-        context.response.result = notFoundAction();
-
-        await respondWith(getResponse(context.response.getMergedResult()));
-        return;
-      }
+    if (context.response.result === undefined) {
+      context.response.result = notFoundAction();
 
       await respondWith(getResponse(context.response.getMergedResult()));
-    } catch (error) {
-      if (app.globalErrorHandler) {
-        app.globalErrorHandler(context, error);
+      return;
+    }
 
-        if (context.response.isImmediately()) {
-          await respondWith(getResponse(context.response.getMergedResult()));
-          return;
-        }
-      }
+    await respondWith(getResponse(context.response.getMergedResult()));
+  } catch (error) {
+    if (app.globalErrorHandler) {
+      app.globalErrorHandler(context, error);
 
       if (context.response.isImmediately()) {
         await respondWith(getResponse(context.response.getMergedResult()));
         return;
       }
-
-      if (!(error instanceof HttpError)) {
-        console.error(error);
-      }
-
-      await respondWith(getResponse(Content(error, error.httpCode || 500)));
     }
+
+    if (context.response.isImmediately()) {
+      await respondWith(getResponse(context.response.getMergedResult()));
+      return;
+    }
+
+    if (!(error instanceof HttpError)) {
+      console.error(error);
+    }
+
+    await respondWith(getResponse(Content(error, error.httpCode || 500)));
   }
 }
 

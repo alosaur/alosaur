@@ -16,9 +16,7 @@ import { AppSettings } from "./models/app-settings.ts";
 import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
-import {
-  handleNativeServer,
-} from "./server/handle-native-request.ts";
+import { handleNativeServer } from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
 
@@ -101,9 +99,9 @@ export class App<TState> {
   // Sort middlewares by app settings
   private sortMiddlewares(settings: AppSettings) {
     if (settings.middlewares) {
-      let middlewares: MiddlewareMetadataArgs<TState>[] = [];
+      const middlewares: MiddlewareMetadataArgs<TState>[] = [];
 
-      for (let middleware of settings.middlewares) {
+      for (const middleware of settings.middlewares) {
         middlewares.push(
           this.metadata.middlewares.find(
             (m) => m.object === middleware
@@ -135,7 +133,7 @@ export class App<TState> {
       this.listener = listener;
 
       // Run deno/http
-      this.closeConnections = await handleNativeServer(
+      await handleNativeServer(
         listener,
         this,
         this.metadata,
@@ -144,8 +142,6 @@ export class App<TState> {
     }
     return;
   }
-
-  private closeConnections?: () => void;
 
   private isRunFullServer(): boolean {
     return !!(
@@ -159,7 +155,6 @@ export class App<TState> {
   public close(): void {
     if (this.listener) {
       this.listener.close();
-      this.closeConnections?.();
     } else {
       console.warn("Server is not listening");
     }
