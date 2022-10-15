@@ -56,6 +56,32 @@ function respondWithWrapper(
     });
 }
 
+async function tryClosingHttpRequest(requests: HttpConn) {
+  const sleep = (millis: number) =>
+    new Promise<void>((resolve) => {
+      const timeout = setTimeout(() => {
+        clearTimeout(timeout);
+        resolve();
+      }, millis);
+    });
+
+  if (Deno.env.get("ALOSAUR_TEST")) {
+    const reqs = <HttpConn>requests;
+    const poppedRequest = reqs.managedResources.values().next();
+    if (
+      !poppedRequest.done &&
+      reqs.managedResources.delete(poppedRequest.value)
+    ) {
+      await sleep(1000);
+      Deno.close(poppedRequest.value);
+    }
+
+    if (!reqs.managedResources.size) {
+      reqs.close();
+    }
+  }
+}
+
 async function handleServerRequest<TState>(
   conn: Deno.Conn,
   app: App<TState>,
@@ -71,21 +97,7 @@ async function handleServerRequest<TState>(
       handleLiteServerRequest(conn, app, request);
     }
 
-    if (Deno.env.get("ALOSAUR_TEST")) {
-      const reqs = <HttpConn>requests;
-      const poppedRequest = reqs.managedResources.values().next();
-      if (
-        !poppedRequest.done &&
-        reqs.managedResources.delete(poppedRequest.value)
-      ) {
-        await new Promise((resolve) => setTimeout(resolve, 50));
-        Deno.close(poppedRequest.value);
-      }
-
-      if (!reqs.managedResources.size) {
-        reqs.close();
-      }
-    }
+    tryClosingHttpRequest(<HttpConn>requests);
   }
 }
 
