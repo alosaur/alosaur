@@ -1,4 +1,4 @@
-import { App } from "../mod.ts";
+import { App, CloseResourceLike } from "../mod.ts";
 import { getAction } from "../route/get-action.ts";
 import { getActionParams } from "../route/get-action-params.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";
@@ -14,6 +14,25 @@ import { PrimitiveResponse } from "../models/response.ts";
 import { HttpContext } from "../models/http-context.ts";
 
 type HttpConn = Deno.HttpConn & { managedResources: Set<number> };
+
+const isConn = (conn: unknown): conn is Deno.Conn => {
+  return (
+    typeof conn === "object" &&
+    (<Record<string, unknown>>conn)?.rid !== undefined &&
+    (<Record<string, unknown>>conn)?.localAddr !== undefined &&
+    (<Record<string, unknown>>conn)?.remoteAddr !== undefined &&
+    (<Record<string, unknown>>conn)?.readable !== undefined &&
+    (<Record<string, unknown>>conn)?.writable !== undefined &&
+    (<Record<string, unknown>>conn)?.closeWrite !== undefined
+  );
+};
+
+const isHttpConn = (conn: unknown): conn is HttpConn => {
+  return (
+    typeof conn === "object" &&
+    (<Record<string, unknown>>conn)?.managedResources !== undefined
+  );
+};
 
 // Get middlewares in request
 function getMiddlwareByUrl<T>(
@@ -32,10 +51,12 @@ export async function handleNativeServer<TState>(
   listener: Deno.Listener,
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
-  runFullServer: boolean
+  runFullServer: boolean,
+  resources: CloseResourceLike[]
 ) {
   for await (const conn of listener) {
-    handleServerRequest(conn, app, metadata, runFullServer);
+    handleServerRequest(conn, app, metadata, runFullServer, resources);
+    captureResources(resources, conn);
   }
 }
 
@@ -56,28 +77,26 @@ function respondWithWrapper(
     });
 }
 
-async function tryClosingHttpRequest(requests: HttpConn) {
-  const sleep = (millis: number) =>
-    new Promise<void>((resolve) => {
-      const timeout = setTimeout(() => {
-        clearTimeout(timeout);
-        resolve();
-      }, millis);
-    });
+function captureResources(
+  resources: CloseResourceLike[],
+  connection: Deno.Conn | HttpConn
+) {
+  if (isConn(connection)) {
+    resources.push(connection.close.bind(connection));
+  }
 
-  if (Deno.env.get("ALOSAUR_TEST")) {
-    const reqs = <HttpConn>requests;
-    const poppedRequest = reqs.managedResources.values().next();
-    if (
-      !poppedRequest.done &&
-      reqs.managedResources.delete(poppedRequest.value)
-    ) {
-      await sleep(1000);
-      Deno.close(poppedRequest.value);
+  if (isHttpConn(connection)) {
+    const poppedRequest = connection.managedResources.values().next();
+
+    if (!resources.includes(connection.close.bind(connection))) {
+      resources.push(connection.close.bind(connection));
     }
 
-    if (!reqs.managedResources.size) {
-      reqs.close();
+    if (
+      !poppedRequest.done &&
+      connection.managedResources.delete(poppedRequest.value)
+    ) {
+      resources.push(() => Deno.close(poppedRequest.value));
     }
   }
 }
@@ -86,7 +105,8 @@ async function handleServerRequest<TState>(
   conn: Deno.Conn,
   app: App<TState>,
   metadata: MetadataArgsStorage<TState>,
-  runFullServer: boolean
+  runFullServer: boolean,
+  resources: CloseResourceLike[]
 ) {
   const requests = Deno.serveHttp(conn);
 
@@ -97,7 +117,7 @@ async function handleServerRequest<TState>(
       handleLiteServerRequest(conn, app, request);
     }
 
-    tryClosingHttpRequest(<HttpConn>requests);
+    captureResources(resources, <HttpConn>requests);
   }
 }
 

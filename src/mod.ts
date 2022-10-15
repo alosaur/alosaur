@@ -19,6 +19,7 @@ import { registerAppProviders } from "./utils/register-providers.ts";
 import { handleNativeServer } from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
+export type CloseResourceLike = () => void;
 
 // Global object for register metadata on decorators
 const GLOBAL_META: ObjectKeyAny = {};
@@ -137,7 +138,8 @@ export class App<TState> {
         listener,
         this,
         this.metadata,
-        this.isRunFullServer()
+        this.isRunFullServer(),
+        this.resourceClosers,
       );
     }
     return;
@@ -157,6 +159,17 @@ export class App<TState> {
       this.listener.close();
     } else {
       console.warn("Server is not listening");
+    }
+  }
+
+  private resourceClosers: CloseResourceLike[] = [];
+  public clearLeakedResources(): void {
+    let close: CloseResourceLike | undefined;
+    while ((close = this.resourceClosers.pop()) !== undefined) {
+      try {
+        close();
+      // deno-lint-ignore no-empty
+      } catch {}
     }
   }
 
