@@ -7,18 +7,18 @@
 //   ^x-
 export interface ISpecificationExtension {
   // Cannot constraint to "^x-" but can filter them later to access to them
-  [extensionName: string]: any;
+  [extensionName: string]: unknown;
 }
 
 export class SpecificationExtension implements ISpecificationExtension {
   // Cannot constraint to "^x-" but can filter them later to access to them
-  [extensionName: string]: any;
+  [extensionName: string]: unknown
 
   static isValidExtension(extensionName: string) {
     return /^x\-/.test(extensionName);
   }
 
-  getExtension(extensionName: string): any {
+  getExtension(extensionName: string): unknown {
     if (!SpecificationExtension.isValidExtension(extensionName)) {
       throw new Error(
         "Invalid specification extension: '" +
@@ -42,8 +42,9 @@ export class SpecificationExtension implements ISpecificationExtension {
     this[extensionName] = payload;
   }
   listExtensions(): string[] {
-    let res: string[] = [];
-    for (let propName in this) {
+    const res: string[] = [];
+    for (const propName in this) {
+      // deno-lint-ignore no-prototype-builtins
       if (this.hasOwnProperty(propName)) {
         if (SpecificationExtension.isValidExtension(propName)) {
           res.push(propName);
