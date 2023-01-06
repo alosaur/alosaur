@@ -1,6 +1,6 @@
 import { AuthClaims, AuthenticationScheme, Identity } from "../../core/auth.interface.ts";
 import { SESSION_SIGNATURE_PREFIX_KEY, SessionInterface } from "../../../session/src/session.interface.ts";
-import { deleteCookie } from "https://deno.land/std@0.132.0/http/cookie.ts";
+import { deleteCookie } from "https://deno.land/std@0.171.0/http/cookie.ts";
 import { SecurityContext } from "../../../context/security-context.ts";
 import { Redirect } from "../../../../renderer/redirect.ts";
 

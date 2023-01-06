@@ -1,18 +1,20 @@
 import { SessionInterface } from "./session.interface.ts";
 import { SessionStore } from "./store/store.interface.ts";
-import { v4 } from "https://deno.land/std@0.132.0/uuid/mod.ts";
-import { createHash } from "https://deno.land/std@0.132.0/hash/mod.ts";
+import { generate } from "https://deno.land/std@0.171.0/uuid/v1.ts";
+import { getHash } from "./session.utils.ts";
 
 /**
  * Object of session for job with store
  */
 export class Session implements SessionInterface {
+  public readonly sessionIdHash: Uint8Array;
+
   constructor(
     public readonly store: SessionStore,
     public readonly sessionKey: string,
-    public readonly sessionId: string = createHash("md5").update(v4.generate())
-      .toString(),
+    public readonly sessionId: string = generate().toString(),
   ) {
+    this.sessionIdHash = getHash(this.sessionId);
   }
 
   /**
