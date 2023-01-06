@@ -8,5 +8,6 @@
       "useTabs": false,
       "lineWidth": 120
     }
-  }
+  },
+  "importMap": "./imports.json"
 }

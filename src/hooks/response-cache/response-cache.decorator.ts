@@ -3,12 +3,12 @@ import { BusinessType } from "../../types/business.ts";
 import { Inject, Injectable } from "../../injection/index.ts";
 import { HookTarget } from "../../models/hook.ts";
 import { HttpContext } from "../../models/http-context.ts";
-import {
+import type {
   ResponseCachePayload,
   ResponseCacheResult,
   ResponseCacheStore,
-  ResponseCacheStoreToken,
 } from "./response-cache-store.interface.ts";
+import { ResponseCacheStoreToken } from "./response-cache-store.interface.ts";
 
 export function ResponseCache(payload: ResponseCachePayload): Function {
   return function (object: any, methodName?: string) {

@@ -1842,7 +1842,7 @@ export namespace Reflect {
 
     // naive Map shim
     function CreateMapPolyfill(): MapConstructor {
-      const cacheSentinel = {};
+      const cacheSentinel: any = {};
       const arraySentinel: any[] = [];
 
       class MapIterator<K, V, R extends (K | V | [K, V])> implements IterableIterator<R> {

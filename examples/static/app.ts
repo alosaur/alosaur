@@ -1,4 +1,4 @@
-import { Cookie, getCookies, setCookie } from "https://deno.land/std@0.132.0/http/cookie.ts";
+import { Cookie, getCookies, setCookie } from "https://deno.land/std@0.171.0/http/cookie.ts";
 import { AlosaurRequest, AlosaurResponse, App, Area, Controller, Get, Redirect, Req, Res } from "alosaur/mod.ts";
 
 @Controller("/home")

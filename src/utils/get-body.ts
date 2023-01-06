@@ -19,12 +19,12 @@ export async function getBody(
         let formElements: { [key: string]: File | string } = {};
 
         /*
-        * URLSearchParams is designed to work with the query string of a URL.
-        * Since a form encoded in `application/x-www-form-urlencoded` looks like a URL query,
-        * URLSearchParams will gladly accept it.
-        *
-        * Iterate over the entries of the form, for each entry add its key and value.
-        */
+         * URLSearchParams is designed to work with the query string of a URL.
+         * Since a form encoded in `application/x-www-form-urlencoded` looks like a URL query,
+         * URLSearchParams will gladly accept it.
+         *
+         * Iterate over the entries of the form, for each entry add its key and value.
+         */
         for (
           const [key, value] of await request.formData()
         ) {
