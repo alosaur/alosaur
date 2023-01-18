@@ -27,7 +27,7 @@ export async function startServer(serverPath: string): Promise<Deno.Process> {
   // deno-lint-ignore no-async-promise-executor
   new Promise<void>(async (resolve) => {
     try {
-      while ((s = await r.readLine()) !== null) {
+      while ((s = await r.read()) !== null) {
         console.log(s);
       }
 
