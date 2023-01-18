@@ -12,7 +12,7 @@ export interface ISpecificationExtension {
 
 export class SpecificationExtension implements ISpecificationExtension {
   // Cannot constraint to "^x-" but can filter them later to access to them
-  [extensionName: string]: unknown
+  [extensionName: string]: unknown;
 
   static isValidExtension(extensionName: string) {
     return /^x\-/.test(extensionName);
