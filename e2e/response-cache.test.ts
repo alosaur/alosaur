@@ -6,7 +6,7 @@ const { test } = Deno;
  * Test cases
  */
 test({
-  name: "[http] cache should should give the next response instantly",
+  name: "[http] cache should give the next response instantly",
   async fn(): Promise<void> {
     const process = await startServer("./examples/cache/app.ts");
     const baseUrl = "http://localhost:8000";

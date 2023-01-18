@@ -1,11 +1,12 @@
-import * as secp from "https://deno.land/x/secp256k1@1.2.9/mod.ts";
+import * as secp from "./secp256k1/mod.ts";
 import { MiddlewareTarget } from "../../../models/middleware-target.ts";
 import { HttpContext } from "../../../models/http-context.ts";
 import { SessionStore } from "./store/store.interface.ts";
 import { Session } from "./session.instance.ts";
-import { getCookies, setCookie } from "https://deno.land/std@0.132.0/http/cookie.ts";
+import { getCookies, setCookie } from "https://deno.land/std@0.171.0/http/cookie.ts";
 import { SESSION_SIGNATURE_PREFIX_KEY, SessionOptions } from "./session.interface.ts";
 import { SecurityContext } from "../../context/security-context.ts";
+import { getHash } from "./session.utils.ts";
 
 const DEFAULT_SESSION_COOKIE_KEY = "sid";
 const DEFAULT_MAX_AGE = 24 * 60 * 60 * 1000; // day
@@ -75,7 +76,7 @@ export class SessionMiddleware implements MiddlewareTarget {
       Date.now() + (this.options.maxAge || DEFAULT_MAX_AGE),
     );
 
-    await this.setSessionIdCookie(session.sessionId, context);
+    await this.setSessionIdCookie(session, context);
 
     return session;
   }
@@ -97,10 +98,10 @@ export class SessionMiddleware implements MiddlewareTarget {
   }
 
   private async setSessionIdCookie(
-    sessionIdHash: string,
+    session: Session,
     context: HttpContext,
   ): Promise<void> {
-    const sign = await secp.sign(sessionIdHash, this.options.secret);
+    const sign = await secp.sign(session.sessionIdHash, this.options.secret);
 
     // set hash
     setCookie(
@@ -109,9 +110,12 @@ export class SessionMiddleware implements MiddlewareTarget {
         path: "/",
         ...this.options,
         name: this.cookieKey,
-        value: sessionIdHash,
+        value: session.sessionId,
       },
     );
+
+    const signString = getSignString(sign);
+
     // set signature
     setCookie(
       context.response.headers,
@@ -119,17 +123,33 @@ export class SessionMiddleware implements MiddlewareTarget {
         path: "/",
         ...this.options,
         name: this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY,
-        value: sign.toString(),
+        value: signString,
       },
     );
   }
 
-  private isValidSessionId(sidHash: string, sign: string): boolean {
-    if (!sidHash) return false;
-    return secp.verify(sign, sidHash, this.publicKey);
+  private isValidSessionId(sessionId: string, signString: string): boolean {
+    if (!sessionId) return false;
+
+    const sidHash = getHash(sessionId);
+    const unsignString = new Uint8Array(atob(signString).split(",").map(Number));
+
+    return secp.verify(unsignString, sidHash, this.publicKey);
   }
 
   private assignToContext(context: SecurityContext, session: Session) {
     context.security.session = session;
   }
+}
+
+// TODO create more effective way, do not parse bytes!!
+// Create sign for write cookie to base64 string
+function getSignString(sign: Uint8Array): string {
+  return btoa(sign.toString());
+}
+
+// TODO create more effective way, do not parse bytes!!
+// Gets from base64 string array
+function getUnsignString(signString: string): Uint8Array {
+  return new Uint8Array(atob(signString).split(",").map(Number));
 }

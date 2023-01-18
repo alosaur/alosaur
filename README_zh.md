@@ -10,10 +10,12 @@ Alosaur - 基于[Deno](https://github.com/denoland) 的Web框架 🦖.
 - **Middleware** - 中间件，提供一个机制，可以方便地过滤HTTP请求
 - **Hooks** - 钩子，可用于模块、控制器或任务，有三个生命周期函数： `onPreAction, onPostAction, onCatchAction`。
 - **Decorators** - 装饰器，可用于SQL查询、cookie、参数、路由等。
-- **Dependency Injection** - 依赖注入，使用轻量级依赖项注入容器`microsoft/TSyringe` ([more about alosaur injection](/src/injection)).
+- **Dependency Injection** - 依赖注入，使用轻量级依赖项注入容器`microsoft/TSyringe`
+  ([more about alosaur injection](/src/injection)).
 - **Render pages** 可以使用任意的模板引擎. [(了解更多)](https://github.com/alosaur/alosaur#render-pages)
 
-想要尝试一下在[Deno Deploy](https://deno.com/deploy)中使用Alosaur框架吗? 使用[Alosaur轻量版](https://github.com/alosaur/alosaur-lite)
+想要尝试一下在[Deno Deploy](https://deno.com/deploy)中使用Alosaur框架吗?
+使用[Alosaur轻量版](https://github.com/alosaur/alosaur-lite)
 
 ---
 
@@ -553,7 +555,8 @@ return View("page", 404); // 返回HTTP 404
 
 ## 模板渲染
 
-Alosaur支持任何HTML模板引擎. 你只需要在settings中定义一个渲染函数。 例如 [Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
+Alosaur支持任何HTML模板引擎. 你只需要在settings中定义一个渲染函数。 例如
+[Dejs](https://github.com/alosaur/alosaur/tree/master/examples/dejs),
 [Handlebars](https://github.com/alosaur/alosaur/tree/master/examples/handlebars),
 [Angular](https://github.com/alosaur/angular_deno), [React](https://github.com/alosaur/react),
 [Eta](https://github.com/alosaur/alosaur/tree/master/examples/eta)

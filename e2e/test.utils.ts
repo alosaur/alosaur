@@ -1,4 +1,4 @@
-import { assert, BufReader, TextProtoReader } from "../src/deps_test.ts";
+import { assert } from "../src/deps_test.ts";
 
 export async function startServer(serverPath: string): Promise<Deno.Process> {
   let process: Deno.Process;
@@ -20,8 +20,9 @@ export async function startServer(serverPath: string): Promise<Deno.Process> {
   // Once server is ready it will write to its stdout.
   assert(process.stdout != null);
 
-  const r = new TextProtoReader(new BufReader(process.stdout as any));
-  let s = await r.readLine();
+  // const r = new TextProtoReader(new BufReader(process.stdout as any));
+  const r = process.stdout.readable.getReader();
+  let s = await r.read();
 
   // deno-lint-ignore no-async-promise-executor
   new Promise<void>(async (resolve) => {

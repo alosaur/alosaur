@@ -1,7 +1,5 @@
 import { Area, Body, Controller, Ctx, Get, HttpContext, Post } from "alosaur/mod.ts";
-
-import { FormFile } from "https://deno.land/std@0.132.0/mime/multipart.ts";
-import { move } from "https://deno.land/std@0.132.0/fs/move.ts";
+import { readAll, readerFromStreamReader } from "https://deno.land/std@0.171.0/streams/conversion.ts";
 
 @Controller()
 export class CoreController {
@@ -19,22 +17,20 @@ export class CoreController {
    */
   @Post()
   async formData(
-    @Body(null, { formData: { maxMemory: 1 } }) body: {
-      [key: string]: FormFile[] | string;
-    },
+    @Body(null, { formData: { maxMemory: 1 } }) body: FormData,
   ) {
-    const files: FormFile[] = body.file as FormFile[];
-    const firstFile = files && files[0];
+    const firstFile = body.get("file");
 
-    if (firstFile) {
-      const fileDest = "./examples/form-data/files/" + firstFile.filename;
+    if (firstFile instanceof File) {
+      const fileDest = "./examples/form-data/files/" + firstFile.name;
 
       // write file if file has content in memory
-      if (firstFile.content) {
-        await Deno.writeFile(fileDest, firstFile.content!, { append: true });
-      } else if (firstFile.tempfile) {
-        // move file if file has tempfile
-        move(firstFile.tempfile, fileDest);
+      if (firstFile.size) {
+        const reader = firstFile.stream().getReader();
+        const stream = readerFromStreamReader(reader);
+        const file = await readAll(stream);
+
+        await Deno.writeFile(fileDest, file, { append: true });
       }
 
       return "Uploaded";
