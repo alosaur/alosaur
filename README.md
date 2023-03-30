@@ -26,16 +26,6 @@ How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
 
 ---
 
-## Features roadmap
-
-- [x] Microservices (TCP) [example](https://github.com/alosaur/alosaur/tree/master/examples/microservice)
-- [x] Docs website
-- [ ] CLI: run applications
-- [ ] Create REPL http tool (tool for tests API, WebSockets etc), integrate with Alosaur openapi
-- [ ] Background process, BackgroundService, WebJobs, cron
-
----
-
 ## Simple example
 
 app.ts:
