@@ -24,6 +24,19 @@ export async function startServer(serverPath: string): Promise<Deno.Process> {
   const r = process.stdout.readable.getReader();
   let s = await r.read();
 
+  // deno-lint-ignore no-async-promise-executor
+  new Promise<void>(async (resolve) => {
+    try {
+      while ((s = await r.read()) !== null) {
+        console.log(s);
+      }
+
+      resolve();
+    } catch {
+      resolve();
+    }
+  });
+
   // assert(s !== null && s.includes("Server start in"));
   assert(s !== null);
 

@@ -16,6 +16,7 @@ import { registerAppProviders } from "./utils/register-providers.ts";
 import { handleNativeServer } from "./server/handle-native-request.ts";
 
 export type ObjectKeyAny = { [key: string]: any };
+export type CloseResourceLike = () => void;
 
 // Global object for register metadata on decorators
 const GLOBAL_META: ObjectKeyAny = {};
@@ -95,11 +96,13 @@ export class App<TState> {
   // Sort middlewares by app settings
   private sortMiddlewares(settings: AppSettings) {
     if (settings.middlewares) {
-      let middlewares: MiddlewareMetadataArgs<TState>[] = [];
+      const middlewares: MiddlewareMetadataArgs<TState>[] = [];
 
-      for (let middleware of settings.middlewares) {
+      for (const middleware of settings.middlewares) {
         middlewares.push(
-          this.metadata.middlewares.find((m) => m.object === middleware) as MiddlewareMetadataArgs<TState>,
+          this.metadata.middlewares.find(
+            (m) => m.object === middleware,
+          ) as MiddlewareMetadataArgs<TState>,
         );
       }
       this.metadata.middlewares = middlewares;
@@ -132,16 +135,19 @@ export class App<TState> {
         this,
         this.metadata,
         this.isRunFullServer(),
+        this.resourceClosers,
       );
     }
     return;
   }
 
   private isRunFullServer(): boolean {
-    return !!(this.metadata.hooks.length > 0 ||
+    return !!(
+      this.metadata.hooks.length > 0 ||
       this.metadata.middlewares.length > 0 ||
-      this.settings.providers && this.settings.providers.length > 0 ||
-      this.settings.container);
+      (this.settings.providers && this.settings.providers.length > 0) ||
+      this.settings.container
+    );
   }
 
   public close(): void {
@@ -149,6 +155,17 @@ export class App<TState> {
       this.listener.close();
     } else {
       console.warn("Server is not listening");
+    }
+  }
+
+  private resourceClosers: CloseResourceLike[] = [];
+  public clearLeakedResources(): void {
+    let close: CloseResourceLike | undefined;
+    while ((close = this.resourceClosers.pop()) !== undefined) {
+      try {
+        close();
+        // deno-lint-ignore no-empty
+      } catch {}
     }
   }
 

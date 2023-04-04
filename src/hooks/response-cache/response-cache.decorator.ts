@@ -10,7 +10,7 @@ import type {
 } from "./response-cache-store.interface.ts";
 import { ResponseCacheStoreToken } from "./response-cache-store.interface.ts";
 
-export function ResponseCache(payload: ResponseCachePayload): Function {
+export function ResponseCache(payload: ResponseCachePayload) {
   return function (object: any, methodName?: string) {
     // add hook to global metadata
     getMetadataArgsStorage().hooks.push({
@@ -29,8 +29,7 @@ export class ResponseCacheHook implements HookTarget<unknown, unknown> {
   // TODO implement session store from DI
   constructor(
     @Inject(ResponseCacheStoreToken) private readonly store: ResponseCacheStore,
-  ) {
-  }
+  ) {}
 
   async onPreAction(
     context: HttpContext<unknown>,
@@ -81,5 +80,5 @@ function getNowExpiresTime(duration: number): number {
 }
 
 function getNowTime(): number {
-  return (new Date().getTime());
+  return new Date().getTime();
 }
