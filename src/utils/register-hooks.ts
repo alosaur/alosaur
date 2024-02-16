@@ -19,7 +19,7 @@ export function registerHooks<TState>(
 ) {
   // TODO optimization improve: set hook map as resolved to metadata, ex notResolvedHooks
   for (const hook of hooks) {
-      // TODO need tests target or object ??
+    // TODO need tests target or object ??
     // if (layer.object === hook.target && hook.type === type) {
     if (layer.object === hook.object && hook.type === type) {
       layer.hooks.push(hook);

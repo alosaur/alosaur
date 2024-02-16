@@ -1,4 +1,4 @@
-import {IImmediatelyResponse, ImmediatelyResponse} from "./response.ts";
+import { IImmediatelyResponse, ImmediatelyResponse } from "./response.ts";
 
 /**
  * Main request/response object of

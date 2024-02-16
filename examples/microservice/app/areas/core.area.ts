@@ -2,9 +2,9 @@ import { Area, Controller, Get } from "alosaur/mod.ts";
 import { MsTcpClient } from "alosaur/microservice/mod.ts";
 
 @Controller({
-    ctor: {
-        inject: ["TCP_CLIENT"],
-    },
+  ctor: {
+    inject: ["TCP_CLIENT"],
+  },
 })
 export class CoreController {
   constructor(private client: MsTcpClient) {

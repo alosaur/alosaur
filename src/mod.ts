@@ -1,4 +1,4 @@
-import {SLContainer} from "./di/mod.ts";
+import { SLContainer } from "./di/mod.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
 import { ViewRenderConfig } from "./models/view-render-config.ts";

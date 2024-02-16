@@ -31,11 +31,11 @@ export function registerAppProviders<T = any>(
 ) {
   if (settings.providers && settings.providers.length > 0) {
     for (const provider of settings.providers) {
-      if((provider as any).useValue) {
+      if ((provider as any).useValue) {
         container.register<T>(provider.token, (provider as any).useValue);
       }
 
-      if((provider as any).useClass) {
+      if ((provider as any).useClass) {
         container.register<T>(provider.token, (provider as any).useClass);
       }
 

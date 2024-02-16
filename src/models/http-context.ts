@@ -6,9 +6,9 @@ import type { NativeRequest } from "./request.ts";
 import { SERVER_REQUEST } from "./tokens.model.ts";
 
 @Injectable(
-    {
-      inject: [SERVER_REQUEST],
-    }
+  {
+    inject: [SERVER_REQUEST],
+  },
 )
 export class HttpContext<T = any> extends Context<T> {
   public request!: AlosaurRequest;

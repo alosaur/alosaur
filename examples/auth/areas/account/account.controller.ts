@@ -11,7 +11,7 @@ interface LoginModel {
   password: string;
 }
 
-@Controller({ baseRoute:"/account", ctor: { inject:[AuthService] } })
+@Controller({ baseRoute: "/account", ctor: { inject: [AuthService] } })
 export class AccountController {
   name: string | undefined = undefined;
 

@@ -1,7 +1,7 @@
 import { Controller, Get, QueryParam } from "alosaur/mod.ts";
 import { FooService } from "../../services/foo.service.ts";
 
-@Controller({baseRoute:"/home", ctor: {inject: [FooService]}})
+@Controller({ baseRoute: "/home", ctor: { inject: [FooService] } })
 export class HomeController {
   name: string | undefined = undefined;
 

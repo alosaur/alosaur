@@ -1,4 +1,4 @@
-import {Container, SLContainer} from "../di/mod.ts";
+import { Container, SLContainer } from "../di/mod.ts";
 import { TcpContext, TcpServer, TcpServerConfig } from "./server/server.ts";
 import { registerAreas } from "../utils/register-areas.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";

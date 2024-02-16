@@ -9,6 +9,6 @@ export type ProviderDeclaration<T = any> = {
 } & Provider;
 
 export type DiProviderDeclarations<T = any> = {
-  token: unknown,
-  useValue: unknown
-}
+  token: unknown;
+  useValue: unknown;
+};

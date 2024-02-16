@@ -1,4 +1,4 @@
-import {Container} from "../di/mod.ts";
+import { Container } from "../di/mod.ts";
 import { StaticFilesConfig } from "./static-config.ts";
 import { ViewRenderConfig } from "./view-render-config.ts";
 import { DependencyContainer, Provider } from "../injection/index.ts";

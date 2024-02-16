@@ -20,7 +20,6 @@ export async function resolveHooks<TState, TPayload>(
     for (const hook of hooks) {
       const action: Function | undefined = (hook as any).instance[actionName];
 
-
       if (action !== undefined) {
         await (hook as any).instance[actionName](context, hook.payload);
 

@@ -1,4 +1,4 @@
-import {ControllerOptions} from "../decorator/Controller.ts";
+import { ControllerOptions } from "../decorator/Controller.ts";
 import { Container } from "../di/mod.ts";
 import { AreaMetadataArgs } from "./area.ts";
 import { ProviderDeclaration } from "../types/provider-declaration.ts";

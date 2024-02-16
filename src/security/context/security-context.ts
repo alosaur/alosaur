@@ -7,9 +7,9 @@ import { SERVER_REQUEST } from "../../models/tokens.model.ts";
 import type { NativeRequest } from "../../models/request.ts";
 
 @Injectable(
-    {
-      inject: [SERVER_REQUEST],
-    }
+  {
+    inject: [SERVER_REQUEST],
+  },
 )
 export class SecurityContext<T = any> extends HttpContext<T> {
   public security: Security = new Security(this);

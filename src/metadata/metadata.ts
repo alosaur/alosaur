@@ -1,4 +1,4 @@
-import { Container, SLContainer} from "../di/mod.ts";
+import { Container, SLContainer } from "../di/mod.ts";
 import { ControllerMetadataArgs } from "./controller.ts";
 import { AreaMetadataArgs } from "./area.ts";
 import { MiddlewareMetadataArgs } from "./middleware.ts";
