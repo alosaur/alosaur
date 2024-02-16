@@ -1,5 +1,5 @@
 import * as DenoDoc from "./deno-doc.model.ts";
-import { Property} from "./deno-doc.model.ts";
+import { Property } from "./deno-doc.model.ts";
 import * as oa from "../../builder/openapi-models.ts";
 import { JsDocObject, JsDocParse, PropertyJsDocParse } from "./js-doc-parser.ts";
 import { getOpenApiMetadataArgsStorage } from "../../metadata/openapi-metadata.storage.ts";
