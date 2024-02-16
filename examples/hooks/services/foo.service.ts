@@ -1,6 +1,6 @@
-import { Singleton } from "alosaur/mod.ts";
+import { Injectable } from "../../../mod.ts";
 
-@Singleton()
+@Injectable()
 export class FooService {
   getName(): string {
     return "My name is Foo";

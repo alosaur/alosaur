@@ -1,7 +1,6 @@
 import { Container } from "../di/mod.ts";
 import { StaticFilesConfig } from "./static-config.ts";
 import { ViewRenderConfig } from "./view-render-config.ts";
-import { DependencyContainer, Provider } from "../injection/index.ts";
 import { IMiddleware } from "./middleware-target.ts";
 import { Type } from "../types/type.ts";
 import { ProviderDeclarations } from "../types/provider-declaration.ts";

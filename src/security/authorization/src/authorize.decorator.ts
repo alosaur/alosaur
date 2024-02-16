@@ -1,9 +1,9 @@
+import { SLContainer } from "../../../di/mod.ts";
 import { getMetadataArgsStorage } from "../../../mod.ts";
 import { HookTarget } from "../../../models/hook.ts";
 import { SecurityContext } from "../../context/security-context.ts";
 import { BusinessType } from "../../../types/business.ts";
 import { AuthenticationScheme, Identity } from "../../authentication/core/auth.interface.ts";
-import { container } from "../../../injection/index.ts";
 import { AuthPolicy } from "./auth-policy.model.ts";
 
 type AuthPayload = { roles?: string[]; policy?: AuthPolicy };
@@ -20,7 +20,8 @@ export function Authorize(
       object,
       target: object.constructor,
       method: methodName ? methodName : "",
-      instance: container.resolve(AutorizeHook),
+      // TODO need constructor container
+      instance: SLContainer.create(AutorizeHook),
       payload: { scheme, payload },
     });
   };

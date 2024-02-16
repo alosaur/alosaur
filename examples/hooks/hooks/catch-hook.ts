@@ -1,9 +1,11 @@
-import { Content, HookTarget, HttpContext, HttpError, Singleton } from "alosaur/mod.ts";
+import { Content, HookTarget, HttpContext, HttpError, Injectable } from "alosaur/mod.ts";
 import { FooService } from "../services/foo.service.ts";
 
 type PayloadType = string[];
 
-@Singleton()
+@Injectable({
+  inject: [FooService],
+})
 export class CatchHook implements HookTarget<unknown, PayloadType> {
   constructor(private foo: FooService) {}
 

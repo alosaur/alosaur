@@ -1,5 +1,6 @@
-import { BusinessType, container, Content, getMetadataArgsStorage, HookTarget, HttpContext } from "alosaur/mod.ts";
+import { BusinessType, Content, getMetadataArgsStorage, HookTarget, HttpContext } from "alosaur/mod.ts";
 import { getQueryParams } from "alosaur/src/route/get-action-params.ts";
+import { SLContainer } from "../../../src/di/mod.ts";
 
 type AuthorizeRoleType = string | undefined;
 
@@ -13,7 +14,7 @@ export function Authorize(role?: AuthorizeRoleType): Function {
       object,
       target: object.constructor,
       method: methodName,
-      instance: container.resolve(AutorizeHook),
+      instance: SLContainer.create(AutorizeHook),
       payload: role,
     });
   };

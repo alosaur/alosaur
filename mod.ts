@@ -11,7 +11,7 @@ export * from "./src/decorator/mod.ts";
 export * from "./src/middlewares/mod.ts";
 
 // DI
-export * from "./src/injection/index.ts";
+export * from "./src/di/mod.ts";
 
 // Models
 export * from "./src/models/mod.ts";
