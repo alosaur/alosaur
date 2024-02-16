@@ -4,7 +4,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 
 [Documentation](https://alosaur.com/)
 
-![test](https://github.com/alosaur/alosaur/workflows/test/badge.svg)
+[![test](https://github.com/alosaur/alosaur/actions/workflows/ci.yml/badge.svg)](https://github.com/alosaur/alosaur/actions/workflows/ci.yml)
 ![sponsors](https://opencollective.com/alosaur/sponsors/badge.svg)
 
 - **Area** - these are the modules of your application.
