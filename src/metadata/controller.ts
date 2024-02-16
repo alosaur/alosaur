@@ -1,6 +1,7 @@
+import { ControllerOptions } from "../decorator/Controller.ts";
+import { Container } from "../di/mod.ts";
 import { AreaMetadataArgs } from "./area.ts";
 import { ProviderDeclaration } from "../types/provider-declaration.ts";
-import { DependencyContainer } from "../injection/index.ts";
 import { HookMetadataArgs } from "./hook.ts";
 import { ActionMetadataArgs } from "./action.ts";
 
@@ -39,7 +40,7 @@ export interface ControllerMetadataArgs {
   /**
    * Container of controller if providers is declared
    */
-  container?: DependencyContainer;
+  container?: Container;
 
   /**
    * Hooks for controller
@@ -50,4 +51,9 @@ export interface ControllerMetadataArgs {
    * Actions of controller
    */
   actions?: ActionMetadataArgs[];
+
+  /**
+   * Options for controller
+   */
+  options?: ControllerOptions;
 }

@@ -48,6 +48,7 @@ test({
       /**
        * PART 2 of Auth request:
        */
+      console.log(response.headers.get("set-cookie")!);
 
       const cookies = response.headers.get("set-cookie")!.replace(
         "sid=",

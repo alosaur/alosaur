@@ -1,6 +1,5 @@
 import { getMetadataArgsStorage } from "../../mod.ts";
 import { BusinessType } from "../../types/business.ts";
-import { Inject, Injectable } from "../../injection/index.ts";
 import { HookTarget } from "../../models/hook.ts";
 import { HttpContext } from "../../models/http-context.ts";
 import type {
@@ -9,9 +8,10 @@ import type {
   ResponseCacheStore,
 } from "./response-cache-store.interface.ts";
 import { ResponseCacheStoreToken } from "./response-cache-store.interface.ts";
+import { Injectable } from "../../di/mod.ts";
 
 export function ResponseCache(payload: ResponseCachePayload): Function {
-  return function (object: any, methodName?: string) {
+  return function (object: any, methodName?: string, descriptor?: any) {
     // add hook to global metadata
     getMetadataArgsStorage().hooks.push({
       type: methodName ? BusinessType.Action : BusinessType.Controller,
@@ -24,11 +24,13 @@ export function ResponseCache(payload: ResponseCachePayload): Function {
   };
 }
 
-@Injectable()
+@Injectable({
+  inject: [ResponseCacheStoreToken],
+})
 export class ResponseCacheHook implements HookTarget<unknown, unknown> {
   // TODO implement session store from DI
   constructor(
-    @Inject(ResponseCacheStoreToken) private readonly store: ResponseCacheStore,
+    private readonly store: ResponseCacheStore,
   ) {
   }
 

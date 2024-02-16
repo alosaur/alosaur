@@ -1,9 +1,9 @@
-import { ImmediatelyResponse } from "./response.ts";
+import { IImmediatelyResponse, ImmediatelyResponse } from "./response.ts";
 
 /**
  * Main request/response object of
  */
 export class Context<T = any> {
   public state?: T;
-  public readonly response: ImmediatelyResponse = new ImmediatelyResponse();
+  public readonly response: IImmediatelyResponse = new ImmediatelyResponse();
 }

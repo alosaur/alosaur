@@ -13,8 +13,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - **Hooks** - middleware for area, controller and actions with support DI. Have 3 life cyclic functions:
   `onPreAction, onPostAction, onCatchAction`
 - **Decorators** - for query, cookie, parametrs, routes and etc.
-- **Dependency Injection** - for all controllers and hooks by default from `microsoft/TSyringe`
-  ([more about alosaur injection](/src/injection)).
+- **Dependency Injection** - for all controllers and hooks by default. ([more about alosaur injection](/src/injection)).
 - **Security** - supports security context (Session, Authentication, Authorization, OAuth, Google and custom strategy)
   [Security](https://github.com/alosaur/alosaur/tree/master/src/security)
 - **Render pages** any template render engine. [(more)](https://github.com/alosaur/alosaur#render-pages)

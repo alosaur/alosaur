@@ -1,7 +1,9 @@
-import { Content, HookTarget, HttpContext, Singleton } from "alosaur/mod.ts";
+import { Content, HookTarget, HttpContext, Injectable } from "alosaur/mod.ts";
 import { FooService } from "../services/foo.service.ts";
 
-@Singleton()
+@Injectable({
+  inject: [FooService],
+})
 export class PostHook implements HookTarget<unknown, any> {
   constructor(public readonly foo: FooService) {}
 

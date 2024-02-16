@@ -1,9 +1,9 @@
+import { Container } from "../di/mod.ts";
 import { StaticFilesConfig } from "./static-config.ts";
 import { ViewRenderConfig } from "./view-render-config.ts";
-import { DependencyContainer, Provider } from "../injection/index.ts";
 import { IMiddleware } from "./middleware-target.ts";
 import { Type } from "../types/type.ts";
-import { ProviderDeclaration } from "../types/provider-declaration.ts";
+import { ProviderDeclarations } from "../types/provider-declaration.ts";
 
 /**
  * Application settings
@@ -37,10 +37,10 @@ export interface AppSettings {
   /**
    * Custom DI container
    */
-  container?: DependencyContainer;
+  container?: Container;
 
   /**
    * Providers declared in app
    */
-  providers?: ProviderDeclaration[];
+  providers?: ProviderDeclarations[];
 }

@@ -7,7 +7,7 @@ const app = new App({
   logging: false,
   providers: [{
     token: ResponseCacheStoreToken,
-    useClass: MemoryResponseCacheStore,
+    useValue: new MemoryResponseCacheStore(),
   }],
 });
 

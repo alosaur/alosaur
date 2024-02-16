@@ -29,7 +29,7 @@ export function registerControllers<TState>(
 
     // TODO: if obj not in classes
     // resolve from DI
-    const target: ObjectKeyAny = controller.container!.resolve(
+    const target: ObjectKeyAny = controller.container!.create(
       controller.target as any,
     );
     classes.push(target);

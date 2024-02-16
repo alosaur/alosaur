@@ -1,7 +1,7 @@
+import { Injectable } from "../../di/mod.ts";
 import { ResponseCacheStore } from "./response-cache-store.interface.ts";
-import { Singleton } from "../../injection/index.ts";
 
-@Singleton()
+@Injectable()
 export class MemoryResponseCacheStore implements ResponseCacheStore {
   private cacheMap: Map<string, any> = new Map<string, any>();
 

@@ -1,4 +1,5 @@
-import { DenoDoc } from "./deno-doc.model.ts";
+import * as DenoDoc from "./deno-doc.model.ts";
+import { Property } from "./deno-doc.model.ts";
 import * as oa from "../../builder/openapi-models.ts";
 import { JsDocObject, JsDocParse, PropertyJsDocParse } from "./js-doc-parser.ts";
 import { getOpenApiMetadataArgsStorage } from "../../metadata/openapi-metadata.storage.ts";
@@ -70,8 +71,8 @@ export function getSchemeByDef(def: DenoDoc.RootDef): oa.SchemaObject {
 
   if (properties) {
     result.properties = {};
-    properties.filter((p) => p.accessibility !== "private").forEach(
-      (property) => {
+    properties.filter((p: Property) => p.accessibility !== "private").forEach(
+      (property: Property) => {
         let propertyResult: oa.SchemaObject = {};
 
         const stdJsDoc = property.jsDoc && JsDocParse(property.jsDoc);
@@ -107,7 +108,7 @@ export function getShemeByEnumDef(def: DenoDoc.RootDef): oa.SchemaObject {
 
   if (def.enumDef) {
     result.enum = [];
-    def.enumDef.members.forEach((member) => {
+    def.enumDef.members.forEach((member: any) => {
       result.enum!.push(member.name);
     });
   }

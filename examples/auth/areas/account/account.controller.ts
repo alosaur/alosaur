@@ -1,4 +1,5 @@
 import { Body, Content, Controller, Ctx, Get, Post, Redirect } from "../../../../mod.ts";
+import { Injectable } from "../../../../src/di/mod.ts";
 import { AuthService, UserModel } from "../../services/auth.service.ts";
 import { SecurityContext } from "../../../../src/security/context/security-context.ts";
 import { CookiesAuthentication } from "../../../../src/security/authentication/cookies/src/cookies-authentication.ts";
@@ -10,11 +11,12 @@ interface LoginModel {
   password: string;
 }
 
-@Controller("/account")
+@Controller({ baseRoute: "/account", ctor: { inject: [AuthService] } })
 export class AccountController {
   name: string | undefined = undefined;
 
-  constructor(private service: AuthService) {}
+  constructor(private service: AuthService) {
+  }
 
   @Get("/login")
   getLogin(@Ctx() context: SecurityContext) {

@@ -1,4 +1,4 @@
-import { DenoDoc } from "./deno-doc.model.ts";
+import * as DenoDoc from "./deno-doc.model.ts";
 import JsDoc = DenoDoc.JsDoc;
 
 export interface JsDocObject {

@@ -1,3 +1,4 @@
+import { delay } from "../examples/_utils/test.utils.ts";
 import { assert } from "../src/deps_test.ts";
 
 export async function startServer(serverPath: string): Promise<Deno.Process> {
@@ -26,6 +27,9 @@ export async function startServer(serverPath: string): Promise<Deno.Process> {
 
   // assert(s !== null && s.includes("Server start in"));
   assert(s !== null);
+
+  // TODO delete, need for run other tests, bug in Deno 1.40.4
+  await delay(1);
 
   return Promise.resolve(process);
 }

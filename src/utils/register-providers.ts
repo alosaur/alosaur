@@ -1,6 +1,5 @@
-import { DependencyContainer } from "../injection/index.ts";
-import { ProviderDeclaration } from "../types/provider-declaration.ts";
-import { AppSettings } from "../models/app-settings.ts";
+import { Container } from "../di/mod.ts";
+import { ProviderDeclarations } from "../types/provider-declaration.ts";
 
 /**
  * Register providers in layer, Area, Controller
@@ -8,8 +7,8 @@ import { AppSettings } from "../models/app-settings.ts";
  * @param parentContainer
  */
 export function registerProviders<T = any>(
-  layer: { providers?: ProviderDeclaration[]; container?: DependencyContainer },
-  parentContainer: DependencyContainer,
+  layer: { providers?: ProviderDeclarations[]; container?: Container },
+  parentContainer: Container,
 ) {
   if (layer.providers && layer.providers.length > 0) {
     if (!layer.container || layer.container === parentContainer) {
@@ -27,12 +26,20 @@ export function registerProviders<T = any>(
 }
 
 export function registerAppProviders<T = any>(
-  settings: { providers?: ProviderDeclaration[] },
-  container: DependencyContainer,
+  settings: { providers?: ProviderDeclarations[] },
+  container: Container,
 ) {
   if (settings.providers && settings.providers.length > 0) {
     for (const provider of settings.providers) {
-      container.register<T>(provider.token, provider as any);
+      if ((provider as any).useValue) {
+        container.register<T>(provider.token, (provider as any).useValue);
+      }
+
+      if ((provider as any).useClass) {
+        container.register<T>(provider.token, (provider as any).useClass);
+      }
+
+      // TODO add other provider types
     }
   }
 }
