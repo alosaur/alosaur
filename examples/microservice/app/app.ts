@@ -7,7 +7,9 @@ const app = new App({
   providers: [
     {
       token: "TCP_CLIENT",
-      useFactory: () => new MsTcpClient({ hostname: "localhost", port: 4500 }),
+      useValue: new MsTcpClient({ hostname: "localhost", port: 4500 }),
+      // TODO need implement useFactory in di
+      // useFactory: () => new MsTcpClient({ hostname: "localhost", port: 4500 }),
     },
   ],
   logging: false,

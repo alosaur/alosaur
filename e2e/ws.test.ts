@@ -31,8 +31,9 @@ test({
               assertEquals(message.data, "[1]: Hello");
 
               ws.close();
-              // reject();
-              resolve();
+              ws.onclose = () => {
+                resolve();
+              };
             };
             ws.send("Hello");
           };
@@ -44,4 +45,5 @@ test({
       killServer(process);
     }
   },
+  // sanitizeOps: false,
 });

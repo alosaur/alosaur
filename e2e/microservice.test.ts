@@ -12,6 +12,8 @@ test({
     const process1 = await startServer(
       "./examples/microservice/mservice/app.ts",
     );
+    await delay(100);
+
     const process2 = await startServer("./examples/microservice/app/app.ts");
 
     await delay(100);

@@ -1,3 +1,4 @@
+import {Container, SLContainer} from "../di/mod.ts";
 import { TcpContext, TcpServer, TcpServerConfig } from "./server/server.ts";
 import { registerAreas } from "../utils/register-areas.ts";
 import { MetadataArgsStorage } from "../metadata/metadata.ts";
@@ -24,7 +25,7 @@ export interface MicroserviceSettings {
   /**
    * Custom DI container
    */
-  container?: DependencyContainer;
+  container?: Container;
 
   /**
    * Providers declared in microservice
@@ -46,7 +47,7 @@ export class Microservice<TState> {
   constructor(settings: MicroserviceSettings) {
     this.metadata = getMetadataArgsStorage();
 
-    this.metadata.container = settings.container || defaultContainer;
+    this.metadata.container = settings.container || SLContainer;
 
     // Register all areas routes
     registerAppProviders(settings, this.metadata.container);
