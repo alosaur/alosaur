@@ -7,6 +7,7 @@ import { SessionMiddleware } from "alosaur/src/security/session/src/session.midd
 import { MemoryStore } from "alosaur/src/security/session/src/store/memory.store.ts";
 import { SecurityContext } from "alosaur/src/security/context/security-context.ts";
 import { UseGoogleOAuth } from "../../src/security/oauth/mod.ts";
+import {AuthService} from "./services/auth.service.ts";
 
 const DAYS_30 = 30 * 24 * 60 * 60 * 1000;
 
@@ -16,7 +17,12 @@ const app = new App({
   providers: [{
     token: HttpContext,
     useClass: SecurityContext,
-  }],
+  },
+    {
+      token: AuthService,
+      useValue: new AuthService(),
+    }
+  ],
 });
 
 const sessionStore = new MemoryStore();

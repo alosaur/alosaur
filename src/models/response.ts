@@ -14,7 +14,13 @@ export interface PrimitiveResponse {
   status?: number;
 }
 
-export class ImmediatelyResponse {
+export interface IImmediatelyResponse {
+  error?: Error;
+  setImmediately(): void;
+  isImmediately(): boolean;
+}
+
+export class ImmediatelyResponse implements IImmediatelyResponse {
   public error?: Error;
   private immediately: boolean = false;
 

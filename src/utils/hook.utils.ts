@@ -15,11 +15,11 @@ export async function resolveHooks<TState, TPayload>(
   hooks?: HookMetadataArgs<TState, TPayload>[],
 ): Promise<boolean> {
   const resolvedHooks = new Set<HookMetadataArgs<TState, TPayload>>();
-
   if (hasHooks(hooks)) {
     // @ts-ignore: Object is possibly 'undefined'.
     for (const hook of hooks) {
       const action: Function | undefined = (hook as any).instance[actionName];
+
 
       if (action !== undefined) {
         await (hook as any).instance[actionName](context, hook.payload);

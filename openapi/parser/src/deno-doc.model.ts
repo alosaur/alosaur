@@ -1,4 +1,4 @@
-export namespace DenoDoc {
+// export namespace DenoDoc {
   export interface RootDef {
     kind: Kind;
     name: string;
@@ -261,4 +261,4 @@ export namespace DenoDoc {
     kind: "unsupported";
     value: string;
   }
-}
+// }

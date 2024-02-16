@@ -1,4 +1,4 @@
-import { DenoDoc } from "./deno-doc.model.ts";
+import * as DenoDoc from "./deno-doc.model.ts";
 
 const decoder = new TextDecoder();
 const GlobalFilesSet = new Set();

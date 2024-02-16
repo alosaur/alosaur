@@ -1,3 +1,4 @@
+import {SLContainer} from "./di/mod.ts";
 import { MetadataArgsStorage } from "./metadata/metadata.ts";
 import { StaticFilesConfig } from "./models/static-config.ts";
 import { ViewRenderConfig } from "./models/view-render-config.ts";
@@ -10,7 +11,6 @@ import { TransformConfig, TransformConfigMap } from "./models/transform-config.t
 
 import { HttpContext } from "./models/http-context.ts";
 import { AppSettings } from "./models/app-settings.ts";
-import { container as defaultContainer } from "./injection/index.ts";
 import { MiddlewareMetadataArgs } from "./metadata/middleware.ts";
 import { registerAppProviders } from "./utils/register-providers.ts";
 import { handleNativeServer } from "./server/handle-native-request.ts";
@@ -74,7 +74,7 @@ export class App<TState> {
   constructor(private readonly settings: AppSettings) {
     this.metadata = getMetadataArgsStorage();
 
-    this.metadata.container = settings.container || defaultContainer;
+    this.metadata.container = settings.container || SLContainer;
 
     this.sortMiddlewares(settings);
 

@@ -67,10 +67,11 @@ async function handleFullServer<TState>(
 ) {
   const requests = Deno.serveHttp(conn);
   for await (const request of requests) {
+
     const respondWith = respondWithWrapper(request.respondWith, conn);
 
-    metadata.container.register(SERVER_REQUEST, { useValue: request });
-    const context = metadata.container.resolve<HttpContext<TState>>(
+    metadata.container.register(SERVER_REQUEST, request );
+    const context = metadata.container.create<HttpContext<TState>>(
       HttpContext,
     );
 

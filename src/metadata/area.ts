@@ -1,5 +1,5 @@
-import { DependencyContainer } from "../injection/index.ts";
-import { ProviderDeclaration } from "../types/provider-declaration.ts";
+import { Container } from "../di/mod.ts";
+import { ProviderDeclarations } from "../types/provider-declaration.ts";
 import { HookMetadataArgs } from "./hook.ts";
 
 export class AreaMetadata {
@@ -47,12 +47,12 @@ export interface AreaMetadataArgs {
   /**
    * Providers declared in area
    */
-  providers?: ProviderDeclaration[];
+  providers?: ProviderDeclarations[];
 
   /**
    * Container of area if providers is declared
    */
-  container?: DependencyContainer;
+  container?: Container;
 
   /**
    * Hooks for area

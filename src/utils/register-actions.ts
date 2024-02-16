@@ -23,7 +23,7 @@ export function registerAction<TState>(
 ) {
   for (const hook of hooks) {
     if (
-      hook.type === BusinessType.Action && action.object === hook.object &&
+      hook.type === BusinessType.Action && action.target === hook.target &&
       hook.method === action.method
     ) {
       if (!action.hooks) action.hooks = [];
@@ -31,7 +31,7 @@ export function registerAction<TState>(
       action.hooks.push(hook);
 
       if (!hook.instance) {
-        hook.instance = action.controller!.container!.resolve(
+        hook.instance = action.controller!.container!.create(
           hook.hookClass as any,
         );
       }
