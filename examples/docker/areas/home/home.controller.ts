@@ -1,4 +1,5 @@
 import {
+  ActionParam,
   Body,
   Content,
   Controller,
@@ -18,18 +19,24 @@ import {
 export class HomeController {
   constructor() {}
   @Get("/text")
+  @ActionParam(0, QueryParam("name"))
+  @ActionParam(1, QueryParam("test"))
+  @ActionParam(2, Cookie("username"))
   text(
-    @QueryParam("name") name: string,
-    @QueryParam("test") test: string,
-    @Cookie("username") username: string,
+    name: string,
+    test: string,
+    username: string,
   ) {
     return Content(`Hello world, ${name} ${test} ${username}`);
   }
   @Get("/json")
+  @ActionParam(0, Req())
+  @ActionParam(1, Res())
+  @ActionParam(2, QueryParam("name"))
   json(
-    @Req() request: ServerRequest,
-    @Res() response: Response,
-    @QueryParam("name") name: string,
+    request: ServerRequest,
+    response: Response,
+    name: string,
   ) {
     return Content(response);
   }
@@ -43,20 +50,30 @@ export class HomeController {
   gerTests() {
     return Content("test");
   }
+
   @Get("/test/:id")
-  gerParamId(@Param("id") id: string) {
+  @ActionParam(0, Param("id"))
+  gerParamId(id: string) {
     return Content(id);
   }
+
   @Get("/test/:id/:name")
-  gerParamIdName(@Param("id") id: string, @Param("name") name: string) {
+  @ActionParam(0, Param("id"))
+  @ActionParam(1, Param("name"))
+  gerParamIdName(id: string, name: string) {
     return Content(`${id} ${name}`);
   }
+
   @Get("/test/:id/:name/detail")
-  gerParamIdNameDetail(@Param("id") id: string, @Param("name") name: string) {
+  @ActionParam(0, Param("id"))
+  @ActionParam(1, Param("name"))
+  gerParamIdNameDetail(id: string, name: string) {
     return Content(`${id} ${name} detail`);
   }
   @Post("/post")
-  post(@Body() body: any, @QueryParam("name") name: string) {
+  @ActionParam(0, Body())
+  @ActionParam(1, QueryParam("name"))
+  post(body: any, name: string) {
     return Content(body);
   }
 }

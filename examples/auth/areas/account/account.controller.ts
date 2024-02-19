@@ -1,5 +1,4 @@
-import { Body, Content, Controller, Ctx, Get, Post, Redirect } from "../../../../mod.ts";
-import { Injectable } from "../../../../src/di/mod.ts";
+import { ActionParam, Body, Content, Controller, Ctx, Get, Post, Redirect } from "../../../../mod.ts";
 import { AuthService, UserModel } from "../../services/auth.service.ts";
 import { SecurityContext } from "../../../../src/security/context/security-context.ts";
 import { CookiesAuthentication } from "../../../../src/security/authentication/cookies/src/cookies-authentication.ts";
@@ -19,7 +18,8 @@ export class AccountController {
   }
 
   @Get("/login")
-  getLogin(@Ctx() context: SecurityContext) {
+  @ActionParam(0, Ctx())
+  getLogin(context: SecurityContext) {
     if (context.security.auth.identity()) {
       return Redirect("/protected");
     }
@@ -39,9 +39,11 @@ export class AccountController {
   }
 
   @Post("/login")
+  @ActionParam(0, Ctx())
+  @ActionParam(1, Body())
   async postLogin(
-    @Ctx() context: SecurityContext,
-    @Body() account: LoginModel,
+    context: SecurityContext,
+    account: LoginModel,
   ) {
     const user = this.service.validate(account.login, account.password);
 
@@ -54,9 +56,11 @@ export class AccountController {
   }
 
   @Post("/login-json")
+  @ActionParam(0, Ctx())
+  @ActionParam(1, Body())
   async postLoginJSON(
-    @Ctx() context: SecurityContext,
-    @Body() account: LoginModel,
+    context: SecurityContext,
+    account: LoginModel,
   ) {
     const user = this.service.validate(account.login, account.password);
 
@@ -69,7 +73,8 @@ export class AccountController {
   }
 
   @Get("/external-success")
-  async externalSuccess(@Ctx() context: SecurityContext) {
+  @ActionParam(0, Ctx())
+  async externalSuccess(context: SecurityContext) {
     // Gets user info from external auth
     const userinfo: any = await context.security!.session!.get(
       "external_login_signin-google", // key for gets information about login  external_login_<callbackPath>
@@ -84,12 +89,14 @@ export class AccountController {
   }
 
   @Get("/external-error")
-  async externalError(@Ctx() context: SecurityContext) {
+  @ActionParam(0, Ctx())
+  async externalError(context: SecurityContext) {
     return context.response.error;
   }
 
   @Get("/logout")
-  async logOut(@Ctx() context: SecurityContext) {
+  @ActionParam(0, Ctx())
+  async logOut(context: SecurityContext) {
     await context.security.auth.signOutAsync(scheme);
     return Redirect("/account/login");
   }

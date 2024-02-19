@@ -1,7 +1,7 @@
-import {getOrSetControllerId} from "../metadata/controller.ts";
+import { getOrSetControllerId } from "../metadata/controller.ts";
 import { getMetadataArgsStorage } from "../mod.ts";
 import { RequestMethod } from "../types/request-method.ts";
-import {ClassMethodDecoratorContext} from "./decorator.models.ts";
+import { ClassMethodDecoratorContext } from "./decorator.models.ts";
 
 /**
  * Registers an action to be executed when POST request comes on a given route.
@@ -29,7 +29,7 @@ export function Post(route?: string | RegExp): Function {
       target: fn,
       method: context.name as string,
       route: route,
-      controllerId: controllerId
+      controllerId: controllerId,
     });
   };
 }

@@ -1,4 +1,6 @@
+import { ClassMethodDecoratorContext } from "../../../decorator/decorator.models.ts";
 import { SLContainer } from "../../../di/mod.ts";
+import { getOrSetControllerId } from "../../../metadata/controller.ts";
 import { getMetadataArgsStorage } from "../../../mod.ts";
 import { HookTarget } from "../../../models/hook.ts";
 import { SecurityContext } from "../../context/security-context.ts";
@@ -13,16 +15,19 @@ export function Authorize(
   scheme: AuthenticationScheme,
   payload?: AuthPayload,
 ): Function {
-  return function (object: any, methodName?: string) {
+  return function (object: any, context: { kind: "method" | "class"; name: string }) {
+    const controllerId = getOrSetControllerId(context as ClassMethodDecoratorContext);
+
     // add hook to global metadata
     getMetadataArgsStorage().hooks.push({
-      type: methodName ? BusinessType.Action : BusinessType.Controller,
+      type: context.kind === "method" ? BusinessType.Action : BusinessType.Controller,
       object,
       target: object.constructor,
-      method: methodName ? methodName : "",
+      method: context.name,
       // TODO need constructor container
       instance: SLContainer.create(AutorizeHook),
       payload: { scheme, payload },
+      controllerId,
     });
   };
 }

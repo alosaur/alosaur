@@ -1,11 +1,12 @@
 import { renderFileToString } from "https://deno.land/x/dejs@0.10.1/mod.ts";
-import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from "alosaur/mod.ts";
+import { ActionParam, App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from "alosaur/mod.ts";
 import { normalize } from "https://deno.land/std@0.171.0/path/mod.ts";
 
 @Controller("")
 export class HomeController {
   @Get("/")
-  text(@QueryParam("name") name: string) {
+  @ActionParam(0, QueryParam("name"))
+  text(name: string) {
     return View("main", { name });
   }
 }

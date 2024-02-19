@@ -9,7 +9,6 @@ import { ClassMethodDecoratorContext } from "./decorator.models.ts";
  */
 export function QueryParam(name: string): Function {
   return function (object: Object, context: ClassMethodDecoratorContext, index: number) {
-
     const controllerId = getOrSetControllerId(context);
 
     getMetadataArgsStorage().params.push({

@@ -1,4 +1,4 @@
-import { Controller, Get, QueryParam } from "alosaur/mod.ts";
+import { ActionParam, Controller, Get, QueryParam } from "alosaur/mod.ts";
 import { FooService } from "../../services/foo.service.ts";
 
 @Controller({ baseRoute: "/home", ctor: { inject: [FooService] } })
@@ -8,7 +8,8 @@ export class HomeController {
   constructor(private service: FooService) {}
 
   @Get("/text")
-  text(@QueryParam("name") name: string) {
+  @ActionParam(0, QueryParam("name"))
+  text(name: string) {
     return `Hey! ${this.service.getName()}, ${name}`;
   }
 }

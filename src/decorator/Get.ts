@@ -21,15 +21,15 @@ export function Get(route?: string): Function;
  */
 export function Get(route?: string | RegExp): Function {
   return function (fn: Function, context: ClassMethodDecoratorContext) {
-      const controllerId = getOrSetControllerId(context);
+    const controllerId = getOrSetControllerId(context);
 
-      getMetadataArgsStorage().actions.push({
-        type: RequestMethod.Get,
-        object: fn,
-        target: fn,
-        method: context.name as string,
-        route: route,
-        controllerId: controllerId
-      });
+    getMetadataArgsStorage().actions.push({
+      type: RequestMethod.Get,
+      object: fn,
+      target: fn,
+      method: context.name as string,
+      route: route,
+      controllerId: controllerId,
+    });
   };
 }

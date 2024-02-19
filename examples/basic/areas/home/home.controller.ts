@@ -1,5 +1,18 @@
 import { Controller, ForbiddenError } from "alosaur/mod.ts";
-import { Body, Cookie, Delete, Get, Param, Post, Put, QueryParam, QueryParams, Req, Res, ActionParam } from "alosaur/mod.ts";
+import {
+  ActionParam,
+  Body,
+  Cookie,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  QueryParam,
+  QueryParams,
+  Req,
+  Res,
+} from "alosaur/mod.ts";
 import { AlosaurRequest, AlosaurResponse } from "alosaur/mod.ts";
 import { delay } from "../../../_utils/test.utils.ts";
 

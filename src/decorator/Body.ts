@@ -1,8 +1,8 @@
-import {getOrSetControllerId} from "../metadata/controller.ts";
+import { getOrSetControllerId } from "../metadata/controller.ts";
 import { getMetadataArgsStorage } from "../mod.ts";
 import { ParamType } from "../types/param.ts";
 import { RequestBodyParseOptions } from "../models/request.ts";
-import {ClassMethodDecoratorContext} from "./decorator.models.ts";
+import { ClassMethodDecoratorContext } from "./decorator.models.ts";
 
 /**
  * Injects a Body object to the controller action parameter.
@@ -15,7 +15,6 @@ export function Body(
   options?: RequestBodyParseOptions,
 ): Function {
   return function (object: Object, context: ClassMethodDecoratorContext, index: number) {
-
     const controllerId = getOrSetControllerId(context);
 
     getMetadataArgsStorage().params.push({
@@ -25,6 +24,7 @@ export function Body(
       index: index,
       transform,
       bodyParseOptions: options,
+      controllerId: controllerId,
     });
   };
 }

@@ -43,4 +43,9 @@ export interface HookMetadataArgs<TState, TPayload> {
    * Payload for hook instance
    */
   payload?: any;
+
+  /**
+   * Controller id
+   */
+  controllerId?: string;
 }

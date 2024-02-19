@@ -59,7 +59,7 @@ export class Container {
 
     const injections: any[] = INJECTIONS.get(Class) || [];
 
-    const constructorInjections = injections.filter(({ context }) => context === undefined);
+    const constructorInjections = injections.filter(({ context }) => context.kind === "class");
     const instance = new Class(...constructorInjections.map(({ injectionKey }) => this.lookup(injectionKey)));
 
     for (const { injectionKey, context } of INJECTIONS.get(Class) || []) {
@@ -100,3 +100,15 @@ export const SLContainer = new Container();
 // let c = container.create(C);
 //
 // console.log(c.store === store); // true
+
+export function getOrSetInjectId(context: { metadata?: Record<string | number | symbol, unknown> }): string {
+  context.metadata = context.metadata || {};
+
+  if (context.metadata._injectId) {
+    return context.metadata._injectId as string;
+  } else {
+    const id = crypto.randomUUID();
+    context.metadata["_injectId"] = id;
+    return id;
+  }
+}

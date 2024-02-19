@@ -1,10 +1,11 @@
 import { Handlebars } from "https://deno.land/x/handlebars@v0.8.0/mod.ts";
-import { App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from "alosaur/mod.ts";
+import { ActionParam, App, Area, Controller, Get, QueryParam, View, ViewRenderConfig } from "alosaur/mod.ts";
 
 @Controller("")
 export class HomeController {
   @Get("/")
-  text(@QueryParam("name") name: string) {
+  @ActionParam(0, QueryParam("name"))
+  text(name: string) {
     return View("index", { name });
   }
 }

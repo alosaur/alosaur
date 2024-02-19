@@ -1,4 +1,4 @@
-import { Area, BadRequestError, Body, Controller, Get, Post, UseHook } from "alosaur/mod.ts";
+import { ActionParam, Area, BadRequestError, Body, Controller, Get, Post, UseHook } from "alosaur/mod.ts";
 
 import { TokenHook } from "../hooks/token-hook.ts";
 import { CatchHook } from "../hooks/catch-hook.ts";
@@ -48,7 +48,8 @@ export class HomeController {
 
   @UseHook(PostHook)
   @Post("/post-hook")
-  getposthook(@Body() body: any) {
+  @ActionParam(0, Body)
+  getposthook(body: any) {
     return body;
   }
 

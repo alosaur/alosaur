@@ -1,12 +1,13 @@
 import { Cookie, getCookies, setCookie } from "https://deno.land/std@0.171.0/http/cookie.ts";
 import { Response } from "https://deno.land/std@0.171.0/http/server.ts";
-import { App, Area, Controller, Get, Redirect, Req, Res, ServerRequest } from "alosaur/mod.ts";
+import { ActionParam, App, Area, Controller, Get, Redirect, Req, Res, ServerRequest } from "alosaur/mod.ts";
 import { SseMiddleware } from "./sse.middlware.ts";
 
 @Controller("/home")
 export class HomeController {
   @Get("/")
-  default(@Res() response: Response) {
+  @ActionParam(0, Res())
+  default(response: Response) {
     const cookie: Cookie = { name: "name", value: "Cat" };
     setCookie(response, cookie);
 

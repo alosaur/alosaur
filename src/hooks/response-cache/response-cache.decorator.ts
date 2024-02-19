@@ -1,3 +1,5 @@
+import { ClassMethodDecoratorContext } from "../../decorator/decorator.models.ts";
+import { getOrSetControllerId } from "../../metadata/controller.ts";
 import { getMetadataArgsStorage } from "../../mod.ts";
 import { BusinessType } from "../../types/business.ts";
 import { HookTarget } from "../../models/hook.ts";
@@ -11,15 +13,18 @@ import { ResponseCacheStoreToken } from "./response-cache-store.interface.ts";
 import { Injectable } from "../../di/mod.ts";
 
 export function ResponseCache(payload: ResponseCachePayload): Function {
-  return function (object: any, methodName?: string, descriptor?: any) {
+  return function (object: any, context: { kind: "method" | "class"; name: string }) {
+    const controllerId = getOrSetControllerId(context as ClassMethodDecoratorContext);
+
     // add hook to global metadata
     getMetadataArgsStorage().hooks.push({
-      type: methodName ? BusinessType.Action : BusinessType.Controller,
+      type: context.kind === "method" ? BusinessType.Action : BusinessType.Controller,
       object,
       target: object.constructor,
-      method: methodName ? methodName : "",
+      method: context.name,
       hookClass: ResponseCacheHook,
       payload,
+      controllerId,
     });
   };
 }

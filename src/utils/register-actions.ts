@@ -23,7 +23,7 @@ export function registerAction<TState>(
 ) {
   for (const hook of hooks) {
     if (
-      hook.type === BusinessType.Action && action.target === hook.target &&
+      hook.type === BusinessType.Action && action.controllerId === hook.controllerId &&
       hook.method === action.method
     ) {
       if (!action.hooks) action.hooks = [];

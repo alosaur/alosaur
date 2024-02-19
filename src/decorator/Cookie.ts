@@ -1,7 +1,7 @@
-import {getOrSetControllerId} from "../metadata/controller.ts";
+import { getOrSetControllerId } from "../metadata/controller.ts";
 import { getMetadataArgsStorage } from "../mod.ts";
 import { ParamType } from "../types/param.ts";
-import {ClassMethodDecoratorContext} from "./decorator.models.ts";
+import { ClassMethodDecoratorContext } from "./decorator.models.ts";
 
 /**
  * Injects a request's query parameter value to the controller action parameter.
@@ -9,7 +9,6 @@ import {ClassMethodDecoratorContext} from "./decorator.models.ts";
  */
 export function Cookie(name: string): Function {
   return function (object: Object, context: ClassMethodDecoratorContext, index: number) {
-
     const controllerId = getOrSetControllerId(context);
 
     getMetadataArgsStorage().params.push({

@@ -1,10 +1,22 @@
 import { Cookie, getCookies, setCookie } from "https://deno.land/std@0.171.0/http/cookie.ts";
-import { AlosaurRequest, AlosaurResponse, App, Area, Controller, Get, Redirect, Req, Res } from "alosaur/mod.ts";
+import {
+  ActionParam,
+  AlosaurRequest,
+  AlosaurResponse,
+  App,
+  Area,
+  Controller,
+  Get,
+  Redirect,
+  Req,
+  Res,
+} from "alosaur/mod.ts";
 
 @Controller("/home")
 export class HomeController {
   @Get("/")
-  default(@Res() response: AlosaurResponse) {
+  @ActionParam(0, Res())
+  default(response: AlosaurResponse) {
     const cookie: Cookie = { name: "name", value: "Cat" };
     setCookie(response.headers, cookie);
 
@@ -12,7 +24,8 @@ export class HomeController {
   }
 
   @Get("/text")
-  text(@Req() request: AlosaurRequest) {
+  @ActionParam(0, Req())
+  text(request: AlosaurRequest) {
     const cookies = getCookies(request.headers);
 
     return `Hey! ${cookies["name"]}`;
