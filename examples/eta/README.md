@@ -24,7 +24,8 @@ const viewPath = `${Deno.cwd()}/examples/eta/views/`;
 @Controller("")
 export class HomeController {
   @Get("/")
-  text(@QueryParam("name") name: string) {
+  @ActionParam(0, QueryParam("name"))
+  text(name: string) {
     return View("main", { name });
   }
 }

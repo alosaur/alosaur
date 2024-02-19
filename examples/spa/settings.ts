@@ -1,9 +1,10 @@
-import { App, Area, Controller, Get, QueryParam } from "alosaur/mod.ts";
+import { ActionParam, App, Area, Controller, Get, QueryParam } from "alosaur/mod.ts";
 
 @Controller("/home")
 export class HomeController {
   @Get("/text")
-  text(@QueryParam("name") name: string) {
+  @ActionParam(0, QueryParam("name"))
+  text(name: string) {
     return `Hey! ${name}`;
   }
 }

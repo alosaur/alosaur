@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
   },
   "fmt": {
     "options": {

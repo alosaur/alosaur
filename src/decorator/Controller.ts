@@ -1,7 +1,9 @@
 import { object } from "https://raw.githubusercontent.com/soremwar/deno_types/master/prop-types/v15.7.2/prop-types.d.ts";
 import { applyInjection, InjectableObject } from "../di/mod.ts";
+import { getOrSetControllerId } from "../metadata/controller.ts";
 import { getMetadataArgsStorage } from "../mod.ts";
 import { ProviderDeclaration } from "../types/provider-declaration.ts";
+import { ClassDecoratorContext } from "./decorator.models.ts";
 
 export type ControllerOptions = {
   baseRoute?: string;
@@ -44,10 +46,12 @@ export function Controller(
     ctor: _ctor,
   };
 
-  return function (object: any, context?: any) {
+  return function (object: any, context: ClassDecoratorContext) {
     if (options.ctor) {
       applyInjection(options?.ctor, object, context);
     }
+
+    const controllerId = getOrSetControllerId(context);
 
     // typeInfo.set(object, getParamInfo(object));
     getMetadataArgsStorage().controllers.push({
@@ -58,6 +62,7 @@ export function Controller(
       providers: options.providers,
       hooks: [],
       options: options,
+      controllerId: controllerId,
     });
   };
 }

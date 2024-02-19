@@ -1,10 +1,11 @@
-import { Area, Body, Controller, Ctx, Get, HttpContext, Post } from "alosaur/mod.ts";
+import { ActionParam, Area, Body, Controller, Ctx, Get, HttpContext, Post } from "alosaur/mod.ts";
 import { readAll, readerFromStreamReader } from "https://deno.land/std@0.171.0/streams/conversion.ts";
 
 @Controller()
 export class CoreController {
   @Get()
-  text(@Ctx() ctx: HttpContext) {
+  @ActionParam(0, Ctx())
+  text(ctx: HttpContext) {
     return `
         <form action="/"  method="post" enctype="multipart/form-data">
             <input type="file" id="file" name="file">
@@ -16,8 +17,9 @@ export class CoreController {
    * This example has custom body parsed options
    */
   @Post()
+  @ActionParam(0, Body(null, { formData: { maxMemory: 1 } }))
   async formData(
-    @Body(null, { formData: { maxMemory: 1 } }) body: FormData,
+    body: FormData,
   ) {
     const firstFile = body.get("file");
 

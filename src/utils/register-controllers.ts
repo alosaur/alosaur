@@ -19,9 +19,13 @@ export function registerControllers<TState>(
   // example: new Map(); key = route, value = object
 
   metadata.controllers.forEach((controller) => {
-    const actions = getMetadataArgsStorage().actions.filter((action) => action.target === controller.target);
-    const params = getMetadataArgsStorage().params.filter((param) => param.target === controller.target);
+    const actions = getMetadataArgsStorage().actions.filter((action) =>
+      action.controllerId === controller.controllerId
+    );
+    // TODO implement with controllerId
+    const params = getMetadataArgsStorage().params.filter((param) => param.controllerId === controller.controllerId);
 
+    // console.log(getMetadataArgsStorage().params)
     controller.actions = actions;
 
     registerProviders(controller, controller.area!.container!);

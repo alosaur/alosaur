@@ -56,4 +56,21 @@ export interface ControllerMetadataArgs {
    * Options for controller
    */
   options?: ControllerOptions;
+
+  /**
+   * Controller id
+   */
+  controllerId?: string;
+}
+
+export function getOrSetControllerId(context: { metadata?: Record<string | number | symbol, unknown> }): string {
+  context.metadata = context.metadata || {};
+
+  if (context.metadata._controllerId) {
+    return context.metadata._controllerId as string;
+  } else {
+    const id = crypto.randomUUID();
+    context.metadata["_controllerId"] = id;
+    return id;
+  }
 }

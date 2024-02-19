@@ -7,6 +7,7 @@ import { AppSettings } from "../../src/models/app-settings.ts";
 import { Product } from "./models/product.model.ts";
 import { Post } from "../../src/decorator/Post.ts";
 import { Body } from "../../src/decorator/Body.ts";
+import { ActionParam } from "../../mod.ts";
 
 /**
  * Standart not found result
@@ -42,7 +43,8 @@ export class ProductController {
   @ProducesResponse(
     { code: 500, description: "Oops! Can't create your product right now" },
   )
-  GetById(@Param("id") id: string) {
+  @ActionParam(0, Param("id"))
+  GetById(id: string) {
     return new Product();
   }
 
@@ -56,7 +58,8 @@ export class ProductController {
   @ProducesResponse(
     { code: 200, type: Product, description: "Product created" },
   )
-  Create(@Body() product: Product) {
+  @ActionParam(0, Body())
+  Create(product: Product) {
   }
 }
 
