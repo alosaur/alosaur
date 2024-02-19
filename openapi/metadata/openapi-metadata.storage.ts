@@ -38,6 +38,7 @@ export interface OpenApiActionArgs {
   target: Object;
   action: string;
   data: OpenApiActionData;
+  controllerId: string;
 }
 
 /**

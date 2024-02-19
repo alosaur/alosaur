@@ -84,7 +84,7 @@ export class AlosaurOpenApiBuilder<T> {
   private getPathItem(route: RouteMetadata): oa.PathItemObject {
     const produces = this.openApiMetadata.actionProduces &&
       this.openApiMetadata.actionProduces.filter((action) =>
-        action.object === route.actionObject && action.action === route.action
+        action.controllerId === route.actionMetadata.controllerId && action.action === route.action
       );
 
     const operation: oa.OperationObject = {
