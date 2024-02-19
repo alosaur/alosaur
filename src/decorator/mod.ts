@@ -6,6 +6,7 @@ export * from "./Patch.ts";
 export * from "./Put.ts";
 export * from "./Delete.ts";
 
+export * from "./ActionParam.ts";
 export * from "./Param.ts";
 export * from "./QueryParam.ts";
 export * from "./QueryParams.ts";

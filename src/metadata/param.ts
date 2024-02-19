@@ -10,4 +10,9 @@ export interface ParamMetadataArgs {
   name?: string;
   transform?: any;
   bodyParseOptions?: RequestBodyParseOptions;
+
+  /**
+   * Controller id
+   */
+  controllerId?: string;
 }

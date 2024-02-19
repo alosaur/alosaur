@@ -10,14 +10,14 @@ export function UseHook<TState, TPayload>(
   hook: Type<HookTarget<TState, TPayload>>,
   payload?: TPayload,
 ): Function {
-  return function (object: any, methodName: string) {
+  return function (object: any, context: { kind: "method" | "class"; name: string}) {
     const metadata = getMetadataArgsStorage();
 
     metadata.hooks.push({
-      type: methodName ? BusinessType.Action : BusinessType.Controller,
+      type: context.kind === 'method' ? BusinessType.Action : BusinessType.Controller,
       object,
       target: object.constructor,
-      method: methodName,
+      method: context.name,
       hookClass: hook,
       payload,
     });

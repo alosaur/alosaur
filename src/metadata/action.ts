@@ -42,4 +42,9 @@ export interface ActionMetadataArgs {
    * Hooks for action
    */
   hooks?: HookMetadataArgs<any, any>[];
+
+  /**
+   * Controller id
+   */
+  controllerId?: string;
 }
