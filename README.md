@@ -30,7 +30,7 @@ How do I use Alosaur in Deno Deploy? Use the light version of Alosaur:
 app.ts:
 
 ```typescript
-import { App, Area, Controller, Get } from "https://deno.land/x/alosaur@v0.36.0/mod.ts";
+import { App, Area, Controller, Get } from "https://deno.land/x/alosaur/mod.ts";
 
 @Controller() // or specific path @Controller("/home")
 export class HomeController {
