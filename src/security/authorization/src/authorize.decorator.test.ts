@@ -23,10 +23,7 @@ const req = new Request("http://localhost:8000");
 test({
   name: "[Auth] AutorizeHook failed test",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     const result = await hook.onPreAction(context, { scheme: CookieScheme });
 
@@ -37,10 +34,7 @@ test({
 test({
   name: "[Auth] AutorizeHook default test",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(CookieScheme, { id: 1 });
@@ -53,10 +47,7 @@ test({
 test({
   name: "[Auth] AutorizeHook right roles test",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
@@ -75,10 +66,7 @@ test({
 test({
   name: "[Auth] AutorizeHook failed roles test",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
@@ -97,10 +85,7 @@ test({
 test({
   name: "[Auth] AutorizeHook failed if not auth user test",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
 
     const result = await hook.onPreAction(
@@ -117,10 +102,7 @@ test({
   async fn() {
     const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
     await authMiddleware.onPreRequest(context);
 
@@ -142,10 +124,7 @@ test({
     const req2 = new Request("http://localhost:8000");
     req2.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext({
-      request: req2,
-      respondWith: () => Promise.resolve(),
-    });
+    const context2 = new SecurityContext(req2);
     await sessionMiddleware.onPreRequest(context2);
     await authMiddleware.onPreRequest(context2);
 
@@ -168,10 +147,7 @@ test({
   async fn() {
     const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
     await authMiddleware.onPreRequest(context);
 
@@ -194,10 +170,7 @@ test({
     // without session cookie
     // req2.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext({
-      request: req2,
-      respondWith: () => Promise.resolve(),
-    });
+    const context2 = new SecurityContext(req2);
     await sessionMiddleware.onPreRequest(context2);
     await authMiddleware.onPreRequest(context2);
 
@@ -213,10 +186,7 @@ test({
 test({
   name: "[Auth] AutorizeHook payload, true",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(
@@ -242,10 +212,7 @@ test({
 test({
   name: "[Auth] AutorizeHook payload, false",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
     await sessionMiddleware.onPreRequest(context);
 
     await context.security.auth.signInAsync(

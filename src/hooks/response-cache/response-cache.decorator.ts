@@ -80,7 +80,7 @@ function getHashByPayload(
 }
 
 const getHashByUrl = (context: HttpContext) => {
-  return context.request.serverRequest.request.url;
+  return context.request.serverRequest.url;
 };
 
 function getNowExpiresTime(duration: number): number {

@@ -3,19 +3,20 @@ import { ChatHandler } from "./chat.handler.ts";
 
 export class WebsocketMiddleware implements PreRequestMiddleware {
   async onPreRequest(context: HttpContext) {
-    const { request, respondWith } = context.request.serverRequest;
+    const request = context.request.serverRequest;
 
     if (request.headers.get("upgrade") != "websocket") {
-      return respondWith(
-        new Response("not trying to upgrade as websocket.", { status: 400 }),
-      );
+      // return respondWith(
+      return new Response("not trying to upgrade as websocket.", { status: 400 });
+      // );
     }
 
     const { socket, response } = Deno.upgradeWebSocket(request);
 
     ChatHandler(socket);
-    respondWith(response);
+    // respondWith(response);
 
-    context.response.setNotRespond();
+    context.response.setImmediately();
+    return response;
   }
 }

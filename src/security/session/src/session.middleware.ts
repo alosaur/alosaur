@@ -87,7 +87,7 @@ export class SessionMiddleware implements MiddlewareTarget {
   }
 
   private getSessionIdCookie(context: SecurityContext): string | undefined {
-    const cookies = getCookies(context.request.serverRequest.request.headers);
+    const cookies = getCookies(context.request.serverRequest.headers);
     const sidHash = cookies[this.cookieKey];
     const sign = cookies[this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY];
 

@@ -22,10 +22,7 @@ const req = new Request("http://localhost:8000");
 test({
   name: "[Auth] JWT AutorizeHook failed test",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     const result = await hook.onPreAction(context, { scheme: JWTscheme });
 
@@ -36,10 +33,7 @@ test({
 test({
   name: "[Auth] JWT AutorizeHook default test",
   async fn() {
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     await context.security.auth.signInAsync(JWTscheme, { id: 1 });
     const result = await hook.onPreAction(context, { scheme: JWTscheme });
@@ -53,10 +47,7 @@ test({
   async fn() {
     const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     const token = await context.security.auth.signInAsync<
       any,
@@ -70,10 +61,7 @@ test({
     req2.headers.set("Authorization", "Bearer " + token.access_token);
     req2.headers.set("Accept", "application/json");
 
-    const context2 = new SecurityContext({
-      request: req2,
-      respondWith: () => Promise.resolve(),
-    });
+    const context2 = new SecurityContext(req2);
     await authMiddleware.onPreRequest(context2);
 
     const result = await hook.onPreAction(
@@ -90,10 +78,7 @@ test({
   async fn() {
     const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     const token = await context.security.auth.signInAsync<
       any,
@@ -107,10 +92,7 @@ test({
     req2.headers.set("Authorization", "Bearer " + token.access_token);
     req2.headers.set("Accept", "application/json");
 
-    const context2 = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context2 = new SecurityContext(req2);
     await authMiddleware.onPreRequest(context2);
 
     const result = await hook.onPreAction(
@@ -127,10 +109,7 @@ test({
   async fn() {
     const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     const token = await context.security.auth.signInAsync<
       any,
@@ -145,10 +124,7 @@ test({
     req2.headers.set("Authorization", "Bearer " + token.access_token);
     req2.headers.set("Accept", "application/json");
 
-    const context2 = new SecurityContext({
-      request: req2,
-      respondWith: () => Promise.resolve(),
-    });
+    const context2 = new SecurityContext(req2);
     await authMiddleware.onPreRequest(context2);
 
     const result = await hook.onPreAction(

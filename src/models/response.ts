@@ -23,7 +23,6 @@ export interface IImmediatelyResponse {
 export class ImmediatelyResponse implements IImmediatelyResponse {
   public error?: Error;
   private immediately: boolean = false;
-
   /**
    * It uses for immediately send response without run other Hook, Middlewares
    */

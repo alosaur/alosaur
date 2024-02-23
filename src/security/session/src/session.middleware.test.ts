@@ -18,10 +18,7 @@ test({
     // first unsession request
     const req = new Request("http://localhost:8000/");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     await middleware.onPreRequest(context);
     await context.security.session!.set("testVal", 1);
@@ -39,20 +36,14 @@ test({
     // second session request with sid
     req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context2 = new SecurityContext(req);
     await middleware.onPreRequest(context2);
 
     assertEquals(await context2.security.session!.get("testVal"), 1);
 
     // third request without sid
     const req3 = new Request("http://localhost:8000");
-    const context3 = new SecurityContext({
-      request: req3,
-      respondWith: () => Promise.resolve(),
-    });
+    const context3 = new SecurityContext(req3);
     await middleware.onPreRequest(context3);
 
     assertEquals(await context3.security.session!.get("testVal"), undefined);
@@ -70,10 +61,7 @@ test({
     // first unsession request
     const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     await middleware.onPreRequest(context);
 
@@ -92,10 +80,7 @@ test({
     // first unsession request
     const req = new Request("http://localhost:8000");
 
-    const context = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new SecurityContext(req);
 
     await middleware.onPreRequest(context);
     await context.security.session!.set("testVal", 1);
@@ -115,10 +100,7 @@ test({
     // second session request with sid
     req.headers.set("Cookie", "sid=" + sid + "; sid-s=" + sign);
 
-    const context2 = new SecurityContext({
-      request: req,
-      respondWith: () => Promise.resolve(),
-    });
+    const context2 = new SecurityContext(req);
     await middleware.onPreRequest(context2);
 
     assertEquals(await context2.security.session!.get("testVal"), undefined);
