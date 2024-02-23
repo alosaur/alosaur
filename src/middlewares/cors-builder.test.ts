@@ -7,10 +7,9 @@ test({
   name: "testCorsBuilder",
   fn() {
     const builder = new CorsBuilder();
-    const context = new HttpContext({
-      request: new Request("http://localhost:8000"),
-      respondWith: () => Promise.resolve(),
-    });
+    const context = new HttpContext(
+      new Request("http://localhost:8000"),
+    );
 
     builder
       .WithOrigins("http://localhost:8000")

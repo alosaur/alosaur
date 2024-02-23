@@ -4,7 +4,8 @@ import { Security } from "../security.ts";
 import { HttpContext } from "../../models/http-context.ts";
 // import { Inject, Injectable } from "../../injection/index.ts";
 import { SERVER_REQUEST } from "../../models/tokens.model.ts";
-import type { NativeRequest } from "../../models/request.ts";
+
+// import type { NativeRequest } from "../../models/request.ts";
 
 @Injectable(
   {
@@ -18,7 +19,7 @@ export class SecurityContext<T = any> extends HttpContext<T> {
   // @ts-ignore: Property 'serverRequest' has no initializer and is not definitely assigned in the constructor.
   // private _serverRequestSecurity: NativeRequest;
 
-  constructor(serverRequest: NativeRequest) {
+  constructor(serverRequest: Request) {
     super(serverRequest);
     //
     // if(serverRequest) {

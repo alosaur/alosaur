@@ -53,13 +53,12 @@ const route: RouteMetadata = {
 test({
   name: "testGetActionParamsMultiQuery",
   async fn() {
-    const context = new HttpContext({
-      request: {
+    const context = new HttpContext(
+      {
         url: "http://localhost:8000/home/test/testQuery?a=a&b=b&c=c",
         headers: new Headers(),
       } as Request,
-      respondWith: () => Promise.resolve(),
-    });
+    );
     const params = await getActionParams(context, route);
 
     assert(params[0] === "a");
@@ -74,13 +73,12 @@ test({
 test({
   name: "testGetActionParamsMultiQueryWithoutOneParam",
   async fn() {
-    const context = new HttpContext({
-      request: {
+    const context = new HttpContext(
+      {
         url: "http://localhost:8000/home/test/testQuery?c=c&a=a",
         headers: new Headers(),
       } as Request,
-      respondWith: () => Promise.resolve(),
-    });
+    );
     const params = await getActionParams(context, route);
 
     assert(params[0] === "a");
@@ -96,12 +94,9 @@ test({
   name: "testGetActionParamsMultiQueryWithOneParam",
   async fn() {
     const context = new HttpContext({
-      request: {
-        url: "http://localhost:8000/home/test/testQuery?c=c",
-        headers: new Headers(),
-      } as Request,
-      respondWith: () => Promise.resolve(),
-    });
+      url: "http://localhost:8000/home/test/testQuery?c=c",
+      headers: new Headers(),
+    } as Request);
     const params = await getActionParams(context, route);
 
     assert(params[0] === undefined);
@@ -116,13 +111,12 @@ test({
 test({
   name: "testGetActionParamsMultiQueryWithoutAllParam",
   async fn() {
-    const context = new HttpContext({
-      request: {
+    const context = new HttpContext(
+      {
         url: "http://localhost:8000/home/test/testQuery",
         headers: new Headers(),
       } as Request,
-      respondWith: () => Promise.resolve(),
-    });
+    );
     const params = await getActionParams(context, route);
 
     assert(params[0] === undefined);

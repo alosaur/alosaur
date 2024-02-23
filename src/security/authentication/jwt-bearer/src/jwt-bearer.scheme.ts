@@ -19,7 +19,7 @@ export class JwtBearerScheme implements AuthenticationScheme {
   }
 
   async authenticate(context: SecurityContext): Promise<void> {
-    const headers = context.request.serverRequest.request.headers;
+    const headers = context.request.serverRequest.headers;
 
     const headAuthorization = headers.get(AuthorizationHeader);
     const headAccept = headers.get(AcceptHeader);

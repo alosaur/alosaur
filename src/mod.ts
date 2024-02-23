@@ -119,21 +119,21 @@ export class App<TState> {
       address = _parseAddrFromStr(address);
     }
 
-    const listener = customListener || Deno.listen(address);
+    // const listener = customListener || Deno.listen(address);
 
-    if (listener) {
-      console.log("Server start in", address);
+    // if (listener) {
+    console.log("Server start in", address);
 
-      this.listener = listener;
+    // this.listener = listener;
 
-      // Run deno/http
-      await handleNativeServer(
-        listener,
-        this,
-        this.metadata,
-        this.isRunFullServer(),
-      );
-    }
+    // Run deno/http
+    await handleNativeServer(
+      address,
+      this,
+      this.metadata,
+      this.isRunFullServer(),
+    );
+    // }
     return;
   }
 
