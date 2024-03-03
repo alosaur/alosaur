@@ -21,8 +21,8 @@ export function getAction(
   method: string,
   url: string,
 ): RouteMetadata | null {
-  if(ActionsMemoCache.has(method+"-"+url)) {
-    return ActionsMemoCache.get(method+"-"+url)!;
+  if (ActionsMemoCache.has(method + "-" + url)) {
+    return ActionsMemoCache.get(method + "-" + url)!;
   }
   const pathname: string = getPathNameFromUrl(url);
   const routeParams: { [key: string]: any } = {};
@@ -59,7 +59,7 @@ export function getAction(
       routeParams,
     } as RouteMetadata;
 
-    ActionsMemoCache.set(method+"-"+url, obj);
+    ActionsMemoCache.set(method + "-" + url, obj);
 
     return obj;
   }
