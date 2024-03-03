@@ -8,3 +8,7 @@ const app = new App({
 });
 
 app.listen();
+
+// Deno.serve(() => new Response("Hello, Bench!"), {
+//   port: 8000,
+// });

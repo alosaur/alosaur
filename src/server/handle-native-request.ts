@@ -242,10 +242,15 @@ async function handleLiteServer<TState>(listenOptions: Deno.ListenOptions, app: 
             app.transformConfigMap,
           );
 
+
           // Get Action result from controller method
           context.response.result = await action.target[action.action](
             ...args,
           );
+        }
+
+        if(typeof context.response.result === "string") {
+          return new Response(context.response.result, {status: context.response.status, headers: context.response.headers});
         }
 
         if (context.response.result === undefined) {
@@ -255,6 +260,7 @@ async function handleLiteServer<TState>(listenOptions: Deno.ListenOptions, app: 
           // continue;
         }
 
+        // return new Response("Hello, Bench!");
         return (getResponse(context.response.getMergedResult()));
       } catch (error) {
         if (app.globalErrorHandler) {

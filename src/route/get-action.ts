@@ -13,12 +13,17 @@ import {
 //  - with route params (example: 'api/:param')
 //  - regex routes
 
+const ActionsMemoCache: Map<string, RouteMetadata> = new Map();
+
 // Find action from routes
 export function getAction(
   routes: RouteMetadata[],
   method: string,
   url: string,
 ): RouteMetadata | null {
+  if(ActionsMemoCache.has(method+"-"+url)) {
+    return ActionsMemoCache.get(method+"-"+url)!;
+  }
   const pathname: string = getPathNameFromUrl(url);
   const routeParams: { [key: string]: any } = {};
 
@@ -43,7 +48,7 @@ export function getAction(
   }
 
   if (route) {
-    return {
+    const obj = {
       areaObject: route.areaObject,
       controllerObject: route.controllerObject,
       actionObject: route.actionObject,
@@ -53,6 +58,10 @@ export function getAction(
       params: route.params,
       routeParams,
     } as RouteMetadata;
+
+    ActionsMemoCache.set(method+"-"+url, obj);
+
+    return obj;
   }
 
   return null;
