@@ -12,7 +12,7 @@ Alosaur - [Deno](https://github.com/denoland) web framework 🦖.
 - **Middleware** - provide a convenient mechanism for filtering HTTP requests entering your application.
 - **Hooks** - middleware for area, controller and actions with support DI. Have 3 life cyclic functions:
   `onPreAction, onPostAction, onCatchAction`
-- **Decorators** - ES decorators for query, cookie, parametrs, routes and etc.
+- **Decorators** - ES decorators for query, cookie, parameters, routes and etc.
 - **Dependency Injection** - for all controllers and hooks by default.
 - **Security** - supports security context (Session, Authentication, Authorization, OAuth, Google and custom strategy)
   [Security](https://github.com/alosaur/alosaur/tree/master/src/security)
