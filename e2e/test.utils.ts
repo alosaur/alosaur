@@ -28,23 +28,10 @@ export async function startServer(serverPath: string): Promise<Deno.ChildProcess
   // assert(s !== null && s.includes("Server start in"));
   assert(s !== null);
 
-  // Poll until the TCP port is actually accepting connections.
   // In Deno 2.x the onListen callback (which triggers the stdout write above)
-  // can fire just before the socket is fully in LISTEN state, so a bare 1ms
-  // delay is not reliable.  We try Deno.connect() in a tight loop instead.
-  const deadline = Date.now() + 5000;
-  while (true) {
-    try {
-      const conn = await Deno.connect({ hostname: "localhost", port: 8000 });
-      conn.close();
-      break;
-    } catch {
-      if (Date.now() >= deadline) {
-        throw new Error("Server did not start within 5 seconds");
-      }
-      await delay(10);
-    }
-  }
+  // can fire just before the socket is fully in LISTEN state, so 1ms is not
+  // always enough. Give the listener a bit more time before the first request.
+  await delay(50);
 
   return Promise.resolve(process);
 }
