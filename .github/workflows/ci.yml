@@ -3,23 +3,23 @@ name: test
 on: [push, pull_request]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-        strategy:
-            matrix:
-                deno: ["2.x"]
-        name: Deno ${{ matrix.deno }}
-        steps:
-            - uses: actions/checkout@v4
-            - name: Setup deno
-              uses: denoland/setup-deno@v2
-              with:
-                  deno-version: ${{ matrix.deno }}
-            - name: fmt check
-              run: deno fmt --check
-            - name: Test
-              run: deno test -A
-            - name: Snaphot test OpenApi e2e
-              run: deno test -A openapi/e2e/openapi-e2e-test.ts
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        deno: ["2.x"]
+    name: Deno ${{ matrix.deno }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ matrix.deno }}
+      - name: fmt check
+        run: deno fmt --check
+      - name: Test
+        run: deno test -A
+      - name: Snaphot test OpenApi e2e
+        run: deno test -A openapi/e2e/openapi-e2e-test.ts
