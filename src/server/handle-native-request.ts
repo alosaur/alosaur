@@ -49,7 +49,12 @@ async function handleFullServer<TState>(
   metadata: MetadataArgsStorage<TState>,
 ) {
   Deno.serve(
-    listenOptions,
+    {
+      ...listenOptions,
+      onListen: ({ hostname, port }) => {
+        console.log("Server start in", { hostname, port });
+      },
+    },
     async (request) => {
       metadata.container.register(SERVER_REQUEST, request);
       const context = metadata.container.create<HttpContext<TState>>(
@@ -212,7 +217,12 @@ async function handleLiteServer<TState>(listenOptions: Deno.ListenOptions, app: 
   //
   // for await (const request of requests) {
   Deno.serve(
-    listenOptions,
+    {
+      ...listenOptions,
+      onListen: ({ hostname, port }) => {
+        console.log("Server start in", { hostname, port });
+      },
+    },
     async (request) => {
       // const respondWith = respondWithWrapper(request.respondWith, conn);
 

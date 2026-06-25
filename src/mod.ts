@@ -122,7 +122,6 @@ export class App<TState> {
     // const listener = customListener || Deno.listen(address);
 
     // if (listener) {
-    console.log("Server start in", address);
 
     // this.listener = listener;
 
