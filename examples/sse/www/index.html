@@ -9,15 +9,15 @@
   </head>
   <body>
     <script>
-      const eventSource = new EventSource("http://localhost:8000/sse");
+    const eventSource = new EventSource("http://localhost:8000/sse");
 
-      eventSource.onopen = function (e) {
-        console.log("OPEN", e);
-      };
+    eventSource.onopen = function (e) {
+      console.log("OPEN", e);
+    };
 
-      eventSource.onmessage = function (e) {
-        console.log("Message: " + e.data);
-      };
+    eventSource.onmessage = function (e) {
+      console.log("Message: " + e.data);
+    };
     </script>
   </body>
 </html>
