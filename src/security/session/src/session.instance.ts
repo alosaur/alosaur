@@ -1,6 +1,5 @@
 import { SessionInterface } from "./session.interface.ts";
 import { SessionStore } from "./store/store.interface.ts";
-import { generate } from "https://deno.land/std@0.171.0/uuid/v1.ts";
 import { getHash } from "./session.utils.ts";
 
 /**
@@ -12,7 +11,7 @@ export class Session implements SessionInterface {
   constructor(
     public readonly store: SessionStore,
     public readonly sessionKey: string,
-    public readonly sessionId: string = generate().toString(),
+    public readonly sessionId: string = crypto.randomUUID(),
   ) {
     this.sessionIdHash = getHash(this.sessionId);
   }
