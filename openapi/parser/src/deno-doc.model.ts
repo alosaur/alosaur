@@ -97,7 +97,7 @@ export interface Method {
 
 export interface FunctionDef {
   params: Param[];
-  returnType: ReturnType;
+  returnType?: ReturnType;
   isAsync: boolean;
   isGenerator: boolean;
   typeParams: TypeParam[];
@@ -153,7 +153,7 @@ export interface Left {
 
 export interface Property {
   jsDoc?: JsDoc;
-  tsType: TsType;
+  tsType?: TsType;
   readonly: boolean;
   accessibility: string;
   optional: boolean;
@@ -166,6 +166,7 @@ export interface Property {
 export interface TsType {
   repr: string;
   kind: Kind;
+  keyword?: string;
   literal: Literal;
   array: TsType;
   typeRef: TypeRef;
