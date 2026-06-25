@@ -971,14 +971,14 @@ class HmacDrbg {
   }
 
   // We concatenate extraData into seed
-  async reseed(seed = new Uint8Array()) {
+  async reseed(seed: Uint8Array = new Uint8Array()) {
     this.k = await this.hmac(this.v, Uint8Array.from([0x00]), seed);
     this.v = await this.hmac(this.v);
     if (seed.length === 0) return;
     this.k = await this.hmac(this.v, Uint8Array.from([0x01]), seed);
     this.v = await this.hmac(this.v);
   }
-  reseedSync(seed = new Uint8Array()) {
+  reseedSync(seed: Uint8Array = new Uint8Array()) {
     this.checkSync();
     this.k = this.hmacSync(this.v, Uint8Array.from([0x00]), seed);
     this.v = this.hmacSync(this.v);
