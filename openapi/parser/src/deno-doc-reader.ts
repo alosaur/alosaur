@@ -12,22 +12,21 @@ export async function getDenoDoc(
 
   GlobalFilesSet.add(path);
 
-  const option = {
-    cmd: [
-      Deno.execPath(),
-      "doc",
-      "--json",
-      "--reload",
-    ],
-    stdout: "piped",
-    stderr: "piped",
-  };
+  const args = [
+    "doc",
+    "--json",
+    "--reload",
+  ];
 
   if (path) {
-    option.cmd.push(path);
+    args.push(path);
   }
 
-  const process: Deno.Process<Deno.RunOptions> = Deno.run(option as any);
+  const command = new Deno.Command(Deno.execPath(), {
+    args,
+    stdout: "piped",
+    stderr: "piped",
+  });
 
   let killed = false;
 
@@ -44,20 +43,15 @@ export async function getDenoDoc(
   //   (process.stdout as any)?.close();
   // }, 4000);
 
-  const [out, errOut] = await Promise.all([
-    process.output(),
-    process.stderrOutput(),
-  ]);
+  const { success, stdout, stderr } = await command.output();
 
-  const status = await process.status();
   // clearTimeout(timer);
-  process.close();
-  if (!status.success) {
+  if (!success) {
     if (killed) throw new Error("Parse timed out");
-    throw new Error(decoder.decode(errOut));
+    throw new Error(decoder.decode(stderr));
   }
 
-  const result = JSON.parse(decoder.decode(out));
+  const result = JSON.parse(decoder.decode(stdout));
 
   for (let i = 0; i < result.length; i++) {
     const object = result[i];

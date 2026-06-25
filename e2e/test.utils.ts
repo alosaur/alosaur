@@ -1,12 +1,9 @@
 import { delay } from "../examples/_utils/test.utils.ts";
 import { assert } from "../src/deps_test.ts";
 
-export async function startServer(serverPath: string): Promise<Deno.Process> {
-  let process: Deno.Process;
-
-  process = Deno.run({
-    cmd: [
-      Deno.execPath(),
+export async function startServer(serverPath: string): Promise<Deno.ChildProcess> {
+  const command = new Deno.Command(Deno.execPath(), {
+    args: [
       "run",
       "-A",
       "--importmap=imports.json",
@@ -18,11 +15,14 @@ export async function startServer(serverPath: string): Promise<Deno.Process> {
     stdout: "piped",
     stderr: "inherit",
   });
+
+  const process = command.spawn();
+
   // Once server is ready it will write to its stdout.
   assert(process.stdout != null);
 
   // const r = new TextProtoReader(new BufReader(process.stdout as any));
-  const r = process.stdout.readable.getReader();
+  const r = process.stdout.getReader();
   let s = await r.read();
 
   // assert(s !== null && s.includes("Server start in"));
@@ -34,7 +34,10 @@ export async function startServer(serverPath: string): Promise<Deno.Process> {
   return Promise.resolve(process);
 }
 
-export function killServer(process: Deno.Process): void {
-  process.close();
-  (process.stdout as any)?.close();
+export function killServer(process: Deno.ChildProcess): void {
+  try {
+    process.kill();
+  } catch {
+    // ignore
+  }
 }

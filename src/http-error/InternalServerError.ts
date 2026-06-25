@@ -4,7 +4,7 @@ import { HttpError } from "./HttpError.ts";
  * Exception for 500 HTTP error.
  */
 export class InternalServerError extends HttpError {
-  name = "InternalServerError";
+  override name = "InternalServerError";
 
   constructor(message: string) {
     super(500);

@@ -4,7 +4,7 @@ import { HttpError } from "./HttpError.ts";
  * Exception for 400 HTTP error.
  */
 export class BadRequestError extends HttpError {
-  name = "BadRequestError";
+  override name = "BadRequestError";
 
   constructor(message?: string) {
     super(400);

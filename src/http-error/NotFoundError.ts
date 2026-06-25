@@ -4,7 +4,7 @@ import { HttpError } from "./HttpError.ts";
  * Exception for 404 HTTP error.
  */
 export class NotFoundError extends HttpError {
-  name = "NotFoundError";
+  override name = "NotFoundError";
 
   constructor(message?: string) {
     super(404);

@@ -91,7 +91,7 @@ export class SessionMiddleware implements MiddlewareTarget {
     const sidHash = cookies[this.cookieKey];
     const sign = cookies[this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY];
 
-    if (this.isValidSessionId(sidHash, sign)) {
+    if (sidHash !== undefined && sign !== undefined && this.isValidSessionId(sidHash, sign)) {
       return sidHash;
     }
     return undefined;

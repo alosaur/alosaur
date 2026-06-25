@@ -11,7 +11,7 @@ import { SERVER_REQUEST } from "./tokens.model.ts";
 )
 export class HttpContext<T = any> extends Context<T> {
   public request!: AlosaurRequest;
-  public response: AlosaurResponse = new AlosaurResponse();
+  public override response: AlosaurResponse = new AlosaurResponse();
 
   // @Inject(SERVER_REQUEST)
   // private _serverRequest: NativeRequest;
