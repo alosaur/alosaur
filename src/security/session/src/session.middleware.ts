@@ -42,7 +42,7 @@ export class SessionMiddleware implements MiddlewareTarget {
   async onPreRequest(context: SecurityContext) {
     let session: Session;
 
-    const sessionId = this.getSessionIdCookie(context);
+    const sessionId = await this.getSessionIdCookie(context);
 
     if (sessionId === undefined || !await this.store.exist(sessionId)) {
       session = await this.createNewSession(context);
@@ -86,12 +86,12 @@ export class SessionMiddleware implements MiddlewareTarget {
     return expires <= Date.now();
   }
 
-  private getSessionIdCookie(context: SecurityContext): string | undefined {
+  private async getSessionIdCookie(context: SecurityContext): Promise<string | undefined> {
     const cookies = getCookies(context.request.serverRequest.headers);
     const sidHash = cookies[this.cookieKey];
     const sign = cookies[this.cookieKey + SESSION_SIGNATURE_PREFIX_KEY];
 
-    if (sidHash !== undefined && sign !== undefined && this.isValidSessionId(sidHash, sign)) {
+    if (sidHash !== undefined && sign !== undefined && await this.isValidSessionId(sidHash, sign)) {
       return sidHash;
     }
     return undefined;
@@ -101,7 +101,8 @@ export class SessionMiddleware implements MiddlewareTarget {
     session: Session,
     context: HttpContext,
   ): Promise<void> {
-    const sign = await secp.sign(session.sessionIdHash, this.options.secret);
+    const sidHash = await getHash(session.sessionId);
+    const sign = await secp.sign(sidHash, this.options.secret);
 
     // set hash
     setCookie(
@@ -128,10 +129,10 @@ export class SessionMiddleware implements MiddlewareTarget {
     );
   }
 
-  private isValidSessionId(sessionId: string, signString: string): boolean {
+  private async isValidSessionId(sessionId: string, signString: string): Promise<boolean> {
     if (!sessionId) return false;
 
-    const sidHash = getHash(sessionId);
+    const sidHash = await getHash(sessionId);
     const unsignString = new Uint8Array(atob(signString).split(",").map(Number));
 
     return secp.verify(unsignString, sidHash, this.publicKey);
