@@ -103,14 +103,7 @@ export interface FunctionDef {
   typeParams: TypeParam[];
 }
 
-export interface ReturnType {
-  repr: string;
-  kind: Kind;
-  typeRef: TypeRef;
-  array: ArrayDef;
-  keyword: string;
-  union: Union[];
-}
+export type ReturnType = TsType;
 
 export interface Union {
   repr: string;
