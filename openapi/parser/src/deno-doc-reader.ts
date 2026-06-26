@@ -74,6 +74,10 @@ export async function getDenoDoc(
     return result;
   }
 
+  if (isDenoDocNodesDocument(result)) {
+    return await normalizeDenoDocNodesDocument(result);
+  }
+
   if (isDenoDocDocument(result)) {
     return await normalizeDenoDocDocument(result, path);
   }
@@ -83,6 +87,24 @@ export async function getDenoDoc(
 
 function isDenoDocDocument(value: any): boolean {
   return !!value && typeof value === "object" && Array.isArray(value.symbols);
+}
+
+function isDenoDocNodesDocument(value: any): boolean {
+  return !!value && typeof value === "object" && !Array.isArray(value.nodes) &&
+    !!value.nodes;
+}
+
+async function normalizeDenoDocNodesDocument(
+  document: any,
+): Promise<DenoDoc.RootDef[]> {
+  const result: DenoDoc.RootDef[] = [];
+
+  for (const [fileUrl, fileNode] of Object.entries(document.nodes || {})) {
+    const path = normalizeDocNodePath(fileUrl);
+    result.push(...await normalizeDenoDocDocument(fileNode, path));
+  }
+
+  return result;
 }
 
 async function normalizeDenoDocDocument(
@@ -125,6 +147,10 @@ async function normalizeDenoDocDocument(
   }
 
   return result;
+}
+
+function normalizeDocNodePath(fileUrl: string): string {
+  return fileUrl.startsWith("file://") ? new URL(fileUrl).pathname : fileUrl;
 }
 
 function normalizeDeclaration(
