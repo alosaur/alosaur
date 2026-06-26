@@ -263,7 +263,7 @@ function normalizeTsType(type: any): DenoDoc.TsType | undefined {
   switch (type.kind) {
     case "keyword":
       result.keyword = type.keyword ?? type.value;
-      result.repr = result.repr || type.keyword ?? type.value;
+      result.repr = result.repr || (type.keyword ?? type.value);
       break;
 
     case "typeRef": {
