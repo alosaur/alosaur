@@ -140,11 +140,11 @@ function normalizeDeclaration(
 
   switch (declaration.kind) {
     case "class":
-      rootDef.classDef = normalizeClassDef(declaration.def);
+      rootDef.classDef = normalizeClassDef(declaration.classDef ?? declaration.def);
       return rootDef;
 
     case "interface":
-      rootDef.interfaceDef = normalizeInterfaceDef(declaration.def);
+      rootDef.interfaceDef = normalizeInterfaceDef(declaration.interfaceDef ?? declaration.def);
       return rootDef;
 
     case "enum":
@@ -196,7 +196,7 @@ function normalizeClassMethod(method: any): DenoDoc.Method {
     isStatic: !!method.isStatic,
     name: method.name,
     kind: method.kind,
-    functionDef: normalizeFunctionDef(method.def),
+    functionDef: normalizeFunctionDef(method.functionDef ?? method.def),
     location: method.location,
   };
 }
@@ -262,20 +262,22 @@ function normalizeTsType(type: any): DenoDoc.TsType | undefined {
 
   switch (type.kind) {
     case "keyword":
-      result.keyword = type.value;
-      result.repr = result.repr || type.value;
+      result.keyword = type.keyword ?? type.value;
+      result.repr = result.repr || type.keyword ?? type.value;
       break;
 
-    case "typeRef":
+    case "typeRef": {
+      const typeRefData = type.typeRef ?? type.value;
       result.typeRef = {
-        typeName: type.value?.typeName,
-        typeParams: type.value?.typeParams || [],
+        typeName: typeRefData?.typeName,
+        typeParams: typeRefData?.typeParams || [],
       };
-      result.repr = result.repr || type.value?.typeName;
+      result.repr = result.repr || typeRefData?.typeName;
       break;
+    }
 
     case "array":
-      result.array = normalizeTsType(type.value) as DenoDoc.TsType;
+      result.array = normalizeTsType(type.array ?? type.value) as DenoDoc.TsType;
       break;
   }
 
