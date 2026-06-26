@@ -175,7 +175,9 @@ function normalizeDeclaration(
 
     case "enum":
       rootDef.enumDef = {
-        members: (declaration.enumDef?.members || []).map((member: any) => ({
+        members: ((declaration.enumDef?.members || declaration.def?.members || declaration.members) ?? []).map((
+          member: any,
+        ) => ({
           name: member.name,
           jsDoc: member.jsDoc,
         })),
