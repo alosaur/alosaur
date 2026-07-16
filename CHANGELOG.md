@@ -11,10 +11,15 @@ This release adds full compatibility with Deno 2.x and is the recommended versio
 ### What's Changed
 
 #### Bug Fixes
-- **fix: preserve Deno 2 enum members in OpenAPI docs** — Enum members defined with `const` were being dropped by the Deno 2 type-checker; they are now correctly preserved in generated OpenAPI schemas.
+
+- **fix: preserve Deno 2 enum members in OpenAPI docs** — Enum members defined with `const` were being dropped by the
+  Deno 2 type-checker; they are now correctly preserved in generated OpenAPI schemas.
 - **fix: resolve failing "Deno 2.x" CI job** ([#214](https://github.com/alosaur/alosaur/pull/214)):
-  - **Race condition** — `console.log("Server start in")` was called in `app.listen()` before `Deno.serve()` had bound to the TCP port. The log is now emitted inside the `onListen` callback (fired by Deno only _after_ the port is open), eliminating `ECONNREFUSED` errors in e2e tests.
-  - **Content-Type charset case** — Deno 2.x returns `charset=UTF-8` (uppercase). Updated assertions to match the new casing.
+  - **Race condition** — `console.log("Server start in")` was called in `app.listen()` before `Deno.serve()` had bound
+    to the TCP port. The log is now emitted inside the `onListen` callback (fired by Deno only _after_ the port is
+    open), eliminating `ECONNREFUSED` errors in e2e tests.
+  - **Content-Type charset case** — Deno 2.x returns `charset=UTF-8` (uppercase). Updated assertions to match the new
+    casing.
   - **Static HTML body** — Updated `StaticIndexHtmlText` test constant to exactly match the file on disk.
 - **docs: fix typo in README.md** ([#212](https://github.com/alosaur/alosaur/pull/212)) — "parametrs" → "parameters".
 
@@ -45,6 +50,7 @@ import { App, Area, Controller, Get } from "https://deno.land/x/alosaur/mod.ts";
 ## [v1.0.0] - 2024-02-19
 
 ### Breaking Changes
+
 - Update to Deno 1.40
 - New DI container, removed `microsoft/tsyringe` ([#204](https://github.com/alosaur/alosaur/pull/204))
 - Added ES decorators ([#205](https://github.com/alosaur/alosaur/pull/205))
