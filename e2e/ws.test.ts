@@ -16,7 +16,7 @@ test({
         assertEquals(response.status, 200);
         assertEquals(
           response.headers.get("content-type"),
-          "text/html; charset=utf-8",
+          "text/html; charset=UTF-8",
         );
         const html = await response.text();
         assertEquals(html.includes("ws chat example"), true);

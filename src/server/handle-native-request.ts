@@ -49,7 +49,12 @@ async function handleFullServer<TState>(
   metadata: MetadataArgsStorage<TState>,
 ) {
   Deno.serve(
-    listenOptions,
+    {
+      ...listenOptions,
+      onListen: ({ hostname, port }) => {
+        console.log("Server start in", { hostname, port });
+      },
+    },
     async (request) => {
       metadata.container.register(SERVER_REQUEST, request);
       const context = metadata.container.create<HttpContext<TState>>(
@@ -181,8 +186,9 @@ async function handleFullServer<TState>(
 
         return (getResponse(context.response.getMergedResult()));
       } catch (error) {
+        const err = error as Error & { httpCode?: number };
         if (app.globalErrorHandler) {
-          app.globalErrorHandler(context, error);
+          app.globalErrorHandler(context, err);
 
           if (context.response.isImmediately()) {
             return (getResponse(context.response.getMergedResult()));
@@ -195,11 +201,11 @@ async function handleFullServer<TState>(
           // continue;
         }
 
-        if (!(error instanceof HttpError)) {
-          console.error(error);
+        if (!(err instanceof HttpError)) {
+          console.error(err);
         }
 
-        return (getResponse(Content(error, error.httpCode || 500)));
+        return (getResponse(Content(err, err.httpCode || 500)));
       }
       // return new Response();
     },
@@ -211,7 +217,12 @@ async function handleLiteServer<TState>(listenOptions: Deno.ListenOptions, app: 
   //
   // for await (const request of requests) {
   Deno.serve(
-    listenOptions,
+    {
+      ...listenOptions,
+      onListen: ({ hostname, port }) => {
+        console.log("Server start in", { hostname, port });
+      },
+    },
     async (request) => {
       // const respondWith = respondWithWrapper(request.respondWith, conn);
 
@@ -265,8 +276,9 @@ async function handleLiteServer<TState>(listenOptions: Deno.ListenOptions, app: 
         // return new Response("Hello, Bench!");
         return (getResponse(context.response.getMergedResult()));
       } catch (error) {
+        const err = error as Error & { httpCode?: number };
         if (app.globalErrorHandler) {
-          app.globalErrorHandler(context, error);
+          app.globalErrorHandler(context, err);
 
           if (context.response.isImmediately()) {
             return (getResponse(context.response.getMergedResult()));
@@ -279,11 +291,11 @@ async function handleLiteServer<TState>(listenOptions: Deno.ListenOptions, app: 
           // continue;
         }
 
-        if (!(error instanceof HttpError)) {
-          console.error(error);
+        if (!(err instanceof HttpError)) {
+          console.error(err);
         }
 
-        return (getResponse(Content(error, error.httpCode || 500)));
+        return (getResponse(Content(err, err.httpCode || 500)));
       }
     },
   );

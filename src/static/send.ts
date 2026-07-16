@@ -155,9 +155,9 @@ export async function send(
     }
   } catch (err) {
     if (err instanceof Deno.errors.NotFound) {
-      throw new Error(err.message); // 404
+      throw new Error((err as Error).message); // 404
     }
-    throw new Error(err.message); // 500
+    throw new Error((err as Error).message); // 500
   }
 
   response.headers.set("Content-Length", String(stats.size));

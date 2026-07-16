@@ -10,6 +10,7 @@ export class TcpContext<T = any> extends Context<T> {
 
 export class TcpServer {
   private connections = new Map<number, Deno.Conn>();
+  private nextId = 0;
 
   constructor(private readonly config: TcpServerConfig) {
     this.init();
@@ -24,12 +25,12 @@ export class TcpServer {
     while (true) {
       try {
         const conn = await listener.accept();
+        const id = this.nextId++;
+        console.log("new connect ", id);
 
-        console.log("new connect ", conn.rid);
+        this.connections.set(id, conn);
 
-        this.connections.set(conn.rid, conn);
-
-        this.handleConn(conn, handler);
+        this.handleConn(id, conn, handler);
       } catch {
         break;
       }
@@ -58,16 +59,19 @@ export class TcpServer {
     }
   }
 
-  private async handleConn(conn: Deno.Conn, handler: Function) {
+  private async handleConn(id: number, conn: Deno.Conn, handler: Function) {
     try {
-      for await (const r of Deno.iter(conn)) {
-        handler(conn.rid, r);
+      const buf = new Uint8Array(4096);
+      while (true) {
+        const n = await conn.read(buf);
+        if (n === null) break;
+        handler(id, buf.slice(0, n));
       }
     } catch {
       console.log("error conn");
     } finally {
       conn.close();
-      this.connections.delete(conn.rid);
+      this.connections.delete(id);
       console.log("close");
     }
   }

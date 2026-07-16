@@ -1,5 +1,5 @@
 import { Content } from "../renderer/content.ts";
-type ResponseBody = Uint8Array | Deno.Reader | string | any;
+type ResponseBody = Uint8Array | ReadableStream<Uint8Array> | string | any;
 
 export interface ActionResult {
   headers: Headers;

@@ -4,7 +4,7 @@ import { HttpError } from "./HttpError.ts";
  * Exception for todo HTTP error.
  */
 export class MethodNotAllowedError extends HttpError {
-  name = "MethodNotAllowedError";
+  override name = "MethodNotAllowedError";
 
   constructor(message?: string) {
     super(405);
