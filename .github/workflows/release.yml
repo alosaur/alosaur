@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract release notes from CHANGELOG.md
+        id: changelog
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          # Extract the section for this tag from CHANGELOG.md
+          NOTES=$(awk "/^## \[${TAG}\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            NOTES="See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/${TAG}/CHANGELOG.md) for details."
+          fi
+          # Write to a file to avoid quoting issues
+          echo "$NOTES" > /tmp/release_notes.md
+
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file /tmp/release_notes.md
