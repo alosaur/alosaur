@@ -6,13 +6,13 @@ Deno KV is a built-in key-value store available in Deno — no external database
 
 ### Endpoints
 
-| Method | Path              | Description          |
-| ------ | ----------------- | -------------------- |
-| GET    | `/products`       | List all products    |
-| GET    | `/products/:id`   | Get product by ID    |
-| POST   | `/products`       | Create a new product |
-| PUT    | `/products/:id`   | Update a product     |
-| DELETE | `/products/:id`   | Delete a product     |
+| Method | Path            | Description          |
+| ------ | --------------- | -------------------- |
+| GET    | `/products`     | List all products    |
+| GET    | `/products/:id` | Get product by ID    |
+| POST   | `/products`     | Create a new product |
+| PUT    | `/products/:id` | Update a product     |
+| DELETE | `/products/:id` | Delete a product     |
 
 ### How to start
 
